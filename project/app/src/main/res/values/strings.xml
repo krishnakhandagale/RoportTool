@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">CheckList</string>
+    <string name="title">Title</string>
+    <string name="risk">Risk</string>
+    <string name="point_of_origin">Point Of Origin</string>
+    <string name="damage">Damage</string>
+    <string name="cause_of_loss">Cause Of Loss</string>
+    <string name="reports">Reports</string>
+    <string name="settings">Settings</string>
+    <string name="sync_to_cloud">Sync to Cloud</string>
+</resources>
