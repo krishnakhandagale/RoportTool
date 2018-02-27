@@ -10,17 +10,13 @@
             android:icon="@drawable/ic_risk"
             android:title="@string/risk" />
         <item
-            android:id="@+id/nav_point_of_origin"
+            android:id="@+id/peril"
             android:icon="@drawable/ic_point_of_origin"
-            android:title="@string/point_of_origin" />
+            android:title="@string/peril" />
         <item
-            android:id="@+id/nav_cause_of_loss"
+            android:id="@+id/inspection"
             android:icon="@drawable/ic_damage"
-            android:title="@string/cause_of_loss" />
-        <item
-            android:id="@+id/nav_damage"
-            android:icon="@drawable/ic_damage"
-            android:title="@string/damage" />
+            android:title="@string/inspection" />
         <item
             android:id="@+id/nav_reports"
             android:icon="@drawable/ic_reports"
