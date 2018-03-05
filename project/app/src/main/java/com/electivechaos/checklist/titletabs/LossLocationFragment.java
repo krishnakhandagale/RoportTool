@@ -15,7 +15,6 @@ import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
 
-import com.electivechaos.checklist.FindLocationByTextActivity;
 import com.electivechaos.checklist.R;
 import com.electivechaos.checklist.adapters.PlaceArrayAdapter;
 import com.google.android.gms.common.ConnectionResult;
@@ -35,10 +34,10 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+
 import static android.content.ContentValues.TAG;
 
 /**
