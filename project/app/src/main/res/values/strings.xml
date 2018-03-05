@@ -13,4 +13,5 @@
     <string name="claim_number">Claim Number</string>
     <string name="policy_number">Policy Number</string>
     <string name="select_date">Select Date</string>
+    <string name="location_icon">Location icon</string>
 </resources>
