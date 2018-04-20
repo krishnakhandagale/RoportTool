@@ -28,8 +28,8 @@ public class ClaimsDetailsFragment extends Fragment {
         return inflater.inflate(R.layout.claims_details_fragment, container, false);
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    //@Override
+   /* public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         insuranceDate = getActivity().findViewById(R.id.input_insurance_date);
         insuranceDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,5 +51,5 @@ public class ClaimsDetailsFragment extends Fragment {
             calendarInstance.set(Calendar.DAY_OF_MONTH, dayOfMonth);
         }
 
-    };
+    };*/
 }
