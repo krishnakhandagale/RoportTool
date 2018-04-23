@@ -1,6 +1,5 @@
 package com.electivechaos.checklistapp.fragments;
 
-
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,11 +9,13 @@ import android.view.ViewGroup;
 
 import com.electivechaos.checklistapp.R;
 
-public class ReportListFragment extends Fragment {
+public class CategoryWiseImagesFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.report_list_fragment, container, false);
+        View view=inflater.inflate(R.layout.fragment_category_details,container,false);
         return view;
     }
+
+
 }

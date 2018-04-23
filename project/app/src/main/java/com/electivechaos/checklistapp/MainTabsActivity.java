@@ -7,12 +7,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
-import com.electivechaos.checklistapp.R;
-import com.electivechaos.checklistapp.fragments.CategoryListFragment;
-import com.electivechaos.checklistapp.fragments.ReportListFragment;
+import com.electivechaos.checklistapp.maintabs.CategoryListFragment;
+import com.electivechaos.checklistapp.maintabs.ReportListFragment;
 
 public class MainTabsActivity extends BaseActivity {
     @Override

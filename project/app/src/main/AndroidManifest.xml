@@ -17,8 +17,9 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCA-2HMYGs_AiUC3cvCDw49o2AuHkp5A40"/>
-        <activity android:name=".MainActivity"/>
-        <activity android:name=".MainTabsActivity">
+        <activity android:name=".AddEditReportActivity"  android:configChanges="orientation|screenSize"/>
+        <activity android:name=".MainTabsActivity"  android:configChanges="orientation|screenSize">
+
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER"/>
                 <action android:name="android.intent.action.MAIN"/>

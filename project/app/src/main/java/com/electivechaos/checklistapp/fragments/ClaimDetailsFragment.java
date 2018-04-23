@@ -1,66 +1,84 @@
 package com.electivechaos.checklistapp.fragments;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.PagerAdapter;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.Toast;
 
-import com.electivechaos.checklistapp.MainActivity;
 import com.electivechaos.checklistapp.R;
-import com.electivechaos.checklistapp.adapters.SimpleTabPagerAdapter;
-import com.electivechaos.checklistapp.adapters.TitleFrgamentTabPagerAdapter;
+
+public class ClaimDetailsFragment  extends Fragment{
 
 
-public class ClaimDetailsFragment extends Fragment {
-
-    View v;
     ViewPager viewPager;
-
+    TabLayout tabLayout;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        v=inflater.inflate(R.layout.claim_details_layout, container, false);
-        TabLayout tabLayout = v.findViewById(R.id.sliding_tabs);
-        tabLayout.addTab(tabLayout.newTab().setText("Claims Details"));
-        tabLayout.addTab(tabLayout.newTab().setText("Loss Location"));
-        tabLayout.addTab(tabLayout.newTab().setText("Cause Of Loss"));
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        View  view = inflater.inflate(R.layout.claim_details_layout,container, false);
 
-        viewPager =v.findViewById(R.id.viewpager);
-        final PagerAdapter adapter = new SimpleTabPagerAdapter(getActivity().getSupportFragmentManager(), tabLayout.getTabCount());
+        viewPager = view.findViewById(R.id.claim_details_view_pager);
+        tabLayout = view.findViewById(R.id.claim_details_tab_layout);
+        tabLayout.setupWithViewPager(viewPager);
+        ClaimDetailsTabsPagerAdapter adapter=new ClaimDetailsTabsPagerAdapter(getActivity().getSupportFragmentManager());
         viewPager.setAdapter(adapter);
-        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
 
 
-        return v;
 
+        return view;
     }
+
+
+
+
+
+
+    //View pager  for showing two tabs in the welcome activity
+
+    public class ClaimDetailsTabsPagerAdapter extends FragmentStatePagerAdapter {
+
+        public ClaimDetailsTabsPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int i) {
+            if( i ==0 ){
+                Fragment fragment = new ClaimDetailsTabsFragment();
+                return fragment;
+            }else if(i==1){
+                Fragment fragment = new CauseOfLossFragment();
+                return fragment;
+            }
+            else {
+                Fragment fragment = new LossTypeFragment();
+                return fragment;
+            }
+
+        }
+        @Override
+        public int getCount() {
+            return 3;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            if(position == 0){
+                return  "Claim Details";
+            }else if(position==1){
+                return  "Cause Of Loss";
+            }else {
+                return "Loss Type";
+            }
+        }
+    }
+
 
 }
