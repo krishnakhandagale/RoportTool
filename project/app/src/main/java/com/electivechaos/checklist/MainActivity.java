@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //default fragment
         FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
         tx.replace(R.id.content_frame, new ClaimDetailsFragment());
+        tx.addToBackStack(null);
         tx.commit();
 
 
@@ -78,9 +79,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             fragment = new InspectionFragment();
         }
         if(fragment !=  null){
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.content_frame, fragment)
-                    .commit();
+
+            FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
+            tx.replace(R.id.content_frame, new ClaimDetailsFragment());
+            tx.addToBackStack(null);
+            tx.commit();
+
+
         }
         mDrawerLayout.closeDrawers();
         return false;

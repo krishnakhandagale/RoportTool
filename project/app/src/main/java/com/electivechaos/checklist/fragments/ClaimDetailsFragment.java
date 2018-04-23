@@ -8,6 +8,8 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,41 +18,49 @@ import android.widget.Toast;
 
 import com.electivechaos.checklist.MainActivity;
 import com.electivechaos.checklist.R;
+import com.electivechaos.checklist.adapters.SimpleTabPagerAdapter;
+import com.electivechaos.checklist.adapters.TitleFrgamentTabPagerAdapter;
 
 
 public class ClaimDetailsFragment extends Fragment {
 
-    private FloatingActionButton floatingActionButton;
-    private EditText text1;
-
+    View v;
+    ViewPager viewPager;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        v=inflater.inflate(R.layout.claim_details_layout, container, false);
+        TabLayout tabLayout = v.findViewById(R.id.sliding_tabs);
+        tabLayout.addTab(tabLayout.newTab().setText("Claims Details"));
+        tabLayout.addTab(tabLayout.newTab().setText("Loss Location"));
+        tabLayout.addTab(tabLayout.newTab().setText("Cause Of Loss"));
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
-        View v= inflater.inflate(R.layout.fragment_claim_details, container, false);
-       /* floatingActionButton=v.findViewById(R.id.floating_btn_one);
-        text1=v.findViewById(R.id.demo_claim);
-
-
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+        viewPager =v.findViewById(R.id.viewpager);
+        final PagerAdapter adapter = new SimpleTabPagerAdapter(getActivity().getSupportFragmentManager(), tabLayout.getTabCount());
+        viewPager.setAdapter(adapter);
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
-            public void onClick(View v) {
-                CauseOfLossFragment fragment1=new CauseOfLossFragment();
-                Bundle bundle=new Bundle();
-                bundle.putString("message",text1.getText().toString());
-                fragment1.setArguments(bundle);
-                Toast.makeText(getContext(),""+text1.getText().toString(),Toast.LENGTH_LONG).show();
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+            }
 
-                //Inflate the fragment
-                getFragmentManager().beginTransaction().replace(R.id.content_frame, fragment1).commit();
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
 
             }
-        });*/
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
 
         return v;
+
     }
-
-
 
 }
