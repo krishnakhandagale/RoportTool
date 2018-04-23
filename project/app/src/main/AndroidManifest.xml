@@ -18,6 +18,9 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCA-2HMYGs_AiUC3cvCDw49o2AuHkp5A40"/>
         <activity android:name=".MainActivity">
+
+        </activity>
+        <activity android:name="MainTabsActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
