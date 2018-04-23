@@ -1,4 +1,4 @@
-package com.electivechaos.checklist.adapters;
+package com.electivechaos.checklistapp.adapters;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -15,7 +15,7 @@ import android.widget.Filterable;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.electivechaos.checklist.R;
+import com.electivechaos.checklistapp.R;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.Status;

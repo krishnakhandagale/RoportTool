@@ -1,4 +1,4 @@
-package com.electivechaos.checklist.titletabs;
+package com.electivechaos.checklistapp.titletabs;
 
 import android.content.Context;
 import android.content.IntentSender;
@@ -17,8 +17,8 @@ import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
 
-import com.electivechaos.checklist.R;
-import com.electivechaos.checklist.adapters.PlaceArrayAdapter;
+import com.electivechaos.checklistapp.R;
+import com.electivechaos.checklistapp.adapters.PlaceArrayAdapter;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;

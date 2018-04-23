@@ -1,4 +1,4 @@
-package com.electivechaos.checklist.fragments;
+package com.electivechaos.checklistapp.fragments;
 
 
 import android.os.Bundle;
@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.electivechaos.checklist.R;
+import com.electivechaos.checklistapp.R;
 
 public class CategoryListFragment  extends Fragment {
     @Nullable

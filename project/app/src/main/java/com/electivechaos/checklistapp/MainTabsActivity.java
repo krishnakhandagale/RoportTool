@@ -1,3 +1,5 @@
+package com.electivechaos.checklistapp;
+
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -8,11 +10,11 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
-import com.electivechaos.checklist.R;
-import com.electivechaos.checklist.fragments.CategoryListFragment;
-import com.electivechaos.checklist.fragments.ReportListFragment;
+import com.electivechaos.checklistapp.R;
+import com.electivechaos.checklistapp.fragments.CategoryListFragment;
+import com.electivechaos.checklistapp.fragments.ReportListFragment;
 
-public class MainTabsActivity extends AppCompatActivity {
+public class MainTabsActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -1,4 +1,4 @@
-package com.electivechaos.checklist.fragments;
+package com.electivechaos.checklistapp.fragments;
 
 import android.content.Context;
 import android.net.Uri;
@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.electivechaos.checklist.R;
+import com.electivechaos.checklistapp.R;
 
 public class ClaimDetailsTabFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match

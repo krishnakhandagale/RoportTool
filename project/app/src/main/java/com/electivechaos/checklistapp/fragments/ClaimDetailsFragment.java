@@ -1,4 +1,4 @@
-package com.electivechaos.checklist.fragments;
+package com.electivechaos.checklistapp.fragments;
 
 import android.content.Context;
 import android.net.Uri;
@@ -16,10 +16,10 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.electivechaos.checklist.MainActivity;
-import com.electivechaos.checklist.R;
-import com.electivechaos.checklist.adapters.SimpleTabPagerAdapter;
-import com.electivechaos.checklist.adapters.TitleFrgamentTabPagerAdapter;
+import com.electivechaos.checklistapp.MainActivity;
+import com.electivechaos.checklistapp.R;
+import com.electivechaos.checklistapp.adapters.SimpleTabPagerAdapter;
+import com.electivechaos.checklistapp.adapters.TitleFrgamentTabPagerAdapter;
 
 
 public class ClaimDetailsFragment extends Fragment {

@@ -1,4 +1,4 @@
-package com.electivechaos.checklist.titletabs;
+package com.electivechaos.checklistapp.titletabs;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 
-import com.electivechaos.checklist.R;
+import com.electivechaos.checklistapp.R;
 
 import java.util.Calendar;
 

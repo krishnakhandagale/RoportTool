@@ -1,4 +1,4 @@
-package com.electivechaos.checklist;
+package com.electivechaos.checklistapp;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,10 +12,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-import com.electivechaos.checklist.fragments.CauseOfLossFragment;
-import com.electivechaos.checklist.fragments.ClaimDetailsFragment;
-import com.electivechaos.checklist.fragments.InspectionFragment;
-import com.electivechaos.checklist.fragments.PointOfOriginFragment;
+import com.electivechaos.checklistapp.fragments.CauseOfLossFragment;
+import com.electivechaos.checklistapp.fragments.ClaimDetailsFragment;
+import com.electivechaos.checklistapp.fragments.InspectionFragment;
+import com.electivechaos.checklistapp.fragments.PointOfOriginFragment;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     private DrawerLayout mDrawerLayout;

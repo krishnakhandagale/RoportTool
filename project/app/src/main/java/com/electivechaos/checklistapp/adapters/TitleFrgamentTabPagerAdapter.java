@@ -1,11 +1,11 @@
-package com.electivechaos.checklist.adapters;
+package com.electivechaos.checklistapp.adapters;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.electivechaos.checklist.titletabs.ClaimsDetailsFragment;
-import com.electivechaos.checklist.titletabs.LossLocationFragment;
+import com.electivechaos.checklistapp.titletabs.ClaimsDetailsFragment;
+import com.electivechaos.checklistapp.titletabs.LossLocationFragment;
 
 /**
  * Created by krishna on 2/26/18.

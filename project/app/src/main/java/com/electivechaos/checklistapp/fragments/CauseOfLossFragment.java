@@ -1,4 +1,4 @@
-package com.electivechaos.checklist.fragments;
+package com.electivechaos.checklistapp.fragments;
 
 import android.content.Context;
 import android.net.Uri;
@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.electivechaos.checklist.R;
+import com.electivechaos.checklistapp.R;
 
 public class CauseOfLossFragment extends Fragment {
     private String value;

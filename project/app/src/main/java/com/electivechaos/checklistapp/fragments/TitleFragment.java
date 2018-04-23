@@ -1,4 +1,4 @@
-package com.electivechaos.checklist.fragments;
+package com.electivechaos.checklistapp.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,8 +10,8 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.electivechaos.checklist.R;
-import com.electivechaos.checklist.adapters.TitleFrgamentTabPagerAdapter;
+import com.electivechaos.checklistapp.R;
+import com.electivechaos.checklistapp.adapters.TitleFrgamentTabPagerAdapter;
 
 /**
  * Created by krishna on 2/23/18.

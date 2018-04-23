@@ -1,12 +1,12 @@
-package com.electivechaos.checklist.adapters;
+package com.electivechaos.checklistapp.adapters;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.electivechaos.checklist.fragments.ClaimDetailsFragment;
-import com.electivechaos.checklist.fragments.InspectionFragment;
+import com.electivechaos.checklistapp.fragments.ClaimDetailsFragment;
+import com.electivechaos.checklistapp.fragments.InspectionFragment;
 
 /**
  * Created by nafeea on 4/20/18.

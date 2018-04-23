@@ -1,4 +1,4 @@
-package com.electivechaos.checklist;
+package com.electivechaos.checklistapp;
 
 import org.junit.Test;
 

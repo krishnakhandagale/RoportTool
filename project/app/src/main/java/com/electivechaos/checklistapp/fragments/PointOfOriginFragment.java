@@ -1,4 +1,4 @@
-package com.electivechaos.checklist.fragments;
+package com.electivechaos.checklistapp.fragments;
 
 import android.content.Context;
 import android.net.Uri;
@@ -10,15 +10,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.electivechaos.checklist.R;
+import com.electivechaos.checklistapp.R;
 
 
-public class InspectionFragment extends Fragment {
+public class PointOfOriginFragment extends Fragment {
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_inspection, container, false);
+        return inflater.inflate(R.layout.fragment_point_of_origin, container, false);
     }
 
 }
