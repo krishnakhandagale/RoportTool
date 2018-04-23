@@ -5,13 +5,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import com.electivechaos.checklist.R;
 import com.electivechaos.checklist.fragments.CategoryListFragment;
 import com.electivechaos.checklist.fragments.ReportListFragment;
 
-public class MainTabsActivity extends BaseActivity {
+public class MainTabsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
