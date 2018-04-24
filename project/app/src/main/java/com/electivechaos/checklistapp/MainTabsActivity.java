@@ -13,9 +13,13 @@ import com.electivechaos.checklistapp.maintabs.CategoryListFragment;
 import com.electivechaos.checklistapp.maintabs.ReportListFragment;
 
 public class MainTabsActivity extends BaseActivity {
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         setContentView(R.layout.main_tabs_layout_activity);
 
         Toolbar toolbar =  findViewById(R.id.toolbar);

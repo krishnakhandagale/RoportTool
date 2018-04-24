@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:background="@color/color_primary"
+        android:id="@+id/toolbar"
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/image_toolbar_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/imagepicker_padding_large"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/imagepicker_ic_back" />
+
+
+        <TextView
+            android:id="@+id/text_toolbar_title"
+            style="@style/imagepicker_ToolbarTitleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/imagepicker_padding_large"
+            android:layout_marginLeft="@dimen/imagepicker_margin_large"
+            android:layout_marginRight="@dimen/imagepicker_margin_large"
+            android:layout_toRightOf="@id/image_toolbar_back"
+            android:layout_toLeftOf="@+id/text_toolbar_done"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:text="Folder"
+            android:textColor="@color/imagepicker_white" />
+        <TextView
+            android:padding="@dimen/imagepicker_padding_large"
+            android:id="@+id/text_toolbar_done"
+            style="@style/imagepicker_ToolbarMenuText"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:text="@string/imagepicker_action_done"
+            android:textAllCaps="true"
+            android:textColor="@color/imagepicker_white"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_below="@+id/toolbar"
+        android:id="@+id/gridview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+</RelativeLayout>

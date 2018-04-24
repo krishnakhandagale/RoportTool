@@ -1,6 +1,7 @@
 package com.electivechaos.checklistapp;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -8,6 +9,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
@@ -25,18 +27,89 @@ import java.util.List;
 public class AddEditReportActivity extends AppCompatActivity{
     private DrawerLayout mDrawerLayout;
     private ExpandableListView mExpandableListView;
+    Fragment mContent;
+    String tabName;
+
+    private  String reportTitle = null;
+    private  String reportDescription = null;
+    private  String clientName = null;
+    private String claimNumber = null;
+    private String address = null;
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putString("tabName",tabName);
+        super.onSaveInstanceState(outState);
+
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_main);
+        if(savedInstanceState != null) {
+            //Restore the fragment's instance
+            String tName=savedInstanceState.getString("tabName").toString();
+            reportTitle =  savedInstanceState.getString("reportTitle");
+            reportDescription =  savedInstanceState.getString("reportDescription");
+            clientName =  savedInstanceState.getString("clientName");
+            claimNumber =  savedInstanceState.getString("claimNumber");
+            address =  savedInstanceState.getString("address");
 
-        FragmentManager transactionManager = getSupportFragmentManager();
+
+            if(tName.equalsIgnoreCase("PointOfOriginFragment")) {
+                FragmentManager transactionManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
+                fragmentTransaction.replace(R.id.content_frame,new PointOfOriginFragment());
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+                tabName="PointOfOriginFragment";
+            }
+            else if(tName.equalsIgnoreCase("CauseOfLossFragment")) {
+                FragmentManager transactionManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
+                fragmentTransaction.replace(R.id.content_frame,new CauseOfLossFragment());
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+                tabName="CauseOfLossFragment";
+
+            }
+            else if(tName.equalsIgnoreCase("CategoryWiseImagesFragment")){
+                FragmentManager transactionManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
+                fragmentTransaction.replace(R.id.content_frame,new CategoryWiseImagesFragment());
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+                tabName="CategoryWiseImagesFragment";
+            }
+            else {
+                FragmentManager transactionManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
+                fragmentTransaction.replace(R.id.content_frame,new ClaimDetailsFragment());
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+                tabName="ClaimDetailsFragment";
+            }
+
+        }
+        else {
+            FragmentManager transactionManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
+            fragmentTransaction.replace(R.id.content_frame,new ClaimDetailsFragment());
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
+            tabName="ClaimDetailsFragment";
+        }
+
+
+
+        setContentView(R.layout.activity_main);
+     /*   FragmentManager transactionManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
         fragmentTransaction.replace(R.id.content_frame,new ClaimDetailsFragment());
         fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
+        fragmentTransaction.commit();*/
 
 
 
@@ -88,6 +161,7 @@ public class AddEditReportActivity extends AppCompatActivity{
                     fragmentTransaction.replace(R.id.content_frame,new ClaimDetailsFragment());
                     fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.commit();
+                    tabName="ClaimDetailsFragment";
 
                 } else if (parentMenuItems.get(groupPosition).equals("Cause Of Loss")) {
 
@@ -96,6 +170,7 @@ public class AddEditReportActivity extends AppCompatActivity{
                     fragmentTransaction.replace(R.id.content_frame,new CauseOfLossFragment());
                     fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.commit();
+                    tabName="CauseOfLossFragment";
 
                 } else if (parentMenuItems.get(groupPosition).equals("Point Of Origin")) {
 
@@ -104,6 +179,7 @@ public class AddEditReportActivity extends AppCompatActivity{
                     fragmentTransaction.replace(R.id.content_frame,new PointOfOriginFragment());
                     fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.commit();
+                    tabName="PointOfOriginFragment";
                 }
                 return false;
             }
@@ -119,6 +195,7 @@ public class AddEditReportActivity extends AppCompatActivity{
                 fragmentTransaction.replace(R.id.content_frame,new CategoryWiseImagesFragment());
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
+                tabName="CategoryWiseImagesFragment";
                 return false;
             }
         });
@@ -135,5 +212,7 @@ public class AddEditReportActivity extends AppCompatActivity{
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 
 }
