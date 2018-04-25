@@ -56,7 +56,7 @@ public class ClaimDetailsFragment  extends Fragment{
                 Fragment fragment = new ClaimDetailsTabsFragment();
                 return fragment;
             }else if(i==1){
-                Fragment fragment = new CauseOfLossFragment();
+                Fragment fragment = new LossLocationFragment();
                 return fragment;
             }
             else {
@@ -75,7 +75,7 @@ public class ClaimDetailsFragment  extends Fragment{
             if(position == 0){
                 return  "Claim Details";
             }else if(position==1){
-                return  "Cause Of Loss";
+                return  "Loss Location";
             }else {
                 return "Loss Type";
             }

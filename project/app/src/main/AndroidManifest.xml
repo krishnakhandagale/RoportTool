@@ -31,8 +31,9 @@
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
+        <activity android:name=".SingleImageDetailsActivity" />
         <activity android:name=".ImagePickerActivity" />
-        <activity android:name=".SingleImageDetailsActivity"></activity>
+        <activity android:name=".ImageSliderActivity"></activity>
     </application>
 
 </manifest>

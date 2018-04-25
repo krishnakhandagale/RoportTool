@@ -210,12 +210,12 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
 
                 @Override
                 public void onPageSelected(int position) {
-                        if((int)holder.hiddenText.getTag() == position){
-                            lastSelectedPos = position;
-                            onLastSelectionChangeListener.onLastSelectionChanged(position);
-                            holder.imageView.setBackgroundResource(R.drawable.image_selection_border);
-                            notifyItemChanged(position);
-                        }
+                    if((int)holder.hiddenText.getTag() == position){
+                        lastSelectedPos = position;
+                        onLastSelectionChangeListener.onLastSelectionChanged(position);
+                        holder.imageView.setBackgroundResource(R.drawable.image_selection_border);
+                        notifyItemChanged(position);
+                    }
                 }
 
                 @Override

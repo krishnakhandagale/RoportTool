@@ -175,9 +175,10 @@
             android:layout_height="0dip"
             android:layout_gravity="bottom"
             android:layout_weight="0.5"
+            android:background="@color/yellow"
             android:text="@string/upload_details_hint"
             android:textAlignment="center"
-            />
+            android:textColor="@color/white_color" />
     </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton

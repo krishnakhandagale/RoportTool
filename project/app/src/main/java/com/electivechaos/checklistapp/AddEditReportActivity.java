@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
 
+import com.electivechaos.checklistapp.Pojo.ImageDetailsPOJO;
 import com.electivechaos.checklistapp.adapters.DrawerMenuListAdapter;
 import com.electivechaos.checklistapp.fragments.CategoryWiseImagesFragment;
 import com.electivechaos.checklistapp.fragments.CauseOfLossFragment;
@@ -36,9 +37,23 @@ public class AddEditReportActivity extends AppCompatActivity{
     private String claimNumber = null;
     private String address = null;
 
+    private String reportId = null;
+    private String reportPath = null;
+    private ArrayList<ImageDetailsPOJO> selectedImagesList = null;
+    private ArrayList<ImageDetailsPOJO> selectedElevationImagesList = null;
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putString("tabName",tabName);
+        outState.putSerializable("selectedImagesList",selectedImagesList);
+        outState.putSerializable("selectedImagesList",selectedElevationImagesList);
+        outState.putString("reportTitle",reportTitle);
+        outState.putString("reportDescription",reportDescription);
+        outState.putString("clientName",clientName);
+        outState.putString("claimNumber",claimNumber);
+        outState.putString("address",address);
+        outState.putString("reportId",reportId);
+        outState.putString("reportPath",reportPath);
         super.onSaveInstanceState(outState);
 
     }
@@ -48,14 +63,18 @@ public class AddEditReportActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if(savedInstanceState != null) {
-            //Restore the fragment's instance
+
+        if(savedInstanceState != null){
             String tName=savedInstanceState.getString("tabName").toString();
+
+            selectedImagesList = (ArrayList<ImageDetailsPOJO>) savedInstanceState.getSerializable("selectedImagesList");
+            selectedElevationImagesList = (ArrayList<ImageDetailsPOJO>) savedInstanceState.getSerializable("selectedElevationImagesList");
             reportTitle =  savedInstanceState.getString("reportTitle");
             reportDescription =  savedInstanceState.getString("reportDescription");
             clientName =  savedInstanceState.getString("clientName");
             claimNumber =  savedInstanceState.getString("claimNumber");
             address =  savedInstanceState.getString("address");
+            reportPath =  savedInstanceState.getString("reportPath");
 
 
             if(tName.equalsIgnoreCase("PointOfOriginFragment")) {
@@ -94,6 +113,18 @@ public class AddEditReportActivity extends AppCompatActivity{
 
         }
         else {
+                if(getIntent().getExtras()!= null){
+                    selectedImagesList = (ArrayList<ImageDetailsPOJO>) getIntent().getExtras().getSerializable("selectedImagesList");
+                    selectedElevationImagesList = (ArrayList<ImageDetailsPOJO>) getIntent().getExtras().getSerializable("selectedElevationImagesList");
+                    reportTitle =  getIntent().getExtras().getString("reportTitle");
+                    reportDescription =  getIntent().getExtras().getString("reportDescription");
+                    clientName =  getIntent().getExtras().getString("clientName");
+                    claimNumber =  getIntent().getExtras().getString("claimNumber");
+                    address =  getIntent().getExtras().getString("address");
+                    reportId =  getIntent().getExtras().getString("reportId");
+                    reportPath =  getIntent().getExtras().getString("reportPath");
+                    }
+
             FragmentManager transactionManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
             fragmentTransaction.replace(R.id.content_frame,new ClaimDetailsFragment());
@@ -192,7 +223,8 @@ public class AddEditReportActivity extends AppCompatActivity{
 
                 FragmentManager transactionManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
-                fragmentTransaction.replace(R.id.content_frame,new CategoryWiseImagesFragment());
+               // AddEditReportSelectedImagesFragment df=AddEditReportSelectedImagesFragment.initFragment(selectedImagesList,reportId,reportPath,selectedElevationImagesList);
+                fragmentTransaction.replace(R.id.content_frame,new AddEditReportSelectedImagesFragment());
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
                 tabName="CategoryWiseImagesFragment";
