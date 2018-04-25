@@ -21,16 +21,33 @@
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/genre"
+        android:id="@+id/desc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/title" />
 
-    <TextView
-        android:id="@+id/year"
+    <Button
+        android:id="@+id/editcategory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:textColor="@color/textColorPrimary" />
+        android:layout_below="@+id/desc"
+        android:layout_marginEnd="278dp"
+        android:layout_marginRight="278dp"
+        android:text="Edit" />
+
+    <Button
+        android:id="@+id/deletecategory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/desc"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="91dp"
+        android:layout_marginStart="91dp"
+        android:text="Delete" />
+
 
 </RelativeLayout>

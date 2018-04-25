@@ -33,6 +33,7 @@
         </activity>
         <activity android:name=".ImagePickerActivity" />
         <activity android:name=".SingleImageDetailsActivity"></activity>
+        <activity android:name=".AddEditCategoryActivity"></activity>
     </application>
 
 </manifest>

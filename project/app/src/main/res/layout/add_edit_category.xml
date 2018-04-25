@@ -1,36 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/activity_horizontal_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_horizontal_margin">
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/editTextCategoryName"
         android:layout_width="360dp"
         android:layout_height="45dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Name"
+        android:hint="Enter name"
         tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="28dp" />
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/editTextCategoryDescription"
         android:layout_width="358dp"
         android:layout_height="50dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Name"
+        android:hint="Enter description"
         tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="89dp" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/updateCategory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button"
+        android:layout_gravity="center"
+        android:text="Add Category"
         tools:layout_editor_absoluteX="148dp"
         tools:layout_editor_absoluteY="187dp" />
-
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>
