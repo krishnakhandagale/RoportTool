@@ -4,7 +4,8 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <!-- Layout to contain contents of main body of screen (drawer will slide over this) -->
     <LinearLayout
@@ -45,6 +46,7 @@
         android:dividerHeight="1dp"
         android:groupIndicator="@null" >
     </ExpandableListView>
+
 
 
 </android.support.v4.widget.DrawerLayout>

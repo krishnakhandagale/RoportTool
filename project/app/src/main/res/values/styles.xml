@@ -8,11 +8,46 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="CustomTabFontSize" parent="@android:style/TextAppearance.Widget.TabWidget">
-        <item name="android:textSize">12sp</item>
+
+    <style name="imagepicker_TextSmall" parent="TextAppearance.AppCompat.Small">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="imagepicker_TextMedium" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="imagepicker_TextLarge" parent="TextAppearance.AppCompat.Large">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="imagepicker_ToolbarTitleText" parent="@android:style/TextAppearance.DeviceDefault.Widget.ActionBar.Title">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="imagepicker_ToolbarMenuText" parent="@android:style/TextAppearance.DeviceDefault.Widget.ActionBar.Menu">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+
+    <style name="Theme.AppCompat.Light.NoActionBar.FullScreen" parent="@style/Theme.AppCompat.Light.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
     </style>
 
     <style name="CircularProgress" parent="Theme.AppCompat.Light">
         <item name="colorAccent">@color/color_primary</item>
     </style>
+
+    <style name="CustomTabFontSize" parent="@android:style/TextAppearance.Widget.TabWidget">
+        <item name="android:textSize">12sp</item>
+    </style>
+
 </resources>

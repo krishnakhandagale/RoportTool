@@ -1,0 +1,95 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:id="@+id/relative_layout_image_fragment"
+    android:layout_width="match_parent">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/ic_launcher_background" />
+
+    <!--<LinearLayout-->
+    <!--android:background="@color/color_primary_transparent"-->
+    <!--android:gravity="right"-->
+    <!--android:orientation="vertical"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content">-->
+    <!--<LinearLayout-->
+    <!--android:padding="5dp"-->
+    <!--android:gravity="right"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content">-->
+    <!--<RadioGroup-->
+    <!--android:gravity="left"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content">-->
+    <!--<RadioButton-->
+    <!--android:text="@string/loss_event_damage"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content" />-->
+    <!--<RadioButton-->
+    <!--android:text="@string/unrelated_damage"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content" />-->
+    <!--</RadioGroup>-->
+    <!--</LinearLayout>-->
+
+    <!--</LinearLayout>-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom"
+        android:layout_margin="5dp"
+        android:gravity="bottom"
+        android:orientation="vertical">
+
+        <ImageButton
+            android:id="@+id/submitImageDetails"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="right"
+            android:layout_marginBottom="5dp"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/rounded_button"
+            android:src="@drawable/ic_send_white_24dp" />
+
+        <TextView
+            android:id="@+id/category_selection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_edittext"
+            android:drawableEnd="@drawable/ic_keyboard_arrow_down"
+            android:drawableRight="@drawable/ic_keyboard_arrow_down"
+            android:padding="5dp"
+            android:text="@string/category" />
+
+        <EditText
+            android:id="@+id/clicked_image_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/rounded_edittext"
+            android:hint="@string/enter_title"
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:nextFocusRight="@+id/clicked_image_description"
+            android:padding="5dp" />
+
+        <EditText
+            android:id="@+id/clicked_image_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/rounded_edittext"
+            android:hint="@string/enter_note"
+            android:imeOptions="actionDone"
+            android:inputType="textImeMultiLine"
+            android:padding="5dp" />
+
+
+    </LinearLayout>
+
+
+</FrameLayout>
