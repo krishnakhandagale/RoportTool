@@ -31,7 +31,8 @@
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
-        <activity android:name=".ImagePickerActivity"></activity>
+        <activity android:name=".ImagePickerActivity" />
+        <activity android:name=".SingleImageDetailsActivity"></activity>
     </application>
 
 </manifest>
