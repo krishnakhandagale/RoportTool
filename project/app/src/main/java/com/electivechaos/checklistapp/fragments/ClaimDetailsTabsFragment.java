@@ -17,7 +17,7 @@ import org.json.JSONObject;
 public class ClaimDetailsTabsFragment extends Fragment {
 
 
-   // ClaimDetailsTabsFragment.SendImageDetails sendImageDetails;
+    ClaimDetailsTabsFragment.SendImageDetails sendImageDetails;
     private EditText reportTitleEditText;
     private EditText reportDescriptionEditText;
     private EditText clientNameEditText ;
@@ -64,7 +64,7 @@ public class ClaimDetailsTabsFragment extends Fragment {
         return view;
     }
 
-   /*@Override
+   @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
@@ -85,5 +85,5 @@ public class ClaimDetailsTabsFragment extends Fragment {
 
     public interface SendImageDetails {
         void sendData(JSONObject message);
-    }*/
+    }
 }

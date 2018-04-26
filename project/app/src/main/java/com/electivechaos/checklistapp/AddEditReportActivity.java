@@ -1,5 +1,6 @@
 package com.electivechaos.checklistapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -7,25 +8,31 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
+import android.widget.TextView;
 
 import com.electivechaos.checklistapp.Pojo.ImageDetailsPOJO;
 import com.electivechaos.checklistapp.adapters.DrawerMenuListAdapter;
 import com.electivechaos.checklistapp.fragments.CategoryWiseImagesFragment;
 import com.electivechaos.checklistapp.fragments.CauseOfLossFragment;
 import com.electivechaos.checklistapp.fragments.ClaimDetailsFragment;
+import com.electivechaos.checklistapp.fragments.ClaimDetailsTabsFragment;
 import com.electivechaos.checklistapp.fragments.PointOfOriginFragment;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class AddEditReportActivity extends AppCompatActivity{
+public class AddEditReportActivity extends AppCompatActivity implements ClaimDetailsTabsFragment.SendImageDetails,AddEditReportSelectedImagesFragment.SendReportDBChangeSignal{
     private DrawerLayout mDrawerLayout;
     private ExpandableListView mExpandableListView;
     Fragment mContent;
@@ -40,32 +47,18 @@ public class AddEditReportActivity extends AppCompatActivity{
     private String reportId = null;
     private String reportPath = null;
     private ArrayList<ImageDetailsPOJO> selectedImagesList = null;
-    private ArrayList<ImageDetailsPOJO> selectedElevationImagesList = null;
+    private ArrayList<ImageDetailsPOJO> selectedElevationImagesList = new ArrayList<>();
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        outState.putString("tabName",tabName);
-        outState.putSerializable("selectedImagesList",selectedImagesList);
-        outState.putSerializable("selectedImagesList",selectedElevationImagesList);
-        outState.putString("reportTitle",reportTitle);
-        outState.putString("reportDescription",reportDescription);
-        outState.putString("clientName",clientName);
-        outState.putString("claimNumber",claimNumber);
-        outState.putString("address",address);
-        outState.putString("reportId",reportId);
-        outState.putString("reportPath",reportPath);
-        super.onSaveInstanceState(outState);
 
-    }
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         if(savedInstanceState != null){
-            String tName=savedInstanceState.getString("tabName").toString();
+
+            String tName = savedInstanceState.getString("tabName").toString();
 
             selectedImagesList = (ArrayList<ImageDetailsPOJO>) savedInstanceState.getSerializable("selectedImagesList");
             selectedElevationImagesList = (ArrayList<ImageDetailsPOJO>) savedInstanceState.getSerializable("selectedElevationImagesList");
@@ -94,13 +87,24 @@ public class AddEditReportActivity extends AppCompatActivity{
                 tabName="CauseOfLossFragment";
 
             }
-            else if(tName.equalsIgnoreCase("CategoryWiseImagesFragment")){
+            else if(tName.equalsIgnoreCase("AddEditReportSelectedImagesFragment")){
+              /*  if(getIntent().getExtras()!= null){
+                    selectedImagesList = (ArrayList<ImageDetailsPOJO>) getIntent().getExtras().getSerializable("selectedImagesList");
+                    selectedElevationImagesList = (ArrayList<ImageDetailsPOJO>) getIntent().getExtras().getSerializable("selectedElevationImagesList");
+                    reportTitle =  getIntent().getExtras().getString("reportTitle");
+                    reportDescription =  getIntent().getExtras().getString("reportDescription");
+                    clientName =  getIntent().getExtras().getString("clientName");
+                    claimNumber =  getIntent().getExtras().getString("claimNumber");
+                    address =  getIntent().getExtras().getString("address");
+                    reportId =  getIntent().getExtras().getString("reportId");
+                    reportPath =  getIntent().getExtras().getString("reportPath");
+                }*/
                 FragmentManager transactionManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
-                fragmentTransaction.replace(R.id.content_frame,new CategoryWiseImagesFragment());
+                fragmentTransaction.replace(R.id.content_frame,new AddEditReportSelectedImagesFragment());
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
-                tabName="CategoryWiseImagesFragment";
+                tabName="AddEditReportSelectedImagesFragment";
             }
             else {
                 FragmentManager transactionManager = getSupportFragmentManager();
@@ -223,11 +227,11 @@ public class AddEditReportActivity extends AppCompatActivity{
 
                 FragmentManager transactionManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
-               // AddEditReportSelectedImagesFragment df=AddEditReportSelectedImagesFragment.initFragment(selectedImagesList,reportId,reportPath,selectedElevationImagesList);
-                fragmentTransaction.replace(R.id.content_frame,new AddEditReportSelectedImagesFragment());
+                AddEditReportSelectedImagesFragment df=AddEditReportSelectedImagesFragment.initFragment(selectedImagesList,reportId,reportPath,selectedElevationImagesList);
+                fragmentTransaction.replace(R.id.content_frame,df.initFragment(selectedImagesList,reportId,reportPath,selectedElevationImagesList));
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
-                tabName="CategoryWiseImagesFragment";
+                tabName="AddEditReportSelectedImagesFragment";
                 return false;
             }
         });
@@ -245,6 +249,80 @@ public class AddEditReportActivity extends AppCompatActivity{
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void notifyReportDBChanged() {
+
+//        String tag1 = "android:switcher:" + R.id.viewpager + ":" + 0;
+//        AddEditReportDetailsFragment reportDetailsFragment = (AddEditReportDetailsFragment) getSupportFragmentManager().findFragmentByTag(tag1);
+//        reportDetailsFragment.resetAllData();
+//
+//        String tag2 = "android:switcher:" + R.id.viewpager + ":" + 1;
+//        AddEditReportSelectedImagesFragment selectImagesFragment = (AddEditReportSelectedImagesFragment) getSupportFragmentManager().findFragmentByTag(tag2);
+//        selectImagesFragment.resetAllData();
+
+        Intent intent = new Intent();
+        setResult(RESULT_OK,intent);
+        finish();
+
+    }
 
 
+    @Override
+    public void sendData(JSONObject message) {
+       /* String tag = "android:switcher:" + R.id.viewpager + ":" + 1;
+        AddEditReportSelectedImagesFragment f = (AddEditReportSelectedImagesFragment) getSupportFragmentManager().findFragmentByTag(tag);
+        f.setReceivedImageDetailsData(message);*/
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+
+        outState.putString("tabName",tabName);
+        outState.putSerializable("selectedImagesList",selectedImagesList);
+        outState.putSerializable("selectedElevationImagesList",selectedElevationImagesList);
+        outState.putString("reportTitle",reportTitle);
+        outState.putString("reportDescription",reportDescription);
+        outState.putString("clientName",clientName);
+        outState.putString("claimNumber",claimNumber);
+        outState.putString("address",address);
+        outState.putString("reportId",reportId);
+        outState.putString("reportPath",reportPath);
+        super.onSaveInstanceState(outState);
+
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+    }
+
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.back_button_confirmation_dialog, null);
+        dialogBuilder.setView(dialogView);
+
+        TextView positiveBtn = dialogView.findViewById(R.id.positive_button);
+        TextView negativeBtn = dialogView.findViewById(R.id.negative_button);
+
+
+        final AlertDialog alertDialog = dialogBuilder.create();
+
+        positiveBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+                AddEditReportActivity.super.onBackPressed();
+            }
+        });
+
+        negativeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+            }
+        });
+        alertDialog.show();
+    }
 }
