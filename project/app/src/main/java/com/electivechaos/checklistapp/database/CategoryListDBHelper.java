@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.electivechaos.checklistapp.Pojo.Category;
+import com.electivechaos.checklistapp.Pojo.Label;
 
 import java.util.ArrayList;
 
@@ -21,11 +22,17 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "master_categories_list";
 
     private static final String TABLE_MASTER_CATEGORY = "master_category";
+    private static final String TABLE_CATEGORY_LABELS = "category_label";
 
     // Master Category list Table Columns names
     private static final String KEY_CATEGORY_ID = "id";
     private static final String KEY_CATEGORY_NAME = "name";
     private static final String KEY_CATEGORY_DESCRIPTION  = "description";
+
+    private static final String KEY_LABEL_ID = "id";
+    private static final String KEY_LABEL_NAME = "name";
+    private static final String KEY_LABEL_DESCRIPTION  = "description";
+    private static final String KEY_FK_CATEGORY_ID = "category_id_fk";
 
     public CategoryListDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -36,12 +43,18 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         String CREATE_CATEGORY_DETAILS_TABLE = "CREATE TABLE " + TABLE_MASTER_CATEGORY + "("
                 +KEY_CATEGORY_ID +" INTEGER PRIMARY KEY AUTOINCREMENT DEFAULT 0,"+ KEY_CATEGORY_NAME + " TEXT,"+ KEY_CATEGORY_DESCRIPTION +" TEXT "+")";
 
+        String CATEGORY_LABELS_TABLE = "CREATE TABLE " + TABLE_CATEGORY_LABELS + "("
+                + KEY_LABEL_NAME + " TEXT," + KEY_LABEL_DESCRIPTION + " TEXT,"
+                + KEY_FK_CATEGORY_ID + " TEXT,"+ "FOREIGN KEY("+ KEY_FK_CATEGORY_ID +") REFERENCES "+TABLE_MASTER_CATEGORY+"("+KEY_CATEGORY_ID+ ")"+ " ON DELETE CASCADE)";
+
         db.execSQL(CREATE_CATEGORY_DETAILS_TABLE);
+        db.execSQL(CATEGORY_LABELS_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_MASTER_CATEGORY);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_CATEGORY_LABELS);
         // Create tables again
         onCreate(db);
     }
@@ -81,6 +94,48 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 category.setCategoryName(cursor.getString(1));
                 category.setCategoryDescription(cursor.getString(2));
                 tempList.add(category);
+            } while (cursor.moveToNext());
+        }
+        return  tempList;
+    }
+
+    public int deleteLabel(String labelID){
+        SQLiteDatabase db = this.getWritableDatabase();
+        return  db.delete(TABLE_CATEGORY_LABELS,"id=?",new String[]{labelID});
+    }
+
+    public long addLabel(Label label){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(KEY_LABEL_NAME, label.getName());
+        contentValues.put(KEY_CATEGORY_DESCRIPTION, label.getDescription());
+        return  db.insert(TABLE_CATEGORY_LABELS,null,contentValues);
+    }
+
+    public int updateLabel(Label label){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(KEY_CATEGORY_NAME, label.getName());
+        contentValues.put(KEY_CATEGORY_DESCRIPTION, label.getDescription());
+        contentValues.put(KEY_FK_CATEGORY_ID, label.getCategoryID());
+        return  db.update(TABLE_MASTER_CATEGORY, contentValues,KEY_LABEL_ID+"="+label.getID(),null);
+    }
+    public ArrayList<Label> getLabelList(){
+
+        ArrayList<Label> tempList = new ArrayList<>();
+        String selectQueryReportTable = "SELECT  * FROM " + TABLE_CATEGORY_LABELS;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQueryReportTable, null);
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+
+                Label label = new Label();
+                label.setID(cursor.getInt(0));
+                label.setName(cursor.getString(1));
+                label.setDescription(cursor.getString(2));
+                label.setCategoryID(cursor.getInt(3));
+                tempList.add(label);
             } while (cursor.moveToNext());
         }
         return  tempList;

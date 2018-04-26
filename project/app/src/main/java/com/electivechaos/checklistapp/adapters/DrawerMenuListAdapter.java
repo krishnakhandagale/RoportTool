@@ -1,14 +1,22 @@
 package com.electivechaos.checklistapp.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.Button;
+import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.electivechaos.checklistapp.AddEditCategoryActivity;
+import com.electivechaos.checklistapp.AddEditLabelActivity;
 import com.electivechaos.checklistapp.R;
 
 import java.util.ArrayList;
@@ -31,6 +39,7 @@ public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
     public int getGroupCount() {
         return parentMenuList.size();
     }
+
 
     @Override
     public int getChildrenCount(int groupPosition) {
@@ -73,6 +82,16 @@ public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
 
         TextView menuTitle = convertView.findViewById(R.id.menuTitle);
         ImageView imageView = convertView.findViewById(R.id.menuIcon);
+        Button addInspectionView = convertView.findViewById(R.id.addInspection);
+
+        addInspectionView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "Add inspection clicked", Toast.LENGTH_SHORT).show();
+                Intent addLabelActivity = new Intent(context, AddEditLabelActivity.class);
+                context.startActivity(addLabelActivity);
+            }
+        });
         String parentMenuString = parentMenuList.get(groupPosition);
         menuTitle.setText(parentMenuString);
         if(parentMenuString.equals("Claim Details")){
@@ -85,6 +104,7 @@ public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
 
         }else{
             imageView.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_damage));
+            addInspectionView.setVisibility(View.VISIBLE);
         }
         return convertView;
     }
