@@ -166,6 +166,14 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
             reportId = getArguments().getString("reportId");
             reportPath = getArguments().getString("reportPath");
         }
+        if(selectedElevationImagesList==null || selectedElevationImagesList.size()==0)
+        {
+            selectedElevationImagesList.add(new ImageDetailsPOJO());
+            selectedElevationImagesList.add(new ImageDetailsPOJO());
+            selectedElevationImagesList.add(new ImageDetailsPOJO());
+            selectedElevationImagesList.add(new ImageDetailsPOJO());
+        }
+
     }
 
     @Override
@@ -1158,7 +1166,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
     }
 
 
-  /*  @Override
+   @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         reportsListDBHelper = ReportsListDBHelper.getInstance(context);
@@ -1168,7 +1176,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
         } catch (ClassCastException e) {
             throw new ClassCastException("Error in retrieving data. Please try again");
         }
-    }*/
+    }
 
     public interface SendReportDBChangeSignal {
         void notifyReportDBChanged();
