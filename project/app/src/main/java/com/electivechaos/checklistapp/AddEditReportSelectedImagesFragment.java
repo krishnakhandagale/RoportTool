@@ -1,11 +1,17 @@
-package com.electivechaos.checklistapp.fragments;
+package com.electivechaos.checklistapp;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
+import android.media.Image;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -33,33 +39,45 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
-import com.electivechaos.checklistapp.ImageHelper;
-import com.electivechaos.checklistapp.PermissionUtilities;
-import com.electivechaos.checklistapp.Pojo.Image;
 import com.electivechaos.checklistapp.Pojo.ImageDetailsPOJO;
-import com.electivechaos.checklistapp.R;
-import com.electivechaos.checklistapp.SingleImageDetailsActivity;
-import com.electivechaos.checklistapp.SingleMediaScanner;
+import com.electivechaos.checklistapp.Pojo.ReportItemPOJO;
 import com.electivechaos.checklistapp.database.ReportsListDBHelper;
 import com.electivechaos.checklistapp.listeners.OnImageRemovalListener;
 import com.electivechaos.checklistapp.listeners.OnMediaScannerListener;
 import com.electivechaos.checklistapp.utils.CommonUtils;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.ColumnText;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfPageEventHelper;
+import com.itextpdf.text.pdf.PdfWriter;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 
-/**
- * Created by krishna on 11/23/17.
- */
-
-public class CategoryWiseImagesFragment extends Fragment {
+public class AddEditReportSelectedImagesFragment extends Fragment {
     private int REQUEST_CAMERA = 0;
     private int FRONT_IMAGE_REQUEST = 100;
     private int BACK_IMAGE_REQUEST = 200;
@@ -83,7 +101,7 @@ public class CategoryWiseImagesFragment extends Fragment {
     private RecyclerView selectedImagesRecyclerView;
     private ReportsListDBHelper reportsListDBHelper;
     private ProgressBar progressBar;
-    //private SendReportDBChangeSignal sendReportDBchangeSignal;
+    private SendReportDBChangeSignal sendReportDBchangeSignal;
     private SelectedImagesAdapter selectedImagesAdapter;
     Button btnUpload = null;
 
@@ -94,9 +112,10 @@ public class CategoryWiseImagesFragment extends Fragment {
     private ImageView imgViewRight;
 
 
+
     private ImageView imgViewFrontPreview;
     private ImageView imgViewBackPreview;
-    private ImageView imgViewLeftPreview;
+    private ImageView  imgViewLeftPreview;
     private ImageView imgViewRightPreview;
 
     private ImageButton imgRemoveBtnFront;
@@ -114,7 +133,7 @@ public class CategoryWiseImagesFragment extends Fragment {
     private String reportId;
     private String reportPath;
     private File photoFile;
-    private ArrayList<Image> selectedImages = null;
+    private ArrayList<? extends Image> selectedImages = null;
     private ArrayList<ImageDetailsPOJO> selectedImageList = null;
     private ArrayList<ImageDetailsPOJO> selectedElevationImagesList = new ArrayList<>();
 
@@ -124,8 +143,8 @@ public class CategoryWiseImagesFragment extends Fragment {
 
     private static String TAG = "AddEditReportSelectedImagesFragment";
 
-   /* public static CategoryWiseImagesFragment initFragment(ArrayList<ImageDetailsPOJO> selectedImageList, String reportId, String reportPath, ArrayList<ImageDetailsPOJO> selectedElevationImagesList) {
-        CategoryWiseImagesFragment fragment = new CategoryWiseImagesFragment();
+    public static AddEditReportSelectedImagesFragment initFragment(ArrayList<ImageDetailsPOJO> selectedImageList, String reportId, String reportPath, ArrayList<ImageDetailsPOJO> selectedElevationImagesList) {
+        AddEditReportSelectedImagesFragment fragment = new AddEditReportSelectedImagesFragment();
         Bundle args = new Bundle();
         args.putSerializable("selectedImagesList", selectedImageList);
         args.putSerializable("selectedElevationImagesList", selectedElevationImagesList);
@@ -133,12 +152,13 @@ public class CategoryWiseImagesFragment extends Fragment {
         args.putString("reportPath", reportPath);
         fragment.setArguments(args);
         return fragment;
-    }*/
+    }
 
- /* @Override
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
+
             selectedImageList = (ArrayList<ImageDetailsPOJO>) getArguments().getSerializable("selectedImagesList");
             selectedElevationImagesList = (ArrayList<ImageDetailsPOJO>) getArguments().getSerializable("selectedElevationImagesList");
 
@@ -146,764 +166,14 @@ public class CategoryWiseImagesFragment extends Fragment {
             reportId = getArguments().getString("reportId");
             reportPath = getArguments().getString("reportPath");
         }
-    }*/
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
         View selectImageView = inflater.inflate(R.layout.fragment_category_details, container, false);
-        FloatingActionButton selectPhotoBtn = selectImageView.findViewById(R.id.btnSelectPhoto);
-        parentLayout = selectImageView.findViewById(R.id.parentLinearLayout);
-        selectedImagesRecyclerView = selectImageView.findViewById(R.id.selectedImagesRecyclerview);
-        selectImagesParentLayout = selectImageView.findViewById(R.id.selectImagesParentLayout);
-        progressBar = selectImageView.findViewById(R.id.progressBar);
 
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getContext(), CommonUtils.calculateNoOfColumns(getContext()));
-        selectedImagesRecyclerView.setLayoutManager(mLayoutManager);
-
-        ItemTouchHelper.Callback _ithCallback = new ItemTouchHelper.Callback() {
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                // get the viewHolder's and target's positions in your adapter data, swap them
-                Collections.swap(selectedImageList, viewHolder.getAdapterPosition(), target.getAdapterPosition());
-                // and notify the adapter that its dataset has changed
-                selectedImagesAdapter.notifyItemMoved(viewHolder.getAdapterPosition(), target.getAdapterPosition());
-                return true;
-            }
-
-            @Override
-            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                //TODO
-            }
-
-            //defines the enabled move directions in each state (idle, swiping, dragging).
-            @Override
-            public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
-                return makeFlag(ItemTouchHelper.ACTION_STATE_DRAG,
-                        ItemTouchHelper.DOWN | ItemTouchHelper.UP | ItemTouchHelper.START | ItemTouchHelper.END);
-            }
-        };
-        ItemTouchHelper ith = new ItemTouchHelper(_ithCallback);
-        ith.attachToRecyclerView(selectedImagesRecyclerView);
-
-        imgViewFront = selectImageView.findViewById(R.id.imgViewFront);
-        imgViewBack = selectImageView.findViewById(R.id.imgViewBack);
-        imgViewLeft = selectImageView.findViewById(R.id.imgViewLeft);
-        imgViewRight = selectImageView.findViewById(R.id.imgViewRight);
-
-
-        imgViewFrontPreview = selectImageView.findViewById(R.id.frontImagePreview);
-        imgViewBackPreview = selectImageView.findViewById(R.id.backImagePreview);
-        imgViewLeftPreview = selectImageView.findViewById(R.id.leftImagePreview);
-        imgViewRightPreview = selectImageView.findViewById(R.id.rightImagePreview);
-
-
-        imgViewFront.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                boolean result = permissionPermissionUtilities.checkPermission(getActivity(), CategoryWiseImagesFragment.this, PermissionUtilities.MY_APP_TAKE_FRONT_PHOTO_PERMISSIONS);
-
-                if (result)
-                    cameraIntent(FRONT_IMAGE_REQUEST);
-            }
-        });
-
-
-        imgViewBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                boolean result = permissionPermissionUtilities.checkPermission(getActivity(), CategoryWiseImagesFragment.this, PermissionUtilities.MY_APP_TAKE_BACK_PHOTO_PERMISSIONS);
-
-                if (result)
-                    cameraIntent(BACK_IMAGE_REQUEST);
-            }
-        });
-
-
-        imgViewLeft.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                boolean result = permissionPermissionUtilities.checkPermission(getActivity(), CategoryWiseImagesFragment.this, PermissionUtilities.MY_APP_TAKE_LEFT_PHOTO_PERMISSIONS);
-
-                if (result)
-                    cameraIntent(LEFT_IMAGE_REQUEST);
-            }
-        });
-
-        imgViewRight.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                boolean result = permissionPermissionUtilities.checkPermission(getActivity(), CategoryWiseImagesFragment.this, PermissionUtilities.MY_APP_TAKE_RIGHT_PHOTO_PERMISSIONS);
-
-                if (result)
-                    cameraIntent(RIGHT_IMAGE_REQUEST);
-            }
-        });
-
-     /*   btnUpload.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                try {
-                    generatePdf();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (DocumentException e) {
-                    e.printStackTrace();
-                }
-            }
-        });*/
-
-        imgRemoveBtnFront=selectImageView.findViewById(R.id.imgBtnRemoveFront);
-        imgRemoveBtnBack=selectImageView.findViewById(R.id.imgBtnRemoveBack);
-        imgRemoveBtnLeft=selectImageView.findViewById(R.id.imgBtnRemoveLeft);
-        imgRemoveBtnRight=selectImageView.findViewById(R.id.imgBtnRemoveRight);
-
-        imgRemoveBtnFront.setVisibility(View.INVISIBLE);
-        imgRemoveBtnBack.setVisibility(View.INVISIBLE);
-        imgRemoveBtnLeft.setVisibility(View.INVISIBLE);
-        imgRemoveBtnRight.setVisibility(View.INVISIBLE);
-
-        imgRemoveBtnFront.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                if (selectedElevationImagesList != null && selectedElevationImagesList.size() > 0)
-                {
-                    selectedElevationImagesList.set(0,new ImageDetailsPOJO());
-                    imgViewFrontPreview.setImageDrawable(null);
-                    imgRemoveBtnFront.setVisibility(View.INVISIBLE);
-
-                }
-            }
-        });
-
-        imgRemoveBtnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                if (selectedElevationImagesList != null && selectedElevationImagesList.size() > 0)
-                {
-                    selectedElevationImagesList.set(1,new ImageDetailsPOJO());
-                    imgViewBackPreview.setImageDrawable(null);
-                    imgRemoveBtnBack.setVisibility(View.INVISIBLE);
-
-                }
-
-            }
-        });
-
-        imgRemoveBtnLeft.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                if (selectedElevationImagesList != null && selectedElevationImagesList.size() > 0)
-                {
-                    selectedElevationImagesList.set(2,new ImageDetailsPOJO());
-                    imgViewLeftPreview.setImageDrawable(null);
-                    imgRemoveBtnLeft.setVisibility(View.INVISIBLE);
-
-                }
-
-            }
-        });
-
-        imgRemoveBtnRight.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                if (selectedElevationImagesList != null && selectedElevationImagesList.size() > 0)
-                {
-                    selectedElevationImagesList.set(3,new ImageDetailsPOJO());
-                    imgViewRightPreview.setImageDrawable(null);
-                    imgRemoveBtnRight.setVisibility(View.INVISIBLE);
-
-                }
-
-            }
-        });
-        selectPhotoBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectImage();
-            }
-        });
-        return selectImageView;
-
-
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        if (selectedImagesAdapter != null) {
-            selectedImagesRecyclerView.setAdapter(selectedImagesAdapter);
-        } else if (selectedImageList != null && selectedImageList.size() > 0) {
-            selectedImagesAdapter = new SelectedImagesAdapter(selectedImageList, getContext(), onImageRemovalListener);
-            selectedImagesRecyclerView.setAdapter(selectedImagesAdapter);
-        }
-        if (selectedElevationImagesList != null && selectedElevationImagesList.size() > 0) {
-            if(selectedElevationImagesList.get(0).getImageUrl() != null && !selectedElevationImagesList.get(0).getImageUrl().isEmpty()){
-                Glide.with(getActivity())
-                        .load("file://" + selectedElevationImagesList.get(0).getImageUrl())
-                        .thumbnail(0.1f)
-                        .apply(options)
-                        .into(imgViewFrontPreview);
-                imgRemoveBtnFront.setVisibility(View.VISIBLE);
-
-            }
-            if(selectedElevationImagesList.get(1).getImageUrl() != null && !selectedElevationImagesList.get(1).getImageUrl().isEmpty()){
-                Glide.with(getActivity())
-                        .load("file://" + selectedElevationImagesList.get(1).getImageUrl())
-                        .thumbnail(0.1f)
-                        .apply(options)
-                        .into(imgViewBackPreview);
-                imgRemoveBtnBack.setVisibility(View.VISIBLE);
-            }
-            if(selectedElevationImagesList.get(2).getImageUrl() != null && !selectedElevationImagesList.get(2).getImageUrl().isEmpty()){
-                Glide.with(getActivity())
-                        .load("file://" + selectedElevationImagesList.get(2).getImageUrl())
-                        .thumbnail(0.1f)
-                        .apply(options)
-                        .into(imgViewLeftPreview);
-                imgRemoveBtnLeft.setVisibility(View.VISIBLE);
-            }
-            if(selectedElevationImagesList.get(3).getImageUrl() != null && !selectedElevationImagesList.get(3).getImageUrl().isEmpty()){
-                Glide.with(getActivity())
-                        .load("file://" + selectedElevationImagesList.get(3).getImageUrl())
-                        .thumbnail(0.1f)
-                        .apply(options)
-                        .into(imgViewRightPreview);
-                imgRemoveBtnRight.setVisibility(View.VISIBLE);
-            }
-        }
-      /*  if (reportId != null) {
-            btnUpload.setText("Edit Report");
-        } else {
-            btnUpload.setText("Add Report");
-        }*/
-    }
-
-    private void onElevationImageCaptureResult(Intent dat, final int requestId) {
-        //Worked like charm
-        new SingleMediaScanner(getContext(), photoFile, new OnMediaScannerListener() {
-            @Override
-            public void onMediaScanComplete(String path, Uri uri) {
-                if (path != null) {
-                    path = mCurrentPhotoPath;
-
-
-
-                    ImageHelper.revokeAppPermission(getContext(), fileUri);
-                    final String finalPath = path;
-                    final String finalPath1 = path;
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            if(requestId == FRONT_IMAGE_REQUEST){
-                                final ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
-                                imgObj.setDescription("Front View for incidence");
-                                imgObj.setTitle("Front View");
-                                imgObj.setImageUrl(finalPath1);
-                                selectedElevationImagesList.set(0,imgObj);
-                                Glide.with(getActivity())
-                                        .load("file://" + finalPath)
-                                        .thumbnail(0.1f)
-                                        .apply(options)
-                                        .into(imgViewFrontPreview);
-                                imgRemoveBtnFront.setVisibility(View.VISIBLE);
-
-                            }else if(requestId == BACK_IMAGE_REQUEST){
-
-                                final ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
-                                imgObj.setDescription("Back View for incidence");
-                                imgObj.setTitle("Back View");
-                                imgObj.setImageUrl(finalPath1);
-                                selectedElevationImagesList.set(1,imgObj);
-                                Glide.with(getActivity())
-                                        .load("file://" + finalPath)
-                                        .thumbnail(0.1f)
-                                        .apply(options)
-                                        .into(imgViewBackPreview);
-                                imgRemoveBtnBack.setVisibility(View.VISIBLE);
-                            }else if(requestId == LEFT_IMAGE_REQUEST){
-                                final ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
-                                imgObj.setDescription("Left View for incidence");
-                                imgObj.setTitle("Left View");
-                                imgObj.setImageUrl(finalPath1);
-                                selectedElevationImagesList.set(2,imgObj);
-                                Glide.with(getActivity())
-                                        .load("file://" + finalPath)
-                                        .thumbnail(0.1f)
-                                        .apply(options)
-                                        .into(imgViewLeftPreview);
-                                imgRemoveBtnLeft.setVisibility(View.VISIBLE);
-                            }else if(requestId == RIGHT_IMAGE_REQUEST){
-                                final ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
-                                imgObj.setDescription("Right View for incidence");
-                                imgObj.setTitle("Right View");
-                                imgObj.setImageUrl(finalPath1);
-                                selectedElevationImagesList.set(3,imgObj);
-                                Glide.with(getActivity())
-                                        .load("file://" + finalPath)
-                                        .apply(options)
-                                        .thumbnail(0.1f)
-                                        .into(imgViewRightPreview);
-                                imgRemoveBtnRight.setVisibility(View.VISIBLE);
-                            }
-
-                        }
-
-                    });
-                }
-            }
-        });
-    }
-
-
-    private void selectImage() {
-        final CharSequence[] items = {"Take Photo", "Choose from Gallery", "Cancel"};
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Choose option");
-        builder.setItems(items, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int item) {
-
-                if (items[item].equals("Take Photo")) {
-                    boolean result = permissionPermissionUtilities.checkPermission(getActivity(), CategoryWiseImagesFragment.this, PermissionUtilities.MY_APP_TAKE_PHOTO_PERMISSIONS);
-
-                    if (result) {
-                         cameraIntent(REQUEST_CAMERA);
-                    }
-                } else if (items[item].equals("Choose from Gallery")) {
-                    boolean result = permissionPermissionUtilities.checkPermission(getActivity(), CategoryWiseImagesFragment.this, PermissionUtilities.MY_APP_BROWSE_PHOTO_PERMISSIONS);
-                    if (result) {
-                        // galleryIntent();
-                    }
-                } else if (items[item].equals("Cancel")) {
-                    dialog.dismiss();
-                }
-            }
-        });
-        builder.show();
-    }
-
-    private void cameraIntent(int requestId) {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-        // Ensure that there's a camera activity to handle the intent
-        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
-            // Create the File where the photo should go
-
-            photoFile = getOutputMediaFile();
-            // Continue only if the File was successfully created
-            if (photoFile != null) {
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-                    fileUri = Uri.fromFile(photoFile);
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-                } else {
-                    fileUri = FileProvider.getUriForFile(getContext().getApplicationContext(),
-                            getContext().getApplicationContext().getPackageName() + ".fileprovider",
-                            photoFile);
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-                }
-
-
-                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-                ImageHelper.grantAppPermission(getContext(), intent, fileUri);
-                startActivityForResult(intent, requestId);
-            }
-        }
-
-
-    }
-
-    private File getOutputMediaFile() {
-        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES), "ReportClickedImages");
-
-        if (!mediaStorageDir.exists()) {
-            if (!mediaStorageDir.mkdirs()) {
-                return null;
-            }
-        }
-
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        File imageFile = new File(mediaStorageDir.getPath() + File.separator +
-                "IMG_" + timeStamp + ".jpg");
-        mCurrentPhotoPath = imageFile.getAbsolutePath();
-        return imageFile;
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == SELECT_FILE) {
-                if (data != null) {
-                   // onSelectFromGalleryResult(data);
-                } else {
-                    Snackbar snackbar = Snackbar
-                            .make(parentLayout, "Something went wrong.Please try again.", Snackbar.LENGTH_INDEFINITE);
-                    snackbar.setAction("RETRY", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            selectImage();
-                            v.setVisibility(View.GONE);
-                        }
-                    });
-                    View snackBarView = snackbar.getView();
-                    snackBarView.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.color_error));
-                    snackbar.show();
-                }
-            } else if (requestCode == REQUEST_CAMERA) {
-                if (fileUri != null) {
-                    try {
-                        onCaptureImageResult(data);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    Snackbar snackbar = Snackbar
-                            .make(parentLayout, "Something went wrong.Please retry with system camera app.", Snackbar.LENGTH_INDEFINITE);
-                    snackbar.setActionTextColor(ContextCompat.getColor(getActivity(), R.color.white_color));
-                    snackbar.setAction("RETRY", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            selectImage();
-                            v.setVisibility(View.GONE);
-                        }
-                    });
-                    View snackBarView = snackbar.getView();
-                    snackBarView.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.color_error));
-                    snackbar.show();
-                }
-            } else if (requestCode == FRONT_IMAGE_REQUEST) {
-                if (fileUri != null) {
-                    onElevationImageCaptureResult(data, requestCode);
-                } else {
-                    Snackbar snackbar = Snackbar
-                            .make(parentLayout, "Something went wrong.Please retry with system camera app.", Snackbar.LENGTH_INDEFINITE);
-                    snackbar.setActionTextColor(ContextCompat.getColor(getActivity(), R.color.white_color));
-                    snackbar.setAction("RETRY", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            openCamera(PermissionUtilities.MY_APP_TAKE_FRONT_PHOTO_PERMISSIONS, FRONT_IMAGE_REQUEST);
-                            v.setVisibility(View.GONE);
-                        }
-                    });
-                    View snackBarView = snackbar.getView();
-                    snackBarView.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.color_error));
-                    snackbar.show();
-                }
-
-            } else if (requestCode == BACK_IMAGE_REQUEST) {
-                if (fileUri != null) {
-                    onElevationImageCaptureResult(data, requestCode);
-                } else {
-                    Snackbar snackbar = Snackbar
-                            .make(parentLayout, "Something went wrong.Please retry with system camera app.", Snackbar.LENGTH_INDEFINITE);
-                    snackbar.setActionTextColor(ContextCompat.getColor(getActivity(), R.color.white_color));
-                    snackbar.setAction("RETRY", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            openCamera(PermissionUtilities.MY_APP_TAKE_BACK_PHOTO_PERMISSIONS, BACK_IMAGE_REQUEST);
-                            v.setVisibility(View.GONE);
-                        }
-                    });
-                    View snackBarView = snackbar.getView();
-                    snackBarView.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.color_error));
-                    snackbar.show();
-                }
-
-            } else if (requestCode == LEFT_IMAGE_REQUEST) {
-                if (fileUri != null) {
-                    onElevationImageCaptureResult(data, requestCode);
-                } else {
-                    Snackbar snackbar = Snackbar
-                            .make(parentLayout, "Something went wrong.Please retry with system camera app.", Snackbar.LENGTH_INDEFINITE);
-                    snackbar.setActionTextColor(ContextCompat.getColor(getActivity(), R.color.white_color));
-                    snackbar.setAction("RETRY", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            openCamera(PermissionUtilities.MY_APP_TAKE_LEFT_PHOTO_PERMISSIONS, LEFT_IMAGE_REQUEST);
-                            v.setVisibility(View.GONE);
-                        }
-                    });
-                    View snackBarView = snackbar.getView();
-                    snackBarView.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.color_error));
-                    snackbar.show();
-                }
-
-            } else if (requestCode == RIGHT_IMAGE_REQUEST) {
-                if (fileUri != null) {
-                    onElevationImageCaptureResult(data, requestCode);
-                } else {
-                    Snackbar snackbar = Snackbar
-                            .make(parentLayout, "Something went wrong.Please retry with system camera app.", Snackbar.LENGTH_INDEFINITE);
-                    snackbar.setActionTextColor(ContextCompat.getColor(getActivity(), R.color.white_color));
-                    snackbar.setAction("RETRY", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            openCamera(PermissionUtilities.MY_APP_TAKE_RIGHT_PHOTO_PERMISSIONS, RIGHT_IMAGE_REQUEST);
-                            v.setVisibility(View.GONE);
-                        }
-                    });
-                    View snackBarView = snackbar.getView();
-                    snackBarView.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.color_error));
-                    snackbar.show();
-                }
-
-            } else if (requestCode == ADD_IMAGE_DETAILS) {
-                //Got all selected images here
-                ArrayList<ImageDetailsPOJO> selectedImageListReturned = (ArrayList<ImageDetailsPOJO>) data.getExtras().getSerializable("selected_images");
-                if (selectedImageList == null) {
-                    selectedImageList = new ArrayList<>();
-                }
-                selectedImageListReturned.addAll(selectedImageList);
-                selectedImageList = selectedImageListReturned;
-
-                selectedImagesAdapter = new SelectedImagesAdapter(selectedImageList, getContext(), onImageRemovalListener);
-                selectedImagesRecyclerView.setAdapter(selectedImagesAdapter);
-            } else if (requestCode == SET_CLICKED_IMAGE_DETAILS) {
-                //Got all selected images here
-                ImageDetailsPOJO imageDetails = (ImageDetailsPOJO) data.getExtras().getSerializable("image_entered_details");
-
-                if (data.getExtras().getBoolean("isEdit")) {
-                    int position = data.getExtras().getInt("position");
-                    selectedImageList.get(position).setTitle(imageDetails.getTitle());
-                    selectedImageList.get(position).setImageUrl(imageDetails.getImageUrl());
-                    selectedImageList.get(position).setDescription(imageDetails.getDescription());
-                    selectedImageList.get(position).setCategory(imageDetails.getCategory());
-
-                } else {
-                    if (selectedImageList == null) {
-                        selectedImageList = new ArrayList<>();
-                    }
-                    selectedImageList.add(0, imageDetails);
-                }
-
-
-                if (selectedImagesAdapter == null) {
-                    selectedImagesAdapter = new SelectedImagesAdapter(selectedImageList, getContext(), onImageRemovalListener);
-                    selectedImagesRecyclerView.setAdapter(selectedImagesAdapter);
-                } else {
-                    selectedImagesAdapter.notifyDataSetChanged();
-                }
-
-            }
-        }
-    }
-
-    private void openCamera(int requestId, int cameraIntentReqCode)
-    {
-        boolean result = permissionPermissionUtilities.checkPermission(getActivity(), CategoryWiseImagesFragment.this, requestId);
-
-        if (result)
-            cameraIntent(cameraIntentReqCode);
-    }
-    private void onCaptureImageResult(Intent data) throws IOException {
-        //Worked like charm
-        new SingleMediaScanner(getContext(), photoFile, new OnMediaScannerListener() {
-            @Override
-            public void onMediaScanComplete(String path, Uri uri) {
-                if (path != null) {
-                    path = mCurrentPhotoPath;
-                    ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
-                    imgObj.setDescription("");
-                    imgObj.setTitle("");
-                    imgObj.setImageUrl(path);
-                    ImageHelper.revokeAppPermission(getContext(), fileUri);
-                    Intent intent = new Intent(getContext(), SingleImageDetailsActivity.class);
-                    intent.putExtra("image_details", imgObj);
-                    startActivityForResult(intent, SET_CLICKED_IMAGE_DETAILS);
-                }
-            }
-        });
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case PermissionUtilities.MY_APP_TAKE_PHOTO_PERMISSIONS: {
-                if (grantResults.length == 3 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
-                    cameraIntent(REQUEST_CAMERA);
-                } else {
-                    permissionPermissionUtilities.checkPermission(getActivity(), CategoryWiseImagesFragment.this, PermissionUtilities.MY_APP_TAKE_PHOTO_PERMISSIONS);
-                }
-                return;
-            }
-
-            case PermissionUtilities.MY_APP_TAKE_FRONT_PHOTO_PERMISSIONS: {
-                if (grantResults.length == 3 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
-                    cameraIntent(FRONT_IMAGE_REQUEST);
-                } else {
-                    permissionPermissionUtilities.checkPermission(getActivity(), CategoryWiseImagesFragment.this, PermissionUtilities.MY_APP_TAKE_FRONT_PHOTO_PERMISSIONS);
-                }
-                return;
-            }
-
-            case PermissionUtilities.MY_APP_TAKE_BACK_PHOTO_PERMISSIONS: {
-                if (grantResults.length == 3 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
-                    cameraIntent(BACK_IMAGE_REQUEST);
-                } else {
-                    permissionPermissionUtilities.checkPermission(getActivity(), CategoryWiseImagesFragment.this, PermissionUtilities.MY_APP_TAKE_BACK_PHOTO_PERMISSIONS);
-                }
-                return;
-            }
-
-            case PermissionUtilities.MY_APP_TAKE_LEFT_PHOTO_PERMISSIONS: {
-                if (grantResults.length == 3 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
-                    cameraIntent(LEFT_IMAGE_REQUEST);
-                } else {
-                    permissionPermissionUtilities.checkPermission(getActivity(), CategoryWiseImagesFragment.this, PermissionUtilities.MY_APP_TAKE_LEFT_PHOTO_PERMISSIONS);
-                }
-                return;
-            }
-
-            case PermissionUtilities.MY_APP_TAKE_RIGHT_PHOTO_PERMISSIONS: {
-                if (grantResults.length == 3 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
-                    cameraIntent(RIGHT_IMAGE_REQUEST);
-                } else {
-                    permissionPermissionUtilities.checkPermission(getActivity(), CategoryWiseImagesFragment.this, PermissionUtilities.MY_APP_TAKE_RIGHT_PHOTO_PERMISSIONS);
-                }
-                return;
-            }
-            case PermissionUtilities.MY_APP_BROWSE_PHOTO_PERMISSIONS: {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                  //  galleryIntent();
-                } else {
-                    permissionPermissionUtilities.checkPermission(getActivity(), CategoryWiseImagesFragment.this, PermissionUtilities.MY_APP_BROWSE_PHOTO_PERMISSIONS);
-                }
-                return;
-            }
-            case PermissionUtilities.MY_APP_GENERATE_REPORT_PERMISSIONS: {
-               if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                   /* try {
-                      //  generatePdf();
-                    } catch (DocumentException | IOException e) {
-                        e.printStackTrace();
-                    }*/
-                } else {
-
-                    permissionPermissionUtilities.checkPermission(getActivity(), CategoryWiseImagesFragment.this, PermissionUtilities.MY_APP_GENERATE_REPORT_PERMISSIONS);
-
-                }
-            }
-
-        }
-
-    }
-    public class SelectedImagesAdapter extends RecyclerView.Adapter<CategoryWiseImagesFragment.SelectedImagesAdapter.MyViewHolder> {
-
-        private ArrayList<ImageDetailsPOJO> imageList;
-        private Context context;
-        private OnImageRemovalListener onImageRemovalListener;
-
-        public class MyViewHolder extends RecyclerView.ViewHolder {
-            public ImageView imageView;
-            public TextView title;
-            public TextView description;
-            public ImageButton editBtn;
-            public ImageButton deleteBtn;
-
-            public MyViewHolder(View view) {
-                super(view);
-                imageView = view.findViewById(R.id.selectedImagePreview);
-                title = view.findViewById(R.id.title);
-                description = view.findViewById(R.id.description);
-                editBtn = view.findViewById(R.id.editBtn);
-                deleteBtn = view.findViewById(R.id.deleteBtn);
-
-            }
-        }
-
-
-        public SelectedImagesAdapter(ArrayList<ImageDetailsPOJO> imageList, Context context, OnImageRemovalListener onImageRemovalListener) {
-            this.imageList = imageList;
-            this.context = context;
-            this.onImageRemovalListener = onImageRemovalListener;
-        }
-
-        @Override
-        public CategoryWiseImagesFragment.SelectedImagesAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View itemView = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.selected_image_item, parent, false);
-
-            return new CategoryWiseImagesFragment.SelectedImagesAdapter.MyViewHolder(itemView);
-        }
-
-        @Override
-        public void onBindViewHolder(final CategoryWiseImagesFragment.SelectedImagesAdapter.MyViewHolder holder, final int position) {
-
-            final ImageDetailsPOJO imgDetails = imageList.get(position);
-            holder.title.setText(imgDetails.getTitle());
-            holder.description.setText(imgDetails.getDescription());
-
-            Glide.with(context)
-                    .load("file://" + imgDetails.getImageUrl())
-                    .apply(options)
-                    .into(holder.imageView);
-            holder.editBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(context, SingleImageDetailsActivity.class);
-                    intent.putExtra("image_details", imgDetails);
-                    intent.putExtra("isEdit", true);
-                    intent.putExtra("position", position);
-                    startActivityForResult(intent, SET_CLICKED_IMAGE_DETAILS);
-                }
-            });
-
-            holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
-                    LayoutInflater inflater = getActivity().getLayoutInflater();
-                    View dialogView = inflater.inflate(R.layout.image_remove_alert_layout, null);
-                    dialogBuilder.setView(dialogView);
-
-                    TextView positiveBtn = dialogView.findViewById(R.id.positive_button);
-                    TextView negativeBtn = dialogView.findViewById(R.id.negative_button);
-
-
-                    final AlertDialog alertDialog = dialogBuilder.create();
-
-                    positiveBtn.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            alertDialog.dismiss();
-                            imageList.remove(position);
-                            onImageRemovalListener.onImageSelectionChanged(imageList);
-                            notifyDataSetChanged();
-                        }
-                    });
-
-                    negativeBtn.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            alertDialog.dismiss();
-                        }
-                    });
-                    alertDialog.show();
-                }
-            });
-        }
-
-        @Override
-        public int getItemCount() {
-            return imageList.size();
-        }
-    }
-}
-
-
-
-       /* onImageRemovalListener = new OnImageRemovalListener() {
+        onImageRemovalListener = new OnImageRemovalListener() {
             @Override
             public void onImageSelectionChanged(List<ImageDetailsPOJO> selectedImgs) {
                 selectedImageList = (ArrayList<ImageDetailsPOJO>) selectedImgs;
@@ -966,7 +236,7 @@ public class CategoryWiseImagesFragment extends Fragment {
         imgViewFront.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean result = permissionPermissionUtilities.checkPermission(getActivity(), CategoryWiseImagesFragment.this, PermissionUtilities.MY_APP_TAKE_FRONT_PHOTO_PERMISSIONS);
+                boolean result = permissionPermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_TAKE_FRONT_PHOTO_PERMISSIONS);
 
                 if (result)
                     cameraIntent(FRONT_IMAGE_REQUEST);
@@ -977,7 +247,7 @@ public class CategoryWiseImagesFragment extends Fragment {
         imgViewBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean result = permissionPermissionUtilities.checkPermission(getActivity(), CategoryWiseImagesFragment.this, PermissionUtilities.MY_APP_TAKE_BACK_PHOTO_PERMISSIONS);
+                boolean result = permissionPermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_TAKE_BACK_PHOTO_PERMISSIONS);
 
                 if (result)
                     cameraIntent(BACK_IMAGE_REQUEST);
@@ -988,7 +258,7 @@ public class CategoryWiseImagesFragment extends Fragment {
         imgViewLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean result = permissionPermissionUtilities.checkPermission(getActivity(), CategoryWiseImagesFragment.this, PermissionUtilities.MY_APP_TAKE_LEFT_PHOTO_PERMISSIONS);
+                boolean result = permissionPermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_TAKE_LEFT_PHOTO_PERMISSIONS);
 
                 if (result)
                     cameraIntent(LEFT_IMAGE_REQUEST);
@@ -998,7 +268,7 @@ public class CategoryWiseImagesFragment extends Fragment {
         imgViewRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean result = permissionPermissionUtilities.checkPermission(getActivity(), CategoryWiseImagesFragment.this, PermissionUtilities.MY_APP_TAKE_RIGHT_PHOTO_PERMISSIONS);
+                boolean result = permissionPermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_TAKE_RIGHT_PHOTO_PERMISSIONS);
 
                 if (result)
                     cameraIntent(RIGHT_IMAGE_REQUEST);
@@ -1093,8 +363,6 @@ public class CategoryWiseImagesFragment extends Fragment {
                 selectImage();
             }
         });
-
-
         return selectImageView;
 
 
@@ -1194,7 +462,7 @@ public class CategoryWiseImagesFragment extends Fragment {
             return;
         }
 
-        boolean result = permissionPermissionUtilities.checkPermission(getActivity(), CategoryWiseImagesFragment.this, PermissionUtilities.MY_APP_GENERATE_REPORT_PERMISSIONS);
+        boolean result = permissionPermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_GENERATE_REPORT_PERMISSIONS);
         if (result) {
             showReportPreferenceDialog();
         }
@@ -1231,12 +499,12 @@ public class CategoryWiseImagesFragment extends Fragment {
             public void onClick(DialogInterface dialog, int item) {
 
                 if (items[item].equals("Take Photo")) {
-                    boolean result = permissionPermissionUtilities.checkPermission(getActivity(), CategoryWiseImagesFragment.this, PermissionUtilities.MY_APP_TAKE_PHOTO_PERMISSIONS);
+                    boolean result = permissionPermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_TAKE_PHOTO_PERMISSIONS);
 
                     if (result)
                         cameraIntent(REQUEST_CAMERA);
                 } else if (items[item].equals("Choose from Gallery")) {
-                    boolean result = permissionPermissionUtilities.checkPermission(getActivity(), CategoryWiseImagesFragment.this, PermissionUtilities.MY_APP_BROWSE_PHOTO_PERMISSIONS);
+                    boolean result = permissionPermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_BROWSE_PHOTO_PERMISSIONS);
                     if (result)
                         galleryIntent();
                 } else if (items[item].equals("Cancel")) {
@@ -1452,7 +720,7 @@ public class CategoryWiseImagesFragment extends Fragment {
 
     private void openCamera(int requestId, int cameraIntentReqCode)
     {
-        boolean result = permissionPermissionUtilities.checkPermission(getActivity(), CategoryWiseImagesFragment.this, requestId);
+        boolean result = permissionPermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, requestId);
 
         if (result)
             cameraIntent(cameraIntentReqCode);
@@ -1708,7 +976,7 @@ public class CategoryWiseImagesFragment extends Fragment {
                 if (grantResults.length == 3 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
                     cameraIntent(REQUEST_CAMERA);
                 } else {
-                    permissionPermissionUtilities.checkPermission(getActivity(), CategoryWiseImagesFragment.this, PermissionUtilities.MY_APP_TAKE_PHOTO_PERMISSIONS);
+                    permissionPermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_TAKE_PHOTO_PERMISSIONS);
                 }
                 return;
             }
@@ -1717,7 +985,7 @@ public class CategoryWiseImagesFragment extends Fragment {
                 if (grantResults.length == 3 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
                     cameraIntent(FRONT_IMAGE_REQUEST);
                 } else {
-                    permissionPermissionUtilities.checkPermission(getActivity(), CategoryWiseImagesFragment.this, PermissionUtilities.MY_APP_TAKE_FRONT_PHOTO_PERMISSIONS);
+                    permissionPermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_TAKE_FRONT_PHOTO_PERMISSIONS);
                 }
                 return;
             }
@@ -1726,7 +994,7 @@ public class CategoryWiseImagesFragment extends Fragment {
                 if (grantResults.length == 3 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
                     cameraIntent(BACK_IMAGE_REQUEST);
                 } else {
-                    permissionPermissionUtilities.checkPermission(getActivity(), CategoryWiseImagesFragment.this, PermissionUtilities.MY_APP_TAKE_BACK_PHOTO_PERMISSIONS);
+                    permissionPermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_TAKE_BACK_PHOTO_PERMISSIONS);
                 }
                 return;
             }
@@ -1735,7 +1003,7 @@ public class CategoryWiseImagesFragment extends Fragment {
                 if (grantResults.length == 3 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
                     cameraIntent(LEFT_IMAGE_REQUEST);
                 } else {
-                    permissionPermissionUtilities.checkPermission(getActivity(), CategoryWiseImagesFragment.this, PermissionUtilities.MY_APP_TAKE_LEFT_PHOTO_PERMISSIONS);
+                    permissionPermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_TAKE_LEFT_PHOTO_PERMISSIONS);
                 }
                 return;
             }
@@ -1744,7 +1012,7 @@ public class CategoryWiseImagesFragment extends Fragment {
                 if (grantResults.length == 3 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
                     cameraIntent(RIGHT_IMAGE_REQUEST);
                 } else {
-                    permissionPermissionUtilities.checkPermission(getActivity(), CategoryWiseImagesFragment.this, PermissionUtilities.MY_APP_TAKE_RIGHT_PHOTO_PERMISSIONS);
+                    permissionPermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_TAKE_RIGHT_PHOTO_PERMISSIONS);
                 }
                 return;
             }
@@ -1752,7 +1020,7 @@ public class CategoryWiseImagesFragment extends Fragment {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     galleryIntent();
                 } else {
-                    permissionPermissionUtilities.checkPermission(getActivity(), CategoryWiseImagesFragment.this, PermissionUtilities.MY_APP_BROWSE_PHOTO_PERMISSIONS);
+                    permissionPermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_BROWSE_PHOTO_PERMISSIONS);
                 }
                 return;
             }
@@ -1765,7 +1033,7 @@ public class CategoryWiseImagesFragment extends Fragment {
                     }
                 } else {
 
-                    permissionPermissionUtilities.checkPermission(getActivity(), CategoryWiseImagesFragment.this, PermissionUtilities.MY_APP_GENERATE_REPORT_PERMISSIONS);
+                    permissionPermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_GENERATE_REPORT_PERMISSIONS);
 
                 }
             }
@@ -1786,7 +1054,7 @@ public class CategoryWiseImagesFragment extends Fragment {
 
     }
 
-    public class SelectedImagesAdapter extends RecyclerView.Adapter<CategoryWiseImagesFragment.SelectedImagesAdapter.MyViewHolder> {
+    public class SelectedImagesAdapter extends RecyclerView.Adapter<AddEditReportSelectedImagesFragment.SelectedImagesAdapter.MyViewHolder> {
 
         private ArrayList<ImageDetailsPOJO> imageList;
         private Context context;
@@ -1818,15 +1086,15 @@ public class CategoryWiseImagesFragment extends Fragment {
         }
 
         @Override
-        public CategoryWiseImagesFragment.SelectedImagesAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public AddEditReportSelectedImagesFragment.SelectedImagesAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View itemView = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.selected_image_item, parent, false);
 
-            return new CategoryWiseImagesFragment.SelectedImagesAdapter.MyViewHolder(itemView);
+            return new AddEditReportSelectedImagesFragment.SelectedImagesAdapter.MyViewHolder(itemView);
         }
 
         @Override
-        public void onBindViewHolder(final CategoryWiseImagesFragment.SelectedImagesAdapter.MyViewHolder holder, final int position) {
+        public void onBindViewHolder(final AddEditReportSelectedImagesFragment.SelectedImagesAdapter.MyViewHolder holder, final int position) {
 
             final ImageDetailsPOJO imgDetails = imageList.get(position);
             holder.title.setText(imgDetails.getTitle());
@@ -1890,7 +1158,7 @@ public class CategoryWiseImagesFragment extends Fragment {
     }
 
 
-    @Override
+  /*  @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         reportsListDBHelper = ReportsListDBHelper.getInstance(context);
@@ -1900,7 +1168,7 @@ public class CategoryWiseImagesFragment extends Fragment {
         } catch (ClassCastException e) {
             throw new ClassCastException("Error in retrieving data. Please try again");
         }
-    }
+    }*/
 
     public interface SendReportDBChangeSignal {
         void notifyReportDBChanged();
@@ -2113,7 +1381,7 @@ public class CategoryWiseImagesFragment extends Fragment {
 
 
             if (selectedImageList != null) {
-                selectedImagesAdapter = new CategoryWiseImagesFragment.SelectedImagesAdapter(selectedImageList, getContext(), onImageRemovalListener);
+                selectedImagesAdapter = new AddEditReportSelectedImagesFragment.SelectedImagesAdapter(selectedImageList, getContext(), onImageRemovalListener);
                 selectedImagesRecyclerView.setAdapter(selectedImagesAdapter);
             }
             if (selectedElevationImagesList != null && selectedElevationImagesList.size() > 0) {
@@ -2145,7 +1413,7 @@ public class CategoryWiseImagesFragment extends Fragment {
 
         } else {
             if (selectedImageList != null) {
-                selectedImagesAdapter = new CategoryWiseImagesFragment.SelectedImagesAdapter(selectedImageList, getContext(), onImageRemovalListener);
+                selectedImagesAdapter = new AddEditReportSelectedImagesFragment.SelectedImagesAdapter(selectedImageList, getContext(), onImageRemovalListener);
                 selectedImagesRecyclerView.setAdapter(selectedImagesAdapter);
             }
         }
@@ -2228,102 +1496,4 @@ public class CategoryWiseImagesFragment extends Fragment {
         return cell;
     }
 }
-
-
-
-/*public class CategoryWiseImagesFragment extends Fragment {
-
-    private PermissionUtilities permissionPermissionUtilities;
-    private ArrayList<ImageDetailsPOJO> selectedImageList = null;
-    private int SELECT_FILE = 1;
-    private ArrayList<Image> selectedImages = null;
-
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View view=inflater.inflate(R.layout.fragment_category_details,container,false);
-        FloatingActionButton selectPhotoBtn = view.findViewById(R.id.btnSelectPhoto);
-
-        selectPhotoBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectImage();
-            }
-        });
-        return view;
-    }
-
-    private void selectImage() {
-        final CharSequence[] items = {"Take Photo", "Choose from Gallery", "Cancel"};
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Choose option");
-        builder.setItems(items, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int item) {
-
-                if (items[item].equals("Take Photo")) {
-                    boolean result = permissionPermissionUtilities.checkPermission(getActivity(), CategoryWiseImagesFragment.this, PermissionUtilities.MY_APP_TAKE_PHOTO_PERMISSIONS);
-
-                    if (result) {
-                        // cameraIntent(REQUEST_CAMERA);
-                    }
-                } else if (items[item].equals("Choose from Gallery")) {
-                    boolean result = permissionPermissionUtilities.checkPermission(getActivity(), CategoryWiseImagesFragment.this, PermissionUtilities.MY_APP_BROWSE_PHOTO_PERMISSIONS);
-                    if (result) {
-                        galleryIntent();
-                    }
-                } else if (items[item].equals("Cancel")) {
-                    dialog.dismiss();
-                }
-            }
-        });
-        builder.show();
-    }
-
-    private void galleryIntent() {
-        if (selectedImageList == null) {
-            selectedImageList = new ArrayList<>();
-        }
-        Intent intent = new Intent(getActivity(), ImagePickerActivity.class);
-        intent.putExtra("already_selected_images", selectedImageList.size());
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent, SELECT_FILE);
-
-    }
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == SELECT_FILE) {
-                if (data != null) {
-                    onSelectFromGalleryResult(data);
-                } else {
-                    Snackbar snackbar = Snackbar
-                            .make(parentLayout, "Something went wrong.Please try again.", Snackbar.LENGTH_INDEFINITE);
-                    snackbar.setAction("RETRY", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            selectImage();
-                            v.setVisibility(View.GONE);
-                        }
-                    });
-                    View snackBarView = snackbar.getView();
-                    snackBarView.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.color_error));
-                    snackbar.show();
-                }
-            }
-        }
-    }
-
-    private void onSelectFromGalleryResult(Intent data) {
-        selectedImages = data.getParcelableArrayListExtra("ImageUrls");
-      /*  Intent intent = new Intent(getActivity(), ImageSliderActivity.class);
-        intent.putExtra("ImageList", selectedImages);
-        startActivityForResult(intent, ADD_IMAGE_DETAILS);*/
-
-
-
-
-
 
