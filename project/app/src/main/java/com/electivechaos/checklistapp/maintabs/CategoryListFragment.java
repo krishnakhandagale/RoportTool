@@ -2,6 +2,7 @@ package com.electivechaos.checklistapp.maintabs;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -14,19 +15,22 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.electivechaos.checklistapp.AddEditCategoryActivity;
+import com.electivechaos.checklistapp.Pojo.Category;
 import com.electivechaos.checklistapp.R;
-import com.electivechaos.checklistapp.adapters.CategoriesAdapter;
-import com.electivechaos.checklistapp.categories.Category;
+import com.electivechaos.checklistapp.database.CategoryListDBHelper;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CategoryListFragment  extends Fragment {
-    public List<Category> categoryList = new ArrayList<>();
+    public ArrayList<Category> categoryList = new ArrayList<>();
     private RecyclerView recyclerView;
     private CategoriesAdapter mAdapter;
+    static CategoryListDBHelper mCategoryListDBHelper;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -38,16 +42,8 @@ public class CategoryListFragment  extends Fragment {
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
-
-        prepareMovieData();
-
-//        String getArgument = getArguments().getString("categoryName");
-//        Log.d("Something===========", "onCreateView: "+getArgument);
-//
-//        String categoryDescription = getArguments().getString("categoryDesc");
-//        Log.d("Something===========", "onCreateView: "+categoryDescription);
-//        Category movie = new Category(getArgument, categoryDescription, "2015");
-//        categoryList.add(movie);
+        mCategoryListDBHelper = new CategoryListDBHelper(getContext());
+        updateCategoryList();
 
         FloatingActionButton btnAddReport = view.findViewById(R.id.btnAddCategory);
         btnAddReport.setOnClickListener(new View.OnClickListener() {
@@ -68,14 +64,34 @@ public class CategoryListFragment  extends Fragment {
                 Bundle dataFromActivity = data.getBundleExtra("data");
                 String categoryName = dataFromActivity.get("categoryName").toString();
                 String categoryDescription = dataFromActivity.get("categoryDesc").toString();
-                Category movie = new Category(categoryName, categoryDescription, "2015");
-                categoryList.add(movie);
+               //add to category database
+                Category category = new Category();
+                category.setCategoryName(categoryName);
+                category.setCategoryDescription(categoryDescription);
+                mCategoryListDBHelper.addCategory(category);
+                updateCategoryList();
+            }
+        }
+
+        if (requestCode == 2) {
+            if (resultCode == 2) {
+                Bundle dataFromActivity = data.getBundleExtra("data");
+                String categoryName = dataFromActivity.get("categoryName").toString();
+                String categoryDescription = dataFromActivity.get("categoryDesc").toString();
+                int categoryID = Integer.parseInt(dataFromActivity.get("categoryId").toString());
+                //add to category database
+                Category category = new Category();
+                category.setCategoryName(categoryName);
+                category.setCategoryDescription(categoryDescription);
+                category.setCategoryId(categoryID);
+                mCategoryListDBHelper.updateCategory(category);
                 updateCategoryList();
             }
         }
     }
 
     private  void updateCategoryList(){
+        categoryList = mCategoryListDBHelper.getCategoryList();
         mAdapter = new CategoriesAdapter(categoryList, getContext());
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(mLayoutManager);
@@ -84,55 +100,65 @@ public class CategoryListFragment  extends Fragment {
     }
 
 
-    private void prepareMovieData() {
-        Category movie = new Category("Mad Max: Fury Road", "Action & Adventure", "2015");
-        categoryList.add(movie);
+    public class CategoriesAdapter extends RecyclerView.Adapter<CategoryListFragment.CategoriesAdapter.MyViewHolder> {
+        private Context context;
+        public List<Category> categoryList;
 
-        movie = new Category("Inside Out", "Animation, Kids & Family", "2015");
-        categoryList.add(movie);
+        public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        movie = new Category("Star Wars: Episode VII - The Force Awakens", "Action", "2015");
-        categoryList.add(movie);
+            public TextView title, genre;
+            public Button editCategory, deleteCategory;
 
-        movie = new Category("Shaun the Sheep", "Animation", "2015");
-        categoryList.add(movie);
 
-        movie = new Category("The Martian", "Science Fiction & Fantasy", "2015");
-        categoryList.add(movie);
+            public MyViewHolder(View view) {
+                super(view);
 
-        movie = new Category("Mission: Impossible Rogue Nation", "Action", "2015");
-        categoryList.add(movie);
+                title = view.findViewById(R.id.title);
+                genre = view.findViewById(R.id.desc);
+                editCategory = view.findViewById(R.id.editcategory);
+                deleteCategory = view.findViewById(R.id.deletecategory);
 
-        movie = new Category("Up", "Animation", "2009");
-        categoryList.add(movie);
+            }
+        }
 
-        movie = new Category("Star Trek", "Science Fiction", "2009");
-        categoryList.add(movie);
 
-        movie = new Category("The LEGO Movie", "Animation", "2014");
-        categoryList.add(movie);
+        public CategoriesAdapter(List<Category> categoryList, Context context) {
+            this.categoryList = categoryList;
+            this.context = context;
+        }
 
-        movie = new Category("Iron Man", "Action & Adventure", "2008");
-        categoryList.add(movie);
+        @Override
+        public CategoryListFragment.CategoriesAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View itemView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.single_row_category, parent, false);
 
-        movie = new Category("Aliens", "Science Fiction", "1986");
-        categoryList.add(movie);
+            return new CategoryListFragment.CategoriesAdapter.MyViewHolder(itemView);
+        }
 
-        movie = new Category("Chicken Run", "Animation", "2000");
-        categoryList.add(movie);
+        @Override
+        public void onBindViewHolder(CategoryListFragment.CategoriesAdapter.MyViewHolder holder, int position) {
+            final Category movie = categoryList.get(position);
+            holder.title.setText(movie.getCategoryName());
+            holder.genre.setText(movie.getCategoryDescription());
+            holder.editCategory.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent addCategoryActivity = new Intent(context, AddEditCategoryActivity.class);
+                    Bundle data = new Bundle();//create bundle instance
+                    data.putString("title",movie.getCategoryName());
+                    data.putString("description",movie.getCategoryDescription());
+                    data.putInt("id",movie.getCategoryId());
+                    addCategoryActivity.putExtra("data", data);
+                    startActivityForResult(addCategoryActivity, 2);
 
-        movie = new Category("Back to the Future", "Science Fiction", "1985");
-        categoryList.add(movie);
+//                context.startActivity(addCategoryActivity);
+                }
+            });
+        }
 
-        movie = new Category("Raiders of the Lost Ark", "Action & Adventure", "1981");
-        categoryList.add(movie);
-
-        movie = new Category("Goldfinger", "Action & Adventure", "1965");
-        categoryList.add(movie);
-
-        movie = new Category("Guardians of the Galaxy", "Science Fiction & Fantasy", "2014");
-        categoryList.add(movie);
-
-        mAdapter.notifyDataSetChanged();
+        @Override
+        public int getItemCount() {
+            return categoryList.size();
+        }
     }
 }

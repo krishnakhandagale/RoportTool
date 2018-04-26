@@ -4,10 +4,11 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
+import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import com.electivechaos.checklistapp.adapters.CategoriesAdapter;
 import com.electivechaos.checklistapp.maintabs.CategoryListFragment;
 
 import java.util.ArrayList;
@@ -17,8 +18,9 @@ import java.util.ArrayList;
  */
 
 public class AddEditCategoryActivity extends Activity{
-    private  String categoryTitle = null;
-    private  String categoryDescription = null;
+    private  String intentCategoryTitle = null;
+    private  String intentCategoryDescription = null;
+    private  int categoryID = 0;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,8 +28,19 @@ public class AddEditCategoryActivity extends Activity{
         setContentView(R.layout.add_edit_category);
 
         if(getIntent().getExtras()!= null){
-            categoryTitle =  getIntent().getExtras().getString("title");
-            categoryDescription =  getIntent().getExtras().getString("description");
+            Bundle dataFromActivity = getIntent().getBundleExtra("data");
+            intentCategoryTitle = dataFromActivity.get("title").toString();
+            intentCategoryDescription = dataFromActivity.get("description").toString();
+            categoryID = Integer.parseInt(dataFromActivity.get("id").toString());
+
+            Button updateCategoryButton = findViewById(R.id.updateCategory);
+            updateCategoryButton.setText("Update Category");
+
+            EditText categoryName = (EditText) findViewById(R.id.editTextCategoryName);
+            categoryName.setText(intentCategoryTitle.toString());
+
+            EditText categoryDescription = (EditText) findViewById(R.id.editTextCategoryDescription);
+            categoryDescription.setText(intentCategoryDescription.toString());
         }
 
         Button updateCategoryButton = findViewById(R.id.updateCategory);
@@ -36,22 +49,32 @@ public class AddEditCategoryActivity extends Activity{
                 EditText categoryName = (EditText) findViewById(R.id.editTextCategoryName);
                 String categoryNameString = categoryName.getText().toString();
 
-                EditText categoryDescription = (EditText) findViewById(R.id.editTextCategoryName);
+                EditText categoryDescription = (EditText) findViewById(R.id.editTextCategoryDescription);
                 String categoryDescriptionString = categoryDescription.getText().toString();
-
                 Bundle data = new Bundle();//create bundle instance
-                data.putString("categoryName", categoryNameString);//put string to pass with a key value
-                data.putString("categoryDesc", categoryDescriptionString);//put string to pass with a key value
-                Intent intent = new Intent();
-                intent.putExtra("data", data);
-                setResult(Activity.RESULT_OK, intent);
-                finish();
+                if(categoryID == 0) {
+                    Log.d("------------->>", "onClick: THIS IS ADD CATEGORY EVENT");
+
+                    data.putString("categoryName", categoryNameString);//put string to pass with a key value
+                    data.putString("categoryDesc", categoryDescriptionString);//put string to pass with a key value
+                    Intent intent = new Intent();
+                    intent.putExtra("data", data);
+                    setResult(Activity.RESULT_OK, intent);
+                    finish();
+                }else {
+                    Log.d("------------->>", "onClick: THIS IS EDIT EDIT EDIT CATEGORY EVENT");
+                    Intent intent = new Intent();
+                    data.putString("categoryName", categoryNameString);//put string to pass with a key value
+                    data.putString("categoryDesc", categoryDescriptionString);//put string to pass with a key value
+                    data.putInt("categoryId", categoryID);//put string to pass with a key value
+                    intent.putExtra("data", data);
+                    setResult(2, intent);
+                    finish();
+                }
+
+
 
             }
         });
     }
-
-
-
-
 }
