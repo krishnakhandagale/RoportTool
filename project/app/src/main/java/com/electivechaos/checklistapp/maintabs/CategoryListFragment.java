@@ -88,6 +88,15 @@ public class CategoryListFragment  extends Fragment {
                 updateCategoryList();
             }
         }
+
+        if (requestCode == 3) {
+            if (resultCode == 3) {
+                Bundle dataFromActivity = data.getBundleExtra("data");
+                String categoryID = dataFromActivity.get("categoryId").toString();
+                mCategoryListDBHelper.deleteCategoryEntry(categoryID);
+                updateCategoryList();
+            }
+        }
     }
 
     private  void updateCategoryList(){
@@ -151,6 +160,15 @@ public class CategoryListFragment  extends Fragment {
                     addCategoryActivity.putExtra("data", data);
                     startActivityForResult(addCategoryActivity, 2);
 
+//                context.startActivity(addCategoryActivity);
+                }
+            });
+
+            holder.deleteCategory.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mCategoryListDBHelper.deleteCategoryEntry(String.valueOf(movie.getCategoryId()));
+                    updateCategoryList();
 //                context.startActivity(addCategoryActivity);
                 }
             });

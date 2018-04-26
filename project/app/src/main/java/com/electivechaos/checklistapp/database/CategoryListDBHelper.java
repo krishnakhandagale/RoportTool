@@ -48,7 +48,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
 
     public int deleteCategoryEntry(String categoryId){
         SQLiteDatabase db = this.getWritableDatabase();
-        return  db.delete(TABLE_MASTER_CATEGORY,"category_id=?",new String[]{categoryId});
+        return  db.delete(TABLE_MASTER_CATEGORY,"id=?",new String[]{categoryId});
     }
 
     public long addCategory(Category category){
