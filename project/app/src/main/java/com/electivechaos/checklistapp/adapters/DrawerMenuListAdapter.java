@@ -44,6 +44,10 @@ public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
         this.myItemClickListener = (MyItemClickListener)context;
     }
 
+    public List<String> getChildList(int groupPosition) {
+        return childMenuList.get(parentMenuList.get(groupPosition));
+    }
+
     @Override
     public int getGroupCount() {
         return parentMenuList.size();

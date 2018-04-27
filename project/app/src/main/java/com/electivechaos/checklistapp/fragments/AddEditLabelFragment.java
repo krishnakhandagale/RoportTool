@@ -1,5 +1,6 @@
 package com.electivechaos.checklistapp.fragments;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.electivechaos.checklistapp.AddEditLabelActivity;
+import com.electivechaos.checklistapp.AddEditReportActivity;
 import com.electivechaos.checklistapp.AddEditReportSelectedImagesFragment;
 import com.electivechaos.checklistapp.Pojo.Category;
 import com.electivechaos.checklistapp.Pojo.ImageDetailsPOJO;
@@ -38,6 +40,13 @@ public class AddEditLabelFragment extends Fragment {
     private String reportPath = null;
     private ArrayList<ImageDetailsPOJO> selectedImagesList = null;
     private ArrayList<ImageDetailsPOJO> selectedElevationImagesList = new ArrayList<>();
+    AddEditLabelInterface mCallback;
+
+
+    public interface AddEditLabelInterface {
+        void onLabelDataReceive(Label label);
+    }
+
 
     @Nullable
     @Override
@@ -81,10 +90,10 @@ public class AddEditLabelFragment extends Fragment {
             public void onClick(View v) {
                 Label label = new Label();
                 label.setCategoryID(selectedCategoryID);
-                label.setName(labelName.toString());
-                label.setDescription(labelDescription.toString());
+                label.setName(labelName.getText().toString());
+                label.setDescription(labelDescription.getText().toString());
                 mCategoryList.addLabel(label);
-
+                mCallback.onLabelDataReceive(label);
                 FragmentManager fragmentManager = getFragmentManager();
                 android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 //                AddEditReportSelectedImagesFragment df=new AddEditReportSelectedImagesFragment();
@@ -95,6 +104,21 @@ public class AddEditLabelFragment extends Fragment {
         });
         return layoutView;
     }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        // This makes sure that the container activity has implemented
+        // the callback interface. If not, it throws an exception
+        try {
+            mCallback = (AddEditReportActivity) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnHeadlineSelectedListener");
+        }
+    }
+
     @Override
     public void onSaveInstanceState (@NonNull Bundle outState){
         super.onSaveInstanceState(outState);

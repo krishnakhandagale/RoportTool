@@ -19,6 +19,7 @@ import android.widget.ExpandableListView;
 import android.widget.TextView;
 
 import com.electivechaos.checklistapp.Pojo.ImageDetailsPOJO;
+import com.electivechaos.checklistapp.Pojo.Label;
 import com.electivechaos.checklistapp.adapters.DrawerMenuListAdapter;
 import com.electivechaos.checklistapp.fragments.AddEditLabelFragment;
 import com.electivechaos.checklistapp.fragments.CategoryWiseImagesFragment;
@@ -33,9 +34,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class AddEditReportActivity extends AppCompatActivity implements ClaimDetailsTabsFragment.SendImageDetails,AddEditReportSelectedImagesFragment.SendReportDBChangeSignal, DrawerMenuListAdapter.MyItemClickListener{
+public class AddEditReportActivity extends AppCompatActivity implements ClaimDetailsTabsFragment.SendImageDetails,AddEditReportSelectedImagesFragment.SendReportDBChangeSignal, DrawerMenuListAdapter.MyItemClickListener, AddEditLabelFragment.AddEditLabelInterface{
     private DrawerLayout mDrawerLayout;
     private ExpandableListView mExpandableListView;
+    DrawerMenuListAdapter drawerMenuListAdapter;
     Fragment mContent;
     String tabName;
 
@@ -49,7 +51,8 @@ public class AddEditReportActivity extends AppCompatActivity implements ClaimDet
     private String reportPath = null;
     private ArrayList<ImageDetailsPOJO> selectedImagesList = null;
     private ArrayList<ImageDetailsPOJO> selectedElevationImagesList = new ArrayList<>();
-
+    HashMap<String,List<String>> childMenuItems = new HashMap<>();
+    List<String> inspectionChildMenu = new ArrayList<>();
 //    DrawerMenuListAdapter.MyItemClickListener myItemClickListener;
 
 
@@ -168,13 +171,13 @@ public class AddEditReportActivity extends AppCompatActivity implements ClaimDet
         parentMenuItems.add("Inspection");
 
 
-        HashMap<String,List<String>> childMenuItems = new HashMap<>();
 
-        List<String> inspectionChildMenu = new ArrayList<>();
-        inspectionChildMenu.add("Example1");
-        inspectionChildMenu.add("Example2");
-        inspectionChildMenu.add("Example3");
-        inspectionChildMenu.add("Example4");
+
+
+//        inspectionChildMenu.add("Example1");
+//        inspectionChildMenu.add("Example2");
+//        inspectionChildMenu.add("Example3");
+//        inspectionChildMenu.add("Example4");
 
         childMenuItems.put("Inspection", inspectionChildMenu);
 
@@ -182,7 +185,7 @@ public class AddEditReportActivity extends AppCompatActivity implements ClaimDet
         mDrawerLayout = findViewById(R.id.drawer_layout);
 
         if(parentMenuItems != null && parentMenuItems.size() > 0){
-            DrawerMenuListAdapter drawerMenuListAdapter = new DrawerMenuListAdapter(this,parentMenuItems, childMenuItems);
+            drawerMenuListAdapter = new DrawerMenuListAdapter(this,parentMenuItems, childMenuItems);
             mExpandableListView.setAdapter(drawerMenuListAdapter);
         }
         mExpandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
@@ -335,5 +338,17 @@ public class AddEditReportActivity extends AppCompatActivity implements ClaimDet
         fragmentTransaction.replace(R.id.content_frame, new AddEditLabelFragment());
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
+    }
+
+    @Override
+    public void onLabelDataReceive(Label label) {
+        Log.d("onLabelDataReceive", "onLabelDataReceive: "+label.getName()+" "+ label.getCategoryID());
+//        inspectionChildMenu.add(label.getName());
+//        childMenuItems.put("Inspection", inspectionChildMenu);
+//        mExpandableListView
+        DrawerMenuListAdapter adapter =
+                (DrawerMenuListAdapter) mExpandableListView.getExpandableListAdapter();
+       adapter.getChildList(3).add(label.getName().toString());
+        adapter.notifyDataSetChanged();
     }
 }
