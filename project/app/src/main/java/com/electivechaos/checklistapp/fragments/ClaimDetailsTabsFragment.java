@@ -44,6 +44,8 @@ public class ClaimDetailsTabsFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         reportTitle = getArguments() != null ? getArguments().getString("reportTitle") : "";
         reportDescription = getArguments() != null ? getArguments().getString("reportDescription") : "";
         clientName = getArguments() != null ? getArguments().getString("clientName") : "";

@@ -9,7 +9,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
-import android.media.Image;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -41,6 +40,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.electivechaos.checklistapp.Pojo.Image;
 import com.electivechaos.checklistapp.Pojo.ImageDetailsPOJO;
 import com.electivechaos.checklistapp.Pojo.ReportItemPOJO;
 import com.electivechaos.checklistapp.database.ReportsListDBHelper;
@@ -78,6 +78,7 @@ import java.util.List;
 
 
 public class AddEditReportSelectedImagesFragment extends Fragment {
+
     private int REQUEST_CAMERA = 0;
     private int FRONT_IMAGE_REQUEST = 100;
     private int BACK_IMAGE_REQUEST = 200;
@@ -134,7 +135,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
     private String reportPath;
     private File photoFile;
     private ArrayList<? extends Image> selectedImages = null;
-    private ArrayList<ImageDetailsPOJO> selectedImageList = null;
+    private ArrayList<ImageDetailsPOJO> selectedImageList =null;
     private ArrayList<ImageDetailsPOJO> selectedElevationImagesList = new ArrayList<>();
 
 
@@ -157,6 +158,9 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //to etain fragment
+        setRetainInstance(true);
+
         if (getArguments() != null) {
 
             selectedImageList = (ArrayList<ImageDetailsPOJO>) getArguments().getSerializable("selectedImagesList");
