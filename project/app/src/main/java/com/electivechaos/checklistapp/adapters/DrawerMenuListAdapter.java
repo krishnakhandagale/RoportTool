@@ -31,11 +31,17 @@ public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
     Context context;
     HashMap<String,List<String>> childMenuList;
     ArrayList<String> parentMenuList;
+    MyItemClickListener myItemClickListener;
+
+    public interface MyItemClickListener {
+        void onItemClick(int position);
+    }
 
     public DrawerMenuListAdapter(Context context, ArrayList<String> parentMenuList, HashMap<String,List<String>> childMenuList){
         this.context= context;
         this.parentMenuList = parentMenuList ;
         this.childMenuList = childMenuList;
+        this.myItemClickListener = (MyItemClickListener)context;
     }
 
     @Override
@@ -76,7 +82,7 @@ public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+    public View getGroupView(final int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
 
         if(convertView == null){
             convertView = LayoutInflater.from(context).inflate(R.layout.drawer_layout_menu_item, parent, false);
@@ -84,16 +90,11 @@ public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
             addInspectionView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(context, "Add inspection clicked", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(context, "Add inspection clicked", Toast.LENGTH_SHORT).show();
 //                    Intent addLabelActivity = new Intent(context, AddEditLabelActivity.class);
 //                    context.startActivity(addLabelActivity);
+                    myItemClickListener.onItemClick(groupPosition);
 
-                    android.support.v4.app.FragmentManager transactionManager = ((AddEditReportActivity)context).getSupportFragmentManager();
-                    android.support.v4.app.FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
-//                  AddEditReportSelectedImagesFragment df=new AddEditReportSelectedImagesFragment();
-                    fragmentTransaction.replace(R.id.content_frame, new AddEditLabelFragment());
-                    fragmentTransaction.addToBackStack(null);
-                    fragmentTransaction.commit();
                 }
             });
         }

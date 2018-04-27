@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.electivechaos.checklistapp.Pojo.ImageDetailsPOJO;
 import com.electivechaos.checklistapp.adapters.DrawerMenuListAdapter;
+import com.electivechaos.checklistapp.fragments.AddEditLabelFragment;
 import com.electivechaos.checklistapp.fragments.CategoryWiseImagesFragment;
 import com.electivechaos.checklistapp.fragments.CauseOfLossFragment;
 import com.electivechaos.checklistapp.fragments.ClaimDetailsFragment;
@@ -32,7 +33,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class AddEditReportActivity extends AppCompatActivity implements ClaimDetailsTabsFragment.SendImageDetails,AddEditReportSelectedImagesFragment.SendReportDBChangeSignal{
+public class AddEditReportActivity extends AppCompatActivity implements ClaimDetailsTabsFragment.SendImageDetails,AddEditReportSelectedImagesFragment.SendReportDBChangeSignal, DrawerMenuListAdapter.MyItemClickListener{
     private DrawerLayout mDrawerLayout;
     private ExpandableListView mExpandableListView;
     Fragment mContent;
@@ -49,13 +50,13 @@ public class AddEditReportActivity extends AppCompatActivity implements ClaimDet
     private ArrayList<ImageDetailsPOJO> selectedImagesList = null;
     private ArrayList<ImageDetailsPOJO> selectedElevationImagesList = new ArrayList<>();
 
-
+//    DrawerMenuListAdapter.MyItemClickListener myItemClickListener;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+//        myItemClickListener = new AddEditReportActivity();
         if(savedInstanceState != null){
 
             String tName = savedInstanceState.getString("tabName").toString();
@@ -324,5 +325,15 @@ public class AddEditReportActivity extends AppCompatActivity implements ClaimDet
             }
         });
         alertDialog.show();
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        android.support.v4.app.FragmentManager transactionManager = getSupportFragmentManager();
+        android.support.v4.app.FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
+//                  AddEditReportSelectedImagesFragment df=new AddEditReportSelectedImagesFragment();
+        fragmentTransaction.replace(R.id.content_frame, new AddEditLabelFragment());
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 }
