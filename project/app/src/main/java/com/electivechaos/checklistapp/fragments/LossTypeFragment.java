@@ -11,6 +11,9 @@ import android.view.ViewGroup;
 import com.electivechaos.checklistapp.R;
 
 public class LossTypeFragment extends Fragment {
+
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

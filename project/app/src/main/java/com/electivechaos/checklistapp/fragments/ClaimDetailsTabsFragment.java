@@ -28,7 +28,8 @@ public class ClaimDetailsTabsFragment extends Fragment {
     private String clientName;
     private String claimNumber;
     private String address;
-    public static ClaimDetailsTabsFragment initFragment(String rTitle,String rDescription, String cName, String cNumber,String addr){
+    private int pos;
+    public static ClaimDetailsTabsFragment initFragment(String rTitle,String rDescription, String cName, String cNumber,String addr,int pos){
         Bundle args = new Bundle();
 
         args.putString("reportTitle", rTitle);
@@ -36,10 +37,16 @@ public class ClaimDetailsTabsFragment extends Fragment {
         args.putString("clientName",cName);
         args.putString("claimNumber", cNumber);
         args.putString("address", addr);
+        args.putInt("tabIndex",pos);
         ClaimDetailsTabsFragment fragment = new ClaimDetailsTabsFragment();
         fragment.setArguments(args);
         return fragment;
     };
+    public ClaimDetailsTabsFragment()
+    {
+
+    }
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -87,5 +94,12 @@ public class ClaimDetailsTabsFragment extends Fragment {
 
     public interface SendImageDetails {
         void sendData(JSONObject message);
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putInt("pos",pos);
+        super.onSaveInstanceState(outState);
+
     }
 }

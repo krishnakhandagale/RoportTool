@@ -29,16 +29,14 @@ public class ClaimDetailsFragment  extends Fragment implements ClaimDetailsTabsF
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-
-        Toast.makeText(getContext(),"On Create called",Toast.LENGTH_SHORT).show();
+        if(savedInstanceState!=null) {
+            tabIndex = savedInstanceState.getInt("tabIndex");
+        }
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putInt("tabIndex",tabIndex);
-
         super.onSaveInstanceState(outState);
     }
 
@@ -61,15 +59,18 @@ public class ClaimDetailsFragment  extends Fragment implements ClaimDetailsTabsF
         ClaimDetailsTabsPagerAdapter adapter=new ClaimDetailsTabsPagerAdapter(getActivity().getSupportFragmentManager(),tabIndex);
         viewPager.setAdapter(adapter);
 
+       TabLayout.Tab tab=tabLayout.getTabAt(tabIndex);
+        tab.select();
 
-
-        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener(){
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener(){
             @Override
             public void onTabSelected(TabLayout.Tab tab){
                 int position = tab.getPosition();
                 if(position==0){
                    tabIndex =position;
-                    Toast.makeText(getContext(),"TAB INDEX"+position,Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(),"TAB INDEX"+position+"..."+tab.getText(),Toast.LENGTH_SHORT).show();
+                    tab=tabLayout.getTabAt(position);
+                    tab.select();
                    // viewPager.setCurrentItem(position);
 
                     tab.select();
@@ -77,13 +78,16 @@ public class ClaimDetailsFragment  extends Fragment implements ClaimDetailsTabsF
                 }
                 else if(position==1)
                 {
-                    Toast.makeText(getContext(),"TAB INDEX"+position,Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(),"TAB INDEX"+position+"..."+tab.getText(),Toast.LENGTH_SHORT).show();
                   //  viewPager.setCurrentItem(position);
+                    tabIndex=position;
+                    tab=tabLayout.getTabAt(position);
                     tab.select();
 
                 }
                 else{
-                    Toast.makeText(getContext(),"TAB INDEX"+position,Toast.LENGTH_SHORT).show();
+                    tabIndex=position;
+                    Toast.makeText(getContext(),"TAB INDEX"+position+"..."+tab.getText(),Toast.LENGTH_SHORT).show();
 
                 }
             }
@@ -124,7 +128,7 @@ public class ClaimDetailsFragment  extends Fragment implements ClaimDetailsTabsF
         public Fragment getItem(int i) {
 
             if( i ==0 ){
-                Fragment fragment = new ClaimDetailsTabsFragment();
+                Fragment fragment =  new ClaimDetailsTabsFragment();
                 return fragment;
             }else if(i==1){
                 Fragment fragment = new LossLocationFragment();
