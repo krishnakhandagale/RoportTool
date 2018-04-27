@@ -18,7 +18,9 @@ import android.widget.ExpandableListView;
 import android.widget.TextView;
 
 import com.electivechaos.checklistapp.Pojo.ImageDetailsPOJO;
+import com.electivechaos.checklistapp.Pojo.Label;
 import com.electivechaos.checklistapp.adapters.DrawerMenuListAdapter;
+import com.electivechaos.checklistapp.fragments.AddEditLabelFragment;
 import com.electivechaos.checklistapp.fragments.CauseOfLossFragment;
 import com.electivechaos.checklistapp.fragments.ClaimDetailsFragment;
 import com.electivechaos.checklistapp.fragments.ClaimDetailsTabsFragment;
@@ -30,9 +32,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class AddEditReportActivity extends AppCompatActivity implements ClaimDetailsTabsFragment.SendImageDetails,AddEditReportSelectedImagesFragment.SendReportDBChangeSignal{
+public class AddEditReportActivity extends AppCompatActivity implements ClaimDetailsTabsFragment.SendImageDetails,AddEditReportSelectedImagesFragment.SendReportDBChangeSignal, DrawerMenuListAdapter.MyItemClickListener, AddEditLabelFragment.AddEditLabelInterface{
     private DrawerLayout mDrawerLayout;
     private ExpandableListView mExpandableListView;
+    DrawerMenuListAdapter drawerMenuListAdapter;
     Fragment mContent;
     String tabName;
 
@@ -46,15 +49,12 @@ public class AddEditReportActivity extends AppCompatActivity implements ClaimDet
     private String reportPath = null;
     private ArrayList<ImageDetailsPOJO> selectedImagesList = new ArrayList<>();
     private ArrayList<ImageDetailsPOJO> selectedElevationImagesList = new ArrayList<>();
+    HashMap<String,List<String>> childMenuItems = new HashMap<>();
+    List<String> inspectionChildMenu = new ArrayList<>();
 
 
     private static final String MY_FRAGMENT_TAG = "AddEditReportSelectedImagesFragment";
     private AddEditReportSelectedImagesFragment myFragment;
-
-
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +69,6 @@ public class AddEditReportActivity extends AppCompatActivity implements ClaimDet
             myFragment = (AddEditReportSelectedImagesFragment) getSupportFragmentManager()
                     .findFragmentByTag(MY_FRAGMENT_TAG);
         }
-
         if(savedInstanceState != null){
 
             String tName = savedInstanceState.getString("tabName").toString();
@@ -185,13 +184,13 @@ public class AddEditReportActivity extends AppCompatActivity implements ClaimDet
         parentMenuItems.add("Inspection");
 
 
-        HashMap<String,List<String>> childMenuItems = new HashMap<>();
 
-        List<String> inspectionChildMenu = new ArrayList<>();
-        inspectionChildMenu.add("Example1");
-        inspectionChildMenu.add("Example2");
-        inspectionChildMenu.add("Example3");
-        inspectionChildMenu.add("Example4");
+
+
+//        inspectionChildMenu.add("Example1");
+//        inspectionChildMenu.add("Example2");
+//        inspectionChildMenu.add("Example3");
+//        inspectionChildMenu.add("Example4");
 
         childMenuItems.put("Inspection", inspectionChildMenu);
 
@@ -199,7 +198,7 @@ public class AddEditReportActivity extends AppCompatActivity implements ClaimDet
         mDrawerLayout = findViewById(R.id.drawer_layout);
 
         if(parentMenuItems != null && parentMenuItems.size() > 0){
-            DrawerMenuListAdapter drawerMenuListAdapter = new DrawerMenuListAdapter(this,parentMenuItems, childMenuItems);
+            drawerMenuListAdapter = new DrawerMenuListAdapter(this,parentMenuItems, childMenuItems);
             mExpandableListView.setAdapter(drawerMenuListAdapter);
         }
         mExpandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
@@ -342,5 +341,23 @@ public class AddEditReportActivity extends AppCompatActivity implements ClaimDet
             }
         });
         alertDialog.show();
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        android.support.v4.app.FragmentManager transactionManager = getSupportFragmentManager();
+        android.support.v4.app.FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
+//                  AddEditReportSelectedImagesFragment df=new AddEditReportSelectedImagesFragment();
+        fragmentTransaction.replace(R.id.content_frame, new AddEditLabelFragment());
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+    }
+
+    @Override
+    public void onLabelDataReceive(Label label) {
+        DrawerMenuListAdapter adapter =
+                (DrawerMenuListAdapter) mExpandableListView.getExpandableListAdapter();
+       adapter.getChildList(3).add(label.getName().toString());
+        adapter.notifyDataSetChanged();
     }
 }

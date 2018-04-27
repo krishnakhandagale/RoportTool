@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.electivechaos.checklistapp.AddEditLabelActivity"
+    android:orientation="vertical">
+
+
+    <EditText
+        android:id="@+id/name"
+        android:layout_width="380dp"
+        android:layout_height="47dp"
+        android:ems="10"
+        android:hint="Enter Label Name"
+        android:inputType="textPersonName"
+        tools:layout_editor_absoluteX="7dp"
+        tools:layout_editor_absoluteY="0dp" />
+
+    <EditText
+        android:id="@+id/description"
+        android:layout_width="375dp"
+        android:layout_height="42dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:hint="Enter Label Description"
+        tools:layout_editor_absoluteX="5dp"
+        tools:layout_editor_absoluteY="61dp" />
+
+    <TextView
+        android:id="@+id/category_selection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_edittext"
+        android:drawableEnd="@drawable/ic_keyboard_arrow_down"
+        android:drawableRight="@drawable/ic_keyboard_arrow_down"
+        android:padding="5dp"
+        android:text="@string/category"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="122dp" />
+
+    <Button
+        android:id="@+id/addLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Label"
+        tools:layout_editor_absoluteX="158dp"
+        tools:layout_editor_absoluteY="222dp" />
+
+</LinearLayout>

@@ -1,7 +1,6 @@
 package com.electivechaos.checklistapp.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,9 +9,7 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.electivechaos.checklistapp.AddEditReportActivity;
 import com.electivechaos.checklistapp.R;
 
 import java.util.ArrayList;
@@ -24,17 +21,28 @@ public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
     Context context;
     HashMap<String,List<String>> childMenuList;
     ArrayList<String> parentMenuList;
+    MyItemClickListener myItemClickListener;
+
+    public interface MyItemClickListener {
+        void onItemClick(int position);
+    }
 
     public DrawerMenuListAdapter(Context context, ArrayList<String> parentMenuList, HashMap<String,List<String>> childMenuList){
         this.context= context;
         this.parentMenuList = parentMenuList ;
         this.childMenuList = childMenuList;
+        this.myItemClickListener = (MyItemClickListener)context;
+    }
+
+    public List<String> getChildList(int groupPosition) {
+        return childMenuList.get(parentMenuList.get(groupPosition));
     }
 
     @Override
     public int getGroupCount() {
         return parentMenuList.size();
     }
+
 
     @Override
     public int getChildrenCount(int groupPosition) {
@@ -68,26 +76,22 @@ public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-        //Button addBtn=convertView.findViewById(R.id.addButton);
+    public View getGroupView(final int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
 
         if(convertView == null){
             convertView = LayoutInflater.from(context).inflate(R.layout.drawer_layout_menu_item, parent, false);
-            Button addBtn=convertView.findViewById(R.id.addButton);
-            addBtn.setOnClickListener(new View.OnClickListener() {
+            Button addInspectionView = convertView.findViewById(R.id.addInspection);
+            addInspectionView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(context,"My Labels",Toast.LENGTH_SHORT).show();
-//                    Intent addLabelActivity = new Intent(context, AddEditReportActivity.class);
-//                    context.startActivity(addLabelActivity);
+                    myItemClickListener.onItemClick(groupPosition);
                 }
             });
         }
 
         TextView menuTitle = convertView.findViewById(R.id.menuTitle);
         ImageView imageView = convertView.findViewById(R.id.menuIcon);
-        Button addBtn=convertView.findViewById(R.id.addButton);
-
+        Button addInspectionView = convertView.findViewById(R.id.addInspection);
         String parentMenuString = parentMenuList.get(groupPosition);
         menuTitle.setText(parentMenuString);
         if(parentMenuString.equals("Claim Details")){
@@ -100,7 +104,7 @@ public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
 
         }else{
             imageView.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_damage));
-           addBtn.setVisibility(View.VISIBLE);
+            addInspectionView.setVisibility(View.VISIBLE);
         }
         return convertView;
     }
