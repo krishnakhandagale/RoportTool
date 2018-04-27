@@ -24,9 +24,11 @@
         android:text="Menu Title" />
     <Button
         android:id="@+id/addInspection"
-        android:visibility="invisible"
-        android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:text="Add">
-    </Button>
+        android:visibility="invisible"
+        android:layout_height="35dp"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:text="Add"
+        android:textSize="12dp"/>
 </LinearLayout>

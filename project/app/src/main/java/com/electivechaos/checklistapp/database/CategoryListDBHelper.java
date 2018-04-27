@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.electivechaos.checklistapp.Pojo.Category;
 import com.electivechaos.checklistapp.Pojo.Label;
@@ -46,7 +47,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         String CATEGORY_LABELS_TABLE = "CREATE TABLE " + TABLE_CATEGORY_LABELS + "("
                 + KEY_LABEL_NAME + " TEXT," + KEY_LABEL_DESCRIPTION + " TEXT,"
                 + KEY_FK_CATEGORY_ID + " TEXT,"+ "FOREIGN KEY("+ KEY_FK_CATEGORY_ID +") REFERENCES "+TABLE_MASTER_CATEGORY+"("+KEY_CATEGORY_ID+ ")"+ " ON DELETE CASCADE)";
-
+        Log.d("CREATE TABLE FOR LABEL", CATEGORY_LABELS_TABLE);
         db.execSQL(CREATE_CATEGORY_DETAILS_TABLE);
         db.execSQL(CATEGORY_LABELS_TABLE);
     }
@@ -108,7 +109,8 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(KEY_LABEL_NAME, label.getName());
-        contentValues.put(KEY_CATEGORY_DESCRIPTION, label.getDescription());
+        contentValues.put(KEY_LABEL_DESCRIPTION, label.getDescription());
+        contentValues.put(KEY_FK_CATEGORY_ID, label.getCategoryID());
         return  db.insert(TABLE_CATEGORY_LABELS,null,contentValues);
     }
 
@@ -118,7 +120,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         contentValues.put(KEY_CATEGORY_NAME, label.getName());
         contentValues.put(KEY_CATEGORY_DESCRIPTION, label.getDescription());
         contentValues.put(KEY_FK_CATEGORY_ID, label.getCategoryID());
-        return  db.update(TABLE_MASTER_CATEGORY, contentValues,KEY_LABEL_ID+"="+label.getID(),null);
+        return  db.update(TABLE_CATEGORY_LABELS, contentValues,KEY_LABEL_ID+"="+label.getID(),null);
     }
     public ArrayList<Label> getLabelList(){
 

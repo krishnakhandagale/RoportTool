@@ -41,7 +41,7 @@
         tools:layout_editor_absoluteY="122dp" />
 
     <Button
-        android:id="@+id/addButton"
+        android:id="@+id/addLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Add Label"

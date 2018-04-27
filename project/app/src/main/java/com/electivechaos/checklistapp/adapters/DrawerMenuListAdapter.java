@@ -17,7 +17,10 @@ import android.widget.Toast;
 
 import com.electivechaos.checklistapp.AddEditCategoryActivity;
 import com.electivechaos.checklistapp.AddEditLabelActivity;
+import com.electivechaos.checklistapp.AddEditReportActivity;
+import com.electivechaos.checklistapp.AddEditReportSelectedImagesFragment;
 import com.electivechaos.checklistapp.R;
+import com.electivechaos.checklistapp.fragments.AddEditLabelFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -77,21 +80,27 @@ public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
 
         if(convertView == null){
             convertView = LayoutInflater.from(context).inflate(R.layout.drawer_layout_menu_item, parent, false);
+            Button addInspectionView = convertView.findViewById(R.id.addInspection);
+            addInspectionView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(context, "Add inspection clicked", Toast.LENGTH_SHORT).show();
+//                    Intent addLabelActivity = new Intent(context, AddEditLabelActivity.class);
+//                    context.startActivity(addLabelActivity);
 
+                    android.support.v4.app.FragmentManager transactionManager = ((AddEditReportActivity)context).getSupportFragmentManager();
+                    android.support.v4.app.FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
+//                  AddEditReportSelectedImagesFragment df=new AddEditReportSelectedImagesFragment();
+                    fragmentTransaction.replace(R.id.content_frame, new AddEditLabelFragment());
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+                }
+            });
         }
 
         TextView menuTitle = convertView.findViewById(R.id.menuTitle);
         ImageView imageView = convertView.findViewById(R.id.menuIcon);
         Button addInspectionView = convertView.findViewById(R.id.addInspection);
-
-        addInspectionView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, "Add inspection clicked", Toast.LENGTH_SHORT).show();
-                Intent addLabelActivity = new Intent(context, AddEditLabelActivity.class);
-                context.startActivity(addLabelActivity);
-            }
-        });
         String parentMenuString = parentMenuList.get(groupPosition);
         menuTitle.setText(parentMenuString);
         if(parentMenuString.equals("Claim Details")){
@@ -104,7 +113,10 @@ public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
 
         }else{
             imageView.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_damage));
+
             addInspectionView.setVisibility(View.VISIBLE);
+
+
         }
         return convertView;
     }

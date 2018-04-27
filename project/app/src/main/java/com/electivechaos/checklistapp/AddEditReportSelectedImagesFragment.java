@@ -1169,13 +1169,13 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        reportsListDBHelper = ReportsListDBHelper.getInstance(context);
-        permissionPermissionUtilities = new PermissionUtilities();
-        try {
-            sendReportDBchangeSignal = (SendReportDBChangeSignal) getActivity();
-        } catch (ClassCastException e) {
-            throw new ClassCastException("Error in retrieving data. Please try again");
-        }
+//        reportsListDBHelper = ReportsListDBHelper.getInstance(context);
+//        permissionPermissionUtilities = new PermissionUtilities();
+//        try {
+//            sendReportDBchangeSignal = (SendReportDBChangeSignal) getActivity();
+//        } catch (ClassCastException e) {
+//            throw new ClassCastException("Error in retrieving data. Please try again");
+//        }
     }
 
     public interface SendReportDBChangeSignal {

@@ -1,26 +1,34 @@
-package com.electivechaos.checklistapp;
+package com.electivechaos.checklistapp.fragments;
 
 import android.app.AlertDialog;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.electivechaos.checklistapp.AddEditLabelActivity;
+import com.electivechaos.checklistapp.AddEditReportSelectedImagesFragment;
 import com.electivechaos.checklistapp.Pojo.Category;
 import com.electivechaos.checklistapp.Pojo.ImageDetailsPOJO;
 import com.electivechaos.checklistapp.Pojo.Label;
+import com.electivechaos.checklistapp.R;
 import com.electivechaos.checklistapp.adapters.CustomCategoryPopUpAdapter;
 import com.electivechaos.checklistapp.database.CategoryListDBHelper;
 
 import java.util.ArrayList;
 
-public class AddEditLabelActivity extends AppCompatActivity {
+/**
+ * Created by barkhasikka on 27/04/18.
+ */
+
+public class AddEditLabelFragment extends Fragment {
     private ArrayList<Category> categories = null;
     static CategoryListDBHelper mCategoryList;
     private int selectedCategoryPosition = -1;
@@ -31,33 +39,30 @@ public class AddEditLabelActivity extends AppCompatActivity {
     private ArrayList<ImageDetailsPOJO> selectedImagesList = null;
     private ArrayList<ImageDetailsPOJO> selectedElevationImagesList = new ArrayList<>();
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_edit_label);
-        final TextView categoryTextView = findViewById(R.id.category_selection);
-//        if(savedInstanceState != null){
-//            selectedCategoryPosition = savedInstanceState.getInt("selectedCategoryPosition",-1);
-//            if(selectedCategoryPosition > -1){
-//                imgCategory = categories.get(selectedCategoryPosition).getCategoryName();
-//            }
-//        }
-        //fetch from DB
-        mCategoryList = new CategoryListDBHelper(this);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View layoutView = inflater.inflate(R.layout.activity_add_edit_label, container,
+                false);
+        final TextView categoryTextView = layoutView.findViewById(R.id.category_selection);
+        final TextView labelName = layoutView.findViewById(R.id.name);
+        final TextView labelDescription = layoutView.findViewById(R.id.description);
+
+        mCategoryList = new CategoryListDBHelper(getContext());
         categories = mCategoryList.getCategoryList();
-        final CustomCategoryPopUpAdapter adapter = new CustomCategoryPopUpAdapter(this, categories);
+        final CustomCategoryPopUpAdapter adapter = new CustomCategoryPopUpAdapter(getContext(), categories);
         categoryTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final AlertDialog.Builder ad = new AlertDialog.Builder(AddEditLabelActivity.this);
+                final AlertDialog.Builder ad = new AlertDialog.Builder(getContext());
                 ad.setCancelable(true);
                 ad.setTitle("Select Category");
 
-                ad.setSingleChoiceItems(adapter, selectedCategoryPosition,  new DialogInterface.OnClickListener() {
+                ad.setSingleChoiceItems(adapter, selectedCategoryPosition, new DialogInterface.OnClickListener() {
 
                     @Override
                     public void onClick(DialogInterface dialogInterface, int pos) {
-                        selectedCategoryPosition =  pos;
+                        selectedCategoryPosition = pos;
                         categoryTextView.setText(categories.get(pos).getCategoryName());
                         selectedCategoryID = categories.get(pos).getCategoryId();
                         dialogInterface.dismiss();
@@ -70,27 +75,29 @@ public class AddEditLabelActivity extends AppCompatActivity {
 
         });
 
-        Button addInspectionView = findViewById(R.id.addLabel);
+        Button addInspectionView = layoutView.findViewById(R.id.addLabel);
         addInspectionView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Label label = new Label();
                 label.setCategoryID(selectedCategoryID);
-                final TextView labelName = findViewById(R.id.name);
-                final TextView labelDescription = findViewById(R.id.description);
                 label.setName(labelName.toString());
                 label.setDescription(labelDescription.toString());
                 mCategoryList.addLabel(label);
 
-                android.support.v4.app.FragmentManager transactionManager = getSupportFragmentManager();
-                android.support.v4.app.FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
+                FragmentManager fragmentManager = getFragmentManager();
+                android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 //                AddEditReportSelectedImagesFragment df=new AddEditReportSelectedImagesFragment();
                 fragmentTransaction.replace(R.id.content_frame, new AddEditReportSelectedImagesFragment());
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }
         });
+        return layoutView;
     }
+    @Override
+    public void onSaveInstanceState (@NonNull Bundle outState){
+        super.onSaveInstanceState(outState);
 
-
+    }
 }
