@@ -1,26 +1,16 @@
 package com.electivechaos.checklistapp.adapters;
 
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
-import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.electivechaos.checklistapp.AddEditCategoryActivity;
-import com.electivechaos.checklistapp.AddEditLabelActivity;
-import com.electivechaos.checklistapp.AddEditReportActivity;
-import com.electivechaos.checklistapp.AddEditReportSelectedImagesFragment;
 import com.electivechaos.checklistapp.R;
-import com.electivechaos.checklistapp.fragments.AddEditLabelFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -94,11 +84,7 @@ public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
             addInspectionView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    Toast.makeText(context, "Add inspection clicked", Toast.LENGTH_SHORT).show();
-//                    Intent addLabelActivity = new Intent(context, AddEditLabelActivity.class);
-//                    context.startActivity(addLabelActivity);
                     myItemClickListener.onItemClick(groupPosition);
-
                 }
             });
         }
@@ -118,10 +104,7 @@ public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
 
         }else{
             imageView.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_damage));
-
             addInspectionView.setVisibility(View.VISIBLE);
-
-
         }
         return convertView;
     }

@@ -21,7 +21,7 @@
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCA-2HMYGs_AiUC3cvCDw49o2AuHkp5A40" />
+            android:value="AIzaSyBPoSbE7lZsYhdnLNzZ3whZHqTEOcAVrBI" />
 
         <activity android:name=".AddEditReportActivity" />
         <activity android:name=".MainTabsActivity">

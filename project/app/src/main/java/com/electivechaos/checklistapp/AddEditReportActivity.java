@@ -11,7 +11,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,7 +21,6 @@ import com.electivechaos.checklistapp.Pojo.ImageDetailsPOJO;
 import com.electivechaos.checklistapp.Pojo.Label;
 import com.electivechaos.checklistapp.adapters.DrawerMenuListAdapter;
 import com.electivechaos.checklistapp.fragments.AddEditLabelFragment;
-import com.electivechaos.checklistapp.fragments.CategoryWiseImagesFragment;
 import com.electivechaos.checklistapp.fragments.CauseOfLossFragment;
 import com.electivechaos.checklistapp.fragments.ClaimDetailsFragment;
 import com.electivechaos.checklistapp.fragments.ClaimDetailsTabsFragment;
@@ -49,17 +47,28 @@ public class AddEditReportActivity extends AppCompatActivity implements ClaimDet
 
     private String reportId = null;
     private String reportPath = null;
-    private ArrayList<ImageDetailsPOJO> selectedImagesList = null;
+    private ArrayList<ImageDetailsPOJO> selectedImagesList = new ArrayList<>();
     private ArrayList<ImageDetailsPOJO> selectedElevationImagesList = new ArrayList<>();
     HashMap<String,List<String>> childMenuItems = new HashMap<>();
     List<String> inspectionChildMenu = new ArrayList<>();
-//    DrawerMenuListAdapter.MyItemClickListener myItemClickListener;
 
+
+    private static final String MY_FRAGMENT_TAG = "AddEditReportSelectedImagesFragment";
+    private AddEditReportSelectedImagesFragment myFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        myItemClickListener = new AddEditReportActivity();
+        if (savedInstanceState == null) {
+           // myFragment = AddEditReportSelectedImagesFragment.newInstance();
+          /*  getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.content_frame, myFragment, MY_FRAGMENT_TAG)
+                    .commit();*/
+        } else {
+            myFragment = (AddEditReportSelectedImagesFragment) getSupportFragmentManager()
+                    .findFragmentByTag(MY_FRAGMENT_TAG);
+        }
         if(savedInstanceState != null){
 
             String tName = savedInstanceState.getString("tabName").toString();
@@ -103,11 +112,15 @@ public class AddEditReportActivity extends AppCompatActivity implements ClaimDet
                     reportId =  getIntent().getExtras().getString("reportId");
                     reportPath =  getIntent().getExtras().getString("reportPath");
                 }*/
-                FragmentManager transactionManager = getSupportFragmentManager();
+
+                myFragment = (AddEditReportSelectedImagesFragment) getSupportFragmentManager()
+                        .findFragmentByTag(MY_FRAGMENT_TAG);
+              /*  FragmentManager transactionManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
-                fragmentTransaction.replace(R.id.content_frame,new AddEditReportSelectedImagesFragment());
+                AddEditReportSelectedImagesFragment ae=new AddEditReportSelectedImagesFragment();
+                fragmentTransaction.replace(R.id.content_frame,ae.initFragment(selectedImagesList,reportId,reportPath,selectedElevationImagesList));
                 fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
+                fragmentTransaction.commit();*/
                 tabName="AddEditReportSelectedImagesFragment";
             }
             else {
@@ -342,10 +355,6 @@ public class AddEditReportActivity extends AppCompatActivity implements ClaimDet
 
     @Override
     public void onLabelDataReceive(Label label) {
-        Log.d("onLabelDataReceive", "onLabelDataReceive: "+label.getName()+" "+ label.getCategoryID());
-//        inspectionChildMenu.add(label.getName());
-//        childMenuItems.put("Inspection", inspectionChildMenu);
-//        mExpandableListView
         DrawerMenuListAdapter adapter =
                 (DrawerMenuListAdapter) mExpandableListView.getExpandableListAdapter();
        adapter.getChildList(3).add(label.getName().toString());
