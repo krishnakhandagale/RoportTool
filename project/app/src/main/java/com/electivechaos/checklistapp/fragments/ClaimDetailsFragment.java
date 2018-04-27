@@ -59,8 +59,8 @@ public class ClaimDetailsFragment  extends Fragment implements ClaimDetailsTabsF
         ClaimDetailsTabsPagerAdapter adapter=new ClaimDetailsTabsPagerAdapter(getActivity().getSupportFragmentManager(),tabIndex);
         viewPager.setAdapter(adapter);
 
-       TabLayout.Tab tab=tabLayout.getTabAt(tabIndex);
-        tab.select();
+     /*  TabLayout.Tab tab=tabLayout.getTabAt(tabIndex);
+        tab.select();*/
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener(){
             @Override
@@ -87,6 +87,8 @@ public class ClaimDetailsFragment  extends Fragment implements ClaimDetailsTabsF
                 }
                 else{
                     tabIndex=position;
+                    tab=tabLayout.getTabAt(position);
+                    tab.select();
                     Toast.makeText(getContext(),"TAB INDEX"+position+"..."+tab.getText(),Toast.LENGTH_SHORT).show();
 
                 }

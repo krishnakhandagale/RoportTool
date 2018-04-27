@@ -13,6 +13,12 @@ import com.electivechaos.checklistapp.R;
 public class LossTypeFragment extends Fragment {
 
 
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putInt("tabIndex",2);
+        super.onSaveInstanceState(outState);
+
+    }
 
     @Nullable
     @Override
