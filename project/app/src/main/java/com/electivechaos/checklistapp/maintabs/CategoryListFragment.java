@@ -61,8 +61,8 @@ public class CategoryListFragment  extends Fragment {
         if (requestCode == 1) {
             if (resultCode == Activity.RESULT_OK) {
                 Bundle dataFromActivity = data.getBundleExtra("data");
-                String categoryName = dataFromActivity.get("categoryName").toString();
-                String categoryDescription = dataFromActivity.get("categoryDesc").toString();
+                String categoryName = dataFromActivity.get("name").toString();
+                String categoryDescription = dataFromActivity.get("desc").toString();
                //add to category database
                 Category category = new Category();
                 category.setCategoryName(categoryName);
@@ -75,9 +75,9 @@ public class CategoryListFragment  extends Fragment {
         if (requestCode == 2) {
             if (resultCode == 2) {
                 Bundle dataFromActivity = data.getBundleExtra("data");
-                String categoryName = dataFromActivity.get("categoryName").toString();
-                String categoryDescription = dataFromActivity.get("categoryDesc").toString();
-                int categoryID = Integer.parseInt(dataFromActivity.get("categoryId").toString());
+                String categoryName = dataFromActivity.get("name").toString();
+                String categoryDescription = dataFromActivity.get("desc").toString();
+                int categoryID = Integer.parseInt(dataFromActivity.get("id").toString());
                 //add to category database
                 Category category = new Category();
                 category.setCategoryName(categoryName);
@@ -91,7 +91,7 @@ public class CategoryListFragment  extends Fragment {
         if (requestCode == 3) {
             if (resultCode == 3) {
                 Bundle dataFromActivity = data.getBundleExtra("data");
-                String categoryID = dataFromActivity.get("categoryId").toString();
+                String categoryID = dataFromActivity.get("id").toString();
                 mCategoryListDBHelper.deleteCategoryEntry(categoryID);
                 updateCategoryList();
             }

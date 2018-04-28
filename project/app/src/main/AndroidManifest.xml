@@ -35,7 +35,8 @@
         <activity android:name=".SingleImageDetailsActivity" />
         <activity android:name=".AddEditCategoryActivity" />
         <activity android:name=".ImageSliderActivity" />
-        <activity android:name=".AddEditLabelActivity"></activity>
+        <activity android:name=".AddEditLabelActivity" />
+        <activity android:name=".AddEditCauseOfLossActivity"></activity>
     </application>
 
 </manifest>

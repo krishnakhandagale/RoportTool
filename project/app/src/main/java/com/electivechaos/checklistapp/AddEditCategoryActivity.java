@@ -21,7 +21,7 @@ import java.util.ArrayList;
 public class AddEditCategoryActivity extends AppCompatActivity{
     private  String intentCategoryTitle = null;
     private  String intentCategoryDescription = null;
-    private  int categoryID = 0;
+    private  int categoryID = -1;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +53,7 @@ public class AddEditCategoryActivity extends AppCompatActivity{
                 EditText categoryDescription = (EditText) findViewById(R.id.editTextCategoryDescription);
                 String categoryDescriptionString = categoryDescription.getText().toString();
                 Bundle data = new Bundle();//create bundle instance
-                if(categoryID == 0) {
+                if(categoryID == -1) {
                     Log.d("------------->>", "onClick: THIS IS ADD CATEGORY EVENT");
 
                     data.putString("categoryName", categoryNameString);//put string to pass with a key value

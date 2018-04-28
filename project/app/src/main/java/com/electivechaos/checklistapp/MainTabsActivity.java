@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 
 import com.electivechaos.checklistapp.fragments.CauseOfLossFragment;
 import com.electivechaos.checklistapp.maintabs.CategoryListFragment;
+import com.electivechaos.checklistapp.maintabs.CauseOfLossListFragment;
 import com.electivechaos.checklistapp.maintabs.ReportListFragment;
 
 public class MainTabsActivity extends BaseActivity {
@@ -60,14 +61,14 @@ public class MainTabsActivity extends BaseActivity {
                 Fragment fragment = new CategoryListFragment();
                 return fragment;
             }else {
-                Fragment fragment = new CauseOfLossFragment();
+                Fragment fragment = new CauseOfLossListFragment();
                 return fragment;
             }
 
         }
         @Override
         public int getCount() {
-            return 2;
+            return 3;
         }
 
         @Override
