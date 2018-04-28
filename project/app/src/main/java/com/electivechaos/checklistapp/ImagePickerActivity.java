@@ -23,7 +23,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
-import com.electivechaos.checklistapp.Pojo.Image;
+import com.electivechaos.checklistapp.pojo.Image;
 import com.electivechaos.checklistapp.listeners.FolderClickListener;
 import com.electivechaos.checklistapp.listeners.ImageClickListener;
 import com.electivechaos.checklistapp.utils.CommonUtils;

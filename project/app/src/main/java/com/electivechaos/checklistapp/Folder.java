@@ -1,6 +1,6 @@
 package com.electivechaos.checklistapp;
 
-import com.electivechaos.checklistapp.Pojo.Image;
+import com.electivechaos.checklistapp.pojo.Image;
 
 
 import java.util.ArrayList;

@@ -1,6 +1,6 @@
 package com.electivechaos.checklistapp.listeners;
 
-import com.electivechaos.checklistapp.Pojo.Image;
+import com.electivechaos.checklistapp.pojo.Image;
 
 import java.util.List;
 

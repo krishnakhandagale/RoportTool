@@ -18,9 +18,9 @@ import android.widget.TextView;
 
 import com.electivechaos.checklistapp.AddEditReportActivity;
 import com.electivechaos.checklistapp.AddEditReportSelectedImagesFragment;
-import com.electivechaos.checklistapp.Pojo.Category;
-import com.electivechaos.checklistapp.Pojo.ImageDetailsPOJO;
-import com.electivechaos.checklistapp.Pojo.Label;
+import com.electivechaos.checklistapp.pojo.Category;
+import com.electivechaos.checklistapp.pojo.ImageDetailsPOJO;
+import com.electivechaos.checklistapp.pojo.Label;
 import com.electivechaos.checklistapp.R;
 import com.electivechaos.checklistapp.adapters.CustomCategoryPopUpAdapter;
 import com.electivechaos.checklistapp.database.CategoryListDBHelper;

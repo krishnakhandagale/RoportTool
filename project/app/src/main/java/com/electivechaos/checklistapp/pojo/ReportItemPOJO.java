@@ -1,4 +1,4 @@
-package com.electivechaos.checklistapp.Pojo;
+package com.electivechaos.checklistapp.pojo;
 
 import java.util.ArrayList;
 

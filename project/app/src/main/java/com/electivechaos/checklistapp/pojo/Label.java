@@ -1,4 +1,4 @@
-package com.electivechaos.checklistapp.Pojo;
+package com.electivechaos.checklistapp.pojo;
 
 /**
  * Created by barkhasikka on 26/04/18.

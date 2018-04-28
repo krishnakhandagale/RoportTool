@@ -6,9 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.electivechaos.checklistapp.Pojo.Category;
-import com.electivechaos.checklistapp.Pojo.ImageDetailsPOJO;
-import com.electivechaos.checklistapp.Pojo.ReportItemPOJO;
+import com.electivechaos.checklistapp.pojo.Category;
+import com.electivechaos.checklistapp.pojo.ImageDetailsPOJO;
+import com.electivechaos.checklistapp.pojo.ReportItemPOJO;
 
 import java.util.ArrayList;
 import java.util.List;

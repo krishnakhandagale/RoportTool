@@ -1,4 +1,4 @@
-package com.electivechaos.checklistapp.Pojo;
+package com.electivechaos.checklistapp.pojo;
 
 public class Category {
     String categoryName;

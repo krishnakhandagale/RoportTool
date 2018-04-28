@@ -23,8 +23,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.electivechaos.checklistapp.Pojo.Image;
-import com.electivechaos.checklistapp.Pojo.ImageDetailsPOJO;
+import com.electivechaos.checklistapp.pojo.Image;
+import com.electivechaos.checklistapp.pojo.ImageDetailsPOJO;
 import com.electivechaos.checklistapp.database.ReportsListDBHelper;
 import com.electivechaos.checklistapp.listeners.OnLastSelectionChangeListener;
 import java.util.ArrayList;
