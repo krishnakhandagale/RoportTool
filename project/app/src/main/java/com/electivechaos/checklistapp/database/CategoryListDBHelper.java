@@ -62,7 +62,8 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
 
     public int deleteCategoryEntry(String categoryId){
         SQLiteDatabase db = this.getWritableDatabase();
-        return  db.delete(TABLE_MASTER_CATEGORY,"id=?",new String[]{categoryId});
+        String whereClause = KEY_CATEGORY_ID+"=?";
+        return  db.delete(TABLE_MASTER_CATEGORY,whereClause,new String[]{categoryId});
     }
 
     public Category getCategory(String categoryId){
@@ -122,7 +123,8 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
 
     public int deleteLabel(String labelID){
         SQLiteDatabase db = this.getWritableDatabase();
-        return  db.delete(TABLE_CATEGORY_LABELS,"id=?",new String[]{labelID});
+        String whereClause = KEY_LABEL_ID+"=?";
+        return  db.delete(TABLE_CATEGORY_LABELS, whereClause,new String[]{labelID});
     }
 
     public long addLabel(Label label){

@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 
+import com.electivechaos.checklistapp.fragments.CauseOfLossFragment;
 import com.electivechaos.checklistapp.maintabs.CategoryListFragment;
 import com.electivechaos.checklistapp.maintabs.ReportListFragment;
 
@@ -55,8 +56,11 @@ public class MainTabsActivity extends BaseActivity {
             if( i ==0 ){
                 Fragment fragment = new ReportListFragment();
                 return fragment;
-            }else{
+            }else if(i == 1){
                 Fragment fragment = new CategoryListFragment();
+                return fragment;
+            }else {
+                Fragment fragment = new CauseOfLossFragment();
                 return fragment;
             }
 
@@ -70,8 +74,10 @@ public class MainTabsActivity extends BaseActivity {
         public CharSequence getPageTitle(int position) {
             if(position == 0){
                 return  "Report List";
-            }else {
+            }else if(position == 1){
                 return  "Categories";
+            }else {
+                return "Cause Of Loss";
             }
         }
     }
