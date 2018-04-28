@@ -64,6 +64,7 @@ public class AddEditReportActivity extends AppCompatActivity implements ClaimDet
         } else {
             myFragment = (AddEditReportSelectedImagesFragment) getSupportFragmentManager()
                     .findFragmentByTag(MY_FRAGMENT_TAG);
+            tabName="AddEditReportSelectedImagesFragment";
         }
 
         if(savedInstanceState != null){

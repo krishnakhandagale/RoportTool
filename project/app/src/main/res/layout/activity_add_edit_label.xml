@@ -1,32 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:layout_width="match_parent"
+android:layout_height="match_parent">
+
+<android.support.design.widget.AppBarLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:layout_scrollFlags=""
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+        <TextView
+            android:id="@+id/appBarTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_toEndOf="@+id/btn_back"
+            android:layout_toRightOf="@+id/btn_back"
+            android:text="Label Details"
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
+    </android.support.v7.widget.Toolbar>
+</android.support.design.widget.AppBarLayout>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.electivechaos.checklistapp.AddEditLabelActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:layout_marginTop="60dp">
 
 
-    <EditText
-        android:id="@+id/name"
-        android:layout_width="380dp"
-        android:layout_height="47dp"
-        android:ems="10"
-        android:hint="Enter Label Name"
-        android:inputType="textPersonName"
-        tools:layout_editor_absoluteX="7dp"
-        tools:layout_editor_absoluteY="0dp" />
+    <android.support.design.widget.TextInputLayout
+        android:layout_margin="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <EditText
-        android:id="@+id/description"
-        android:layout_width="375dp"
-        android:layout_height="42dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:hint="Enter Label Description"
-        tools:layout_editor_absoluteX="5dp"
-        tools:layout_editor_absoluteY="61dp" />
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/enter_report_description" />
+    </android.support.design.widget.TextInputLayout>
+    <android.support.design.widget.TextInputLayout
+        android:layout_margin="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/enter_report_description" />
+    </android.support.design.widget.TextInputLayout>
 
     <TextView
         android:id="@+id/category_selection"
@@ -42,10 +79,13 @@
 
     <Button
         android:id="@+id/addLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add Label"
-        tools:layout_editor_absoluteX="158dp"
-        tools:layout_editor_absoluteY="222dp" />
-
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_gravity="bottom"
+        android:background="@color/yellow"
+        android:text="ADD LABEL"
+        android:textAlignment="center"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/white_color" />
 </LinearLayout>
+</android.support.design.widget.CoordinatorLayout>
