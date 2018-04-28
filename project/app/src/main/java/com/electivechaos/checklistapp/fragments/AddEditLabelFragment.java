@@ -36,7 +36,8 @@ public class AddEditLabelFragment extends Fragment {
     static CategoryListDBHelper mCategoryList;
     private int selectedCategoryPosition = -1;
     int selectedCategoryID;
-    int editLabelID;
+    long editLabelID = -1;
+    int childPosition;
 
     private String reportId = null;
     private String reportPath = null;
@@ -47,8 +48,14 @@ public class AddEditLabelFragment extends Fragment {
 
     public interface AddEditLabelInterface {
         void onLabelDataReceive(Label label);
+        void onLabelDataEdited(Label label, int childPosition);
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+    }
 
     @Nullable
     @Override
@@ -65,8 +72,11 @@ public class AddEditLabelFragment extends Fragment {
         if(getArguments() != null) {
             labelName.setText( getArguments().getString("labelName"));
             labelDescription.setText(getArguments().getString("labelDesc"));
-            editLabelID = getArguments().getInt("labelID");
+            editLabelID = getArguments().getLong("labelID");
             selectedCategoryID = getArguments().getInt("categoryID");
+            childPosition = getArguments().getInt("childPosition");
+            Category selectedCategory = mCategoryList.getCategory(String.valueOf(selectedCategoryID));
+            categoryTextView.setText(selectedCategory.getCategoryName());
         }
 
 
@@ -104,13 +114,15 @@ public class AddEditLabelFragment extends Fragment {
                 label.setCategoryID(selectedCategoryID);
                 label.setName(labelName.getText().toString());
                 label.setDescription(labelDescription.getText().toString());
-                if(editLabelID != 0) {
+                if(editLabelID != -1) {
                     label.setID(editLabelID);
                     mCategoryList.updateLabel(label);
+                    mCallback.onLabelDataEdited(label, childPosition);
                 }else {
-                    mCategoryList.addLabel(label);
+                    label.setID(mCategoryList.addLabel(label));
+                    mCallback.onLabelDataReceive(label);
                 }
-                mCallback.onLabelDataReceive(label);
+
                 FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.content_frame, new AddEditReportSelectedImagesFragment());

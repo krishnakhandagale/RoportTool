@@ -17,7 +17,7 @@ import java.util.ArrayList;
  */
 
 public class CategoryListDBHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 15;
+    private static final int DATABASE_VERSION = 16;
 
     // Database Name
     private static final String DATABASE_NAME = "master_categories_list";
@@ -26,11 +26,11 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
     private static final String TABLE_CATEGORY_LABELS = "category_label";
 
     // Master Category list Table Columns names
-    private static final String KEY_CATEGORY_ID = "id";
+    private static final String KEY_CATEGORY_ID = "_id";
     private static final String KEY_CATEGORY_NAME = "name";
     private static final String KEY_CATEGORY_DESCRIPTION  = "description";
 
-    private static final String KEY_LABEL_ID = "id";
+    private static final String KEY_LABEL_ID = "_id";
     private static final String KEY_LABEL_NAME = "name";
     private static final String KEY_LABEL_DESCRIPTION  = "description";
     private static final String KEY_FK_CATEGORY_ID = "category_id_fk";
@@ -45,8 +45,8 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 +KEY_CATEGORY_ID +" INTEGER PRIMARY KEY AUTOINCREMENT DEFAULT 0,"+ KEY_CATEGORY_NAME + " TEXT,"+ KEY_CATEGORY_DESCRIPTION +" TEXT "+")";
 
         String CATEGORY_LABELS_TABLE = "CREATE TABLE " + TABLE_CATEGORY_LABELS + "("
-                + KEY_LABEL_NAME + " TEXT," + KEY_LABEL_DESCRIPTION + " TEXT,"
-                + KEY_FK_CATEGORY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT DEFAULT 0,"+ "FOREIGN KEY("+ KEY_FK_CATEGORY_ID +") REFERENCES "+TABLE_MASTER_CATEGORY+"("+KEY_CATEGORY_ID+ ")"+ " ON DELETE CASCADE)";
+                + KEY_LABEL_NAME + " TEXT," + KEY_LABEL_DESCRIPTION + " TEXT," + KEY_FK_CATEGORY_ID + " INTEGER,"
+                + KEY_LABEL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT DEFAULT 0,"+ "FOREIGN KEY("+ KEY_FK_CATEGORY_ID +") REFERENCES "+TABLE_MASTER_CATEGORY+"("+KEY_CATEGORY_ID+ ")"+ " ON DELETE CASCADE)";
         Log.d("CREATE TABLE FOR LABEL", CATEGORY_LABELS_TABLE);
         db.execSQL(CREATE_CATEGORY_DETAILS_TABLE);
         db.execSQL(CATEGORY_LABELS_TABLE);
@@ -63,6 +63,26 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
     public int deleteCategoryEntry(String categoryId){
         SQLiteDatabase db = this.getWritableDatabase();
         return  db.delete(TABLE_MASTER_CATEGORY,"id=?",new String[]{categoryId});
+    }
+
+    public Category getCategory(String categoryId){
+        Category category = null;
+        SQLiteDatabase db = getReadableDatabase();
+        String where = KEY_CATEGORY_ID + " = ?";
+        String[] whereArgs = {categoryId};
+        Cursor cursor = db.query(TABLE_MASTER_CATEGORY, null, where, whereArgs, null, null, null);
+        try {
+            if (cursor.moveToFirst()) {
+                // read column data
+                category = new Category();
+                category.setCategoryId(cursor.getInt(0));
+                category.setCategoryName(cursor.getString(1));
+                category.setCategoryDescription(cursor.getString(2));
+            }
+        } finally {
+            cursor.close();
+        }
+        return category;
     }
 
     public long addCategory(Category category){

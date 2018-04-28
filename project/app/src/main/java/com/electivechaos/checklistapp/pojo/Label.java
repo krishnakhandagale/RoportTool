@@ -7,14 +7,14 @@ package com.electivechaos.checklistapp.pojo;
 public class Label {
     String name;
     String description;
-    int id;
+    long id;
     int categoryID;
 
-    public int getID() {
+    public long getID() {
         return id;
     }
 
-    public void setID(int id) {
+    public void setID(long id) {
         this.id = id;
     }
 

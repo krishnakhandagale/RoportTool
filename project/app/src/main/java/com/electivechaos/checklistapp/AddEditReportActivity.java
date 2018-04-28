@@ -351,17 +351,18 @@ public class AddEditReportActivity extends AppCompatActivity implements ClaimDet
     }
 
     @Override
-    public void onEditLabelClick(Label label) {
+    public void onEditLabelClick(Label label, int childPosition) {
         DrawerMenuListAdapter adapter =
                 (DrawerMenuListAdapter) mExpandableListView.getExpandableListAdapter();
        FragmentManager transactionManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
         AddEditLabelFragment addEditLabelFragment = new AddEditLabelFragment();
         Bundle bundle = new Bundle();
-        bundle.putInt("labelID", label.getID());
+        bundle.putLong("labelID", label.getID());
         bundle.putString("labelName", label.getName());
         bundle.putString("labelDesc", label.getDescription());
         bundle.putInt("categoryID", label.getCategoryID());
+        bundle.putInt("childPosition", childPosition);
         addEditLabelFragment.setArguments(bundle);
         fragmentTransaction.replace(R.id.content_frame, addEditLabelFragment);
         fragmentTransaction.addToBackStack(null);
@@ -374,5 +375,13 @@ public class AddEditReportActivity extends AppCompatActivity implements ClaimDet
        labelList.add(label);
        childMenuItems.put("Inspection", labelList);
        drawerMenuListAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onLabelDataEdited(Label label, int childPosition) {
+        List<Label> labelList =  childMenuItems.get("Inspection");
+        labelList.set(childPosition, label);
+        childMenuItems.put("Inspection", labelList);
+        drawerMenuListAdapter.notifyDataSetChanged();
     }
 }
