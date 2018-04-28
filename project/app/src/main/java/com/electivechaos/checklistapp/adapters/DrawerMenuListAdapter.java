@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.electivechaos.checklistapp.Pojo.Label;
+import com.electivechaos.checklistapp.pojo.Label;
 import com.electivechaos.checklistapp.R;
 
 import java.util.ArrayList;
