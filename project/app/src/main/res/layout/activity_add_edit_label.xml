@@ -80,7 +80,7 @@ android:layout_height="match_parent">
     <Button
         android:id="@+id/addLabel"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="40dp"
         android:layout_gravity="bottom"
         android:background="@color/yellow"
         android:text="ADD LABEL"
