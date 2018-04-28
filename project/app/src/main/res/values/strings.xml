@@ -77,4 +77,5 @@
     <string name="enter_client_name">Client name</string>
     <string name="enter_report_description">Enter description</string>
     <string name="enter_report_title">Enter title</string>
+    <string name="add_label">ADD LABEL</string>
 </resources>
