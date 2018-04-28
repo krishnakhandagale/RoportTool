@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckedTextView;
 
-import com.electivechaos.checklistapp.Pojo.Category;
+import com.electivechaos.checklistapp.pojo.Category;
 import com.electivechaos.checklistapp.R;
 
 import java.util.ArrayList;

@@ -12,8 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.electivechaos.checklistapp.Pojo.Category;
-import com.electivechaos.checklistapp.Pojo.ImageDetailsPOJO;
+import com.electivechaos.checklistapp.pojo.Category;
+import com.electivechaos.checklistapp.pojo.ImageDetailsPOJO;
 import com.electivechaos.checklistapp.adapters.CustomCategoryPopUpAdapter;
 import com.electivechaos.checklistapp.database.ReportsListDBHelper;
 

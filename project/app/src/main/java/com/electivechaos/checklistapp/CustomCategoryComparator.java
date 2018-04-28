@@ -1,6 +1,6 @@
 package com.electivechaos.checklistapp;
 
-import com.electivechaos.checklistapp.Pojo.Category;
+import com.electivechaos.checklistapp.pojo.Category;
 
 import java.util.Comparator;
 

@@ -17,8 +17,8 @@ import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
-import com.electivechaos.checklistapp.Pojo.ImageDetailsPOJO;
-import com.electivechaos.checklistapp.Pojo.Label;
+import com.electivechaos.checklistapp.pojo.ImageDetailsPOJO;
+import com.electivechaos.checklistapp.pojo.Label;
 import com.electivechaos.checklistapp.adapters.DrawerMenuListAdapter;
 import com.electivechaos.checklistapp.fragments.AddEditLabelFragment;
 import com.electivechaos.checklistapp.fragments.CauseOfLossFragment;

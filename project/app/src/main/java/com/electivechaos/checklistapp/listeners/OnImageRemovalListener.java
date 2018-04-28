@@ -2,7 +2,7 @@ package com.electivechaos.checklistapp.listeners;
 
 
 
-import com.electivechaos.checklistapp.Pojo.ImageDetailsPOJO;
+import com.electivechaos.checklistapp.pojo.ImageDetailsPOJO;
 
 import java.util.List;
 
