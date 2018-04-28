@@ -4,10 +4,7 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <!-- Layout to contain contents of main body of screen (drawer will slide over this) -->
+    android:fitsSystemWindows="true">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -33,19 +30,33 @@
             android:layout_height="match_parent" />
 
     </LinearLayout>
-
-
-    <ExpandableListView
-        android:id="@+id/slider_menu"
+    <LinearLayout
+        android:id="@+id/drawer"
         android:layout_width="260dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="@color/grayLight"
-        android:choiceMode="singleChoice"
-        android:divider="@color/whiteColor"
-        android:dividerHeight="1dp"
-        android:groupIndicator="@null" >
-    </ExpandableListView>
+        android:orientation="vertical"
+        android:background="@color/colorPrimaryDark"
+        android:padding="5dp" >
+
+        <TextView
+            android:textColor="@color/white_color"
+            android:textAlignment="center"
+            android:layout_width="match_parent"
+            android:layout_height="72dp"
+            android:textSize="18sp"
+            android:text="@string/welcome"/>
+
+        <ExpandableListView
+            android:id="@+id/slider_menu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:choiceMode="singleChoice"
+            android:divider="@color/whiteColor"
+            android:dividerHeight="1dp"
+            android:groupIndicator="@null" >
+        </ExpandableListView>
+    </LinearLayout>
 
 
 

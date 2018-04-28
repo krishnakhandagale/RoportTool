@@ -36,7 +36,6 @@ public class AddEditReportActivity extends AppCompatActivity implements ClaimDet
     private DrawerLayout mDrawerLayout;
     private ExpandableListView mExpandableListView;
     DrawerMenuListAdapter drawerMenuListAdapter;
-    Fragment mContent;
     String tabName;
 
     private  String reportTitle = null;
@@ -52,13 +51,15 @@ public class AddEditReportActivity extends AppCompatActivity implements ClaimDet
     HashMap<String,List<Label>> childMenuItems = new HashMap<>();
     List<Label> inspectionChildMenu = new ArrayList<>();
 
-
+    ArrayList<String> parentMenuItems;
     private static final String MY_FRAGMENT_TAG = "AddEditReportSelectedImagesFragment";
     private AddEditReportSelectedImagesFragment myFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.activity_main);
 
         if (savedInstanceState == null) {
         } else {
@@ -99,25 +100,9 @@ public class AddEditReportActivity extends AppCompatActivity implements ClaimDet
 
             }
             else if(tName.equalsIgnoreCase("AddEditReportSelectedImagesFragment")){
-              /*  if(getIntent().getExtras()!= null){
-                    selectedImagesList = (ArrayList<ImageDetailsPOJO>) getIntent().getExtras().getSerializable("selectedImagesList");
-                    selectedElevationImagesList = (ArrayList<ImageDetailsPOJO>) getIntent().getExtras().getSerializable("selectedElevationImagesList");
-                    reportTitle =  getIntent().getExtras().getString("reportTitle");
-                    reportDescription =  getIntent().getExtras().getString("reportDescription");
-                    clientName =  getIntent().getExtras().getString("clientName");
-                    claimNumber =  getIntent().getExtras().getString("claimNumber");
-                    address =  getIntent().getExtras().getString("address");
-                    reportId =  getIntent().getExtras().getString("reportId");
-                    reportPath =  getIntent().getExtras().getString("reportPath");
-                }*/
+
 
                 myFragment = (AddEditReportSelectedImagesFragment) getSupportFragmentManager().findFragmentByTag(MY_FRAGMENT_TAG);
-              /*  FragmentManager transactionManager = getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
-                AddEditReportSelectedImagesFragment ae=new AddEditReportSelectedImagesFragment();
-                fragmentTransaction.replace(R.id.content_frame,ae.initFragment(selectedImagesList,reportId,reportPath,selectedElevationImagesList));
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();*/
                 tabName="AddEditReportSelectedImagesFragment";
             }
             else {
@@ -153,17 +138,6 @@ public class AddEditReportActivity extends AppCompatActivity implements ClaimDet
 
 
 
-        setContentView(R.layout.activity_main);
-     /*   FragmentManager transactionManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
-        fragmentTransaction.replace(R.id.content_frame,new ClaimDetailsFragment());
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();*/
-
-
-
-
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionbar = getSupportActionBar();
@@ -174,20 +148,14 @@ public class AddEditReportActivity extends AppCompatActivity implements ClaimDet
 
         mExpandableListView = findViewById(R.id.slider_menu);
 
-        final ArrayList<String> parentMenuItems = new ArrayList<>();
+        parentMenuItems = new ArrayList<>();
+
         parentMenuItems.add("Claim Details");
         parentMenuItems.add("Cause Of Loss");
         parentMenuItems.add("Point Of Origin");
         parentMenuItems.add("Inspection");
 
 
-
-
-
-//        inspectionChildMenu.add("Example1");
-//        inspectionChildMenu.add("Example2");
-//        inspectionChildMenu.add("Example3");
-//        inspectionChildMenu.add("Example4");
 
         childMenuItems.put("Inspection", inspectionChildMenu);
 
@@ -265,15 +233,6 @@ public class AddEditReportActivity extends AppCompatActivity implements ClaimDet
 
     @Override
     public void notifyReportDBChanged() {
-
-//        String tag1 = "android:switcher:" + R.id.viewpager + ":" + 0;
-//        AddEditReportDetailsFragment reportDetailsFragment = (AddEditReportDetailsFragment) getSupportFragmentManager().findFragmentByTag(tag1);
-//        reportDetailsFragment.resetAllData();
-//
-//        String tag2 = "android:switcher:" + R.id.viewpager + ":" + 1;
-//        AddEditReportSelectedImagesFragment selectImagesFragment = (AddEditReportSelectedImagesFragment) getSupportFragmentManager().findFragmentByTag(tag2);
-//        selectImagesFragment.resetAllData();
-
         Intent intent = new Intent();
         setResult(RESULT_OK,intent);
         finish();
@@ -283,9 +242,7 @@ public class AddEditReportActivity extends AppCompatActivity implements ClaimDet
 
     @Override
     public void sendData(JSONObject message) {
-       /* String tag = "android:switcher:" + R.id.viewpager + ":" + 1;
-        AddEditReportSelectedImagesFragment f = (AddEditReportSelectedImagesFragment) getSupportFragmentManager().findFragmentByTag(tag);
-        f.setReceivedImageDetailsData(message);*/
+
     }
 
     @Override
@@ -353,9 +310,7 @@ public class AddEditReportActivity extends AppCompatActivity implements ClaimDet
 
     @Override
     public void onEditLabelClick(Label label, int childPosition) {
-        DrawerMenuListAdapter adapter =
-                (DrawerMenuListAdapter) mExpandableListView.getExpandableListAdapter();
-       FragmentManager transactionManager = getSupportFragmentManager();
+        FragmentManager transactionManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
         AddEditLabelFragment addEditLabelFragment = new AddEditLabelFragment();
         Bundle bundle = new Bundle();

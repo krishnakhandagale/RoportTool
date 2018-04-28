@@ -2,6 +2,7 @@ package com.electivechaos.checklistapp.adapters;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,10 +37,6 @@ public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
         this.myItemClickListener = (MyItemClickListener)context;
     }
 
-    public List<Label> getChildList(int groupPosition) {
-        return childMenuList.get(parentMenuList.get(groupPosition));
-    }
-
     @Override
     public int getGroupCount() {
         return parentMenuList.size();
@@ -59,7 +56,7 @@ public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {
-        return childMenuList.get(parentMenuList.get(groupPosition));
+        return childMenuList.get(parentMenuList.get(groupPosition)).get(childPosition);
     }
 
     @Override
@@ -82,21 +79,27 @@ public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
 
         if(convertView == null){
             convertView = LayoutInflater.from(context).inflate(R.layout.drawer_layout_menu_item, parent, false);
-            Button addInspectionView = convertView.findViewById(R.id.addInspection);
-            addInspectionView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    myItemClickListener.onItemClick(groupPosition);
-                }
-            });
         }
 
         TextView menuTitle = convertView.findViewById(R.id.menuTitle);
         ImageView imageView = convertView.findViewById(R.id.menuIcon);
         Button addInspectionView = convertView.findViewById(R.id.addInspection);
+
         String parentMenuString = parentMenuList.get(groupPosition);
+
+        Log.d("DRAWERMENULISTADAPTER",parentMenuString);
+
         menuTitle.setText(parentMenuString);
+
+        addInspectionView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myItemClickListener.onItemClick(groupPosition);
+            }
+        });
+
         if(parentMenuString.equals("Claim Details")){
+
             imageView.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_reports));
         }else if(parentMenuString.equals("Cause Of Loss")){
             imageView.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_location));
