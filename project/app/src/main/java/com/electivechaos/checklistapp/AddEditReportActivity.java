@@ -59,16 +59,13 @@ public class AddEditReportActivity extends AppCompatActivity implements ClaimDet
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (savedInstanceState == null) {
-           // myFragment = AddEditReportSelectedImagesFragment.newInstance();
-          /*  getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.content_frame, myFragment, MY_FRAGMENT_TAG)
-                    .commit();*/
         } else {
             myFragment = (AddEditReportSelectedImagesFragment) getSupportFragmentManager()
                     .findFragmentByTag(MY_FRAGMENT_TAG);
         }
+
         if(savedInstanceState != null){
 
             String tName = savedInstanceState.getString("tabName").toString();
@@ -113,8 +110,7 @@ public class AddEditReportActivity extends AppCompatActivity implements ClaimDet
                     reportPath =  getIntent().getExtras().getString("reportPath");
                 }*/
 
-                myFragment = (AddEditReportSelectedImagesFragment) getSupportFragmentManager()
-                        .findFragmentByTag(MY_FRAGMENT_TAG);
+                myFragment = (AddEditReportSelectedImagesFragment) getSupportFragmentManager().findFragmentByTag(MY_FRAGMENT_TAG);
               /*  FragmentManager transactionManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
                 AddEditReportSelectedImagesFragment ae=new AddEditReportSelectedImagesFragment();

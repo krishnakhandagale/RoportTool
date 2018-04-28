@@ -17,7 +17,7 @@ import java.util.ArrayList;
  */
 
 public class CategoryListDBHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 14;
+    private static final int DATABASE_VERSION = 15;
 
     // Database Name
     private static final String DATABASE_NAME = "master_categories_list";
@@ -46,7 +46,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
 
         String CATEGORY_LABELS_TABLE = "CREATE TABLE " + TABLE_CATEGORY_LABELS + "("
                 + KEY_LABEL_NAME + " TEXT," + KEY_LABEL_DESCRIPTION + " TEXT,"
-                + KEY_FK_CATEGORY_ID + " TEXT,"+ "FOREIGN KEY("+ KEY_FK_CATEGORY_ID +") REFERENCES "+TABLE_MASTER_CATEGORY+"("+KEY_CATEGORY_ID+ ")"+ " ON DELETE CASCADE)";
+                + KEY_FK_CATEGORY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT DEFAULT 0,"+ "FOREIGN KEY("+ KEY_FK_CATEGORY_ID +") REFERENCES "+TABLE_MASTER_CATEGORY+"("+KEY_CATEGORY_ID+ ")"+ " ON DELETE CASCADE)";
         Log.d("CREATE TABLE FOR LABEL", CATEGORY_LABELS_TABLE);
         db.execSQL(CREATE_CATEGORY_DETAILS_TABLE);
         db.execSQL(CATEGORY_LABELS_TABLE);
