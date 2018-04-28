@@ -5,9 +5,9 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/colorPrimaryDark</item>
+        <item name="android:textColorHint">@color/grayDark</item>
     </style>
-
 
     <style name="imagepicker_TextSmall" parent="TextAppearance.AppCompat.Small">
         <item name="android:layout_width">wrap_content</item>

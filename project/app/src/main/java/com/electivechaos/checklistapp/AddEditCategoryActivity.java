@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
  * Created by barkhasikka on 25/04/18.
  */
 
-public class AddEditCategoryActivity extends Activity{
+public class AddEditCategoryActivity extends AppCompatActivity{
     private  String intentCategoryTitle = null;
     private  String intentCategoryDescription = null;
     private  int categoryID = 0;
