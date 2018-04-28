@@ -8,11 +8,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.electivechaos.checklistapp.R;
 
@@ -68,18 +66,14 @@ public class ClaimDetailsFragment  extends Fragment implements ClaimDetailsTabsF
                 int position = tab.getPosition();
                 if(position==0){
                    tabIndex =position;
-                    Toast.makeText(getContext(),"TAB INDEX"+position+"..."+tab.getText(),Toast.LENGTH_SHORT).show();
                     tab=tabLayout.getTabAt(position);
                     tab.select();
-                   // viewPager.setCurrentItem(position);
 
                     tab.select();
 
                 }
                 else if(position==1)
                 {
-                    Toast.makeText(getContext(),"TAB INDEX"+position+"..."+tab.getText(),Toast.LENGTH_SHORT).show();
-                  //  viewPager.setCurrentItem(position);
                     tabIndex=position;
                     tab=tabLayout.getTabAt(position);
                     tab.select();
@@ -89,7 +83,6 @@ public class ClaimDetailsFragment  extends Fragment implements ClaimDetailsTabsF
                     tabIndex=position;
                     tab=tabLayout.getTabAt(position);
                     tab.select();
-                    Toast.makeText(getContext(),"TAB INDEX"+position+"..."+tab.getText(),Toast.LENGTH_SHORT).show();
 
                 }
             }
@@ -109,13 +102,6 @@ public class ClaimDetailsFragment  extends Fragment implements ClaimDetailsTabsF
 
     }
 
-
-
-
-
-
-
-    //View pager  for showing two tabs in the welcome activity
 
     public class ClaimDetailsTabsPagerAdapter extends FragmentStatePagerAdapter {
         int tabIndex;
@@ -144,6 +130,7 @@ public class ClaimDetailsFragment  extends Fragment implements ClaimDetailsTabsF
         }
         @Override
         public int getCount() {
+
             return 3;
         }
 
