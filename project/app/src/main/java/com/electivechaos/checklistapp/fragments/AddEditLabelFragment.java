@@ -2,19 +2,20 @@ package com.electivechaos.checklistapp.fragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.electivechaos.checklistapp.AddEditLabelActivity;
 import com.electivechaos.checklistapp.AddEditReportActivity;
 import com.electivechaos.checklistapp.AddEditReportSelectedImagesFragment;
 import com.electivechaos.checklistapp.Pojo.Category;
@@ -35,6 +36,7 @@ public class AddEditLabelFragment extends Fragment {
     static CategoryListDBHelper mCategoryList;
     private int selectedCategoryPosition = -1;
     int selectedCategoryID;
+    int editLabelID;
 
     private String reportId = null;
     private String reportPath = null;
@@ -59,6 +61,16 @@ public class AddEditLabelFragment extends Fragment {
 
         mCategoryList = new CategoryListDBHelper(getContext());
         categories = mCategoryList.getCategoryList();
+
+        if(getArguments() != null) {
+            labelName.setText( getArguments().getString("labelName"));
+            labelDescription.setText(getArguments().getString("labelDesc"));
+            editLabelID = getArguments().getInt("labelID");
+            selectedCategoryID = getArguments().getInt("categoryID");
+        }
+
+
+
         final CustomCategoryPopUpAdapter adapter = new CustomCategoryPopUpAdapter(getContext(), categories);
         categoryTextView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,11 +104,15 @@ public class AddEditLabelFragment extends Fragment {
                 label.setCategoryID(selectedCategoryID);
                 label.setName(labelName.getText().toString());
                 label.setDescription(labelDescription.getText().toString());
-                mCategoryList.addLabel(label);
+                if(editLabelID != 0) {
+                    label.setID(editLabelID);
+                    mCategoryList.updateLabel(label);
+                }else {
+                    mCategoryList.addLabel(label);
+                }
                 mCallback.onLabelDataReceive(label);
                 FragmentManager fragmentManager = getFragmentManager();
-                android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//                AddEditReportSelectedImagesFragment df=new AddEditReportSelectedImagesFragment();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.content_frame, new AddEditReportSelectedImagesFragment());
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
@@ -106,15 +122,14 @@ public class AddEditLabelFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-
+    public void onAttach(Context context) {
+        super.onAttach(context);
         // This makes sure that the container activity has implemented
         // the callback interface. If not, it throws an exception
         try {
-            mCallback = (AddEditReportActivity) activity;
+            mCallback = (AddEditLabelFragment.AddEditLabelInterface) getActivity();
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
+            throw new ClassCastException(context.toString()
                     + " must implement OnHeadlineSelectedListener");
         }
     }

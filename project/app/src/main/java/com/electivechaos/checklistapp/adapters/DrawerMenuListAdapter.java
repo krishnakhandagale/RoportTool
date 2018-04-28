@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.electivechaos.checklistapp.Pojo.Label;
 import com.electivechaos.checklistapp.R;
 
 import java.util.ArrayList;
@@ -19,22 +20,23 @@ import java.util.List;
 public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
 
     Context context;
-    HashMap<String,List<String>> childMenuList;
+    HashMap<String,List<Label>> childMenuList;
     ArrayList<String> parentMenuList;
     MyItemClickListener myItemClickListener;
 
     public interface MyItemClickListener {
         void onItemClick(int position);
+        void onEditLabelClick(Label label);
     }
 
-    public DrawerMenuListAdapter(Context context, ArrayList<String> parentMenuList, HashMap<String,List<String>> childMenuList){
+    public DrawerMenuListAdapter(Context context, ArrayList<String> parentMenuList, HashMap<String,List<Label>> childMenuList){
         this.context= context;
         this.parentMenuList = parentMenuList ;
         this.childMenuList = childMenuList;
         this.myItemClickListener = (MyItemClickListener)context;
     }
 
-    public List<String> getChildList(int groupPosition) {
+    public List<Label> getChildList(int groupPosition) {
         return childMenuList.get(parentMenuList.get(groupPosition));
     }
 
@@ -46,7 +48,7 @@ public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        List<String> list = childMenuList.get(parentMenuList.get(groupPosition));
+        List<Label> list = childMenuList.get(parentMenuList.get(groupPosition));
         return list == null ? 0 : list.size();
     }
 
@@ -110,13 +112,20 @@ public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+    public View getChildView(final int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         if(convertView == null){
-            convertView = LayoutInflater.from(context).inflate(R.layout.drawer_layout_menu_item, parent, false);
+            convertView = LayoutInflater.from(context).inflate(R.layout.drawer_layout_child_menu_item, parent, false);
+            Button editLabel = convertView.findViewById(R.id.editLabel);
+            editLabel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Label label = childMenuList.get("Inspection").get(childPosition);
+                    myItemClickListener.onEditLabelClick(label);
+                }
+            });
         }
 
         TextView  menuTitle = convertView.findViewById(R.id.menuTitle);
-        convertView.findViewById(R.id.menuIcon).setVisibility(View.INVISIBLE);
         menuTitle.setText(childMenuList.get(parentMenuList.get(groupPosition)).get(childPosition).toString());
         return convertView;
     }

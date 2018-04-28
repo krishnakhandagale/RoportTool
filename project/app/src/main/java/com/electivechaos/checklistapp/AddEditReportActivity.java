@@ -49,8 +49,8 @@ public class AddEditReportActivity extends AppCompatActivity implements ClaimDet
     private String reportPath = null;
     private ArrayList<ImageDetailsPOJO> selectedImagesList = new ArrayList<>();
     private ArrayList<ImageDetailsPOJO> selectedElevationImagesList = new ArrayList<>();
-    HashMap<String,List<String>> childMenuItems = new HashMap<>();
-    List<String> inspectionChildMenu = new ArrayList<>();
+    HashMap<String,List<Label>> childMenuItems = new HashMap<>();
+    List<Label> inspectionChildMenu = new ArrayList<>();
 
 
     private static final String MY_FRAGMENT_TAG = "AddEditReportSelectedImagesFragment";
@@ -345,19 +345,38 @@ public class AddEditReportActivity extends AppCompatActivity implements ClaimDet
 
     @Override
     public void onItemClick(int position) {
-        android.support.v4.app.FragmentManager transactionManager = getSupportFragmentManager();
-        android.support.v4.app.FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
-//                  AddEditReportSelectedImagesFragment df=new AddEditReportSelectedImagesFragment();
+        FragmentManager transactionManager = getSupportFragmentManager();
+
+
+        FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
         fragmentTransaction.replace(R.id.content_frame, new AddEditLabelFragment());
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
 
     @Override
-    public void onLabelDataReceive(Label label) {
+    public void onEditLabelClick(Label label) {
         DrawerMenuListAdapter adapter =
                 (DrawerMenuListAdapter) mExpandableListView.getExpandableListAdapter();
-       adapter.getChildList(3).add(label.getName().toString());
-        adapter.notifyDataSetChanged();
+       FragmentManager transactionManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
+        AddEditLabelFragment addEditLabelFragment = new AddEditLabelFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt("labelID", label.getID());
+        bundle.putString("labelName", label.getName());
+        bundle.putString("labelDesc", label.getDescription());
+        bundle.putInt("categoryID", label.getCategoryID());
+        addEditLabelFragment.setArguments(bundle);
+        fragmentTransaction.replace(R.id.content_frame, addEditLabelFragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+    }
+
+    @Override
+    public void onLabelDataReceive(Label label) {
+       List<Label> labelList =  childMenuItems.get("Inspection");
+       labelList.add(label);
+       childMenuItems.put("Inspection", labelList);
+       drawerMenuListAdapter.notifyDataSetChanged();
     }
 }

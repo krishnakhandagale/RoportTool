@@ -557,8 +557,6 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                             photoFile);
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
                 }
-
-
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
                 ImageHelper.grantAppPermission(getContext(), intent, fileUri);
