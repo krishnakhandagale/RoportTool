@@ -61,12 +61,12 @@ public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public long getGroupId(int groupPosition) {
-        return 0;
+        return groupPosition;
     }
 
     @Override
     public long getChildId(int groupPosition, int childPosition) {
-        return 0;
+        return childPosition;
     }
 
     @Override
@@ -87,8 +87,6 @@ public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
 
         String parentMenuString = parentMenuList.get(groupPosition);
 
-        Log.d("DRAWERMENULISTADAPTER",parentMenuString);
-
         menuTitle.setText(parentMenuString);
 
         addInspectionView.setOnClickListener(new View.OnClickListener() {
@@ -99,15 +97,13 @@ public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
         });
 
         if(parentMenuString.equals("Claim Details")){
-
             imageView.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_reports));
         }else if(parentMenuString.equals("Cause Of Loss")){
             imageView.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_location));
-
         }else if(parentMenuString.equals("Point Of Origin")){
             imageView.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_point_of_origin));
-
         }else{
+
             imageView.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_damage));
             addInspectionView.setVisibility(View.VISIBLE);
         }
