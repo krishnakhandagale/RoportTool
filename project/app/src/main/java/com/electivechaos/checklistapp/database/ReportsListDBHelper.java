@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.electivechaos.checklistapp.pojo.Category;
+import com.electivechaos.checklistapp.pojo.CauseOfLoss;
 import com.electivechaos.checklistapp.pojo.ImageDetailsPOJO;
 import com.electivechaos.checklistapp.pojo.ReportItemPOJO;
 
@@ -45,6 +46,7 @@ public class ReportsListDBHelper extends SQLiteOpenHelper {
     private static final String TABLE_REPORTS_IMAGE_DETAILS = "report_image_details";
     private static final String TABLE_REPORTS_ELEVATION_IMAGE_DETAILS = "report_elevation_image_details";
     private static final String TABLE_CATEGORY_LIST = "report_category_list";
+    private static final String TABLE_CAUSE_OF_LOSS = "cause_of_loss";
 
 
     // private static final String TEMP_TABLE_REPORTS_IMAGE_DETAILS = "temp_report_image_details";
@@ -60,6 +62,9 @@ public class ReportsListDBHelper extends SQLiteOpenHelper {
     private static final String KEY_CATEGORY_NAME = "category_name";
     private static final String KEY_CATEGORY_DESCRIPTION = "category_description";
 
+    private static final String KEY_CAUSE_OF_LOSS_ID = "_id"; // can be used in case we need
+    private static final String KEY_CAUSE_OF_LOSS_NAME = "category_name";
+    private static final String KEY_CAUSE_OF_LOSS_DESCRIPTION = "category_description";
 
 
 
@@ -99,6 +104,9 @@ public class ReportsListDBHelper extends SQLiteOpenHelper {
         String CREATE_CATEGORY_DETAILS_TABLE = "CREATE TABLE " + TABLE_CATEGORY_LIST + "("
                 +KEY_CATEGORYID +" INTEGER PRIMARY KEY AUTOINCREMENT DEFAULT 0,"+ KEY_CATEGORY_NAME + " TEXT,"+ KEY_CATEGORY_DESCRIPTION +" TEXT "+")";
 
+        String CREATE_CAUSE_OF_LOSS_TABLE = "CREATE TABLE " + TABLE_CAUSE_OF_LOSS + "("
+                + KEY_CAUSE_OF_LOSS_ID + " TEXT PRIMARY KEY," + KEY_CAUSE_OF_LOSS_NAME + " TEXT,"+ KEY_CAUSE_OF_LOSS_DESCRIPTION + " TEXT"+")";
+
         final String options[] = {"Elevations",
                 "Roof",
                 "Kitchen",
@@ -131,6 +139,7 @@ public class ReportsListDBHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_IMAGE_DETAILS_TABLE);
         db.execSQL(CREATE_ELEVATION_IMAGE_DETAILS_TABLE);
         db.execSQL(CREATE_CATEGORY_DETAILS_TABLE);
+        db.execSQL(CREATE_CAUSE_OF_LOSS_TABLE);
 
         for(int i=0;i<options.length;i++){
             ContentValues contentValues = new ContentValues();
@@ -146,6 +155,7 @@ public class ReportsListDBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_REPORTS_IMAGE_DETAILS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_REPORTS_ELEVATION_IMAGE_DETAILS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CATEGORY_LIST);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_CAUSE_OF_LOSS);
         // Create tables again
         onCreate(db);
     }
@@ -322,6 +332,47 @@ public class ReportsListDBHelper extends SQLiteOpenHelper {
     public void onOpen(SQLiteDatabase db){
         super.onOpen(db);
         db.execSQL("PRAGMA foreign_keys=ON");
+    }
+
+
+    public int deleteCauseOfLoss(String id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String whereClause = KEY_CAUSE_OF_LOSS_ID+"=?";
+        return  db.delete(TABLE_CAUSE_OF_LOSS,whereClause,new String[]{id});
+    }
+    public long addCauseOfLoss(CauseOfLoss causeOfLoss){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(KEY_CAUSE_OF_LOSS_NAME, causeOfLoss.getName());
+        contentValues.put(KEY_CAUSE_OF_LOSS_DESCRIPTION, causeOfLoss.getDescription());
+        return  db.insert(TABLE_CAUSE_OF_LOSS,null,contentValues);
+    }
+
+    public int updateCauseOfLoss(CauseOfLoss causeOfLoss){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(KEY_CAUSE_OF_LOSS_NAME, causeOfLoss.getName());
+        contentValues.put(KEY_CAUSE_OF_LOSS_DESCRIPTION, causeOfLoss.getDescription());
+        return  db.update(TABLE_CAUSE_OF_LOSS, contentValues,KEY_CAUSE_OF_LOSS_ID+"="+causeOfLoss.getID(),null);
+    }
+
+    public ArrayList<CauseOfLoss> getCauseOfLosses(){
+
+        ArrayList<CauseOfLoss> tempList = new ArrayList<>();
+        String selectQueryReportTable = "SELECT  * FROM " + TABLE_CAUSE_OF_LOSS;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQueryReportTable, null);
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                CauseOfLoss causeOfLoss = new CauseOfLoss();
+                causeOfLoss.setID(cursor.getInt(0));
+                causeOfLoss.setName(cursor.getString(1));
+                causeOfLoss.setDescription(cursor.getString(2));
+                tempList.add(causeOfLoss);
+            } while (cursor.moveToNext());
+        }
+        return  tempList;
     }
 }
 
