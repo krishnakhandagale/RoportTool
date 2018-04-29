@@ -1,4 +1,4 @@
-package com.electivechaos.checklistapp;
+package com.electivechaos.checklistapp.ui;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+
+import com.electivechaos.checklistapp.R;
 
 /**
  * Created by barkhasikka on 25/04/18.

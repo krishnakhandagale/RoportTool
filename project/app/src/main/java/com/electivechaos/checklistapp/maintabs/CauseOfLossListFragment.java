@@ -20,7 +20,7 @@ import android.widget.TextView;
 import com.electivechaos.checklistapp.R;
 import com.electivechaos.checklistapp.database.ReportsListDBHelper;
 import com.electivechaos.checklistapp.pojo.CauseOfLoss;
-import com.electivechaos.checklistapp.AddEditCauseOfLossActivity;
+import com.electivechaos.checklistapp.ui.AddEditCauseOfLossActivity;
 
 import java.util.ArrayList;
 import java.util.List;

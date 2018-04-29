@@ -1,4 +1,4 @@
-package com.electivechaos.checklistapp;
+package com.electivechaos.checklistapp.fragments;
 
 import android.app.Activity;
 import android.content.Context;
@@ -40,6 +40,13 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.electivechaos.checklistapp.ImageHelper;
+import com.electivechaos.checklistapp.ImagePickerActivity;
+import com.electivechaos.checklistapp.ImageSliderActivity;
+import com.electivechaos.checklistapp.PermissionUtilities;
+import com.electivechaos.checklistapp.R;
+import com.electivechaos.checklistapp.SingleImageDetailsActivity;
+import com.electivechaos.checklistapp.SingleMediaScanner;
 import com.electivechaos.checklistapp.pojo.Image;
 import com.electivechaos.checklistapp.pojo.ImageDetailsPOJO;
 import com.electivechaos.checklistapp.pojo.ReportItemPOJO;

@@ -1,4 +1,4 @@
-package com.electivechaos.checklistapp;
+package com.electivechaos.checklistapp.ui;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -8,8 +8,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.electivechaos.checklistapp.fragments.AddEditReportSelectedImagesFragment;
+import com.electivechaos.checklistapp.R;
 import com.electivechaos.checklistapp.pojo.Category;
-import com.electivechaos.checklistapp.pojo.ImageDetailsPOJO;
 import com.electivechaos.checklistapp.pojo.Label;
 import com.electivechaos.checklistapp.adapters.CustomCategoryPopUpAdapter;
 import com.electivechaos.checklistapp.database.CategoryListDBHelper;

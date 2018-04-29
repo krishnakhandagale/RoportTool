@@ -25,16 +25,16 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyC3rml-xbs9AJaa5nitYVRpC8dZc1KoAMI" />
 
-        <activity android:name=".AddEditReportActivity" />
-        <activity android:name=".MainTabsActivity">
+        <activity android:name=".ui.AddEditReportActivity" />
+        <activity android:name=".ui.MainTabsActivity">
 
         </activity>
         <activity android:name=".ImagePickerActivity" />
         <activity android:name=".SingleImageDetailsActivity" />
-        <activity android:name=".AddEditCategoryActivity" />
+        <activity android:name=".ui.AddEditCategoryActivity" />
         <activity android:name=".ImageSliderActivity" />
-        <activity android:name=".AddEditLabelActivity" />
-        <activity android:name=".AddEditCauseOfLossActivity"/>
+        <activity android:name=".ui.AddEditLabelActivity" />
+        <activity android:name=".ui.AddEditCauseOfLossActivity"/>
         <activity android:name=".ui.SplashScreenActivity">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />

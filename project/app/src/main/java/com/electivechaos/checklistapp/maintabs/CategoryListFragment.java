@@ -17,7 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.electivechaos.checklistapp.AddEditCategoryActivity;
+import com.electivechaos.checklistapp.ui.AddEditCategoryActivity;
 import com.electivechaos.checklistapp.pojo.Category;
 import com.electivechaos.checklistapp.R;
 import com.electivechaos.checklistapp.database.CategoryListDBHelper;

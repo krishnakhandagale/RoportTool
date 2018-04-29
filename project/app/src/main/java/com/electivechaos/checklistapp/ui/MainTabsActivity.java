@@ -1,4 +1,4 @@
-package com.electivechaos.checklistapp;
+package com.electivechaos.checklistapp.ui;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,6 +9,8 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 
+import com.electivechaos.checklistapp.BaseActivity;
+import com.electivechaos.checklistapp.R;
 import com.electivechaos.checklistapp.fragments.CauseOfLossFragment;
 import com.electivechaos.checklistapp.maintabs.CategoryListFragment;
 import com.electivechaos.checklistapp.maintabs.CauseOfLossListFragment;
@@ -35,12 +37,6 @@ public class MainTabsActivity extends BaseActivity {
         tabLayout.setupWithViewPager(viewPager);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
     }
-
-
-
-
-
-
 
 
 

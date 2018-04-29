@@ -10,7 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.electivechaos.checklistapp.AddEditReportActivity;
+import com.electivechaos.checklistapp.ui.AddEditReportActivity;
 import com.electivechaos.checklistapp.R;
 
 public class ReportListFragment extends Fragment {
