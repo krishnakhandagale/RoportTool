@@ -84,4 +84,12 @@
     <string name="menu_title">Menu Title</string>
     <string name="add">Add</string>
     <string name="welcome">Welcome</string>
+    <string name="add_category">ADD CATEGORY</string>
+    <string name="category_details">Category Details</string>
+    <string name="category_name">Category Name</string>
+    <string name="category_description">Category Description</string>
+    <string name="enter_description">Enter Description</string>
+    <string name="enter_name">Enter Name</string>
+    <string name="add_cause_of_loss">ADD CAUSE OF LOSS</string>
+    <string name="cause_of_loss_details">Cause Of Loss Details</string>
 </resources>
