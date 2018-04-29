@@ -3,18 +3,24 @@ package com.electivechaos.checklistapp.maintabs;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.electivechaos.checklistapp.ui.AddEditCategoryActivity;
@@ -106,17 +112,16 @@ public class CategoryListFragment  extends Fragment {
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
 
-            public TextView title, genre;
-            public Button editCategory, deleteCategory;
+            public TextView categoryName, categoryDescription;
+            public ImageView textViewOptions;
 
 
             public MyViewHolder(View view) {
                 super(view);
 
-                title = view.findViewById(R.id.title);
-                genre = view.findViewById(R.id.desc);
-                editCategory = view.findViewById(R.id.editcategory);
-                deleteCategory = view.findViewById(R.id.deletecategory);
+                categoryName = view.findViewById(R.id.category_name);
+                categoryDescription = view.findViewById(R.id.category_description);
+                textViewOptions = view.findViewById(R.id.textViewOptions);
 
             }
         }
@@ -136,28 +141,57 @@ public class CategoryListFragment  extends Fragment {
         }
 
         @Override
-        public void onBindViewHolder(CategoryListFragment.CategoriesAdapter.MyViewHolder holder, int position) {
+        public void onBindViewHolder(final CategoryListFragment.CategoriesAdapter.MyViewHolder holder, int position) {
             final Category category = categoryList.get(position);
-            holder.title.setText(category.getCategoryName());
-            holder.genre.setText(category.getCategoryDescription());
-            holder.editCategory.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent addCategoryActivity = new Intent(context, AddEditCategoryActivity.class);
-                    Bundle data = new Bundle();
-                    data.putString("categoryName",category.getCategoryName());
-                    data.putString("categoryDescription",category.getCategoryDescription());
-                    data.putInt("categoryID",category.getCategoryId());
-                    addCategoryActivity.putExtra("categoryDetails", data);
-                    startActivityForResult(addCategoryActivity, 2);
-                    }
-            });
+            holder.categoryName.setText(category.getCategoryName());
+            holder.categoryDescription.setText(category.getCategoryDescription());
 
-            holder.deleteCategory.setOnClickListener(new View.OnClickListener() {
+            holder.textViewOptions.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mCategoryListDBHelper.deleteCategoryEntry(String.valueOf(category.getCategoryId()));
-                    getCategoryList();
+                    PopupMenu popup = new PopupMenu(context, holder.textViewOptions);
+                    popup.inflate(R.menu.action_menu);
+                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            switch (item.getItemId()) {
+                                case R.id.edit:
+                                    Intent addCategoryActivity = new Intent(context, AddEditCategoryActivity.class);
+                                    Bundle data = new Bundle();
+                                    data.putString("categoryName",category.getCategoryName());
+                                    data.putString("categoryDescription",category.getCategoryDescription());
+                                    data.putInt("categoryID",category.getCategoryId());
+                                    addCategoryActivity.putExtra("categoryDetails", data);
+                                    startActivityForResult(addCategoryActivity, 2);
+                                    break;
+                                case R.id.delete:
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                                    builder.setTitle("Delete Report")
+                                            .setMessage("Are you sure you want to delete this category ?")
+                                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    mCategoryListDBHelper.deleteCategoryEntry(String.valueOf(category.getCategoryId()));
+                                                    getCategoryList();
+                                                }
+                                            })
+                                            .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int which) {
+
+                                                    dialog.cancel();
+                                                }
+                                            });
+                                    AlertDialog alert = builder.create();
+                                    alert.show();
+                                    Button negativeButton = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
+                                    negativeButton.setTextColor(ContextCompat.getColor(context,R.color.colorPrimaryDark));
+                                    Button positiveButton = alert.getButton(DialogInterface.BUTTON_POSITIVE);
+                                    positiveButton.setTextColor(ContextCompat.getColor(context,R.color.colorPrimaryDark));
+                                    break;
+                            }
+                            return false;
+                        }
+                    });
+                    popup.show();
                 }
             });
         }
