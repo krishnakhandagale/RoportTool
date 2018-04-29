@@ -45,10 +45,9 @@ public class CategoryListFragment  extends Fragment {
         recyclerView = view.findViewById(R.id.recycler_view);
 
         mAdapter = new CategoriesAdapter(categoryList, getContext());
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(mAdapter);
         mCategoryListDBHelper = new CategoryListDBHelper(getActivity());
         getCategoryList();
 
@@ -166,7 +165,7 @@ public class CategoryListFragment  extends Fragment {
                                     break;
                                 case R.id.delete:
                                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                                    builder.setTitle("Delete Report")
+                                    builder.setTitle("Delete Category")
                                             .setMessage("Are you sure you want to delete this category ?")
                                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                                 public void onClick(DialogInterface dialog, int which) {
