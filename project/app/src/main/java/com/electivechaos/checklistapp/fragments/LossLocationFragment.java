@@ -74,7 +74,14 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
     private AutoCompleteTextView mAutocompleteTextView;
     private static final LatLngBounds BOUNDS_MOUNTAIN_VIEW = new LatLngBounds(new LatLng(37.398160, -122.180831), new LatLng(37.430610, -121.972090));
 
+    @Override
+    public void onStart() {
+        super.onStart();
 
+        if(this.mGoogleApiClient != null){
+            this.mGoogleApiClient.connect();
+        }
+    }
 
     @Nullable
     @Override
@@ -176,29 +183,6 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
 
     }
 
-    private void updateLocationUI() {
-        if (googleMap == null) {
-            return;
-        }
-        try {
-            if (mLocationPermissionGranted) {
-                googleMap.setMyLocationEnabled(true);
-                LatLng sydney = new LatLng(-34, 151);
-                googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker Title").snippet("Marker Description"));
-
-                // For zooming automatically to the location of the marker
-                CameraPosition cameraPosition = new CameraPosition.Builder().target(sydney).zoom(12).build();
-                googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-                googleMap.getUiSettings().setMyLocationButtonEnabled(true);
-            } else {
-                googleMap.setMyLocationEnabled(false);
-                googleMap.getUiSettings().setMyLocationButtonEnabled(false);
-                getLocationPermission();
-            }
-        } catch (SecurityException e) {
-            Log.e("Exception: %s", e.getMessage());
-        }
-    }
 
     @Override
     public void onResume() {

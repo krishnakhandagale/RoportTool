@@ -158,7 +158,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //to etain fragment
+
         setRetainInstance(true);
 
         if (getArguments() != null) {
