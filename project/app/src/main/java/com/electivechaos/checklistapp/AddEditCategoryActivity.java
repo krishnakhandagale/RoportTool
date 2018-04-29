@@ -49,8 +49,6 @@ public class AddEditCategoryActivity extends AppCompatActivity{
                 String categoryDescriptionString = categoryDescription.getText().toString();
                 Bundle data = new Bundle();//create bundle instance
                 if(categoryID == -1) {
-                    Log.d("------------->>", "onClick: THIS IS ADD CATEGORY EVENT");
-
                     data.putString("categoryName", categoryNameString);//put string to pass with a key value
                     data.putString("categoryDesc", categoryDescriptionString);//put string to pass with a key value
                     Intent intent = new Intent();
@@ -58,7 +56,6 @@ public class AddEditCategoryActivity extends AppCompatActivity{
                     setResult(Activity.RESULT_OK, intent);
                     finish();
                 }else {
-                    Log.d("------------->>", "onClick: THIS IS EDIT EDIT EDIT CATEGORY EVENT");
                     Intent intent = new Intent();
                     data.putString("categoryName", categoryNameString);//put string to pass with a key value
                     data.putString("categoryDesc", categoryDescriptionString);//put string to pass with a key value

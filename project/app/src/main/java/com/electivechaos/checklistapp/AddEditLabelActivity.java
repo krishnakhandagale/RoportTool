@@ -22,22 +22,11 @@ public class AddEditLabelActivity extends AppCompatActivity {
     private int selectedCategoryPosition = -1;
     int selectedCategoryID;
 
-    private String reportId = null;
-    private String reportPath = null;
-    private ArrayList<ImageDetailsPOJO> selectedImagesList = null;
-    private ArrayList<ImageDetailsPOJO> selectedElevationImagesList = new ArrayList<>();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_edit_label);
         final TextView categoryTextView = findViewById(R.id.category_selection);
-//        if(savedInstanceState != null){
-//            selectedCategoryPosition = savedInstanceState.getInt("selectedCategoryPosition",-1);
-//            if(selectedCategoryPosition > -1){
-//                imgCategory = categories.get(selectedCategoryPosition).getCategoryName();
-//            }
-//        }
         //fetch from DB
         mCategoryList = new CategoryListDBHelper(this);
         categories = mCategoryList.getCategoryList();
@@ -80,7 +69,6 @@ public class AddEditLabelActivity extends AppCompatActivity {
 
                 android.support.v4.app.FragmentManager transactionManager = getSupportFragmentManager();
                 android.support.v4.app.FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
-//                AddEditReportSelectedImagesFragment df=new AddEditReportSelectedImagesFragment();
                 fragmentTransaction.replace(R.id.content_frame, new AddEditReportSelectedImagesFragment());
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();

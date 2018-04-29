@@ -26,7 +26,7 @@ import com.electivechaos.checklistapp.pojo.Label;
 import java.util.ArrayList;
 
 /**
- * Created by barkhasikka on 27/04/18.
+ * Created by barkha sikka on 27/04/18.
  */
 
 public class AddEditLabelFragment extends Fragment {
@@ -37,10 +37,6 @@ public class AddEditLabelFragment extends Fragment {
     long editLabelID = -1;
     int childPosition;
 
-    private String reportId = null;
-    private String reportPath = null;
-    private ArrayList<ImageDetailsPOJO> selectedImagesList = null;
-    private ArrayList<ImageDetailsPOJO> selectedElevationImagesList = new ArrayList<>();
     AddEditLabelInterface mCallback;
 
 
