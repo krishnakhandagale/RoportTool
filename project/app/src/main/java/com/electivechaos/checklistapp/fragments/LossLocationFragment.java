@@ -120,7 +120,7 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
         mPlaceArrayAdapter = new PlaceArrayAdapter(getActivity(), R.layout.places_autocomplete_item, BOUNDS_MOUNTAIN_VIEW, null);
         mAutocompleteTextView.setAdapter(mPlaceArrayAdapter);
 
-        mPlaceDetectionClient = Places.getPlaceDetectionClient(getActivity(), null);
+        mPlaceDetectionClient = Places.getPlaceDetectionClient(getActivity());
         displayLocationSettingsRequest(getActivity());
         return rootView;
     }
