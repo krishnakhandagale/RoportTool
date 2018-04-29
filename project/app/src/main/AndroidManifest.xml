@@ -23,7 +23,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBzvccFZFQitentxF10WmZ9QevR9EExL5c" />
+            android:value="AIzaSyC3rml-xbs9AJaa5nitYVRpC8dZc1KoAMI" />
 
         <activity android:name=".AddEditReportActivity" />
         <activity android:name=".MainTabsActivity">
@@ -38,7 +38,7 @@
         <activity android:name=".AddEditCategoryActivity" />
         <activity android:name=".ImageSliderActivity" />
         <activity android:name=".AddEditLabelActivity" />
-        <activity android:name=".AddEditCauseOfLossActivity"></activity>
+        <activity android:name=".AddEditCauseOfLossActivity"/>
     </application>
 
 </manifest>
