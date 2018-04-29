@@ -34,20 +34,20 @@ public class AddEditCategoryActivity extends AppCompatActivity{
             Button updateCategoryButton = findViewById(R.id.updateCategory);
             updateCategoryButton.setText("Update Category");
 
-            EditText categoryName = (EditText) findViewById(R.id.editTextCategoryName);
+            EditText categoryName = findViewById(R.id.editTextCategoryName);
             categoryName.setText(intentCategoryTitle.toString());
 
-            EditText categoryDescription = (EditText) findViewById(R.id.editTextCategoryDescription);
+            EditText categoryDescription = findViewById(R.id.editTextCategoryDescription);
             categoryDescription.setText(intentCategoryDescription.toString());
         }
 
         Button updateCategoryButton = findViewById(R.id.updateCategory);
         updateCategoryButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                EditText categoryName = (EditText) findViewById(R.id.editTextCategoryName);
+                EditText categoryName = findViewById(R.id.editTextCategoryName);
                 String categoryNameString = categoryName.getText().toString();
 
-                EditText categoryDescription = (EditText) findViewById(R.id.editTextCategoryDescription);
+                EditText categoryDescription = findViewById(R.id.editTextCategoryDescription);
                 String categoryDescriptionString = categoryDescription.getText().toString();
                 Bundle data = new Bundle();//create bundle instance
                 if(categoryID == -1) {
@@ -63,7 +63,7 @@ public class AddEditCategoryActivity extends AppCompatActivity{
                     data.putString("categoryDesc", categoryDescriptionString);//put string to pass with a key value
                     data.putInt("categoryId", categoryID);//put string to pass with a key value
                     intent.putExtra("data", data);
-                    setResult(2, intent);
+                    setResult(Activity.RESULT_OK, intent);
                     finish();
                 }
 

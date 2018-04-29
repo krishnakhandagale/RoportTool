@@ -72,7 +72,7 @@ public class CategoryListFragment  extends Fragment {
         }
 
         if (requestCode == 2) {
-            if (resultCode == 2) {
+            if (resultCode == Activity.RESULT_OK) {
                 Bundle dataFromActivity = data.getBundleExtra("data");
                 String categoryName = dataFromActivity.get("name").toString();
                 String categoryDescription = dataFromActivity.get("desc").toString();
@@ -87,14 +87,14 @@ public class CategoryListFragment  extends Fragment {
             }
         }
 
-        if (requestCode == 3) {
-            if (resultCode == 3) {
-                Bundle dataFromActivity = data.getBundleExtra("data");
-                String categoryID = dataFromActivity.get("id").toString();
-                mCategoryListDBHelper.deleteCategoryEntry(categoryID);
-                updateCategoryList();
-            }
-        }
+//        if (requestCode == 3) {
+//            if (resultCode == 3) {
+//                Bundle dataFromActivity = data.getBundleExtra("data");
+//                String categoryID = dataFromActivity.get("id").toString();
+//                mCategoryListDBHelper.deleteCategoryEntry(categoryID);
+//                updateCategoryList();
+//            }
+//        }
     }
 
     private  void updateCategoryList(){
