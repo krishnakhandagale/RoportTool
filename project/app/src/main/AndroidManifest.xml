@@ -27,11 +27,7 @@
 
         <activity android:name=".AddEditReportActivity" />
         <activity android:name=".MainTabsActivity">
-            <intent-filter>
-                <category android:name="android.intent.category.LAUNCHER" />
 
-                <action android:name="android.intent.action.MAIN" />
-            </intent-filter>
         </activity>
         <activity android:name=".ImagePickerActivity" />
         <activity android:name=".SingleImageDetailsActivity" />
@@ -39,6 +35,13 @@
         <activity android:name=".ImageSliderActivity" />
         <activity android:name=".AddEditLabelActivity" />
         <activity android:name=".AddEditCauseOfLossActivity"/>
+        <activity android:name=".ui.SplashScreenActivity">
+            <intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
