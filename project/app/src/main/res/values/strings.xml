@@ -92,4 +92,5 @@
     <string name="enter_name">Enter Name</string>
     <string name="add_cause_of_loss">ADD CAUSE OF LOSS</string>
     <string name="cause_of_loss_details">Cause Of Loss Details</string>
+    <string name="update_category">Update Category</string>
 </resources>
