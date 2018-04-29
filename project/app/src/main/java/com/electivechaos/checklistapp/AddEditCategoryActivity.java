@@ -1,18 +1,13 @@
 package com.electivechaos.checklistapp;
 
-import android.app.Fragment;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.app.Activity;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import com.electivechaos.checklistapp.maintabs.CategoryListFragment;
-
-import java.util.ArrayList;
 
 /**
  * Created by barkhasikka on 25/04/18.

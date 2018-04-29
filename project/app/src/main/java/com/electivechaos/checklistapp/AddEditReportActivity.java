@@ -120,8 +120,6 @@ public class AddEditReportActivity extends AppCompatActivity implements ClaimDet
 
                 FragmentManager transactionManager = getSupportFragmentManager();
 
-                transactionManager.popBackStack(0,FragmentManager.POP_BACK_STACK_INCLUSIVE);
-
                 Fragment fragmentToRemove = transactionManager.findFragmentByTag(CLAIM_DETAILS_FRAGMENT_TAG);
 
                 FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
@@ -185,19 +183,10 @@ public class AddEditReportActivity extends AppCompatActivity implements ClaimDet
 
 
                     FragmentManager transactionManager = getSupportFragmentManager();
-
-                    transactionManager.popBackStack(0,FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                    Fragment fragment = transactionManager.findFragmentByTag(CLAIM_DETAILS_FRAGMENT_TAG);
-
                     FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
-
-                    if(fragment != null){
-                        fragmentTransaction.remove(fragment);
-                    }
-                    fragmentTransaction.add(R.id.content_frame,new ClaimDetailsFragment(),CLAIM_DETAILS_FRAGMENT_TAG);
-                    fragmentTransaction.addToBackStack(CLAIM_DETAILS_FRAGMENT_TAG);
+                    fragmentTransaction.replace(R.id.content_frame,new ClaimDetailsFragment());
+                    fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.commit();
-                    transactionManager.executePendingTransactions();
                     tabName="ClaimDetailsFragment";
 
                 } else if (parentMenuItems.get(groupPosition).equals("Cause Of Loss")) {
