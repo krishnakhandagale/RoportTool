@@ -1,4 +1,4 @@
-package com.electivechaos.checklistapp;
+package com.electivechaos.checklistapp.ui;
 
 
 /**
@@ -23,6 +23,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.electivechaos.checklistapp.BaseActivity;
+import com.electivechaos.checklistapp.DepthPageTransformer;
+import com.electivechaos.checklistapp.ImageFragment;
+import com.electivechaos.checklistapp.R;
 import com.electivechaos.checklistapp.pojo.Image;
 import com.electivechaos.checklistapp.pojo.ImageDetailsPOJO;
 import com.electivechaos.checklistapp.database.ReportsListDBHelper;

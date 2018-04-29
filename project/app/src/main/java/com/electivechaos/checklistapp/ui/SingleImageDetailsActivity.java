@@ -1,4 +1,4 @@
-package com.electivechaos.checklistapp;
+package com.electivechaos.checklistapp.ui;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -12,6 +12,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.electivechaos.checklistapp.BaseActivity;
+import com.electivechaos.checklistapp.CustomCategoryComparator;
+import com.electivechaos.checklistapp.R;
 import com.electivechaos.checklistapp.pojo.Category;
 import com.electivechaos.checklistapp.pojo.ImageDetailsPOJO;
 import com.electivechaos.checklistapp.adapters.CustomCategoryPopUpAdapter;
