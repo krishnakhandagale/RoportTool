@@ -184,31 +184,7 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
     }
 
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        mMapView.onResume();
-    }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        mMapView.onPause();
-        mGoogleApiClient.stopAutoManage(getActivity());
-        mGoogleApiClient.disconnect();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mMapView.onDestroy();
-    }
-
-    @Override
-    public void onLowMemory() {
-        super.onLowMemory();
-        mMapView.onLowMemory();
-    }
 
     private void showCurrentPlace() {
         if (googleMap == null) {
@@ -320,5 +296,37 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
         mGoogleApiClient.disconnect();
     }
 
+    @Override
+    public void onStop() {
 
+        mGoogleApiClient.stopAutoManage(getActivity());
+        mGoogleApiClient.disconnect();
+        super.onStop();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mMapView.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mMapView.onPause();
+        mGoogleApiClient.stopAutoManage(getActivity());
+        mGoogleApiClient.disconnect();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mMapView.onDestroy();
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mMapView.onLowMemory();
+    }
 }

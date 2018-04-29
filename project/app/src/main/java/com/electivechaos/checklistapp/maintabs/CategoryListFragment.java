@@ -34,7 +34,7 @@ public class CategoryListFragment  extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.category_list_fragment, container, false);
-        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+        recyclerView = view.findViewById(R.id.recycler_view);
 
         mAdapter = new CategoriesAdapter(categoryList, getContext());
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
@@ -63,7 +63,6 @@ public class CategoryListFragment  extends Fragment {
                 Bundle dataFromActivity = data.getBundleExtra("data");
                 String categoryName = dataFromActivity.get("name").toString();
                 String categoryDescription = dataFromActivity.get("desc").toString();
-               //add to category database
                 Category category = new Category();
                 category.setCategoryName(categoryName);
                 category.setCategoryDescription(categoryDescription);
@@ -158,9 +157,7 @@ public class CategoryListFragment  extends Fragment {
                     data.putInt("id",movie.getCategoryId());
                     addCategoryActivity.putExtra("data", data);
                     startActivityForResult(addCategoryActivity, 2);
-
-//                context.startActivity(addCategoryActivity);
-                }
+                    }
             });
 
             holder.deleteCategory.setOnClickListener(new View.OnClickListener() {
@@ -168,7 +165,6 @@ public class CategoryListFragment  extends Fragment {
                 public void onClick(View v) {
                     mCategoryListDBHelper.deleteCategoryEntry(String.valueOf(movie.getCategoryId()));
                     updateCategoryList();
-//                context.startActivity(addCategoryActivity);
                 }
             });
         }

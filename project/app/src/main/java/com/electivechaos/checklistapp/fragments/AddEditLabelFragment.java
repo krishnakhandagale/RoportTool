@@ -1,6 +1,5 @@
 package com.electivechaos.checklistapp.fragments;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -16,14 +15,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.electivechaos.checklistapp.AddEditReportActivity;
 import com.electivechaos.checklistapp.AddEditReportSelectedImagesFragment;
-import com.electivechaos.checklistapp.pojo.Category;
-import com.electivechaos.checklistapp.pojo.ImageDetailsPOJO;
-import com.electivechaos.checklistapp.pojo.Label;
 import com.electivechaos.checklistapp.R;
 import com.electivechaos.checklistapp.adapters.CustomCategoryPopUpAdapter;
 import com.electivechaos.checklistapp.database.CategoryListDBHelper;
+import com.electivechaos.checklistapp.pojo.Category;
+import com.electivechaos.checklistapp.pojo.ImageDetailsPOJO;
+import com.electivechaos.checklistapp.pojo.Label;
 
 import java.util.ArrayList;
 
