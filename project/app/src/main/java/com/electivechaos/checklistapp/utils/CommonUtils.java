@@ -3,9 +3,15 @@ package com.electivechaos.checklistapp.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
+import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
 import android.view.Surface;
+import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+
+import com.electivechaos.checklistapp.R;
 
 /**
  * Created by krishna on 11/22/17.
@@ -44,6 +50,30 @@ public class CommonUtils {
     /** Unlocks the device window in user defined screen mode. */
     public static void unlockOrientation(Activity activity) {
         activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_USER);
+    }
+
+    public static void  showSnackbarMessage(String message, boolean isAutoHide, boolean isError, View parentLayout, Context context) {
+        if (isError == false) {
+            Snackbar snackbar = Snackbar.make(parentLayout, message, Snackbar.LENGTH_LONG);
+            View snackBarView = snackbar.getView();
+            snackBarView.setBackgroundColor(ContextCompat.getColor(context, R.color.colorSuccess));
+            snackbar.show();
+        } else {
+            Snackbar snackbar = Snackbar.make(parentLayout, message, Snackbar.LENGTH_LONG);
+            View snackBarView = snackbar.getView();
+            snackBarView.setBackgroundColor(ContextCompat.getColor(context, R.color.color_error));
+            snackbar.show();
+        }
+
+
+    }
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        View view = activity.getCurrentFocus();
+        if (view == null) {
+            view = new View(activity);
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
 }

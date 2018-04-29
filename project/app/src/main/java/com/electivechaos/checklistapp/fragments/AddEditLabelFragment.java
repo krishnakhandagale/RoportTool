@@ -6,9 +6,11 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +22,7 @@ import com.electivechaos.checklistapp.adapters.CustomCategoryPopUpAdapter;
 import com.electivechaos.checklistapp.database.CategoryListDBHelper;
 import com.electivechaos.checklistapp.pojo.Category;
 import com.electivechaos.checklistapp.pojo.Label;
+import com.electivechaos.checklistapp.utils.CommonUtils;
 
 import java.util.ArrayList;
 
@@ -54,12 +57,13 @@ public class AddEditLabelFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View layoutView = inflater.inflate(R.layout.activity_add_edit_label, container,
                 false);
-        final TextView categoryTextView = layoutView.findViewById(R.id.category_selection);
-        final TextView labelName = layoutView.findViewById(R.id.name);
-        final TextView labelDescription = layoutView.findViewById(R.id.description);
+         final TextView categoryTextView = layoutView.findViewById(R.id.category_selection);
+         final TextView labelName = layoutView.findViewById(R.id.name);
+         final TextView labelDescription = layoutView.findViewById(R.id.description);
+         final View parentLayout = layoutView.findViewById(R.id.addEditLabelParentLayout);
+         mCategoryList = new CategoryListDBHelper(getContext());
+         categories = mCategoryList.getCategoryList();
 
-        mCategoryList = new CategoryListDBHelper(getContext());
-        categories = mCategoryList.getCategoryList();
 
         if(getArguments() != null) {
             labelName.setText( getArguments().getString("labelName"));
@@ -119,7 +123,24 @@ public class AddEditLabelFragment extends Fragment {
         addInspectionView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if(labelName.getText().toString().trim().isEmpty()){
+                    CommonUtils.hideKeyboard(getActivity());
+                    CommonUtils.showSnackbarMessage("Please enter label name.", true, true, parentLayout, getActivity());
+                    return;
+                }
+                if(labelDescription.getText().toString().trim().isEmpty()){
+                    CommonUtils.hideKeyboard(getActivity());
+                    CommonUtils.showSnackbarMessage("Please enter label description.", true, true, parentLayout,getActivity());
+                    return;
+                }
+                if(categoryTextView.getText().toString().trim().isEmpty() || categoryTextView.getText().toString().trim().equals("Select Category") == true){
+                    CommonUtils.hideKeyboard(getActivity());
+                    CommonUtils.showSnackbarMessage("Please select category.", true, true, parentLayout,getActivity());
+                    return;
+                }
                 Label label = new Label();
+
                 label.setCategoryID(selectedCategoryID);
                 label.setName(labelName.getText().toString());
                 label.setDescription(labelDescription.getText().toString());
@@ -145,8 +166,6 @@ public class AddEditLabelFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        // This makes sure that the container activity has implemented
-        // the callback interface. If not, it throws an exception
         try {
             mCallback = (AddEditLabelFragment.AddEditLabelInterface) getActivity();
         } catch (ClassCastException e) {
