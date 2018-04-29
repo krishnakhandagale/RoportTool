@@ -2,7 +2,6 @@ package com.electivechaos.checklistapp.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -17,8 +16,8 @@ import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
-import com.electivechaos.checklistapp.fragments.AddEditReportSelectedImagesFragment;
 import com.electivechaos.checklistapp.R;
+import com.electivechaos.checklistapp.fragments.AddEditReportSelectedImagesFragment;
 import com.electivechaos.checklistapp.pojo.ImageDetailsPOJO;
 import com.electivechaos.checklistapp.pojo.Label;
 import com.electivechaos.checklistapp.adapters.DrawerMenuListAdapter;
@@ -27,11 +26,13 @@ import com.electivechaos.checklistapp.fragments.CauseOfLossFragment;
 import com.electivechaos.checklistapp.fragments.ClaimDetailsFragment;
 import com.electivechaos.checklistapp.fragments.ClaimDetailsTabsFragment;
 import com.electivechaos.checklistapp.fragments.PointOfOriginFragment;
+import com.electivechaos.checklistapp.pojo.SelectedImagesPOJO;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public class AddEditReportActivity extends AppCompatActivity implements ClaimDetailsTabsFragment.SendImageDetails,AddEditReportSelectedImagesFragment.SendReportDBChangeSignal, DrawerMenuListAdapter.MyItemClickListener, AddEditLabelFragment.AddEditLabelInterface{
@@ -59,13 +60,8 @@ public class AddEditReportActivity extends AppCompatActivity implements ClaimDet
     ArrayList<String> parentMenuItems;
 
 
-    private static final String MY_FRAGMENT_TAG = "AddEditReportSelectedImagesFragment";
+    LinkedHashMap<Label, SelectedImagesPOJO> labelSelectedImagesPOJOLinkedHashMap = new LinkedHashMap<>();
 
-    private static final String CLAIM_DETAILS_FRAGMENT_TAG = "claimdetailsfragment";
-    private static final String CAUSE_OF_LOSS_FRAGMENT_TAG = "causeoflossfragment";
-    private static final String POINT_OF_ORIGIN_FRAGMENT_TAG = "pointoforiginfragment";
-
-    private AddEditReportSelectedImagesFragment myFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,79 +69,12 @@ public class AddEditReportActivity extends AppCompatActivity implements ClaimDet
 
         setContentView(R.layout.activity_main);
 
-
-
-        if(savedInstanceState != null){
-
-            String tName = savedInstanceState.getString("tabName").toString();
-
-            selectedImagesList = (ArrayList<ImageDetailsPOJO>) savedInstanceState.getSerializable("selectedImagesList");
-            selectedElevationImagesList = (ArrayList<ImageDetailsPOJO>) savedInstanceState.getSerializable("selectedElevationImagesList");
-            reportTitle =  savedInstanceState.getString("reportTitle");
-            reportDescription =  savedInstanceState.getString("reportDescription");
-            clientName =  savedInstanceState.getString("clientName");
-            claimNumber =  savedInstanceState.getString("claimNumber");
-            address =  savedInstanceState.getString("address");
-            reportPath =  savedInstanceState.getString("reportPath");
-
-
-            if(tName.equalsIgnoreCase("PointOfOriginFragment")) {
-                FragmentManager transactionManager = getSupportFragmentManager();
-
-                Fragment fragmentToRemove = transactionManager.findFragmentByTag(CLAIM_DETAILS_FRAGMENT_TAG);
-                FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
-                if(fragmentToRemove != null){
-                    fragmentTransaction.remove(fragmentToRemove);
-                }
-                fragmentTransaction.add(R.id.content_frame,new PointOfOriginFragment(),CLAIM_DETAILS_FRAGMENT_TAG);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
-                tabName="PointOfOriginFragment";
-            }
-            else if(tName.equalsIgnoreCase("CauseOfLossFragment")) {
-                FragmentManager transactionManager = getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
-                fragmentTransaction.replace(R.id.content_frame,new CauseOfLossFragment());
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
-                tabName="CauseOfLossFragment";
-
-            }
-            else if(tName.equalsIgnoreCase("AddEditReportSelectedImagesFragment")){
-
-
-                myFragment = (AddEditReportSelectedImagesFragment) getSupportFragmentManager().findFragmentByTag(MY_FRAGMENT_TAG);
-                tabName="AddEditReportSelectedImagesFragment";
-            }
-            else {
-
-
-                FragmentManager transactionManager = getSupportFragmentManager();
-
-                Fragment fragmentToRemove = transactionManager.findFragmentByTag(CLAIM_DETAILS_FRAGMENT_TAG);
-
-                FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
-
-                if(fragmentToRemove != null){
-                    fragmentTransaction.remove(fragmentToRemove);
-                }
-                fragmentTransaction.add(R.id.content_frame,new ClaimDetailsFragment(), CLAIM_DETAILS_FRAGMENT_TAG);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
-                tabName="ClaimDetailsFragment";
-            }
-
-        }
-        else {
-
-
-            FragmentManager transactionManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
-            fragmentTransaction.replace(R.id.content_frame,new ClaimDetailsFragment());
-            fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();
-            tabName="ClaimDetailsFragment";
-        }
+        FragmentManager transactionManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
+        fragmentTransaction.replace(R.id.content_frame,new ClaimDetailsFragment());
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+        tabName="ClaimDetailsFragment";
 
 
 
@@ -218,13 +147,12 @@ public class AddEditReportActivity extends AppCompatActivity implements ClaimDet
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
 
-//                FragmentManager transactionManager = getSupportFragmentManager();
-//                transactionManager.findFragmentByTag();
-//                FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
-//                AddEditReportSelectedImagesFragment df=AddEditReportSelectedImagesFragment.initFragment(selectedImagesList,reportId,reportPath,selectedElevationImagesList);
-//                fragmentTransaction.replace(R.id.content_frame,df.initFragment(selectedImagesList,reportId,reportPath,selectedElevationImagesList));
-//                fragmentTransaction.addToBackStack(null);
-//                fragmentTransaction.commit();
+                FragmentManager transactionManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
+                AddEditReportSelectedImagesFragment df= AddEditReportSelectedImagesFragment.initFragment(selectedImagesList,reportId,reportPath,selectedElevationImagesList);
+                fragmentTransaction.replace(R.id.content_frame,df.initFragment(selectedImagesList,reportId,reportPath,selectedElevationImagesList));
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
                 tabName="AddEditReportSelectedImagesFragment";
                 return false;
             }

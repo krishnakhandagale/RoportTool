@@ -41,18 +41,18 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.electivechaos.checklistapp.ImageHelper;
-import com.electivechaos.checklistapp.ImagePickerActivity;
-import com.electivechaos.checklistapp.ImageSliderActivity;
 import com.electivechaos.checklistapp.PermissionUtilities;
 import com.electivechaos.checklistapp.R;
-import com.electivechaos.checklistapp.SingleImageDetailsActivity;
 import com.electivechaos.checklistapp.SingleMediaScanner;
-import com.electivechaos.checklistapp.pojo.Image;
-import com.electivechaos.checklistapp.pojo.ImageDetailsPOJO;
-import com.electivechaos.checklistapp.pojo.ReportItemPOJO;
 import com.electivechaos.checklistapp.database.ReportsListDBHelper;
 import com.electivechaos.checklistapp.listeners.OnImageRemovalListener;
 import com.electivechaos.checklistapp.listeners.OnMediaScannerListener;
+import com.electivechaos.checklistapp.pojo.Image;
+import com.electivechaos.checklistapp.pojo.ImageDetailsPOJO;
+import com.electivechaos.checklistapp.pojo.ReportItemPOJO;
+import com.electivechaos.checklistapp.ui.ImagePickerActivity;
+import com.electivechaos.checklistapp.ui.ImageSliderActivity;
+import com.electivechaos.checklistapp.ui.SingleImageDetailsActivity;
 import com.electivechaos.checklistapp.utils.CommonUtils;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -83,9 +83,11 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Created by krishna on 11/23/17.
+ */
 
 public class AddEditReportSelectedImagesFragment extends Fragment {
-
     private int REQUEST_CAMERA = 0;
     private int FRONT_IMAGE_REQUEST = 100;
     private int BACK_IMAGE_REQUEST = 200;
@@ -141,8 +143,8 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
     private String reportId;
     private String reportPath;
     private File photoFile;
-    private ArrayList<? extends Image> selectedImages = null;
-    private ArrayList<ImageDetailsPOJO> selectedImageList =null;
+    private ArrayList<Image> selectedImages = null;
+    private ArrayList<ImageDetailsPOJO> selectedImageList = null;
     private ArrayList<ImageDetailsPOJO> selectedElevationImagesList = new ArrayList<>();
 
 
@@ -165,11 +167,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        setRetainInstance(true);
-
         if (getArguments() != null) {
-
             selectedImageList = (ArrayList<ImageDetailsPOJO>) getArguments().getSerializable("selectedImagesList");
             selectedElevationImagesList = (ArrayList<ImageDetailsPOJO>) getArguments().getSerializable("selectedElevationImagesList");
 
@@ -177,20 +175,12 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
             reportId = getArguments().getString("reportId");
             reportPath = getArguments().getString("reportPath");
         }
-        if(selectedElevationImagesList==null || selectedElevationImagesList.size()==0)
-        {
-            selectedElevationImagesList.add(new ImageDetailsPOJO());
-            selectedElevationImagesList.add(new ImageDetailsPOJO());
-            selectedElevationImagesList.add(new ImageDetailsPOJO());
-            selectedElevationImagesList.add(new ImageDetailsPOJO());
-        }
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View selectImageView = inflater.inflate(R.layout.fragment_category_details, container, false);
+        View selectImageView = inflater.inflate(R.layout.fragment_select_photo, container, false);
 
         onImageRemovalListener = new OnImageRemovalListener() {
             @Override
@@ -324,9 +314,9 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
 
                 if (selectedElevationImagesList != null && selectedElevationImagesList.size() > 0)
                 {
-                    selectedElevationImagesList.set(0,new ImageDetailsPOJO());
-                    imgViewFrontPreview.setImageDrawable(null);
-                    imgRemoveBtnFront.setVisibility(View.INVISIBLE);
+                        selectedElevationImagesList.set(0,new ImageDetailsPOJO());
+                        imgViewFrontPreview.setImageDrawable(null);
+                        imgRemoveBtnFront.setVisibility(View.INVISIBLE);
 
                 }
             }
@@ -564,6 +554,8 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                             photoFile);
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
                 }
+
+
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
                 ImageHelper.grantAppPermission(getContext(), intent, fileUri);
@@ -628,7 +620,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                     snackbar.setAction("RETRY", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            openCamera(PermissionUtilities.MY_APP_TAKE_FRONT_PHOTO_PERMISSIONS, FRONT_IMAGE_REQUEST);
+                           openCamera(PermissionUtilities.MY_APP_TAKE_FRONT_PHOTO_PERMISSIONS, FRONT_IMAGE_REQUEST);
                             v.setVisibility(View.GONE);
                         }
                     });
@@ -685,7 +677,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                     snackbar.setAction("RETRY", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            openCamera(PermissionUtilities.MY_APP_TAKE_RIGHT_PHOTO_PERMISSIONS, RIGHT_IMAGE_REQUEST);
+                           openCamera(PermissionUtilities.MY_APP_TAKE_RIGHT_PHOTO_PERMISSIONS, RIGHT_IMAGE_REQUEST);
                             v.setVisibility(View.GONE);
                         }
                     });
@@ -945,7 +937,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
 
     public PdfPCell getCell(String category, String title, String description, int alignment, Document document, int perPage) {
         PdfPCell cell = new PdfPCell();
-        // Font font=new Font(Font.FontFamily.TIMES_ROMAN, 16, Font.BOLD);
+       // Font font=new Font(Font.FontFamily.TIMES_ROMAN, 16, Font.BOLD);
 
         cell.addElement(new Phrase(category,TIMESNEWROMAN18));
         cell.addElement(new Phrase(title));
@@ -1175,16 +1167,16 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
     }
 
 
-   @Override
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-//        reportsListDBHelper = ReportsListDBHelper.getInstance(context);
-//        permissionPermissionUtilities = new PermissionUtilities();
-//        try {
-//            sendReportDBchangeSignal = (SendReportDBChangeSignal) getActivity();
-//        } catch (ClassCastException e) {
-//            throw new ClassCastException("Error in retrieving data. Please try again");
-//        }
+        reportsListDBHelper = ReportsListDBHelper.getInstance(context);
+        permissionPermissionUtilities = new PermissionUtilities();
+        try {
+            sendReportDBchangeSignal = (SendReportDBChangeSignal) getActivity();
+        } catch (ClassCastException e) {
+            throw new ClassCastException("Error in retrieving data. Please try again");
+        }
     }
 
     public interface SendReportDBChangeSignal {

@@ -1,4 +1,4 @@
-package com.electivechaos.checklistapp;
+package com.electivechaos.checklistapp.ui;
 
 import android.content.Context;
 import android.content.Intent;
@@ -23,6 +23,11 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
+import com.electivechaos.checklistapp.BaseActivity;
+import com.electivechaos.checklistapp.Folder;
+import com.electivechaos.checklistapp.GridSpacingItemDecoration;
+import com.electivechaos.checklistapp.ImageHelper;
+import com.electivechaos.checklistapp.R;
 import com.electivechaos.checklistapp.pojo.Image;
 import com.electivechaos.checklistapp.listeners.FolderClickListener;
 import com.electivechaos.checklistapp.listeners.ImageClickListener;
