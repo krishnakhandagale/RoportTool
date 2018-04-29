@@ -49,8 +49,8 @@ public class AddEditCauseOfLossActivity extends AppCompatActivity {
             if(causeOfLossID == -1) {
                 Log.d("------------->>", "onClick: THIS IS ADD CAUSE OF LOSS EVENT");
 
-                data.putString("categoryName", categoryNameString);//put string to pass with a key value
-                data.putString("categoryDesc", categoryDescriptionString);//put string to pass with a key value
+                data.putString("name", categoryNameString);//put string to pass with a key value
+                data.putString("desc", categoryDescriptionString);//put string to pass with a key value
                 Intent intent = new Intent();
                 intent.putExtra("data", data);
                 setResult(Activity.RESULT_OK, intent);
@@ -58,9 +58,9 @@ public class AddEditCauseOfLossActivity extends AppCompatActivity {
             }else {
                 Log.d("------------->>", "onClick: THIS IS EDIT EDIT EDIT CAUSE OF LOSS EVENT");
                 Intent intent = new Intent();
-                data.putString("categoryName", categoryNameString);//put string to pass with a key value
-                data.putString("categoryDesc", categoryDescriptionString);//put string to pass with a key value
-                data.putInt("categoryId", causeOfLossID);//put string to pass with a key value
+                data.putString("name", categoryNameString);//put string to pass with a key value
+                data.putString("desc", categoryDescriptionString);//put string to pass with a key value
+                data.putInt("id", causeOfLossID);//put string to pass with a key value
                 intent.putExtra("data", data);
                 setResult(2, intent);
                 finish();
