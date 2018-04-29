@@ -109,7 +109,7 @@ public class AddEditReportActivity extends AppCompatActivity implements ClaimDet
         mExpandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-
+                mDrawerLayout.closeDrawers();
                 if(parentMenuItems.get(groupPosition).equals("Claim Details")){
 
 
@@ -146,7 +146,7 @@ public class AddEditReportActivity extends AppCompatActivity implements ClaimDet
         mExpandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-
+                mDrawerLayout.closeDrawers();
                 FragmentManager transactionManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
                 AddEditReportSelectedImagesFragment df= AddEditReportSelectedImagesFragment.initFragment(selectedImagesList,reportId,reportPath,selectedElevationImagesList);

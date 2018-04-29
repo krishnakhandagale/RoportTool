@@ -73,30 +73,47 @@ public class AddEditLabelFragment extends Fragment {
 
 
 
-        final CustomCategoryPopUpAdapter adapter = new CustomCategoryPopUpAdapter(getContext(), categories);
-        categoryTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final AlertDialog.Builder ad = new AlertDialog.Builder(getContext());
-                ad.setCancelable(true);
-                ad.setTitle("Select Category");
 
-                ad.setSingleChoiceItems(adapter, selectedCategoryPosition, new DialogInterface.OnClickListener() {
 
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int pos) {
-                        selectedCategoryPosition = pos;
-                        categoryTextView.setText(categories.get(pos).getCategoryName());
-                        selectedCategoryID = categories.get(pos).getCategoryId();
-                        dialogInterface.dismiss();
-                    }
-                });
+            categoryTextView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(categories != null && categories.size() > 0){
+                    final CustomCategoryPopUpAdapter adapter = new CustomCategoryPopUpAdapter(getContext(), categories);
+                    final AlertDialog.Builder ad = new AlertDialog.Builder(getContext());
+                    ad.setCancelable(true);
+                    ad.setTitle("Select Category");
 
-                ad.show();
+                    ad.setSingleChoiceItems(adapter, selectedCategoryPosition, new DialogInterface.OnClickListener() {
 
-            }
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int pos) {
+                            selectedCategoryPosition = pos;
+                            categoryTextView.setText(categories.get(pos).getCategoryName());
+                            selectedCategoryID = categories.get(pos).getCategoryId();
+                            dialogInterface.dismiss();
+                        }
+                    });
 
-        });
+                    ad.show();
+
+                }else{
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setMessage("There are no categories present.")
+                            .setCancelable(true)
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+
+                                }
+                            });
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                }
+
+            }});
+
+
+
 
         Button addInspectionView = layoutView.findViewById(R.id.addLabel);
         addInspectionView.setOnClickListener(new View.OnClickListener() {

@@ -93,6 +93,7 @@ public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
             @Override
             public void onClick(View v) {
                 myItemClickListener.onItemClick(groupPosition);
+
             }
         });
 
