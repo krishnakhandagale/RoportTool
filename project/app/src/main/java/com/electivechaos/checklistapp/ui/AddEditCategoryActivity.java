@@ -32,11 +32,10 @@ public class AddEditCategoryActivity extends AppCompatActivity{
         categoryDescription = findViewById(R.id.editTextCategoryDescription);
         addEditCategoryParentLayout = findViewById(R.id.addEditCategoryParentLayout);
         if(getIntent().getExtras()!= null){
-            Bundle dataFromActivity = getIntent().getBundleExtra(
-                    "data");
-            intentCategoryTitle = dataFromActivity.get("title").toString();
-            intentCategoryDescription = dataFromActivity.get("description").toString();
-            categoryID = Integer.parseInt(dataFromActivity.get("id").toString());
+            Bundle dataFromActivity = getIntent().getExtras().getBundle("categoryDetails");
+            intentCategoryTitle = dataFromActivity.get("categoryName").toString();
+            intentCategoryDescription = dataFromActivity.get("categoryDescription").toString();
+            categoryID = Integer.parseInt(dataFromActivity.get("categoryID").toString());
 
             Button updateCategoryButton = findViewById(R.id.updateCategory);
             updateCategoryButton.setText(R.string.update_category);
@@ -65,20 +64,20 @@ public class AddEditCategoryActivity extends AppCompatActivity{
                     return;
                 }
 
-                Bundle data = new Bundle();//create bundle instance
+                Bundle data = new Bundle();
                 if(categoryID == -1) {
                     data.putString("categoryName", categoryNameString);
-                    data.putString("categoryDesc", categoryDescriptionString);
+                    data.putString("categoryDescription", categoryDescriptionString);
                     Intent intent = new Intent();
-                    intent.putExtra("data", data);
+                    intent.putExtra("categoryDetails", data);
                     setResult(Activity.RESULT_OK, intent);
                     finish();
                 }else {
                     Intent intent = new Intent();
                     data.putString("categoryName", categoryNameString);
-                    data.putString("categoryDesc", categoryDescriptionString);
-                    data.putInt("categoryId", categoryID);
-                    intent.putExtra("data", data);
+                    data.putString("categoryDescription", categoryDescriptionString);
+                    data.putInt("categoryID", categoryID);
+                    intent.putExtra("categoryDetails", data);
                     setResult(Activity.RESULT_OK, intent);
                     finish();
                 }

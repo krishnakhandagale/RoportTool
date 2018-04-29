@@ -30,6 +30,8 @@ public class CategoryListFragment  extends Fragment {
     private RecyclerView recyclerView;
     private CategoriesAdapter mAdapter;
     static CategoryListDBHelper mCategoryListDBHelper;
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -41,8 +43,8 @@ public class CategoryListFragment  extends Fragment {
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
-        mCategoryListDBHelper = new CategoryListDBHelper(getContext());
-        updateCategoryList();
+        mCategoryListDBHelper = new CategoryListDBHelper(getActivity());
+        getCategoryList();
 
         FloatingActionButton btnAddReport = view.findViewById(R.id.btnAddCategory);
         btnAddReport.setOnClickListener(new View.OnClickListener() {
@@ -60,44 +62,35 @@ public class CategoryListFragment  extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
             if (resultCode == Activity.RESULT_OK) {
-                Bundle dataFromActivity = data.getBundleExtra("data");
-                String categoryName = dataFromActivity.get("name").toString();
-                String categoryDescription = dataFromActivity.get("desc").toString();
+                Bundle dataFromActivity =  data.getExtras().getBundle("categoryDetails");
+                String categoryName = dataFromActivity.get("categoryName").toString();
+                String categoryDescription = dataFromActivity.get("categoryDescription").toString();
                 Category category = new Category();
                 category.setCategoryName(categoryName);
                 category.setCategoryDescription(categoryDescription);
                 mCategoryListDBHelper.addCategory(category);
-                updateCategoryList();
+                getCategoryList();
             }
         }
 
         if (requestCode == 2) {
             if (resultCode == Activity.RESULT_OK) {
-                Bundle dataFromActivity = data.getBundleExtra("data");
-                String categoryName = dataFromActivity.get("name").toString();
-                String categoryDescription = dataFromActivity.get("desc").toString();
-                int categoryID = Integer.parseInt(dataFromActivity.get("id").toString());
-                //add to category database
+                Bundle dataFromActivity = data.getExtras().getBundle("categoryDetails");
+                String categoryName = dataFromActivity.get("categoryName").toString();
+                String categoryDescription = dataFromActivity.get("categoryDescription").toString();
+                int categoryID = Integer.parseInt(dataFromActivity.get("categoryID").toString());
                 Category category = new Category();
                 category.setCategoryName(categoryName);
                 category.setCategoryDescription(categoryDescription);
                 category.setCategoryId(categoryID);
                 mCategoryListDBHelper.updateCategory(category);
-                updateCategoryList();
+                getCategoryList();
             }
         }
 
-//        if (requestCode == 3) {
-//            if (resultCode == 3) {
-//                Bundle dataFromActivity = data.getBundleExtra("data");
-//                String categoryID = dataFromActivity.get("id").toString();
-//                mCategoryListDBHelper.deleteCategoryEntry(categoryID);
-//                updateCategoryList();
-//            }
-//        }
     }
 
-    private  void updateCategoryList(){
+    private  void getCategoryList(){
         categoryList = mCategoryListDBHelper.getCategoryList();
         mAdapter = new CategoriesAdapter(categoryList, getContext());
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
@@ -144,18 +137,18 @@ public class CategoryListFragment  extends Fragment {
 
         @Override
         public void onBindViewHolder(CategoryListFragment.CategoriesAdapter.MyViewHolder holder, int position) {
-            final Category movie = categoryList.get(position);
-            holder.title.setText(movie.getCategoryName());
-            holder.genre.setText(movie.getCategoryDescription());
+            final Category category = categoryList.get(position);
+            holder.title.setText(category.getCategoryName());
+            holder.genre.setText(category.getCategoryDescription());
             holder.editCategory.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent addCategoryActivity = new Intent(context, AddEditCategoryActivity.class);
-                    Bundle data = new Bundle();//create bundle instance
-                    data.putString("title",movie.getCategoryName());
-                    data.putString("description",movie.getCategoryDescription());
-                    data.putInt("id",movie.getCategoryId());
-                    addCategoryActivity.putExtra("data", data);
+                    Bundle data = new Bundle();
+                    data.putString("categoryName",category.getCategoryName());
+                    data.putString("categoryDescription",category.getCategoryDescription());
+                    data.putInt("categoryID",category.getCategoryId());
+                    addCategoryActivity.putExtra("categoryDetails", data);
                     startActivityForResult(addCategoryActivity, 2);
                     }
             });
@@ -163,8 +156,8 @@ public class CategoryListFragment  extends Fragment {
             holder.deleteCategory.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mCategoryListDBHelper.deleteCategoryEntry(String.valueOf(movie.getCategoryId()));
-                    updateCategoryList();
+                    mCategoryListDBHelper.deleteCategoryEntry(String.valueOf(category.getCategoryId()));
+                    getCategoryList();
                 }
             });
         }
