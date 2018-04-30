@@ -93,18 +93,11 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
             e.printStackTrace();
         }
 
+
         mMapView.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap mMap) {
-
-
                 googleMap = mMap;
-                googleMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
-                    @Override
-                    public boolean onMyLocationButtonClick() {
-                        return false;
-                    }
-                });
                 getLocationPermission();
             }
         });
@@ -299,7 +292,7 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
     public void onDestroy() {
         super.onDestroy();
         mMapView.onDestroy();
-
+        mGoogleApiClient.disconnect();
     }
 
     @Override
