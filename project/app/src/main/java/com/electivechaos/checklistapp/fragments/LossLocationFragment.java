@@ -74,11 +74,11 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
 
     @Override
     public void onStart() {
-        super.onStart();
 
         if(this.mGoogleApiClient != null){
             this.mGoogleApiClient.connect();
         }
+        super.onStart();
     }
 
     @Nullable
@@ -111,7 +111,7 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
             }
         });
 
-        if (mGoogleApiClient == null){
+        if(mGoogleApiClient == null || !mGoogleApiClient.isConnected()){
             mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
                     .addApi(Places.GEO_DATA_API)
                     .addConnectionCallbacks(this)
@@ -294,6 +294,8 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
 
     @Override
     public void onStop() {
+        /*mGoogleApiClient.stopAutoManage(getActivity());
+        mGoogleApiClient.disconnect();*/
 
         mGoogleApiClient.disconnect();
         super.onStop();
@@ -303,6 +305,7 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
     public void onResume() {
         super.onResume();
         mMapView.onResume();
+
     }
 
     @Override
@@ -310,12 +313,14 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
         super.onPause();
         mMapView.onPause();
         mGoogleApiClient.disconnect();
+
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         mMapView.onDestroy();
+
     }
 
     @Override
@@ -323,4 +328,6 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
         super.onLowMemory();
         mMapView.onLowMemory();
     }
+
+
 }
