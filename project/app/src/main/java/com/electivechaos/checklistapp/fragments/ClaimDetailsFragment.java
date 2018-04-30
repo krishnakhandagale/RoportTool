@@ -54,7 +54,7 @@ public class ClaimDetailsFragment  extends Fragment implements ClaimDetailsTabsF
         tabLayout = view.findViewById(R.id.claim_details_tab_layout);
         tabLayout.setupWithViewPager(viewPager);
 
-        ClaimDetailsTabsPagerAdapter adapter=new ClaimDetailsTabsPagerAdapter(getActivity().getSupportFragmentManager(),tabIndex);
+        ClaimDetailsTabsPagerAdapter adapter=new ClaimDetailsTabsPagerAdapter(getActivity().getSupportFragmentManager());
         viewPager.setAdapter(adapter);
 
      /*  TabLayout.Tab tab=tabLayout.getTabAt(tabIndex);
@@ -67,8 +67,6 @@ public class ClaimDetailsFragment  extends Fragment implements ClaimDetailsTabsF
                 if(position==0){
                    tabIndex =position;
                     tab=tabLayout.getTabAt(position);
-                    tab.select();
-
                     tab.select();
 
                 }
@@ -106,9 +104,9 @@ public class ClaimDetailsFragment  extends Fragment implements ClaimDetailsTabsF
     public class ClaimDetailsTabsPagerAdapter extends FragmentStatePagerAdapter {
         int tabIndex;
 
-        public ClaimDetailsTabsPagerAdapter(FragmentManager fm,int tabIndex) {
+        public ClaimDetailsTabsPagerAdapter(FragmentManager fm) {
             super(fm);
-            this.tabIndex=tabIndex;
+            //this.tabIndex=tabIndex;
             viewPager.setCurrentItem(tabIndex);
         }
 
