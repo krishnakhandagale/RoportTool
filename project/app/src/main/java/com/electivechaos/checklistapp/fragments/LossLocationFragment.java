@@ -16,10 +16,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
-import android.widget.Toast;
 
 import com.electivechaos.checklistapp.R;
 import com.electivechaos.checklistapp.adapters.PlaceArrayAdapter;
+import com.electivechaos.checklistapp.utils.CommonUtils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
@@ -47,8 +47,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
-import static android.content.ContentValues.TAG;
-
 /**
  * Created by krishna on 2/26/18.
  */
@@ -57,7 +55,7 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
 
     MapView mMapView;
     private GoogleMap googleMap;
-
+    private View  lossLocationParentLayout;
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     protected static final int REQUEST_CHECK_SETTINGS = 0x1;
 
@@ -87,7 +85,7 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
         View rootView = inflater.inflate(R.layout.loss_location_fragment, container, false);
         mMapView = rootView.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
-
+        lossLocationParentLayout = rootView.findViewById(R.id.lossLocationParentLayout);
         mMapView.onResume();
         try {
             MapsInitializer.initialize(getActivity().getApplicationContext());
@@ -147,7 +145,6 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
             if (!places.getStatus().isSuccess()) {
                 return;
             }
-            final Place place = places.get(0);
         }
     };
 
@@ -165,9 +162,7 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String permissions[],
-                                           @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
         mLocationPermissionGranted = false;
         switch (requestCode) {
             case PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
@@ -208,8 +203,6 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
                                 googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
                                 googleMap.getUiSettings().setMyLocationButtonEnabled(false);
                                 likelyPlaces.release();
-                            } else {
-                                Log.e(TAG, "Exception: %s", task.getException());
                             }
                         }
                     });
@@ -226,19 +219,12 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
     @Override
     public void onConnected(Bundle bundle) {
         mPlaceArrayAdapter.setGoogleApiClient(mGoogleApiClient);
-        Log.i("Location", "Google Places API connected.");
 
     }
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-        Log.e("Location", "Google Places API connection failed with error code: "
-                + connectionResult.getErrorCode());
-
-        Toast.makeText(getActivity(),
-                "Google Places API connection failed with error code:" +
-                        connectionResult.getErrorCode(),
-                Toast.LENGTH_LONG).show();
+        CommonUtils.showSnackbarMessage("Failed to connect to goole api.", true, true,lossLocationParentLayout,getActivity());
     }
 
     @Override
@@ -266,21 +252,17 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
                 final Status status = result.getStatus();
                 switch (status.getStatusCode()) {
                     case LocationSettingsStatusCodes.SUCCESS:
-                        Log.i(TAG, "All location settings are satisfied.");
+
                         break;
                     case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
-                        Log.i(TAG, "Location settings are not satisfied. Show the user a dialog to upgrade location settings ");
 
                         try {
-                            // Show the dialog by calling startResolutionForResult(), and check the result
-                            // in onActivityResult().
                             status.startResolutionForResult(getActivity(), REQUEST_CHECK_SETTINGS);
                         } catch (IntentSender.SendIntentException e) {
-                            Log.i(TAG, "PendingIntent unable to execute request.");
+                            e.printStackTrace();
                         }
                         break;
                     case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
-                        Log.i(TAG, "Location settings are inadequate, and cannot be fixed here. Dialog not created.");
                         break;
                 }
             }
@@ -294,9 +276,6 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
 
     @Override
     public void onStop() {
-        /*mGoogleApiClient.stopAutoManage(getActivity());
-        mGoogleApiClient.disconnect();*/
-
         mGoogleApiClient.disconnect();
         super.onStop();
     }
