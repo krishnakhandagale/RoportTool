@@ -61,8 +61,6 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     protected static final int REQUEST_CHECK_SETTINGS = 0x1;
 
-    private static final int GOOGLE_API_CLIENT_ID = 0;
-
 
     private boolean mLocationPermissionGranted;
     private PlaceDetectionClient mPlaceDetectionClient;
@@ -116,7 +114,6 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
         if (mGoogleApiClient == null){
             mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
                     .addApi(Places.GEO_DATA_API)
-                    .enableAutoManage(getActivity(), GOOGLE_API_CLIENT_ID, this)
                     .addConnectionCallbacks(this)
                     .build();
         }
@@ -291,15 +288,13 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
     }
     @Override
     public void onDetach() {
-        super.onDetach();
-        mGoogleApiClient.stopAutoManage(getActivity());
+        super.onDetach();;
         mGoogleApiClient.disconnect();
     }
 
     @Override
     public void onStop() {
 
-        mGoogleApiClient.stopAutoManage(getActivity());
         mGoogleApiClient.disconnect();
         super.onStop();
     }
@@ -314,7 +309,6 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
     public void onPause() {
         super.onPause();
         mMapView.onPause();
-        mGoogleApiClient.stopAutoManage(getActivity());
         mGoogleApiClient.disconnect();
     }
 

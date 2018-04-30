@@ -25,7 +25,9 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyC3rml-xbs9AJaa5nitYVRpC8dZc1KoAMI" />
 
-        <activity android:name=".ui.AddEditReportActivity" />
+        <activity android:name=".ui.AddEditReportActivity" android:screenOrientation="portrait">
+
+        </activity>
         <activity android:name=".ui.MainTabsActivity">
 
         </activity>
