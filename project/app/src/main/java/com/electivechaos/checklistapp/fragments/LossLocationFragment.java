@@ -217,7 +217,7 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-        CommonUtils.showSnackbarMessage("Failed to connect to goole api.", true, true,lossLocationParentLayout,getActivity());
+        CommonUtils.showSnackbarMessage("Failed to connect to google api.", true, true,lossLocationParentLayout,getActivity());
     }
 
     @Override
