@@ -18,24 +18,64 @@ import java.util.ArrayList;
  */
 
 public class CategoryListDBHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 18;
+    private static final int DATABASE_VERSION = 20;
+
 
     // Database Name
     private static final String DATABASE_NAME = "master_categories_list";
 
+
+    // Database table name
+    private static final String TABLE_REPORTS_LIST = "generated_reports";
     private static final String TABLE_MASTER_CATEGORY = "master_category";
     private static final String TABLE_CATEGORY_LABELS = "category_label";
     private static final String TABLE_CAUSE_OF_LOSS = "cause_of_loss";
+    private static final String TABLE_REPORTS_IMAGE_DETAILS = "report_image_details";
+    private static final String TABLE_REPORTS_ELEVATION_IMAGE_DETAILS = "report_elevation_image_details";
+
+
+
+
+    // Reports list Table Columns names
+    private static final String KEY_REPORT_ID = "report_id";
+    private static final String KEY_REPORT_NAME = "report_name";
+    private static final String KEY_REPORT_DESCRIPTION  = "report_description";
+    private static final String KEY_CLIENT_NAME = "report_client_name";
+    private static final String KEY_CLAIM_NUMBER = "report_claim_number";
+    private static final String KEY_ADDRESS = "address";
+    private static final String KEY_DATE_CREATED = "created_date";
+    private static final String KEY_FILE_PATH = "file_path";
+    private static final String KEY_LOCATION_LAT = "location_lat";
+    private static final String KEY_LOCATION_LONG = "location_lang";
+    private static final String KEY_FK_REPORT_CAUSE_OF_LOSS_ID="cause_of_loss_id_fk";
+
+
 
     // Master Category list Table Columns names
     private static final String KEY_CATEGORY_ID = "_id";
     private static final String KEY_CATEGORY_NAME = "name";
     private static final String KEY_CATEGORY_DESCRIPTION  = "description";
 
+
+    // Label Table Column Names
     private static final String KEY_LABEL_ID = "_id";
     private static final String KEY_LABEL_NAME = "name";
     private static final String KEY_LABEL_DESCRIPTION  = "description";
+    private static final String KEY_FK_LABEL_IMAGE_ID  = "image_id_fk";
+    private static final String KEY_FK_LABEL_ELEVATION_IMAGE_ID  = "elevation_image_id_fk";
+    private static final String KEY_FK_LABEL_REPORT_ID  = "report_id_fk";
     private static final String KEY_FK_CATEGORY_ID = "category_id_fk";
+
+
+    // Image Table Column Names
+    private static final String KEY_IMAGE_ID= "image_id";
+    private static final String KEY_IMAGE_TITLE = "image_title";
+    private static final String KEY_IMAGE_DESCRIPTION = "image_description";
+    private static final String KEY_IMAGE_URL = "image_url";
+
+    //Elevation image table columns name
+    private static final String KEY_ELEVATION_IMAGE_ID="elevation_image_id";
+
 
 
     private static final String KEY_CAUSE_OF_LOSS_ID = "_id";
@@ -50,21 +90,105 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+
+        String CREATE_REPORTS_LIST_TABLE = "CREATE TABLE " + TABLE_REPORTS_LIST + "("
+                + KEY_REPORT_ID + " TEXT PRIMARY KEY," + KEY_REPORT_NAME + " TEXT,"
+                + KEY_REPORT_DESCRIPTION + " TEXT,"
+                + KEY_CLIENT_NAME + " TEXT,"
+                + KEY_CLAIM_NUMBER + " TEXT,"
+                + KEY_ADDRESS + " TEXT,"
+                + KEY_DATE_CREATED + " TEXT,"
+                + KEY_FILE_PATH + " TEXT,"
+                + KEY_LOCATION_LAT + " TEXT,"
+                + KEY_LOCATION_LONG + " TEXT,"
+                + KEY_FK_REPORT_CAUSE_OF_LOSS_ID + " INTEGER,"
+
+                + "FOREIGN KEY("+ KEY_FK_REPORT_CAUSE_OF_LOSS_ID +") REFERENCES "+TABLE_CAUSE_OF_LOSS+"("+KEY_CAUSE_OF_LOSS_ID+ ")"+ " ON DELETE CASCADE )";
+
+
         String CREATE_CATEGORY_DETAILS_TABLE = "CREATE TABLE " + TABLE_MASTER_CATEGORY + "("
-                +KEY_CATEGORY_ID +" INTEGER PRIMARY KEY AUTOINCREMENT DEFAULT 0,"+ KEY_CATEGORY_NAME + " TEXT,"+ KEY_CATEGORY_DESCRIPTION +" TEXT "+")";
+                +KEY_CATEGORY_ID +" INTEGER PRIMARY KEY AUTOINCREMENT DEFAULT 0,"
+                + KEY_CATEGORY_NAME + " TEXT,"
+                + KEY_CATEGORY_DESCRIPTION +" TEXT "+")";
 
         String CATEGORY_LABELS_TABLE = "CREATE TABLE " + TABLE_CATEGORY_LABELS + "("
-                + KEY_LABEL_NAME + " TEXT," + KEY_LABEL_DESCRIPTION + " TEXT," + KEY_FK_CATEGORY_ID + " INTEGER,"
-                + KEY_LABEL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT DEFAULT 0,"+ "FOREIGN KEY("+ KEY_FK_CATEGORY_ID +") REFERENCES "+TABLE_MASTER_CATEGORY+"("+KEY_CATEGORY_ID+ ")"+ " ON DELETE CASCADE)";
-
-        String CREATE_CAUSE_OF_LOSS_TABLE = "CREATE TABLE " + TABLE_CAUSE_OF_LOSS + "("
-                + KEY_CAUSE_OF_LOSS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT DEFAULT 0," + KEY_CAUSE_OF_LOSS_NAME + " TEXT,"+ KEY_CAUSE_OF_LOSS_DESCRIPTION + " TEXT"+")";
+                + KEY_LABEL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT DEFAULT 0,"
+                + KEY_LABEL_NAME + " TEXT,"
+                + KEY_LABEL_DESCRIPTION + " TEXT,"
 
 
+                + KEY_FK_CATEGORY_ID + " INTEGER,"
+                + KEY_FK_LABEL_IMAGE_ID + " INTEGER,"
+                + KEY_FK_LABEL_ELEVATION_IMAGE_ID + " INTEGER,"
+                + KEY_FK_LABEL_REPORT_ID + " INTEGER,"
+
+
+                + "FOREIGN KEY("+ KEY_FK_LABEL_IMAGE_ID +") REFERENCES "+TABLE_REPORTS_IMAGE_DETAILS+"("+KEY_IMAGE_ID+ ")"+ " ON DELETE CASCADE,"
+                + "FOREIGN KEY("+ KEY_FK_LABEL_ELEVATION_IMAGE_ID +") REFERENCES "+TABLE_REPORTS_ELEVATION_IMAGE_DETAILS+"( " + KEY_ELEVATION_IMAGE_ID + " )"+" ON DELETE CASCADE,"
+                + "FOREIGN KEY("+ KEY_FK_LABEL_REPORT_ID+") REFERENCES "+TABLE_REPORTS_LIST+"("+ KEY_REPORT_ID +")" + " ON DELETE CASCADE ,"
+                + "FOREIGN KEY("+ KEY_FK_CATEGORY_ID +") REFERENCES "+TABLE_MASTER_CATEGORY+"("+KEY_CATEGORY_ID +")"+ " ON DELETE CASCADE)";
+
+        String CREATE_CAUSE_OF_LOSS_TABLE = "CREATE TABLE "
+                + TABLE_CAUSE_OF_LOSS + "("
+                + KEY_CAUSE_OF_LOSS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT DEFAULT 0,"
+                + KEY_CAUSE_OF_LOSS_NAME + " TEXT,"
+                + KEY_CAUSE_OF_LOSS_DESCRIPTION + " TEXT"+")";
+
+
+        String CREATE_IMAGE_DETAILS_TABLE = "CREATE TABLE " + TABLE_REPORTS_IMAGE_DETAILS + "("
+                + KEY_IMAGE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT DEFAULT 0,"
+                + KEY_IMAGE_TITLE + " TEXT,"
+                + KEY_IMAGE_DESCRIPTION + " TEXT,"
+                + KEY_IMAGE_URL+ " TEXT" +")";
+
+
+        String CREATE_ELEVATION_IMAGE_DETAILS_TABLE = "CREATE TABLE " + TABLE_REPORTS_ELEVATION_IMAGE_DETAILS + "("
+                + KEY_IMAGE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT DEFAULT 0,"
+                + KEY_IMAGE_TITLE + " TEXT,"
+                + KEY_IMAGE_DESCRIPTION + " TEXT,"
+                + KEY_IMAGE_URL+ " TEXT" +")";
+
+
+        final String categories[] = {
+                "Elevations",
+                "Roof",
+                "Kitchen",
+                "Living Room",
+                "Den",
+                "Foyer",
+                "Bedroom",
+                "Bathroom",
+                "Hall Bathroom",
+                "Office",
+                "Guest room",
+                "Master Bathroom",
+                "Master Bedroom",
+                "Closet",
+                "Master Closet",
+                "Fence",
+                "Shed",
+                "Guest House",
+                "Barn",
+                "Detached Garage",
+                "Underwriting Risk"
+        };
+        db.execSQL(CREATE_CAUSE_OF_LOSS_TABLE);
+        db.execSQL(CREATE_REPORTS_LIST_TABLE);
 
         db.execSQL(CREATE_CATEGORY_DETAILS_TABLE);
+        db.execSQL(CREATE_IMAGE_DETAILS_TABLE);
+        db.execSQL(CREATE_ELEVATION_IMAGE_DETAILS_TABLE);
+
         db.execSQL(CATEGORY_LABELS_TABLE);
-        db.execSQL(CREATE_CAUSE_OF_LOSS_TABLE);
+
+
+
+        for(int i=0;i<categories.length;i++){
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(KEY_CATEGORY_NAME, categories[i]);
+            contentValues.put(KEY_CATEGORY_DESCRIPTION, categories[i]);
+            db.insert(TABLE_MASTER_CATEGORY,null,contentValues);
+        }
     }
 
     @Override
