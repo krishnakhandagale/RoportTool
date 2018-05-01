@@ -81,6 +81,12 @@ public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
             convertView = LayoutInflater.from(context).inflate(R.layout.drawer_layout_menu_item, parent, false);
         }
 
+
+//        if(isExpanded){
+//            convertView.setBackgroundColor(ContextCompat.getColor(context,R.color.colorPrimaryDark));
+//        }else{
+//            convertView.setBackgroundColor(ContextCompat.getColor(context,R.color.colorPrimary));
+//        }
         TextView menuTitle = convertView.findViewById(R.id.menuTitle);
         ImageView imageView = convertView.findViewById(R.id.menuIcon);
         Button addInspectionView = convertView.findViewById(R.id.addInspection);
