@@ -8,6 +8,7 @@ public class Label {
     String name;
     String description;
     long id;
+
     int categoryID;
 
     public long getID() {

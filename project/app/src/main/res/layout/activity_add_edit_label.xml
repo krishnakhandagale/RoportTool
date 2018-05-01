@@ -36,7 +36,7 @@
             android:drawableEnd="@drawable/ic_keyboard_arrow_down"
             android:drawableRight="@drawable/ic_keyboard_arrow_down"
             android:padding="5dp"
-            android:text="@string/category" />
+            android:text="@string/category" />i
 
         <Button
             android:layout_marginTop="20dp"
