@@ -65,7 +65,6 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
             imgObj.setImageUrl(imageList.get(i).getPath());
             imgObj.setTitle("");
             imgObj.setDescription("");
-            imgObj.setCategory("");
             imagesInformation.add(imgObj);
         }
 
@@ -121,11 +120,6 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
     @Override
     public void updateImageDescription(String description, int position) {
         imagesInformation.get(position).setDescription(description);
-    }
-
-    @Override
-    public void updateImageCategory(String category, int position) {
-        imagesInformation.get(position).setCategory(category);
     }
 
     public class ImagePagerAdapter extends FragmentStatePagerAdapter {
