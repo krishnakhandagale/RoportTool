@@ -1,8 +1,6 @@
 package com.electivechaos.checklistapp.fragments;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
-import android.widget.Toast;
 
 import com.electivechaos.checklistapp.R;
 import com.electivechaos.checklistapp.adapters.PlaceArrayAdapter;
@@ -23,12 +20,6 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.LocationSettingsRequest;
-import com.google.android.gms.location.LocationSettingsResult;
-import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.location.places.PlaceBuffer;
 import com.google.android.gms.location.places.PlaceDetectionClient;
 import com.google.android.gms.location.places.PlaceLikelihoodBufferResponse;
@@ -79,7 +70,6 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
                 .addApi(Places.GEO_DATA_API)
                 .build();
         mGoogleApiClient.connect();
-        Toast.makeText(getActivity(), "connected", Toast.LENGTH_SHORT).show();
     }
 
     @Nullable
