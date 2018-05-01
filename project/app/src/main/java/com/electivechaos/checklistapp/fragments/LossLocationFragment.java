@@ -67,6 +67,9 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
     @Override
     public void onStart() {
         super.onStart();
+        if(mGoogleApiClient != null && mGoogleApiClient.isConnected() == false){
+            mGoogleApiClient.connect();
+        }
     }
 
     private synchronized void buildGoogleAPIClient(){
