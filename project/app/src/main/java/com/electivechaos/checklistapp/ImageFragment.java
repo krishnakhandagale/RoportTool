@@ -41,8 +41,6 @@ public class ImageFragment extends Fragment {
     MonitorImageDetailsChange monitorImageDetailsChange;
     static ViewPager mPagerInstance;
     static ReportsListDBHelper mReportsListDBHelper;
-    private int selectedCategoryPosition = -1;
-    private ArrayList<Category> options = null;
 
     public static ImageFragment init(ImageDetailsPOJO imageDetails, int position, ViewPager mPager, ReportsListDBHelper reportsListDBHelper) {
         ImageFragment imageFragment = new ImageFragment();
@@ -54,7 +52,6 @@ public class ImageFragment extends Fragment {
         args.putString("imageUrl", imageDetails.getImageUrl());
         args.putString("title",imageDetails.getTitle());
         args.putString("description",imageDetails.getDescription());
-        args.putString("category",imageDetails.getCategory());
         args.putInt("position", position);
 
         imageFragment.setArguments(args);
@@ -69,16 +66,7 @@ public class ImageFragment extends Fragment {
         position = getArguments() != null ? getArguments().getInt("position") : 0;
         imgTitle =getArguments() != null ? getArguments().getString("title") : "";
         imgDescription =getArguments() != null ? getArguments().getString("description") : "";
-        imgCategory = getArguments() != null ? getArguments().getString("category") : "";
-        options = mReportsListDBHelper.getCategoryList();
-        Collections.sort(options, new CustomCategoryComparator());
-        if(savedInstanceState != null){
-            selectedCategoryPosition = savedInstanceState.getInt("selectedCategoryPosition",-1);
-            if(selectedCategoryPosition > -1){
-                imgCategory = options.get(selectedCategoryPosition).getCategoryName();
-            }
-        }
-    }
+  }
 
 
     @Override
@@ -91,46 +79,6 @@ public class ImageFragment extends Fragment {
         title.setText(imgTitle);
         final EditText description = layoutView.findViewById(R.id.image_description);
         description.setText(imgDescription);
-        
-        final TextView categoryTextView = layoutView.findViewById(R.id.category_selection);
-        if(!imgCategory.isEmpty()){
-            categoryTextView.setText(imgCategory);
-        }
-
-        if(categoryTextView.getText().equals("Select Category"))
-        {
-            description.setEnabled(false);
-        }
-        else
-        {
-            description.setEnabled(true);
-        }
-
-        final CustomCategoryPopUpAdapter adapter = new CustomCategoryPopUpAdapter(getActivity(), options);
-        categoryTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final AlertDialog.Builder ad = new AlertDialog.Builder(getActivity());
-                ad.setCancelable(true);
-                ad.setTitle("Select Category");
-
-                ad.setSingleChoiceItems(adapter, selectedCategoryPosition,  new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int pos) {
-                        selectedCategoryPosition =  pos;
-                        categoryTextView.setText(options.get(pos).getCategoryName());
-                        monitorImageDetailsChange.updateImageCategory(options.get(pos).getCategoryName(),position);
-                        dialogInterface.dismiss();
-                        description.setEnabled(true);
-                    }
-                });
-
-                ad.show();
-
-            }
-
-        });
 
 
         description.addTextChangedListener(new TextWatcher() {
@@ -189,7 +137,6 @@ public class ImageFragment extends Fragment {
     public interface MonitorImageDetailsChange{
         void updateImageTitle(String title, int position);
         void updateImageDescription(String description, int position);
-        void updateImageCategory(String category, int position);
     }
 
     @Override
@@ -205,6 +152,5 @@ public class ImageFragment extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt("selectedCategoryPosition",selectedCategoryPosition);
     }
 }
