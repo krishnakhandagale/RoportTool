@@ -36,18 +36,18 @@
                 android:resource="@xml/file_provider_paths"
                 tools:replace="android:resource" />
         </provider>
-        <activity android:name=".ui.AddEditReportActivity" android:screenOrientation="portrait">
+        <activity android:name=".ui.AddEditReportActivity" android:screenOrientation="portrait"   android:windowSoftInputMode="adjustPan">
 
         </activity>
         <activity android:name=".ui.MainTabsActivity">
 
         </activity>
         <activity android:name=".ui.ImagePickerActivity" />
-        <activity android:name=".ui.SingleImageDetailsActivity" />
-        <activity android:name=".ui.AddEditCategoryActivity" />
-        <activity android:name=".ui.ImageSliderActivity" />
-        <activity android:name=".ui.AddEditLabelActivity" />
-        <activity android:name=".ui.AddEditCauseOfLossActivity"/>
+        <activity android:name=".ui.SingleImageDetailsActivity"   android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".ui.AddEditCategoryActivity"   android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".ui.ImageSliderActivity"   android:windowSoftInputMode="adjustPan"/>
+        <activity android:name=".ui.AddEditLabelActivity"   android:windowSoftInputMode="adjustPan"/>
+        <activity android:name=".ui.AddEditCauseOfLossActivity"   android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".ui.SplashScreenActivity">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />

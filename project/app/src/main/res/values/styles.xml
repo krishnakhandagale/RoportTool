@@ -24,7 +24,7 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
-    <style name="imagepicker_ToolbarTitleText" parent="@android:style/TextAppearance.DeviceDefault.Widget.ActionBar.Title">
+    <style name="image_picker_ToolbarTitleText" parent="@android:style/TextAppearance.DeviceDefault.Widget.ActionBar.Title">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
     </style>

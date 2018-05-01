@@ -23,7 +23,7 @@
             style="@style/imagepicker_TextSmall"
             android:ellipsize="end"
             android:maxLines="2"
-            android:textColor="@color/imagepicker_white" />
+            android:textColor="@color/image_picker_white" />
 
         <TextView
             android:id="@+id/text_photo_count"

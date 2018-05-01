@@ -24,10 +24,10 @@
         android:layout_gravity="bottom"
         android:background="@color/imagepicker_black_alpha_50"
         android:paddingBottom="@dimen/imagepicker_padding_small"
-        android:paddingLeft="@dimen/imagepicker_padding_large"
-        android:paddingRight="@dimen/imagepicker_padding_large"
+        android:paddingLeft="@dimen/image_picker_padding_large"
+        android:paddingRight="@dimen/image_picker_padding_large"
         android:paddingTop="@dimen/imagepicker_padding_small"
         android:text="@string/imagepicker_text_gif"
-        android:textColor="@color/imagepicker_white"
+        android:textColor="@color/image_picker_white"
         android:visibility="visible" />
 </com.electivechaos.checklistapp.SquareFrameLayout>

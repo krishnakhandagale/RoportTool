@@ -36,7 +36,7 @@
     <string name="address_hint_text">Address</string>
     <string name="imagepicker_text_gif">GIF</string>
     <string name="imagepicker_action_ok">OK</string>
-    <string name="imagepicker_action_done">DONE</string>
+    <string name="image_picker_action_done">DONE</string>
     <string name="imagepicker_title_folder">Albums</string>
     <string name="imagepicker_title_image">Galleries</string>
 
@@ -93,4 +93,5 @@
     <string name="add_cause_of_loss">ADD CAUSE OF LOSS</string>
     <string name="cause_of_loss_details">Cause Of Loss Details</string>
     <string name="update_category">Update Category</string>
+    <string name="folder">Folder</string>
 </resources>
