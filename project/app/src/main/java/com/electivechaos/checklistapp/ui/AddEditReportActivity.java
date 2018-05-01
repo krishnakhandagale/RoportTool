@@ -1,6 +1,5 @@
 package com.electivechaos.checklistapp.ui;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -17,50 +16,31 @@ import android.widget.ExpandableListView;
 import android.widget.TextView;
 
 import com.electivechaos.checklistapp.R;
-import com.electivechaos.checklistapp.fragments.AddEditReportSelectedImagesFragment;
-import com.electivechaos.checklistapp.pojo.ImageDetailsPOJO;
-import com.electivechaos.checklistapp.pojo.Label;
 import com.electivechaos.checklistapp.adapters.DrawerMenuListAdapter;
 import com.electivechaos.checklistapp.fragments.AddEditLabelFragment;
+import com.electivechaos.checklistapp.fragments.AddEditReportSelectedImagesFragment;
 import com.electivechaos.checklistapp.fragments.CauseOfLossFragment;
 import com.electivechaos.checklistapp.fragments.ClaimDetailsFragment;
-import com.electivechaos.checklistapp.fragments.ClaimDetailsTabsFragment;
 import com.electivechaos.checklistapp.fragments.PointOfOriginFragment;
-import com.electivechaos.checklistapp.pojo.SelectedImagesPOJO;
-
-import org.json.JSONObject;
+import com.electivechaos.checklistapp.pojo.Label;
+import com.electivechaos.checklistapp.pojo.ReportPOJO;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 
-public class AddEditReportActivity extends AppCompatActivity implements ClaimDetailsTabsFragment.SendImageDetails,AddEditReportSelectedImagesFragment.SendReportDBChangeSignal, DrawerMenuListAdapter.MyItemClickListener, AddEditLabelFragment.AddEditLabelInterface{
+public class AddEditReportActivity extends AppCompatActivity implements  DrawerMenuListAdapter.MyItemClickListener, AddEditLabelFragment.AddEditLabelInterface{
     private DrawerLayout mDrawerLayout;
     private ExpandableListView mExpandableListView;
     private DrawerMenuListAdapter drawerMenuListAdapter;
     private String tabName;
-
-    private  String reportTitle = null;
-    private  String reportDescription = null;
-    private  String clientName = null;
-    private String claimNumber = null;
-    private String address = null;
-    private String reportId = null;
-    private String reportPath = null;
-
-
-
-    private ArrayList<ImageDetailsPOJO> selectedImagesList = new ArrayList<>();
-    private ArrayList<ImageDetailsPOJO> selectedElevationImagesList = new ArrayList<>();
-
 
     HashMap<String,List<Label>> childMenuItems = new HashMap<>();
     List<Label> inspectionChildMenu = new ArrayList<>();
     ArrayList<String> parentMenuItems;
 
 
-    LinkedHashMap<Label, SelectedImagesPOJO> labelSelectedImagesPOJOLinkedHashMap = new LinkedHashMap<>();
+    ReportPOJO reportPOJO = new ReportPOJO();
 
 
     @Override
@@ -96,7 +76,7 @@ public class AddEditReportActivity extends AppCompatActivity implements ClaimDet
         parentMenuItems.add("Inspection");
 
 
-
+        inspectionChildMenu = reportPOJO.getLabelArrayList();
         childMenuItems.put("Inspection", inspectionChildMenu);
 
 
@@ -149,8 +129,8 @@ public class AddEditReportActivity extends AppCompatActivity implements ClaimDet
                 mDrawerLayout.closeDrawers();
                 FragmentManager transactionManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
-                AddEditReportSelectedImagesFragment df= AddEditReportSelectedImagesFragment.initFragment(selectedImagesList,reportId,reportPath,selectedElevationImagesList);
-                fragmentTransaction.replace(R.id.content_frame,df.initFragment(selectedImagesList,reportId,reportPath,selectedElevationImagesList));
+                AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment= AddEditReportSelectedImagesFragment.initFragment(reportPOJO.getLabelArrayList().get(childPosition).getSelectedImages(),reportPOJO.getLabelArrayList().get(childPosition).getSelectedElevationImages());
+                fragmentTransaction.replace(R.id.content_frame,addEditReportSelectedImagesFragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
                 tabName="AddEditReportSelectedImagesFragment";
@@ -171,35 +151,25 @@ public class AddEditReportActivity extends AppCompatActivity implements ClaimDet
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void notifyReportDBChanged() {
-        Intent intent = new Intent();
-        setResult(RESULT_OK,intent);
-        finish();
+//    @Override
+//    public void notifyReportDBChanged() {
+//        Intent intent = new Intent();
+//        setResult(RESULT_OK,intent);
+//        finish();
+//
+//    }
 
-    }
 
-
-    @Override
-    public void sendData(JSONObject message) {
-
-    }
+//    @Override
+//    public void sendData(JSONObject message) {
+//
+//    }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
 
         super.onSaveInstanceState(outState);
-
         outState.putString("tabName",tabName);
-        outState.putSerializable("selectedImagesList",selectedImagesList);
-        outState.putSerializable("selectedElevationImagesList",selectedElevationImagesList);
-        outState.putString("reportTitle",reportTitle);
-        outState.putString("reportDescription",reportDescription);
-        outState.putString("clientName",clientName);
-        outState.putString("claimNumber",claimNumber);
-        outState.putString("address",address);
-        outState.putString("reportId",reportId);
-        outState.putString("reportPath",reportPath);
 
 
     }

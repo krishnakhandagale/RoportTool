@@ -18,7 +18,7 @@ import java.util.ArrayList;
  */
 
 public class CategoryListDBHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 20;
+    private static final int DATABASE_VERSION = 22;
 
 
     // Database Name
@@ -61,10 +61,11 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
     private static final String KEY_LABEL_ID = "_id";
     private static final String KEY_LABEL_NAME = "name";
     private static final String KEY_LABEL_DESCRIPTION  = "description";
-    private static final String KEY_FK_LABEL_IMAGE_ID  = "image_id_fk";
-    private static final String KEY_FK_LABEL_ELEVATION_IMAGE_ID  = "elevation_image_id_fk";
+
     private static final String KEY_FK_LABEL_REPORT_ID  = "report_id_fk";
     private static final String KEY_FK_CATEGORY_ID = "category_id_fk";
+
+    private static final String KEY_FK_LABEL_ID = "label_id_fk";
 
 
     // Image Table Column Names
@@ -73,10 +74,12 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
     private static final String KEY_IMAGE_DESCRIPTION = "image_description";
     private static final String KEY_IMAGE_URL = "image_url";
 
+
+
+
+
     //Elevation image table columns name
     private static final String KEY_ELEVATION_IMAGE_ID="elevation_image_id";
-
-
 
     private static final String KEY_CAUSE_OF_LOSS_ID = "_id";
     private static final String KEY_CAUSE_OF_LOSS_NAME = "name";
@@ -118,13 +121,9 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
 
 
                 + KEY_FK_CATEGORY_ID + " INTEGER,"
-                + KEY_FK_LABEL_IMAGE_ID + " INTEGER,"
-                + KEY_FK_LABEL_ELEVATION_IMAGE_ID + " INTEGER,"
                 + KEY_FK_LABEL_REPORT_ID + " INTEGER,"
 
 
-                + "FOREIGN KEY("+ KEY_FK_LABEL_IMAGE_ID +") REFERENCES "+TABLE_REPORTS_IMAGE_DETAILS+"("+KEY_IMAGE_ID+ ")"+ " ON DELETE CASCADE,"
-                + "FOREIGN KEY("+ KEY_FK_LABEL_ELEVATION_IMAGE_ID +") REFERENCES "+TABLE_REPORTS_ELEVATION_IMAGE_DETAILS+"( " + KEY_ELEVATION_IMAGE_ID + " )"+" ON DELETE CASCADE,"
                 + "FOREIGN KEY("+ KEY_FK_LABEL_REPORT_ID+") REFERENCES "+TABLE_REPORTS_LIST+"("+ KEY_REPORT_ID +")" + " ON DELETE CASCADE ,"
                 + "FOREIGN KEY("+ KEY_FK_CATEGORY_ID +") REFERENCES "+TABLE_MASTER_CATEGORY+"("+KEY_CATEGORY_ID +")"+ " ON DELETE CASCADE)";
 
@@ -139,14 +138,20 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 + KEY_IMAGE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT DEFAULT 0,"
                 + KEY_IMAGE_TITLE + " TEXT,"
                 + KEY_IMAGE_DESCRIPTION + " TEXT,"
-                + KEY_IMAGE_URL+ " TEXT" +")";
+
+                + KEY_IMAGE_URL+ " TEXT,"
+                + KEY_FK_LABEL_ID+ " INTEGER,"
+                + "FOREIGN KEY("+ KEY_FK_LABEL_ID +") REFERENCES "+TABLE_CATEGORY_LABELS+"("+KEY_LABEL_ID+ ")"+ " ON DELETE CASCADE )";
 
 
         String CREATE_ELEVATION_IMAGE_DETAILS_TABLE = "CREATE TABLE " + TABLE_REPORTS_ELEVATION_IMAGE_DETAILS + "("
-                + KEY_IMAGE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT DEFAULT 0,"
+                + KEY_ELEVATION_IMAGE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT DEFAULT 0,"
                 + KEY_IMAGE_TITLE + " TEXT,"
                 + KEY_IMAGE_DESCRIPTION + " TEXT,"
-                + KEY_IMAGE_URL+ " TEXT" +")";
+                + KEY_IMAGE_URL+ " TEXT,"
+                + KEY_FK_LABEL_ID+ " INTEGER,"
+
+                + "FOREIGN KEY("+ KEY_FK_LABEL_ID +") REFERENCES "+TABLE_CATEGORY_LABELS+"("+KEY_LABEL_ID+ ")"+ " ON DELETE CASCADE )";;
 
 
         final String categories[] = {
@@ -193,9 +198,13 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_REPORTS_LIST);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_MASTER_CATEGORY);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CATEGORY_LABELS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CAUSE_OF_LOSS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_REPORTS_ELEVATION_IMAGE_DETAILS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_REPORTS_IMAGE_DETAILS);
         onCreate(db);
     }
 

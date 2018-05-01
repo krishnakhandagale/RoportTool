@@ -58,7 +58,7 @@ public class ReportsListDBHelper extends SQLiteOpenHelper {
     private static final String KEY_FK_REPORT_ID = "report_id_fk";
 
 
-    private static final String KEY_CATEGORYID = "category_id"; // can be used in case we need
+    private static final String KEY_CATEGORY_ID = "category_id"; // can be used in case we need
     private static final String KEY_CATEGORY_NAME = "category_name";
     private static final String KEY_CATEGORY_DESCRIPTION = "category_description";
 
@@ -102,7 +102,7 @@ public class ReportsListDBHelper extends SQLiteOpenHelper {
                 + KEY_FK_REPORT_ID + " TEXT,"+ "FOREIGN KEY("+ KEY_FK_REPORT_ID +") REFERENCES "+TABLE_REPORTS_LIST+"("+KEY_REPORT_ID+ ")"+ " ON DELETE CASCADE)";
 
         String CREATE_CATEGORY_DETAILS_TABLE = "CREATE TABLE " + TABLE_CATEGORY_LIST + "("
-                +KEY_CATEGORYID +" INTEGER PRIMARY KEY AUTOINCREMENT DEFAULT 0,"+ KEY_CATEGORY_NAME + " TEXT,"+ KEY_CATEGORY_DESCRIPTION +" TEXT "+")";
+                +KEY_CATEGORY_ID +" INTEGER PRIMARY KEY AUTOINCREMENT DEFAULT 0,"+ KEY_CATEGORY_NAME + " TEXT,"+ KEY_CATEGORY_DESCRIPTION +" TEXT "+")";
 
 //        String CREATE_CAUSE_OF_LOSS_TABLE = "CREATE TABLE " + TABLE_CAUSE_OF_LOSS + "("
 //                + KEY_CAUSE_OF_LOSS_ID + " TEXT PRIMARY KEY," + KEY_CAUSE_OF_LOSS_NAME + " TEXT,"+ KEY_CAUSE_OF_LOSS_DESCRIPTION + " TEXT"+")";
@@ -182,7 +182,7 @@ public class ReportsListDBHelper extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(KEY_CATEGORY_NAME, category.getCategoryName());
         contentValues.put(KEY_CATEGORY_DESCRIPTION, category.getCategoryDescription());
-        return  db.update(TABLE_CATEGORY_LIST, contentValues,KEY_CATEGORYID+"="+category.getCategoryId(),null);
+        return  db.update(TABLE_CATEGORY_LIST, contentValues,KEY_CATEGORY_ID+"="+category.getCategoryId(),null);
     }
     public ArrayList<Category> getCategoryList(){
 
@@ -227,7 +227,6 @@ public class ReportsListDBHelper extends SQLiteOpenHelper {
                     imageEntry.put(KEY_IMAGE_TITLE,imageItem.getTitle());
                     imageEntry.put(KEY_IMAGE_DESCRIPTION,imageItem.getDescription());
                     imageEntry.put(KEY_IMAGE_URL,imageItem.getImageUrl());
-                    imageEntry.put(KEY_IMAGE_CATEGORY,imageItem.getCategory());
                     imageEntry.put(KEY_FK_REPORT_ID,reportId);
                     db.insert(TABLE_REPORTS_IMAGE_DETAILS,null, imageEntry);
                 }
@@ -241,7 +240,6 @@ public class ReportsListDBHelper extends SQLiteOpenHelper {
                     imageEntry.put(KEY_IMAGE_TITLE,imageItem.getTitle());
                     imageEntry.put(KEY_IMAGE_DESCRIPTION,imageItem.getDescription());
                     imageEntry.put(KEY_IMAGE_URL,imageItem.getImageUrl());
-                    imageEntry.put(KEY_IMAGE_CATEGORY,imageItem.getCategory());
                     imageEntry.put(KEY_FK_REPORT_ID,reportId);
                     db.insert(TABLE_REPORTS_ELEVATION_IMAGE_DETAILS,null, imageEntry);
                 }
@@ -293,7 +291,7 @@ public class ReportsListDBHelper extends SQLiteOpenHelper {
                         imgDetails.setTitle(imagesCursor.getString(0));
                         imgDetails.setDescription(imagesCursor.getString(1));
                         imgDetails.setImageUrl(imagesCursor.getString(2));
-                        imgDetails.setCategory(imagesCursor.getString(3));
+                       // imgDetails.setCategory(imagesCursor.getString(3));
                         selectedImagesList.add(imgDetails);
 
                     }while (imagesCursor.moveToNext());
@@ -310,7 +308,7 @@ public class ReportsListDBHelper extends SQLiteOpenHelper {
                         imgDetails.setTitle(imagesElevationCursor.getString(0));
                         imgDetails.setDescription(imagesElevationCursor.getString(1));
                         imgDetails.setImageUrl(imagesElevationCursor.getString(2));
-                        imgDetails.setCategory(imagesElevationCursor.getString(3));
+                      //  imgDetails.setCategory(imagesElevationCursor.getString(3));
                         selectedElevationImagesList.add(imgDetails);
 
                     }while (imagesElevationCursor.moveToNext());

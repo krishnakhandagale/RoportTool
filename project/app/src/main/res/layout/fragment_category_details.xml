@@ -50,7 +50,7 @@
 
                 <ImageView
                     android:id="@+id/imgViewFront"
-                    android:src="@drawable/imagepicker_ic_camera"
+                    android:src="@drawable/image_picker_ic_camera"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
@@ -84,7 +84,7 @@
                     android:layout_gravity="bottom"/>
                 <ImageView
                     android:id="@+id/imgViewBack"
-                    android:src="@drawable/imagepicker_ic_camera"
+                    android:src="@drawable/image_picker_ic_camera"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <ImageButton
@@ -116,7 +116,7 @@
                     android:layout_gravity="bottom"/>
                 <ImageView
                     android:id="@+id/imgViewLeft"
-                    android:src="@drawable/imagepicker_ic_camera"
+                    android:src="@drawable/image_picker_ic_camera"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <ImageButton
@@ -148,7 +148,7 @@
                     android:layout_gravity="bottom"/>
                 <ImageView
                     android:id="@+id/imgViewRight"
-                    android:src="@drawable/imagepicker_ic_camera"
+                    android:src="@drawable/image_picker_ic_camera"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <ImageButton
@@ -163,7 +163,7 @@
         </LinearLayout>
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/selectedImagesRecyclerview"
+            android:id="@+id/selectedImagesRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="0dip"
             android:layout_weight="4"
@@ -190,6 +190,6 @@
         android:layout_margin="30dp"
         app:rippleColor="@color/ripple_color"
         android:clickable="true"
-        android:src="@drawable/imagepicker_ic_camera" />
+        android:src="@drawable/image_picker_ic_camera" />
 
 </android.support.design.widget.CoordinatorLayout>

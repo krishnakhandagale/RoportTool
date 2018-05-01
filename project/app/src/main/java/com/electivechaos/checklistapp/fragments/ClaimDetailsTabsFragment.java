@@ -76,11 +76,11 @@ public class ClaimDetailsTabsFragment extends Fragment {
    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        try {
-            sendImageDetails = (ClaimDetailsTabsFragment.SendImageDetails) getActivity();
-        } catch (ClassCastException e) {
-            throw new ClassCastException("Error in retrieving data. Please try again");
-        }
+//        try {
+//            sendImageDetails = (ClaimDetailsTabsFragment.SendImageDetails) getActivity();
+//        } catch (ClassCastException e) {
+//            throw new ClassCastException("Error in retrieving data. Please try again");
+//        }
     }
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
