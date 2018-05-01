@@ -85,14 +85,15 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
         if(parentMenuItems != null && parentMenuItems.size() > 0){
             drawerMenuListAdapter = new DrawerMenuListAdapter(this,parentMenuItems, childMenuItems);
             mExpandableListView.setAdapter(drawerMenuListAdapter);
+            mExpandableListView.setIndicatorBounds(0, 20);
         }
         mExpandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-                mDrawerLayout.closeDrawers();
+
                 if(parentMenuItems.get(groupPosition).equals("Claim Details")){
 
-
+                    mDrawerLayout.closeDrawers();
                     FragmentManager transactionManager = getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
                     fragmentTransaction.replace(R.id.content_frame,new ClaimDetailsFragment());
@@ -101,7 +102,7 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
                     tabName="ClaimDetailsFragment";
 
                 } else if (parentMenuItems.get(groupPosition).equals("Cause Of Loss")) {
-
+                    mDrawerLayout.closeDrawers();
                     FragmentManager transactionManager = getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
                     fragmentTransaction.replace(R.id.content_frame,new CauseOfLossFragment());
@@ -110,7 +111,7 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
                     tabName="CauseOfLossFragment";
 
                 } else if (parentMenuItems.get(groupPosition).equals("Point Of Origin")) {
-
+                    mDrawerLayout.closeDrawers();
                     FragmentManager transactionManager = getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
                     fragmentTransaction.replace(R.id.content_frame,new PointOfOriginFragment());
