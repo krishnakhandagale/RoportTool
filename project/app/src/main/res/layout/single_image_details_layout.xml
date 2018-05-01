@@ -53,7 +53,7 @@
             android:layout_marginBottom="5dp"
             android:layout_marginRight="5dp"
             android:background="@drawable/rounded_button"
-            android:src="@drawable/ic_send_white_arrow" />
+            android:src="@drawable/ic_send_white" />
 
         <EditText
             android:id="@+id/clicked_image_title"
