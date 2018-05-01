@@ -10,21 +10,11 @@ public class ImageDetailsPOJO implements Serializable {
     private String imageUrl;
     private String title;
     private String description;
-    private String category;
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
 
     public ImageDetailsPOJO(){
         this.imageUrl = "";
         this.title = "";
         this.description = "";
-        this.category = "";
     }
     public String getImageUrl() {
         return imageUrl;
