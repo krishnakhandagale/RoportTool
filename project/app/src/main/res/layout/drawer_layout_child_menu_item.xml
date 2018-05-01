@@ -1,35 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="5dp"
+    android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:weightSum="4">
 
     <TextView
+        android:padding="10dp"
+        android:gravity="center_vertical"
         android:singleLine="true"
         android:ellipsize="end"
         android:id="@+id/menuTitle"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="3"
         android:textColor="@color/white_color"
         android:text="Menu Title" />
-<LinearLayout
-    android:gravity="end"
-    android:layout_width="0dip"
-    android:layout_weight="1"
-    android:layout_height="wrap_content">
-    <Button
+
+    <LinearLayout
+        android:layout_width="0dip"
+        android:layout_height="match_parent"
         android:layout_gravity="end"
-        android:id="@+id/editLabel"
-        android:ellipsize="end"
-        android:layout_width="16dp"
-        android:layout_height="16dp"
-        android:background="@drawable/ic_edit_white"
-        android:focusable="false"
-        android:focusableInTouchMode="false"
-        android:textSize="12sp"/>
-</LinearLayout>
+        android:layout_weight="1"
+        android:gravity="end|center_vertical">
+
+        <Button
+            android:id="@+id/editLabel"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:background="@drawable/ic_edit_white"
+            android:ellipsize="end"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:textSize="12sp" />
+    </LinearLayout>
 
 </LinearLayout>
