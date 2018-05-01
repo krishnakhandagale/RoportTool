@@ -98,15 +98,9 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
     private int ADD_IMAGE_DETAILS = 2;
     private static int SET_CLICKED_IMAGE_DETAILS = 3;
 
-    private static final int IMAGEMAXWIDTH = 150;
-    private static final int IMAGEMAXHEIGHT = 150;
-
-    private static final int IMAGEMAXHEIGHTBIG = 320;
-    private static final int IMAGEMAXWIDTHBIG = 320;
 
     private static Font TIMESNEWROMAN18 = new Font(Font.FontFamily.TIMES_ROMAN, 15, Font.BOLD);
     private LinearLayout parentLayout;
-    private PermissionUtilities permissionPermissionUtilities;
     private CoordinatorLayout selectImagesParentLayout;
     private RecyclerView selectedImagesRecyclerView;
     private ReportsListDBHelper reportsListDBHelper;
@@ -135,6 +129,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
 
     private Uri fileUri;
     private String mCurrentPhotoPath;
+
     private String reportTitle;
     private String reportDescription;
     private String clientName;
@@ -143,7 +138,10 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
     private String reportId;
     private String reportPath;
     private File photoFile;
+
+    //This is used by image picker
     private ArrayList<Image> selectedImages = null;
+
     private ArrayList<ImageDetailsPOJO> selectedImageList = null;
     private ArrayList<ImageDetailsPOJO> selectedElevationImagesList = new ArrayList<>();
 
@@ -151,15 +149,21 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
     private OnImageRemovalListener onImageRemovalListener = null;
     static RequestOptions options = null;
 
-    private static String TAG = "AddEditReportSelectedImagesFragment";
-
-    public static AddEditReportSelectedImagesFragment initFragment(ArrayList<ImageDetailsPOJO> selectedImageList, String reportId, String reportPath, ArrayList<ImageDetailsPOJO> selectedElevationImagesList) {
+    public static AddEditReportSelectedImagesFragment initFragment(ArrayList<ImageDetailsPOJO> selectedImageList, ArrayList<ImageDetailsPOJO> selectedElevationImagesList) {
         AddEditReportSelectedImagesFragment fragment = new AddEditReportSelectedImagesFragment();
         Bundle args = new Bundle();
+
+        if(selectedElevationImagesList == null){
+            selectedElevationImagesList = new ArrayList<>();
+            selectedElevationImagesList.add(new ImageDetailsPOJO());
+            selectedElevationImagesList.add(new ImageDetailsPOJO());
+            selectedElevationImagesList.add(new ImageDetailsPOJO());
+            selectedElevationImagesList.add(new ImageDetailsPOJO());
+        }
         args.putSerializable("selectedImagesList", selectedImageList);
         args.putSerializable("selectedElevationImagesList", selectedElevationImagesList);
-        args.putString("reportId", reportId);
-        args.putString("reportPath", reportPath);
+
+
         fragment.setArguments(args);
         return fragment;
     }
@@ -168,12 +172,8 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            selectedImageList = (ArrayList<ImageDetailsPOJO>) getArguments().getSerializable("selectedImagesList");
-            selectedElevationImagesList = (ArrayList<ImageDetailsPOJO>) getArguments().getSerializable("selectedElevationImagesList");
-
-
-            reportId = getArguments().getString("reportId");
-            reportPath = getArguments().getString("reportPath");
+            selectedElevationImagesList = (ArrayList<ImageDetailsPOJO>) getArguments().get("selectedElevationImagesList");
+            selectedImageList = (ArrayList<ImageDetailsPOJO>) getArguments().get("selectedImageList");
         }
     }
 
@@ -207,16 +207,13 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
 
         ItemTouchHelper.Callback _ithCallback = new ItemTouchHelper.Callback() {
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                // get the viewHolder's and target's positions in your adapter data, swap them
                 Collections.swap(selectedImageList, viewHolder.getAdapterPosition(), target.getAdapterPosition());
-                // and notify the adapter that its dataset has changed
                 selectedImagesAdapter.notifyItemMoved(viewHolder.getAdapterPosition(), target.getAdapterPosition());
                 return true;
             }
 
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                //TODO
             }
 
             //defines the enabled move directions in each state (idle, swiping, dragging).
@@ -245,7 +242,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
         imgViewFront.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean result = permissionPermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_TAKE_FRONT_PHOTO_PERMISSIONS);
+                boolean result = PermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_TAKE_FRONT_PHOTO_PERMISSIONS);
 
                 if (result)
                     cameraIntent(FRONT_IMAGE_REQUEST);
@@ -256,7 +253,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
         imgViewBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean result = permissionPermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_TAKE_BACK_PHOTO_PERMISSIONS);
+                boolean result = PermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_TAKE_BACK_PHOTO_PERMISSIONS);
 
                 if (result)
                     cameraIntent(BACK_IMAGE_REQUEST);
@@ -267,7 +264,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
         imgViewLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean result = permissionPermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_TAKE_LEFT_PHOTO_PERMISSIONS);
+                boolean result = PermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_TAKE_LEFT_PHOTO_PERMISSIONS);
 
                 if (result)
                     cameraIntent(LEFT_IMAGE_REQUEST);
@@ -277,7 +274,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
         imgViewRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean result = permissionPermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_TAKE_RIGHT_PHOTO_PERMISSIONS);
+                boolean result = PermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_TAKE_RIGHT_PHOTO_PERMISSIONS);
 
                 if (result)
                     cameraIntent(RIGHT_IMAGE_REQUEST);
@@ -471,7 +468,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
             return;
         }
 
-        boolean result = permissionPermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_GENERATE_REPORT_PERMISSIONS);
+        boolean result = PermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_GENERATE_REPORT_PERMISSIONS);
         if (result) {
             showReportPreferenceDialog();
         }
@@ -508,12 +505,12 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
             public void onClick(DialogInterface dialog, int item) {
 
                 if (items[item].equals("Take Photo")) {
-                    boolean result = permissionPermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_TAKE_PHOTO_PERMISSIONS);
+                    boolean result = PermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_TAKE_PHOTO_PERMISSIONS);
 
                     if (result)
                         cameraIntent(REQUEST_CAMERA);
                 } else if (items[item].equals("Choose from Gallery")) {
-                    boolean result = permissionPermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_BROWSE_PHOTO_PERMISSIONS);
+                    boolean result = PermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_BROWSE_PHOTO_PERMISSIONS);
                     if (result)
                         galleryIntent();
                 } else if (items[item].equals("Cancel")) {
@@ -706,7 +703,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                     selectedImageList.get(position).setTitle(imageDetails.getTitle());
                     selectedImageList.get(position).setImageUrl(imageDetails.getImageUrl());
                     selectedImageList.get(position).setDescription(imageDetails.getDescription());
-                    selectedImageList.get(position).setCategory(imageDetails.getCategory());
+                    //selectedImageList.get(position).setCategory(imageDetails.getCategory());
 
                 } else {
                     if (selectedImageList == null) {
@@ -729,7 +726,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
 
     private void openCamera(int requestId, int cameraIntentReqCode)
     {
-        boolean result = permissionPermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, requestId);
+        boolean result = PermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, requestId);
 
         if (result)
             cameraIntent(cameraIntentReqCode);
@@ -985,7 +982,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                 if (grantResults.length == 3 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
                     cameraIntent(REQUEST_CAMERA);
                 } else {
-                    permissionPermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_TAKE_PHOTO_PERMISSIONS);
+                    PermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_TAKE_PHOTO_PERMISSIONS);
                 }
                 return;
             }
@@ -994,7 +991,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                 if (grantResults.length == 3 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
                     cameraIntent(FRONT_IMAGE_REQUEST);
                 } else {
-                    permissionPermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_TAKE_FRONT_PHOTO_PERMISSIONS);
+                    PermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_TAKE_FRONT_PHOTO_PERMISSIONS);
                 }
                 return;
             }
@@ -1003,7 +1000,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                 if (grantResults.length == 3 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
                     cameraIntent(BACK_IMAGE_REQUEST);
                 } else {
-                    permissionPermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_TAKE_BACK_PHOTO_PERMISSIONS);
+                    PermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_TAKE_BACK_PHOTO_PERMISSIONS);
                 }
                 return;
             }
@@ -1012,7 +1009,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                 if (grantResults.length == 3 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
                     cameraIntent(LEFT_IMAGE_REQUEST);
                 } else {
-                    permissionPermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_TAKE_LEFT_PHOTO_PERMISSIONS);
+                    PermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_TAKE_LEFT_PHOTO_PERMISSIONS);
                 }
                 return;
             }
@@ -1021,7 +1018,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                 if (grantResults.length == 3 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
                     cameraIntent(RIGHT_IMAGE_REQUEST);
                 } else {
-                    permissionPermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_TAKE_RIGHT_PHOTO_PERMISSIONS);
+                    PermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_TAKE_RIGHT_PHOTO_PERMISSIONS);
                 }
                 return;
             }
@@ -1029,7 +1026,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     galleryIntent();
                 } else {
-                    permissionPermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_BROWSE_PHOTO_PERMISSIONS);
+                    PermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_BROWSE_PHOTO_PERMISSIONS);
                 }
                 return;
             }
@@ -1042,7 +1039,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                     }
                 } else {
 
-                    permissionPermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_GENERATE_REPORT_PERMISSIONS);
+                    PermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_GENERATE_REPORT_PERMISSIONS);
 
                 }
             }
@@ -1171,7 +1168,6 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         reportsListDBHelper = ReportsListDBHelper.getInstance(context);
-        permissionPermissionUtilities = new PermissionUtilities();
         try {
             sendReportDBchangeSignal = (SendReportDBChangeSignal) getActivity();
         } catch (ClassCastException e) {
@@ -1253,7 +1249,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                             table.setWidthPercentage(100);
                             table.addCell(getImageNumberPdfPCell("", PdfPCell.ALIGN_LEFT));
                             table.addCell(getCellImagCell(img, PdfPCell.ALIGN_LEFT, document, numberOfImagesPerPage));
-                            table.addCell(getCell(selectedElevationImagesList.get(j).getCategory(),selectedElevationImagesList.get(j).getTitle(), selectedElevationImagesList.get(j).getDescription(), PdfPCell.LEFT, document, numberOfImagesPerPage));
+                           // table.addCell(getCell(selectedElevationImagesList.get(j).getCategory(),selectedElevationImagesList.get(j).getTitle(), selectedElevationImagesList.get(j).getDescription(), PdfPCell.LEFT, document, numberOfImagesPerPage));
 
                             document.add(table);
                             document.add(new Paragraph(" "));
@@ -1270,6 +1266,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                 }
                 if(k +1 < selectedElevationImagesList.size()){
                     document.newPage();
+
                 }
 
                 for (int i = 0; i < selectedImageList.size(); i++) {
@@ -1284,7 +1281,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                         table.setWidthPercentage(100);
                         table.addCell(getImageNumberPdfPCell((i + 1) + ".", PdfPCell.ALIGN_LEFT));
                         table.addCell(getCellImagCell(img, PdfPCell.ALIGN_LEFT, document, numberOfImagesPerPage));
-                        table.addCell(getCell(!selectedImageList.get(i).getCategory().isEmpty()?"Category: "+selectedImageList.get(i).getCategory(): "",selectedImageList.get(i).getTitle(), selectedImageList.get(i).getDescription(), PdfPCell.LEFT, document, numberOfImagesPerPage));
+                       // table.addCell(getCell(!selectedImageList.get(i).getCategory().isEmpty()?"Category: "+selectedImageList.get(i).getCategory(): "",selectedImageList.get(i).getTitle(), selectedImageList.get(i).getDescription(), PdfPCell.LEFT, document, numberOfImagesPerPage));
                         document.add(table);
                         document.add(new Paragraph(" "));
 
