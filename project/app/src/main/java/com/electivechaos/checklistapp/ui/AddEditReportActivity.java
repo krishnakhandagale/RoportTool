@@ -89,9 +89,16 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
             mExpandableListView.setIndicatorBounds(0, 20);
         }
         mExpandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+
+                // int lastExpandedGroup = -1;
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-
+                // This will work for
+                // if(lastExpandedGroup != groupPosition || lastExpandedGroup == -1 ){
+                //  mExpandableListView.collapseGroup(lastExpandedGroup == -1 ? 0 :lastExpandedGroup);
+                //  lastExpandedGroup = groupPosition;
+                //
+                //  }
 
                 if(parentMenuItems.get(groupPosition).equals("Claim Details")){
 

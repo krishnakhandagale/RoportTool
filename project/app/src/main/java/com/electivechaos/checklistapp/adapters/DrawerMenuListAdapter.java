@@ -82,12 +82,13 @@ public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
         }
 
 
-//        if(isExpanded){
-//            convertView.setBackgroundColor(ContextCompat.getColor(context,R.color.colorPrimaryDark));
-//        }else{
-//            convertView.setBackgroundColor(ContextCompat.getColor(context,R.color.colorPrimary));
-//        }
+
         TextView menuTitle = convertView.findViewById(R.id.menuTitle);
+          if(isExpanded){
+            menuTitle.setTextColor(ContextCompat.getColor(context,R.color.colorPrimary));
+        }else{
+             menuTitle.setTextColor(ContextCompat.getColor(context,R.color.grayMenu));
+        }
         ImageView imageView = convertView.findViewById(R.id.menuIcon);
         Button addInspectionView = convertView.findViewById(R.id.addInspection);
 
@@ -142,4 +143,6 @@ public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
     }
+
+
 }
