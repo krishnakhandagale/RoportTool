@@ -16,8 +16,6 @@ import org.json.JSONObject;
 
 public class ClaimDetailsTabsFragment extends Fragment {
 
-
-    ClaimDetailsTabsFragment.SendImageDetails sendImageDetails;
     private EditText reportTitleEditText;
     private EditText reportDescriptionEditText;
     private EditText clientNameEditText ;
@@ -28,25 +26,6 @@ public class ClaimDetailsTabsFragment extends Fragment {
     private String clientName;
     private String claimNumber;
     private String address;
-    private int pos;
-    public static ClaimDetailsTabsFragment initFragment(String rTitle,String rDescription, String cName, String cNumber,String addr,int pos){
-        Bundle args = new Bundle();
-
-        args.putString("reportTitle", rTitle);
-        args.putString("reportDescription",rDescription);
-        args.putString("clientName",cName);
-        args.putString("claimNumber", cNumber);
-        args.putString("address", addr);
-        args.putInt("tabIndex",pos);
-        ClaimDetailsTabsFragment fragment = new ClaimDetailsTabsFragment();
-        fragment.setArguments(args);
-        return fragment;
-    };
-    public ClaimDetailsTabsFragment()
-    {
-
-    }
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -76,11 +55,7 @@ public class ClaimDetailsTabsFragment extends Fragment {
    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-//        try {
-//            sendImageDetails = (ClaimDetailsTabsFragment.SendImageDetails) getActivity();
-//        } catch (ClassCastException e) {
-//            throw new ClassCastException("Error in retrieving data. Please try again");
-//        }
+
     }
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -92,13 +67,9 @@ public class ClaimDetailsTabsFragment extends Fragment {
         addressEditText.setText(address);
     }
 
-    public interface SendImageDetails {
-        void sendData(JSONObject message);
-    }
-
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-        outState.putInt("pos",pos);
+
         super.onSaveInstanceState(outState);
 
     }

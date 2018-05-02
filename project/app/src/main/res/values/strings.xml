@@ -94,4 +94,5 @@
     <string name="cause_of_loss_details">Cause Of Loss Details</string>
     <string name="update_category">Update Category</string>
     <string name="folder">Folder</string>
+    <string name="edit">EDIT</string>
 </resources>

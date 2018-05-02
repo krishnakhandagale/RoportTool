@@ -37,7 +37,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:orientation="vertical"
-        android:background="@color/white_color"
+        android:background="@color/drawerBackgroundColor"
         android:padding="5dp" >
 
         <TextView
@@ -55,12 +55,13 @@
             android:layout_width="match_parent"
             android:layout_height="0dip"
             android:choiceMode="singleChoice"
-            android:divider="@color/grayLight"
-            android:childDivider="@color/whiteColor"
+            android:divider="@color/parentMenuDivider"
+            android:childDivider="@color/drawerBackgroundColor"
             android:dividerHeight="1dp"
             android:groupIndicator="@null">
         </ExpandableListView>
     </LinearLayout>
+
 
 
 

@@ -16,7 +16,7 @@ import com.electivechaos.checklistapp.R;
 
 import org.json.JSONObject;
 
-public class ClaimDetailsFragment  extends Fragment implements ClaimDetailsTabsFragment.SendImageDetails{
+public class ClaimDetailsFragment  extends Fragment{
 
 
     ViewPager viewPager;
@@ -38,13 +38,6 @@ public class ClaimDetailsFragment  extends Fragment implements ClaimDetailsTabsF
         super.onSaveInstanceState(outState);
     }
 
-    @Override
-    public void sendData(JSONObject message) {
-       /* String tag = "android:switcher:"  + ":" + 1;
-        ClaimDetailsTabsFragment f = (ClaimDetailsTabsFragment) getSupportFragmentManager().findFragmentByTag(tag);
-        //f.setReceivedImageDetailsData(message);*/
-    }
-
 
     @Nullable
     @Override
@@ -56,9 +49,6 @@ public class ClaimDetailsFragment  extends Fragment implements ClaimDetailsTabsF
 
         ClaimDetailsTabsPagerAdapter adapter=new ClaimDetailsTabsPagerAdapter(getActivity().getSupportFragmentManager());
         viewPager.setAdapter(adapter);
-
-     /*  TabLayout.Tab tab=tabLayout.getTabAt(tabIndex);
-        tab.select();*/
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener(){
             @Override

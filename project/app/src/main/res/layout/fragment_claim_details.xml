@@ -11,6 +11,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <android.support.design.widget.TextInputEditText
+                android:textSize="16sp"
                 android:id="@+id/reportTitle"
                 android:textColor="@color/black"
                 android:layout_width="match_parent"
@@ -24,6 +25,7 @@
             android:layout_height="wrap_content">
 
             <android.support.design.widget.TextInputEditText
+                android:textSize="16sp"
                 android:id="@+id/reportDescription"
                 android:textColor="@color/black"
                 android:layout_width="match_parent"
@@ -36,6 +38,7 @@
             android:layout_height="wrap_content">
 
             <android.support.design.widget.TextInputEditText
+                android:textSize="16sp"
                 android:id="@+id/clientName"
                 android:textColor="@color/black"
                 android:layout_width="match_parent"
@@ -48,6 +51,7 @@
             android:layout_height="wrap_content">
 
             <android.support.design.widget.TextInputEditText
+                android:textSize="16sp"
                 android:id="@+id/claimNumber"
                 android:textColor="@color/black"
                 android:layout_width="match_parent"
@@ -60,6 +64,7 @@
             android:layout_height="wrap_content">
 
             <android.support.design.widget.TextInputEditText
+                android:textSize="16sp"
                 android:textColor="@color/black"
                 android:id="@+id/address"
                 android:layout_width="match_parent"

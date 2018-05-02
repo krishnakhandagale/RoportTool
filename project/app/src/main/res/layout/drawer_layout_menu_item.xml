@@ -15,7 +15,6 @@
         android:layout_weight="1"
         android:contentDescription="@string/menu_image"
         android:src="@drawable/ic_cloud" />
-
     <TextView
         android:padding="10dp"
         android:id="@+id/menuTitle"
@@ -26,10 +25,9 @@
         android:gravity="center_vertical"
         android:singleLine="true"
         android:text="@string/menu_title"
-        android:textColor="@color/grayDark" />
+        android:textColor="@color/grayMenu" />
     <LinearLayout
         android:layout_gravity="center_vertical|end"
-        android:gravity="end"
         android:layout_width="0dip"
         android:layout_weight="1"
         android:layout_height="wrap_content">
@@ -37,12 +35,14 @@
             android:visibility="invisible"
             android:id="@+id/addInspection"
             android:ellipsize="end"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:background="@drawable/ic_add_gray"
+            android:layout_width="wrap_content"
+            android:background="@drawable/btn_shape_drawable"
+            android:layout_height="28dp"
+            android:text="@string/add"
+            android:textColor="@color/grayMenu"
+            android:textSize="12sp"
             android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:textSize="12sp"/>
+            android:focusableInTouchMode="false" />
     </LinearLayout>
 
 

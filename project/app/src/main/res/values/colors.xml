@@ -5,7 +5,7 @@
     <color name="colorAccent">#b6ffff</color>
 
     <color name="primaryTextColor">#000000</color>
-
+    <color name="grayMenu">#7D7D7D</color>
     <color name="grayLight">#eae8e8</color>
     <color name="grayDark">#8e8686</color>
     <color name="black">#d2000000</color>
@@ -40,5 +40,8 @@
     <color name="color_parent_divider">#2580a4</color>
     <color name="color_child_transparent">#2c8fb6</color>
     <color name="color_child_divider">#3e7489</color>
-    <!--2580a4-->
+
+    <color name="drawerBackgroundColor">#FAFAFA</color>
+    <color name="parentMenuDivider">#EEEEEE</color>
+
 </resources>

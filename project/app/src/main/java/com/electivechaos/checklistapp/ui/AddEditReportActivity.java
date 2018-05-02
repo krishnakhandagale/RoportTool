@@ -92,6 +92,7 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
 
+
                 if(parentMenuItems.get(groupPosition).equals("Claim Details")){
 
                     mDrawerLayout.closeDrawers();
