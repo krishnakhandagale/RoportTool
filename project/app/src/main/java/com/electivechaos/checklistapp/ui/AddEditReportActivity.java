@@ -9,6 +9,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -100,6 +101,7 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
                     fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.commit();
                     tabName="ClaimDetailsFragment";
+
 
                 } else if (parentMenuItems.get(groupPosition).equals("Cause Of Loss")) {
                     mDrawerLayout.closeDrawers();
@@ -213,12 +215,11 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
     @Override
     public void onItemClick(int position) {
         FragmentManager transactionManager = getSupportFragmentManager();
-
-
         FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
         fragmentTransaction.replace(R.id.content_frame, new AddEditLabelFragment());
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
+        mDrawerLayout.closeDrawer(Gravity.LEFT);
     }
 
     @Override
@@ -236,6 +237,7 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
         fragmentTransaction.replace(R.id.content_frame, addEditLabelFragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
+        mDrawerLayout.closeDrawer(Gravity.LEFT);
     }
 
     @Override

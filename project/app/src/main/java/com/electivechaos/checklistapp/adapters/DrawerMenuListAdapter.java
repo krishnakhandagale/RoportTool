@@ -100,6 +100,7 @@ public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
             public void onClick(View v) {
                 myItemClickListener.onItemClick(groupPosition);
 
+
             }
         });
 
@@ -127,6 +128,7 @@ public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
                 public void onClick(View v) {
                     Label label = childMenuList.get("Inspection").get(childPosition);
                     myItemClickListener.onEditLabelClick(label, childPosition);
+
                 }
             });
         }

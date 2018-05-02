@@ -37,4 +37,8 @@
     <color name="ripple_color">#D98A0E</color>
     <color name="white_transparent">#ffffffee</color>
     <color name="color_primary_transparent">#aaa9a49b</color>
+    <color name="color_parent_divider">#2580a4</color>
+    <color name="color_child_transparent">#2c8fb6</color>
+    <color name="color_child_divider">#3e7489</color>
+    <!--2580a4-->
 </resources>
