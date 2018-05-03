@@ -22,19 +22,15 @@ public class ClaimDetailsFragment  extends Fragment{
     ViewPager viewPager;
     TabLayout tabLayout;
     View view;
-    int tabIndex;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(savedInstanceState!=null) {
-            tabIndex = savedInstanceState.getInt("tabIndex");
-        }
+
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-        outState.putInt("tabIndex",tabIndex);
         super.onSaveInstanceState(outState);
     }
 
@@ -55,20 +51,17 @@ public class ClaimDetailsFragment  extends Fragment{
             public void onTabSelected(TabLayout.Tab tab){
                 int position = tab.getPosition();
                 if(position==0){
-                   tabIndex =position;
-                    tab=tabLayout.getTabAt(position);
+                    tab= tabLayout.getTabAt(position);
                     tab.select();
 
                 }
                 else if(position==1)
                 {
-                    tabIndex=position;
                     tab=tabLayout.getTabAt(position);
                     tab.select();
 
                 }
                 else{
-                    tabIndex=position;
                     tab=tabLayout.getTabAt(position);
                     tab.select();
 
