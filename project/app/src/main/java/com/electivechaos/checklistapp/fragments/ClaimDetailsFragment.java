@@ -92,12 +92,9 @@ public class ClaimDetailsFragment  extends Fragment{
 
 
     public class ClaimDetailsTabsPagerAdapter extends FragmentStatePagerAdapter {
-        int tabIndex;
 
         public ClaimDetailsTabsPagerAdapter(FragmentManager fm) {
             super(fm);
-            //this.tabIndex=tabIndex;
-            viewPager.setCurrentItem(tabIndex);
         }
 
         @Override

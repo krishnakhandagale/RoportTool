@@ -5,14 +5,15 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.electivechaos.checklistapp.R;
-
-import org.json.JSONObject;
+import com.electivechaos.checklistapp.interfaces.ClaimDetailsDataInterface;
 
 public class ClaimDetailsTabsFragment extends Fragment {
 
@@ -26,6 +27,8 @@ public class ClaimDetailsTabsFragment extends Fragment {
     private String clientName;
     private String claimNumber;
     private String address;
+
+    private ClaimDetailsDataInterface claimDetailsDataInterface;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,12 +52,109 @@ public class ClaimDetailsTabsFragment extends Fragment {
         clientNameEditText = view.findViewById(R.id.clientName);
         claimNumberEditText = view.findViewById(R.id.claimNumber);
         addressEditText = view.findViewById(R.id.address);
+
+
+        reportTitleEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                claimDetailsDataInterface.setReportTitle(s.toString().trim());
+            }
+        });
+
+        reportDescriptionEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                claimDetailsDataInterface.setReportDescription(s.toString().trim());
+            }
+        });
+
+
+        clientNameEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                claimDetailsDataInterface.setReportClientName(s.toString().trim());
+            }
+        });
+
+
+        claimNumberEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                claimDetailsDataInterface.setReportClaimNumber(s.toString().trim());
+            }
+        });
+
+        claimNumberEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                claimDetailsDataInterface.setReportClaimNumber(s.toString().trim());
+            }
+        });
+
+
+
         return view;
     }
 
    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        try{
+            claimDetailsDataInterface = (ClaimDetailsDataInterface)getActivity();
+        }catch (ClassCastException exception){
+            exception.printStackTrace();
+        }
+
 
     }
     @Override
