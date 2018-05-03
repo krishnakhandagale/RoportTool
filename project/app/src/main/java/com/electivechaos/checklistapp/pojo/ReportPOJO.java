@@ -9,7 +9,8 @@ public class ReportPOJO {
     String clientName;
     String claimNumber;
     String address;
-
+    String locationLat;
+    String locationLong;
 
     String createdDate;
     String filePath;
@@ -27,6 +28,22 @@ public class ReportPOJO {
         filePath = "";
         causeOfLossId = -1;
         labelArrayList = new ArrayList<>();
+    }
+
+    public String getLocationLat() {
+        return locationLat;
+    }
+
+    public void setLocationLat(String locationLat) {
+        this.locationLat = locationLat;
+    }
+
+    public String getLocationLong() {
+        return locationLong;
+    }
+
+    public void setLocationLong(String locationLong) {
+        this.locationLong = locationLong;
     }
 
     public String getId() {
@@ -107,5 +124,10 @@ public class ReportPOJO {
 
     public void setLabelArrayList(ArrayList<Label> labelArrayList) {
         this.labelArrayList = labelArrayList;
+    }
+
+    @Override
+    public String toString() {
+        return this.getReportTitle() + " "+ this.getClientName() +" "+this.getLocationLat();
     }
 }

@@ -1,6 +1,7 @@
 package com.electivechaos.checklistapp.ui;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -9,6 +10,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -23,6 +25,8 @@ import com.electivechaos.checklistapp.fragments.AddEditReportSelectedImagesFragm
 import com.electivechaos.checklistapp.fragments.CauseOfLossFragment;
 import com.electivechaos.checklistapp.fragments.ClaimDetailsFragment;
 import com.electivechaos.checklistapp.fragments.PointOfOriginFragment;
+import com.electivechaos.checklistapp.interfaces.ClaimDetailsDataInterface;
+import com.electivechaos.checklistapp.interfaces.LossLocationDataInterface;
 import com.electivechaos.checklistapp.pojo.Label;
 import com.electivechaos.checklistapp.pojo.ReportPOJO;
 
@@ -30,8 +34,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class AddEditReportActivity extends AppCompatActivity implements  DrawerMenuListAdapter.MyItemClickListener, AddEditLabelFragment.AddEditLabelInterface{
+public class AddEditReportActivity extends AppCompatActivity implements  DrawerMenuListAdapter.MyItemClickListener, AddEditLabelFragment.AddEditLabelInterface, ClaimDetailsDataInterface, LossLocationDataInterface{
     private DrawerLayout mDrawerLayout;
+    private FloatingActionButton saveReportBtn;
     private ExpandableListView mExpandableListView;
     private DrawerMenuListAdapter drawerMenuListAdapter;
     private String tabName;
@@ -68,7 +73,14 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
 
 
         mExpandableListView = findViewById(R.id.slider_menu);
+        saveReportBtn = findViewById(R.id.saveReport);
 
+        saveReportBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("reportPOJO",reportPOJO.toString());
+            }
+        });
         parentMenuItems = new ArrayList<>();
 
         parentMenuItems.add("Claim Details");
@@ -162,20 +174,6 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
         return super.onOptionsItemSelected(item);
     }
 
-//    @Override
-//    public void notifyReportDBChanged() {
-//        Intent intent = new Intent();
-//        setResult(RESULT_OK,intent);
-//        finish();
-//
-//    }
-
-
-//    @Override
-//    public void sendData(JSONObject message) {
-//
-//    }
-
     @Override
     public void onSaveInstanceState(Bundle outState) {
 
@@ -262,5 +260,40 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
         labelList.set(childPosition, label);
         childMenuItems.put("Inspection", labelList);
         drawerMenuListAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void setReportTitle(String reportTitle) {
+        reportPOJO.setReportTitle(reportTitle);
+    }
+
+    @Override
+    public void setReportDescription(String reportDescription) {
+        reportPOJO.setReportDescription(reportDescription);
+    }
+
+    @Override
+    public void setReportClientName(String reportClientName) {
+        reportPOJO.setClientName(reportClientName);
+    }
+
+    @Override
+    public void setReportClaimNumber(String reportClaimNumber) {
+        reportPOJO.setClaimNumber(reportClaimNumber);
+    }
+
+    @Override
+    public void setReportAddress(String reportAddress) {
+        reportPOJO.setAddress(reportAddress);
+    }
+
+    @Override
+    public void setLocationLat(String locationLat) {
+        reportPOJO.setLocationLat(locationLat);
+    }
+
+    @Override
+    public void setLocationLong(String locationLong) {
+        reportPOJO.setLocationLong(locationLong);
     }
 }
