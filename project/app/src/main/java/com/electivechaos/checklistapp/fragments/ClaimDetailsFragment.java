@@ -49,23 +49,7 @@ public class ClaimDetailsFragment  extends Fragment{
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener(){
             @Override
             public void onTabSelected(TabLayout.Tab tab){
-                int position = tab.getPosition();
-                if(position==0){
-                    tab= tabLayout.getTabAt(position);
-                    tab.select();
 
-                }
-                else if(position==1)
-                {
-                    tab=tabLayout.getTabAt(position);
-                    tab.select();
-
-                }
-                else{
-                    tab=tabLayout.getTabAt(position);
-                    tab.select();
-
-                }
             }
 
             @Override

@@ -46,7 +46,7 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
     MapView mMapView;
     private GoogleMap googleMap;
     private View  lossLocationParentLayout;
-    protected static final int REQUEST_CHECK_SETTINGS = 0x1;
+//    protected static final int REQUEST_CHECK_SETTINGS = 0x1;
 
 
     private PlaceDetectionClient mPlaceDetectionClient;
