@@ -22,6 +22,8 @@ public class ClaimDetailsTabsFragment extends Fragment {
     private EditText clientNameEditText ;
     private EditText claimNumberEditText;
     private EditText addressEditText;
+
+
     private String reportTitle;
     private String reportDescription;
     private String clientName;
@@ -52,6 +54,13 @@ public class ClaimDetailsTabsFragment extends Fragment {
         clientNameEditText = view.findViewById(R.id.clientName);
         claimNumberEditText = view.findViewById(R.id.claimNumber);
         addressEditText = view.findViewById(R.id.address);
+
+
+        reportTitleEditText.setText(reportTitle);
+        reportDescriptionEditText.setText(reportDescription);
+        clientNameEditText.setText(clientName);
+        claimNumberEditText.setText(claimNumber);
+        addressEditText.setText(address);
 
 
         reportTitleEditText.addTextChangedListener(new TextWatcher() {
@@ -124,7 +133,7 @@ public class ClaimDetailsTabsFragment extends Fragment {
             }
         });
 
-        claimNumberEditText.addTextChangedListener(new TextWatcher() {
+        addressEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -137,7 +146,7 @@ public class ClaimDetailsTabsFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                claimDetailsDataInterface.setReportClaimNumber(s.toString().trim());
+                claimDetailsDataInterface.setReportAddress(s.toString().trim());
             }
         });
 

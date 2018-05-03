@@ -21,6 +21,35 @@ public class ClaimDetailsFragment  extends Fragment{
     TabLayout tabLayout;
     View view;
 
+
+    String reportTitle = "";
+    String reportDescription = "";
+    String clientName = "";
+    String claimNumber = "";
+    String address = "";
+
+
+    String locationLat = "";
+    String locationLong = "";
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Bundle passedArgs = getArguments();
+
+        if(passedArgs != null){
+            reportTitle = passedArgs.get("reportTitle").toString();
+            reportDescription = passedArgs.get("reportDescription").toString();
+            clientName = passedArgs.get("clientName").toString();
+            claimNumber = passedArgs.get("claimNumber").toString();
+            address = passedArgs.get("address").toString();
+
+            locationLat = passedArgs.get("locationLat").toString();
+            locationLong = passedArgs.get("locationLong").toString();
+
+        }
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +69,9 @@ public class ClaimDetailsFragment  extends Fragment{
         viewPager = view.findViewById(R.id.claim_details_view_pager);
         tabLayout = view.findViewById(R.id.claim_details_tab_layout);
         tabLayout.setupWithViewPager(viewPager);
+
+
+
 
         ClaimDetailsTabsPagerAdapter adapter=new ClaimDetailsTabsPagerAdapter(getActivity().getSupportFragmentManager());
         viewPager.setAdapter(adapter);
@@ -77,9 +109,21 @@ public class ClaimDetailsFragment  extends Fragment{
 
             if( i ==0 ){
                 Fragment fragment =  new ClaimDetailsTabsFragment();
+                Bundle claimDetailsArgs = new Bundle();
+                claimDetailsArgs.putString("reportTitle", reportTitle);
+                claimDetailsArgs.putString("reportDescription", reportDescription);
+                claimDetailsArgs.putString("clientName", clientName);
+                claimDetailsArgs.putString("claimNumber", claimNumber);
+                claimDetailsArgs.putString("address", address);
+                fragment.setArguments(claimDetailsArgs);
                 return fragment;
             }else if(i==1){
                 Fragment fragment = new LossLocationFragment();
+
+                Bundle claimDetailsLocationArgs = new Bundle();
+                claimDetailsLocationArgs.putString("locationLat", locationLat);
+                claimDetailsLocationArgs.putString("locationLong", locationLong);
+                fragment.setArguments(claimDetailsLocationArgs);
                 return fragment;
             }
             else {
