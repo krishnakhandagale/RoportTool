@@ -1,6 +1,7 @@
 package com.electivechaos.checklistapp.fragments;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,6 +15,7 @@ import android.widget.AutoCompleteTextView;
 
 import com.electivechaos.checklistapp.R;
 import com.electivechaos.checklistapp.adapters.PlaceArrayAdapter;
+import com.electivechaos.checklistapp.interfaces.LossLocationDataInterface;
 import com.electivechaos.checklistapp.utils.CommonUtils;
 import com.electivechaos.checklistapp.utils.PermissionUtilities;
 import com.google.android.gms.common.ConnectionResult;
@@ -54,6 +56,7 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
     private PlaceArrayAdapter mPlaceArrayAdapter;
     private AutoCompleteTextView mAutocompleteTextView;
     private static final LatLngBounds BOUNDS_MOUNTAIN_VIEW = new LatLngBounds(new LatLng(37.398160, -122.180831), new LatLng(37.430610, -121.972090));
+    private LossLocationDataInterface lossLocationDataInterface;
 
     @Override
     public void onStart() {
@@ -128,6 +131,17 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
             if (!places.getStatus().isSuccess()) {
                 return;
             }
+            LatLng currentLocation =places.get(0).getLatLng();
+
+            lossLocationDataInterface.setLocationLat(String.valueOf(currentLocation.latitude));
+
+            lossLocationDataInterface.setLocationLong(String.valueOf(currentLocation.longitude));
+
+            googleMap.addMarker(new MarkerOptions().position(currentLocation).title("Your Location").snippet(places.get(0).getAddress().toString()));
+
+            CameraPosition cameraPosition = new CameraPosition.Builder().target(currentLocation).zoom(8).build();
+            googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+            googleMap.getUiSettings().setMyLocationButtonEnabled(false);
         }
     };
 
@@ -165,11 +179,16 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
                     public void onComplete(@NonNull Task<PlaceLikelihoodBufferResponse> task) {
                         if (task.isSuccessful() && task.getResult() != null) {
                             PlaceLikelihoodBufferResponse likelyPlaces = task.getResult();
-                            LatLng ltlng = likelyPlaces.get(0).getPlace().getLatLng();
-                            LatLng sydney = ltlng;
-                            googleMap.addMarker(new MarkerOptions().position(sydney).title("Your Location").snippet(likelyPlaces.get(0).getPlace().getAddress().toString()));
 
-                            CameraPosition cameraPosition = new CameraPosition.Builder().target(sydney).zoom(8).build();
+                            LatLng currentLocation = likelyPlaces.get(0).getPlace().getLatLng();
+
+                            lossLocationDataInterface.setLocationLat(String.valueOf(currentLocation.latitude));
+
+                            lossLocationDataInterface.setLocationLong(String.valueOf(currentLocation.longitude));
+
+                            googleMap.addMarker(new MarkerOptions().position(currentLocation).title("Your Location").snippet(likelyPlaces.get(0).getPlace().getAddress().toString()));
+
+                            CameraPosition cameraPosition = new CameraPosition.Builder().target(currentLocation).zoom(8).build();
                             googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
                             googleMap.getUiSettings().setMyLocationButtonEnabled(false);
                             likelyPlaces.release();
@@ -183,43 +202,6 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
         CommonUtils.showSnackbarMessage("Failed to connect to google api.", true, true,lossLocationParentLayout,getActivity());
     }
 
-
-//    private void displayLocationSettingsRequest(Context context) {
-//        GoogleApiClient googleApiClient = new GoogleApiClient.Builder(context)
-//                .addApi(LocationServices.API).build();
-//        googleApiClient.connect();
-//
-//        LocationRequest locationRequest = LocationRequest.create();
-//        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-//        locationRequest.setInterval(10000);
-//        locationRequest.setFastestInterval(10000 / 2);
-//
-//        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder().addLocationRequest(locationRequest);
-//        builder.setAlwaysShow(true);
-//
-//        PendingResult<LocationSettingsResult> result = LocationServices.SettingsApi.checkLocationSettings(googleApiClient, builder.build());
-//        result.setResultCallback(new ResultCallback<LocationSettingsResult>() {
-//            @Override
-//            public void onResult(LocationSettingsResult result) {
-//                final Status status = result.getStatus();
-//                switch (status.getStatusCode()) {
-//                    case LocationSettingsStatusCodes.SUCCESS:
-//
-//                        break;
-//                    case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
-//
-//                        try {
-//                            status.startResolutionForResult(getActivity(), REQUEST_CHECK_SETTINGS);
-//                        } catch (IntentSender.SendIntentException e) {
-//                            e.printStackTrace();
-//                        }
-//                        break;
-//                    case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
-//                        break;
-//                }
-//            }
-//        });
-//    }
     @Override
     public void onDetach() {
         super.onDetach();;
@@ -278,5 +260,16 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
     @Override
     public void onConnectionSuspended(int i) {
         mPlaceArrayAdapter.setGoogleApiClient(null);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+            try {
+                lossLocationDataInterface = (LossLocationDataInterface)getActivity();
+            }catch (ClassCastException exception){
+                exception.printStackTrace();
+            }
+
     }
 }
