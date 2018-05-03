@@ -254,7 +254,7 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
     }
 
     @Override
-    public void onLabelDataReceive(Label label) {
+    public void onLabelAdded(Label label) {
        List<Label> labelList =  childMenuItems.get("Inspection");
        labelList.add(label);
        childMenuItems.put("Inspection", labelList);
@@ -262,7 +262,7 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
     }
 
     @Override
-    public void onLabelDataEdited(Label label, int childPosition) {
+    public void onLabelEdited(Label label, int childPosition) {
         List<Label> labelList =  childMenuItems.get("Inspection");
         labelList.set(childPosition, label);
         childMenuItems.put("Inspection", labelList);

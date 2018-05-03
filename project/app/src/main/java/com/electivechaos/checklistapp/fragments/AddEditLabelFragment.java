@@ -42,14 +42,13 @@ public class AddEditLabelFragment extends Fragment {
 
 
     public interface AddEditLabelInterface {
-        void onLabelDataReceive(Label label);
-        void onLabelDataEdited(Label label, int childPosition);
+        void onLabelAdded(Label label);
+        void onLabelEdited(Label label, int childPosition);
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRetainInstance(true);
     }
 
     @Nullable
@@ -147,10 +146,10 @@ public class AddEditLabelFragment extends Fragment {
                 if(editLabelID != -1) {
                     label.setID(editLabelID);
                     mCategoryList.updateLabel(label);
-                    mCallback.onLabelDataEdited(label, childPosition);
+                    mCallback.onLabelEdited(label, childPosition);
                 }else {
                     label.setID(mCategoryList.addLabel(label));
-                    mCallback.onLabelDataReceive(label);
+                    mCallback.onLabelAdded(label);
                 }
 
                 FragmentManager fragmentManager = getFragmentManager();
