@@ -14,8 +14,6 @@ import android.view.ViewGroup;
 
 import com.electivechaos.checklistapp.R;
 
-import org.json.JSONObject;
-
 public class ClaimDetailsFragment  extends Fragment{
 
 
