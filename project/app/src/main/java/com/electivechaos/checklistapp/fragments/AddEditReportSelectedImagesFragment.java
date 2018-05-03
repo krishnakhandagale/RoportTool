@@ -99,15 +99,11 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
     private static int SET_CLICKED_IMAGE_DETAILS = 3;
 
 
-    private static Font TIMESNEWROMAN18 = new Font(Font.FontFamily.TIMES_ROMAN, 15, Font.BOLD);
     private LinearLayout parentLayout;
     private CoordinatorLayout selectImagesParentLayout;
     private RecyclerView selectedImagesRecyclerView;
-//    private ReportsListDBHelper reportsListDBHelper;
     private ProgressBar progressBar;
-//    private SendReportDBChangeSignal sendReportDBchangeSignal;
     private SelectedImagesAdapter selectedImagesAdapter;
-//    Button btnUpload = null;
 
 
     private ImageView imgViewFront;
@@ -129,14 +125,6 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
 
     private Uri fileUri;
     private String mCurrentPhotoPath;
-
-//    private String reportTitle;
-//    private String reportDescription;
-//    private String clientName;
-//    private String claimNumber;
-//    private String address;
-//    private String reportId;
-//    private String reportPath;
     private File photoFile;
 
     //This is used by image picker
@@ -195,7 +183,6 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                 .centerCrop()
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE);
 
-//        btnUpload = selectImageView.findViewById(R.id.btnUploadDetails);
         FloatingActionButton selectPhotoBtn = selectImageView.findViewById(R.id.btnSelectPhoto);
         parentLayout = selectImageView.findViewById(R.id.parentLinearLayout);
         selectedImagesRecyclerView = selectImageView.findViewById(R.id.selectedImagesRecyclerView);
@@ -216,7 +203,6 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
             }
 
-            //defines the enabled move directions in each state (idle, swiping, dragging).
             @Override
             public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
                 return makeFlag(ItemTouchHelper.ACTION_STATE_DRAG,
@@ -280,20 +266,6 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                     cameraIntent(RIGHT_IMAGE_REQUEST);
             }
         });
-
-//        btnUpload.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//                try {
-//                    generatePdf();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                } catch (DocumentException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
 
         imgRemoveBtnFront=selectImageView.findViewById(R.id.imgBtnRemoveFront);
         imgRemoveBtnBack=selectImageView.findViewById(R.id.imgBtnRemoveBack);
@@ -421,81 +393,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                 imgRemoveBtnRight.setVisibility(View.VISIBLE);
             }
         }
-//        if (reportId != null) {
-//            btnUpload.setText("Edit Report");
-//        } else {
-//            btnUpload.setText("Add Report");
-//        }
     }
-
-//    private void generatePdf() throws IOException, DocumentException {
-//        if (reportTitle == null) {
-//            showSnackbarMessage(getResources().getString(R.string.title_error), false, true);
-//            return;
-//        }
-//        if (reportTitle.trim().isEmpty()) {
-//            showSnackbarMessage(getResources().getString(R.string.title_error), false, true);
-//            return;
-//        } else if (reportDescription == null) {
-//            showSnackbarMessage(getResources().getString(R.string.description_error), false, true);
-//            return;
-//        } else if (reportDescription.trim().isEmpty()) {
-//            showSnackbarMessage(getResources().getString(R.string.description_error), false, true);
-//            return;
-//        } else if (clientName == null) {
-//            showSnackbarMessage(getResources().getString(R.string.client_name_error), false, true);
-//            return;
-//        } else if (clientName.trim().isEmpty()) {
-//            showSnackbarMessage(getResources().getString(R.string.client_name_error), false, true);
-//            return;
-//        } else if (claimNumber == null) {
-//            showSnackbarMessage(getResources().getString(R.string.claim_number_error), false, true);
-//            return;
-//        } else if (claimNumber.trim().isEmpty()) {
-//            showSnackbarMessage(getResources().getString(R.string.claim_number_error), false, true);
-//            return;
-//        } else if (address == null) {
-//            showSnackbarMessage(getResources().getString(R.string.address_error), false, true);
-//            return;
-//        } else if (address.trim().isEmpty()) {
-//            showSnackbarMessage(getResources().getString(R.string.address_error), false, true);
-//            return;
-//        } else if (selectedImageList == null) {
-//            showSnackbarMessage(getResources().getString(R.string.add_images_error), false, true);
-//            return;
-//        } else if (selectedImageList.size() == 0) {
-//            showSnackbarMessage(getResources().getString(R.string.add_images_error), false, true);
-//            return;
-//        }
-//
-//        boolean result = PermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_GENERATE_REPORT_PERMISSIONS);
-//        if (result) {
-//            showReportPreferenceDialog();
-//        }
-//    }
-
-//    private static void addMetaData(Document document) {
-//        document.addTitle("PDF Report");
-//        document.addSubject("Created By ElectiveChaos");
-//        document.addKeywords("ElectiveChaos");
-//        document.addAuthor("ElectiveChaos");
-//        document.addCreator("ElectiveChaos");
-//    }
-
-//    private void showSnackbarMessage(String message, boolean isAutoHide, boolean isError) {
-//        if (isError == false) {
-//            Snackbar snackbar = Snackbar.make(parentLayout, message, Snackbar.LENGTH_LONG);
-//            View snackBarView = snackbar.getView();
-//            snackBarView.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorSuccess));
-//            snackbar.show();
-//        } else {
-//            Snackbar snackbar = Snackbar.make(parentLayout, message, Snackbar.LENGTH_LONG);
-//            View snackBarView = snackbar.getView();
-//            snackBarView.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.color_error));
-//            snackbar.show();
-//        }
-//    }
-
     private void selectImage() {
         final CharSequence[] items = {"Take Photo", "Choose from Gallery", "Cancel"};
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -847,127 +745,6 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
     }
 
 
-//    private byte[] resizeImage(String imagePath, int maxWidth, int maxHeight) {
-//        ExifInterface ei = null;
-//        try {
-//            ei = new ExifInterface(imagePath);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION,
-//                ExifInterface.ORIENTATION_UNDEFINED);
-//
-//        // First decode with inJustDecodeBounds=true to check dimensions
-//        final BitmapFactory.Options options = new BitmapFactory.Options();
-//        options.inJustDecodeBounds = true;
-//        BitmapFactory.decodeFile(imagePath, options);
-//
-//        // Calculate inSampleSize
-//        options.inSampleSize = calculateInSampleSize(options, maxWidth, maxHeight);
-//
-//        // Decode bitmap with inSampleSize set
-//        options.inJustDecodeBounds = false;
-//        Bitmap bmp = BitmapFactory.decodeFile(imagePath, options);
-//        return resizeImage(bmp, maxWidth, maxHeight, orientation);
-//
-//    }
-
-//    private byte[] resizeImage(Bitmap image, int maxWidth, int maxHeight, int orientation) {
-//
-//        if (maxHeight > 0 && maxWidth > 0) {
-//            int width = image.getWidth();
-//            int height = image.getHeight();
-//            float ratioBitmap = (float) width / (float) height;
-//            float ratioMax = (float) maxWidth / (float) maxHeight;
-//
-//            int finalWidth = maxWidth;
-//            int finalHeight = maxHeight;
-//            if (ratioMax > ratioBitmap) {
-//                finalWidth = (int) ((float) maxHeight * ratioBitmap);
-//            } else {
-//                finalHeight = (int) ((float) maxHeight / ratioBitmap);
-//            }
-//            image = Bitmap.createScaledBitmap(image, finalWidth, finalHeight, true);
-//            Bitmap rotatedBitmap;
-//            switch (orientation) {
-//
-//                case ExifInterface.ORIENTATION_ROTATE_90:
-//                    rotatedBitmap = rotateImage(image, 90);
-//                    break;
-//
-//                case ExifInterface.ORIENTATION_ROTATE_180:
-//                    rotatedBitmap = rotateImage(image, 180);
-//                    break;
-//
-//                case ExifInterface.ORIENTATION_ROTATE_270:
-//                    rotatedBitmap = rotateImage(image, 270);
-//                    break;
-//
-//                case ExifInterface.ORIENTATION_NORMAL:
-//                default:
-//                    rotatedBitmap = image;
-//            }
-//            ByteArrayOutputStream outStream = new ByteArrayOutputStream();
-//            rotatedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
-//            return outStream.toByteArray();
-//        } else {
-//            ByteArrayOutputStream outStream = new ByteArrayOutputStream();
-//            image.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
-//            return outStream.toByteArray();
-//        }
-//    }
-
-//    public static Bitmap rotateImage(Bitmap source, float angle) {
-//        Matrix matrix = new Matrix();
-//        matrix.postRotate(angle);
-//        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(),
-//                matrix, true);
-//    }
-
-    ;
-
-//    public PdfPCell getCell(String category, String title, String description, int alignment, Document document, int perPage) {
-//        PdfPCell cell = new PdfPCell();
-//       // Font font=new Font(Font.FontFamily.TIMES_ROMAN, 16, Font.BOLD);
-//
-//        cell.addElement(new Phrase(category,TIMESNEWROMAN18));
-//        cell.addElement(new Phrase(title));
-//        cell.addElement(new Phrase(description));
-//        cell.setPadding(0);
-//        cell.setBorder(Rectangle.NO_BORDER);
-//        //cell.setBorderWidth(1);
-//        //BaseColor baseColor = new BaseColor(99,100,99);
-//        //cell.setBorderColor(baseColor);
-//        //cell.setBorder(Rectangle.NO_BORDER);
-//
-//        if (perPage == 2) {
-//            cell.setFixedHeight(document.getPageSize().getHeight() / perPage - 100);
-//
-//        } else {
-//            cell.setFixedHeight(document.getPageSize().getHeight() / perPage - 100);
-//        }
-//        return cell;
-//
-//    }
-
-//    public PdfPCell getCellImagCell(com.itextpdf.text.Image img, int alignment, Document document, int perPage) {
-//
-//        PdfPCell cell = new PdfPCell(img);
-//        cell.setPadding(0);
-//        cell.setHorizontalAlignment(alignment);
-//        cell.setBorder(Rectangle.NO_BORDER);
-//        //cell.setBorderWidth(1);
-//        //BaseColor baseColor = new BaseColor(99,100,99);
-//        //cell.setBorderColor(baseColor);
-//        if (perPage == 2) {
-//            cell.setFixedHeight(document.getPageSize().getHeight() / perPage - 100);
-//
-//        } else {
-//            cell.setFixedHeight(document.getPageSize().getHeight() / perPage - 100);
-//        }
-//        return cell;
-//    }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -1024,35 +801,9 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                 }
                 return;
             }
-//            case PermissionUtilities.MY_APP_GENERATE_REPORT_PERMISSIONS: {
-//                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                    try {
-//                        generatePdf();
-//                    } catch (DocumentException | IOException e) {
-//                        e.printStackTrace();
-//                    }
-//                } else {
-//
-//                    PermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_GENERATE_REPORT_PERMISSIONS);
-//
-//                }
-//            }
-
         }
     }
 
-//    public void setReceivedImageDetailsData(JSONObject message) {
-//        try {
-//            reportTitle = message.getString("reportTitle");
-//            reportDescription = message.getString("reportDescription");
-//            clientName = message.getString("clientName");
-//            claimNumber = message.getString("claimNumber");
-//            address = message.getString("address");
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//
-//    }
 
     public class SelectedImagesAdapter extends RecyclerView.Adapter<AddEditReportSelectedImagesFragment.SelectedImagesAdapter.MyViewHolder> {
 
@@ -1161,205 +912,10 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-//        reportsListDBHelper = ReportsListDBHelper.getInstance(context);
-//        try {
-//            sendReportDBchangeSignal = (SendReportDBChangeSignal) getActivity();
-//        } catch (ClassCastException e) {
-//            throw new ClassCastException("Error in retrieving data. Please try again");
-//        }
     }
-//
-//    public interface SendReportDBChangeSignal {
-//        void notifyReportDBChanged();
-//    }
-
-
-//    private class GenerateReportOperator extends AsyncTask<Integer, Void, String> {
-//
-//        @Override
-//        protected String doInBackground(Integer... params) {
-//            int numberOfImagesPerPage = params[0];
-//            if (reportId != null) {
-//                //Delete existing record and below is the code crete new pdf and also delete existing pdf file
-//                reportsListDBHelper.deleteReportEntry(reportId);
-//                File file = new File(reportPath);
-//                if (file != null && file.exists()) {
-//                    file.delete();
-//                }
-//            }
-//            long currentTimeMillisecond = System.currentTimeMillis();
-//            File destination = new File(Environment.getExternalStorageDirectory(),
-//                    String.valueOf(currentTimeMillisecond) + "report.pdf");
-//            FileOutputStream fo;
-//            ReportItemPOJO reportItem = new ReportItemPOJO();
-//            reportItem.setFilePath(destination.getAbsolutePath());
-//            reportItem.setId(String.valueOf(currentTimeMillisecond).concat("report"));
-//            reportItem.setCreatedDate(String.valueOf(currentTimeMillisecond));
-//            try {
-//                Font fontTitles = new Font(Font.FontFamily.UNDEFINED, 16, Font.BOLD);
-//                destination.createNewFile();
-//                fo = new FileOutputStream(destination);
-//                final Document document = new Document(PageSize.A4, 50, 50, 50, 50);
-//                addMetaData(document);
-//                PdfWriter pdfWriter = PdfWriter.getInstance(document, fo);
-//                document.open();
-//                MyDocHeader footer = new MyDocHeader(reportTitle);
-//                pdfWriter.setPageEvent(footer);
-//                reportItem.setReportTitle(reportTitle);
-//                document.add(new Paragraph("Report Description", fontTitles));
-//                document.add(new Paragraph(reportDescription));
-//                reportItem.setReportDescription(reportDescription);
-//                document.add(new Paragraph(""));
-//                document.add(new Paragraph("Client Name", fontTitles));
-//                document.add(new Paragraph(clientName));
-//                document.add(new Paragraph(""));
-//
-//                reportItem.setClientName(clientName);
-//                document.add(new Paragraph("Claim Number", fontTitles));
-//                document.add(new Paragraph(claimNumber));
-//                document.add(new Paragraph(""));
-//
-//                reportItem.setClaimNumber(claimNumber);
-//
-//                document.add(new Paragraph("Address", fontTitles));
-//                document.add(new Paragraph(address));
-//                reportItem.setAddress(address);
-//                document.newPage();
-//
-//                reportItem.setSelectedImagesList(selectedImageList);
-//                reportItem.setSelectedElevationImagesList(selectedElevationImagesList);
-//
-//                int j =0, k= 0;
-//                while( j< selectedElevationImagesList.size()){
-//                    if(!selectedElevationImagesList.get(j).getImageUrl().isEmpty()){
-//                        try {
-//                            PdfPTable table = new PdfPTable(3);
-//                            byte[] imageBytesResized;
-//                            table.setWidths(new float[]{1, 5, 4});
-//                            imageBytesResized = resizeImage(selectedElevationImagesList.get(j).getImageUrl(), (int) ((document.getPageSize().getWidth() / 2) - 100), (int) ((document.getPageSize().getHeight() / numberOfImagesPerPage) - 100));
-//                            com.itextpdf.text.Image img = com.itextpdf.text.Image.getInstance(imageBytesResized);
-//
-//                            table.setHorizontalAlignment(Element.ALIGN_LEFT);
-//                            table.setWidthPercentage(100);
-//                            table.addCell(getImageNumberPdfPCell("", PdfPCell.ALIGN_LEFT));
-//                            table.addCell(getCellImagCell(img, PdfPCell.ALIGN_LEFT, document, numberOfImagesPerPage));
-//                           // table.addCell(getCell(selectedElevationImagesList.get(j).getCategory(),selectedElevationImagesList.get(j).getTitle(), selectedElevationImagesList.get(j).getDescription(), PdfPCell.LEFT, document, numberOfImagesPerPage));
-//
-//                            document.add(table);
-//                            document.add(new Paragraph(" "));
-//
-//                            if ((k + 1) % numberOfImagesPerPage == 0) {
-//                                document.newPage();
-//                            }
-//                        } catch (Exception e) {
-//                            e.printStackTrace();
-//                        }
-//                        k++;
-//                    }
-//                    j++;
-//                }
-//                if(k +1 < selectedElevationImagesList.size()){
-//                    document.newPage();
-//
-//                }
-//
-//                for (int i = 0; i < selectedImageList.size(); i++) {
-//                    try {
-//                        PdfPTable table = new PdfPTable(3);
-//                        byte[] imageBytesResized;
-//                        table.setWidths(new float[]{1, 5, 4});
-//                        imageBytesResized = resizeImage(selectedImageList.get(i).getImageUrl(), (int) ((document.getPageSize().getWidth() / 2) - 100), (int) ((document.getPageSize().getHeight() / numberOfImagesPerPage) - 100));
-//                        com.itextpdf.text.Image img = com.itextpdf.text.Image.getInstance(imageBytesResized);
-//
-//                        table.setHorizontalAlignment(Element.ALIGN_LEFT);
-//                        table.setWidthPercentage(100);
-//                        table.addCell(getImageNumberPdfPCell((i + 1) + ".", PdfPCell.ALIGN_LEFT));
-//                        table.addCell(getCellImagCell(img, PdfPCell.ALIGN_LEFT, document, numberOfImagesPerPage));
-//                       // table.addCell(getCell(!selectedImageList.get(i).getCategory().isEmpty()?"Category: "+selectedImageList.get(i).getCategory(): "",selectedImageList.get(i).getTitle(), selectedImageList.get(i).getDescription(), PdfPCell.LEFT, document, numberOfImagesPerPage));
-//                        document.add(table);
-//                        document.add(new Paragraph(" "));
-//
-//                        if ((i + 1) % numberOfImagesPerPage == 0) {
-//                            document.newPage();
-//                        }
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//
-//                }
-//                reportsListDBHelper.addReportEntry(reportItem);
-//                document.close();
-//                return "done";
-//            } catch (FileNotFoundException e) {
-//                return "error";
-//            } catch (IOException e) {
-//                return "error";
-//            } catch (DocumentException e) {
-//                return "error";
-//            }
-//        }
-//
-//        @Override
-//        protected void onPostExecute(String result) {
-//            selectImagesParentLayout.setClickable(true);
-//            progressBar.setVisibility(View.GONE);
-//            parentLayout.setVisibility(View.VISIBLE);
-//            if (result.trim().equals("done")) {
-//                sendReportDBchangeSignal.notifyReportDBChanged();
-//                showSnackbarMessage(getResources().getString(R.string.rep_gen_success), false, false);
-//            }
-//            if (result.trim().equals("error")) {
-//                showSnackbarMessage(getResources().getString(R.string.rep_gen_failure), false, true);
-//            }
-//            CommonUtils.unlockOrientation(getActivity());
-//        }
-//
-//        @Override
-//        protected void onPreExecute() {
-//            //Before process execution begins
-//            parentLayout.setVisibility(View.GONE);
-//            progressBar.setVisibility(View.VISIBLE);
-//            selectImagesParentLayout.setClickable(false);
-//            CommonUtils.lockOrientation(getActivity());
-//        }
-//    }
-
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-
-
-//        if (fileUri != null) {
-//            outState.putParcelable("fileUri", fileUri);
-//        }
-//        if (reportTitle != null) {
-//            outState.putString("reportTitle", reportTitle);
-//        }
-//
-//        if (reportDescription != null) {
-//            outState.putString("reportDescription", reportDescription);
-//        }
-//        if (clientName != null) {
-//            outState.putString("clientName", clientName);
-//        }
-//        if (claimNumber != null) {
-//            outState.putString("claimNumber", claimNumber);
-//        }
-//        if (address != null) {
-//            outState.putString("claimNumber", address);
-//        }
-//        if (selectedImageList != null) {
-//            outState.putSerializable("selectedImageList", selectedImageList);
-//        }
-//        if (reportId != null) {
-//            outState.putString("reportId", reportId);
-//        }
-//        if (reportPath != null) {
-//            outState.putString("reportPath", reportPath);
-//        }
-//        if (selectedElevationImagesList != null) {
-//            outState.putSerializable("selectedElevationImagesList", selectedElevationImagesList);
-//        }
 
     }
 
@@ -1368,13 +924,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         if (savedInstanceState != null) {
             fileUri = savedInstanceState.getParcelable("fileUri");
-//            reportTitle = savedInstanceState.getString("reportTitle");
-//            reportDescription = savedInstanceState.getString("reportDescription");
-//            clientName = savedInstanceState.getString("clientName");
-//            claimNumber = savedInstanceState.getString("claimNumber");
-//            address = savedInstanceState.getString("address");
-//            reportId = savedInstanceState.getString("reportId");
-//            reportPath = savedInstanceState.getString("reportPath");
+
             if (fileUri != null) {
                 photoFile = new File(fileUri.getPath());
             }
@@ -1420,82 +970,5 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
             }
         }
     }
-
-//    public static int calculateInSampleSize(
-//            BitmapFactory.Options options, int reqWidth, int reqHeight) {
-//        // Raw height and width of image
-//        final int height = options.outHeight;
-//        final int width = options.outWidth;
-//        int inSampleSize = 1;
-//
-//        if (height > reqHeight || width > reqWidth) {
-//
-//            final int halfHeight = height / 2;
-//            final int halfWidth = width / 2;
-//
-//            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
-//            // height and width larger than the requested height and width.
-//            while ((halfHeight / inSampleSize) >= reqHeight
-//                    && (halfWidth / inSampleSize) >= reqWidth) {
-//                inSampleSize *= 2;
-//            }
-//        }
-//
-//        return inSampleSize;
-//    }
-
-//    class MyDocHeader extends PdfPageEventHelper {
-//        Font font = new Font(Font.FontFamily.UNDEFINED, 18, Font.ITALIC);
-//        String reportTitle;
-//
-//        MyDocHeader(String reportTitle) {
-//            this.reportTitle = reportTitle;
-//        }
-//
-//        @Override
-//        public void onEndPage(PdfWriter writer, Document document) {
-//            PdfContentByte cb = writer.getDirectContent();
-//            Phrase header = new Phrase(reportTitle, font);
-//            ColumnText.showTextAligned(cb, Element.ALIGN_CENTER,
-//                    header,
-//                    (document.right() - document.left()) / 2 + document.leftMargin(),
-//                    document.top() + 10, 0);
-//            Phrase footer = new Phrase("Page " + writer.getPageNumber() + "", font);
-//            ColumnText.showTextAligned(cb, Element.ALIGN_RIGHT,
-//                    footer,
-//                    (document.right()),
-//                    document.bottom() - 10, 0);
-//
-//        }
-//    }
-
-//    public void showReportPreferenceDialog() {
-//        final CharSequence[] items = {"2", "4"};
-//        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-//
-//        builder.setTitle("Number of images per page ?");
-//        builder.setItems(items, new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int item) {
-//
-//                if (items[item].equals("2")) {
-//                    new GenerateReportOperator().execute(2);
-//                } else if (items[item].equals("4")) {
-//                    new GenerateReportOperator().execute(4);
-//                }
-//            }
-//        });
-//        AlertDialog alert = builder.create();
-//        alert.show();
-//    }
-
-//    public PdfPCell getImageNumberPdfPCell(String number, int alignment) {
-//        PdfPCell cell = new PdfPCell();
-//        cell.addElement(new Phrase(number));
-//        cell.setPadding(0);
-//        cell.setHorizontalAlignment(alignment);
-//        cell.setBorder(PdfPCell.NO_BORDER);
-//        return cell;
-//    }
 }
 

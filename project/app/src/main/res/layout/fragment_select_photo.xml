@@ -171,16 +171,6 @@
 
         </android.support.v7.widget.RecyclerView>
 
-        <!--<Button-->
-            <!--android:id="@+id/btnUploadDetails"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="0dip"-->
-            <!--android:layout_gravity="bottom"-->
-            <!--android:layout_weight="0.5"-->
-            <!--android:background="@color/yellow"-->
-            <!--android:text="@string/upload_details_hint"-->
-            <!--android:textAlignment="center"-->
-            <!--android:textColor="@color/white_color" />-->
     </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
@@ -189,9 +179,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"
-        android:layout_margin="30dp"
+        android:layout_marginBottom="80dp"
+        android:layout_marginRight="@dimen/fab_margin"
         app:rippleColor="@color/colorPrimary"
         android:clickable="true"
-        android:src="@drawable/image_picker_ic_camera" />
+        android:src="@drawable/image_picker_ic_camera"
+        android:focusable="true" />
 
 </android.support.design.widget.CoordinatorLayout>
