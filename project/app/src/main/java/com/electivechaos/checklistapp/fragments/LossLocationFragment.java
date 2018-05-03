@@ -33,6 +33,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -46,7 +47,7 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
     MapView mMapView;
     private GoogleMap googleMap;
     private View  lossLocationParentLayout;
-//    protected static final int REQUEST_CHECK_SETTINGS = 0x1;
+    //protected static final int REQUEST_CHECK_SETTINGS = 0x1;
 
 
     private PlaceDetectionClient mPlaceDetectionClient;
@@ -58,10 +59,24 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
     private static final LatLngBounds BOUNDS_MOUNTAIN_VIEW = new LatLngBounds(new LatLng(37.398160, -122.180831), new LatLng(37.430610, -121.972090));
     private LossLocationDataInterface lossLocationDataInterface;
 
+    private String locationLat = "";
+    private String locationLong = "";
+
+    MarkerOptions a = new MarkerOptions().position(new LatLng(50,6));
+    Marker mGoogleMapMarker = null;
+
     @Override
     public void onStart() {
         super.onStart();
-        if(mGoogleApiClient != null && mGoogleApiClient.isConnected() == false){
+
+        Bundle bundle = getArguments();
+
+        if(bundle != null){
+            locationLat = bundle.get("locationLat").toString();
+            locationLong = bundle.get("locationLong").toString();
+        }
+
+        if(mGoogleApiClient != null && !mGoogleApiClient.isConnected()){
             mGoogleApiClient.connect();
         }
     }
@@ -89,11 +104,16 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
             public void onMapReady(GoogleMap mMap) {
                 googleMap = mMap;
 
+                mGoogleMapMarker = googleMap.addMarker(a);
+
                 boolean result= PermissionUtilities.checkPermission(getActivity(),LossLocationFragment.this,PermissionUtilities.MY_APP_LOCATION_PERMISSIONS);
                 if(result){
                 buildGoogleAPIClient();
+
+
                 mPlaceDetectionClient = Places.getPlaceDetectionClient(getActivity());
                 showCurrentPlace();
+
                 }else{
                     PermissionUtilities.checkPermission(getActivity(),LossLocationFragment.this,PermissionUtilities.MY_APP_LOCATION_PERMISSIONS);
                 }
@@ -131,13 +151,16 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
             if (!places.getStatus().isSuccess()) {
                 return;
             }
+
             LatLng currentLocation =places.get(0).getLatLng();
 
             lossLocationDataInterface.setLocationLat(String.valueOf(currentLocation.latitude));
 
             lossLocationDataInterface.setLocationLong(String.valueOf(currentLocation.longitude));
 
-            googleMap.addMarker(new MarkerOptions().position(currentLocation).title("Your Location").snippet(places.get(0).getAddress().toString()));
+            mGoogleMapMarker.setPosition(currentLocation);
+            mGoogleMapMarker.setTitle("Your Location");
+            mGoogleMapMarker.setSnippet(places.get(0).getAddress().toString());
 
             CameraPosition cameraPosition = new CameraPosition.Builder().target(currentLocation).zoom(8).build();
             googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
@@ -186,7 +209,10 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
 
                             lossLocationDataInterface.setLocationLong(String.valueOf(currentLocation.longitude));
 
-                            googleMap.addMarker(new MarkerOptions().position(currentLocation).title("Your Location").snippet(likelyPlaces.get(0).getPlace().getAddress().toString()));
+
+                            mGoogleMapMarker.setPosition(currentLocation);
+                            mGoogleMapMarker.setTitle("Your Location");
+                            mGoogleMapMarker.setSnippet(likelyPlaces.get(0).getPlace().getAddress().toString());
 
                             CameraPosition cameraPosition = new CameraPosition.Builder().target(currentLocation).zoom(8).build();
                             googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));

@@ -102,22 +102,29 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
         }
         mExpandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
 
-                // int lastExpandedGroup = -1;
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-                // This will work for
-                // if(lastExpandedGroup != groupPosition || lastExpandedGroup == -1 ){
-                //  mExpandableListView.collapseGroup(lastExpandedGroup == -1 ? 0 :lastExpandedGroup);
-                //  lastExpandedGroup = groupPosition;
-                //
-                //  }
 
                 if(parentMenuItems.get(groupPosition).equals("Claim Details")){
 
                     mDrawerLayout.closeDrawers();
                     FragmentManager transactionManager = getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.content_frame,new ClaimDetailsFragment());
+
+                    ClaimDetailsFragment claimDetailsFragment = new ClaimDetailsFragment();
+                    Bundle claimDetailsData = new Bundle();
+                    claimDetailsData.putString("reportTitle",reportPOJO.getReportTitle());
+                    claimDetailsData.putString("reportDescription",reportPOJO.getReportDescription());
+                    claimDetailsData.putString("claimNumber",reportPOJO.getClaimNumber());
+                    claimDetailsData.putString("claimNumber",reportPOJO.getClaimNumber());
+                    claimDetailsData.putString("clientName",reportPOJO.getClientName());
+                    claimDetailsData.putString("address",reportPOJO.getAddress());
+
+                    claimDetailsData.putString("locationLat",reportPOJO.getLocationLat());
+                    claimDetailsData.putString("locationLong",reportPOJO.getLocationLong());
+
+                    claimDetailsFragment.setArguments(claimDetailsData);
+                    fragmentTransaction.replace(R.id.content_frame,claimDetailsFragment );
                     fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.commit();
                     tabName="ClaimDetailsFragment";
