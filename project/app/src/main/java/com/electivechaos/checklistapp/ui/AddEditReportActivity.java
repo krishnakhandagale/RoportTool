@@ -289,7 +289,7 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment = AddEditReportSelectedImagesFragment.initFragment(new ArrayList<ImageDetailsPOJO>(),new ArrayList<ImageDetailsPOJO>(),childPosition);
+        AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment = AddEditReportSelectedImagesFragment.initFragment(reportPOJO.getLabelArrayList().get(childPosition).getSelectedImages(),reportPOJO.getLabelArrayList().get(childPosition).getSelectedElevationImages(),childPosition);
         fragmentTransaction.replace(R.id.content_frame, addEditReportSelectedImagesFragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
