@@ -95,7 +95,8 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
 
         String CREATE_REPORTS_LIST_TABLE = "CREATE TABLE " + TABLE_REPORTS_LIST + "("
-                + KEY_REPORT_ID + " TEXT PRIMARY KEY," + KEY_REPORT_NAME + " TEXT,"
+                + KEY_REPORT_ID + " TEXT PRIMARY KEY,"
+                + KEY_REPORT_NAME + " TEXT,"
                 + KEY_REPORT_DESCRIPTION + " TEXT,"
                 + KEY_CLIENT_NAME + " TEXT,"
                 + KEY_CLAIM_NUMBER + " TEXT,"
@@ -290,7 +291,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         contentValues.put(KEY_CATEGORY_NAME, label.getName());
         contentValues.put(KEY_CATEGORY_DESCRIPTION, label.getDescription());
         contentValues.put(KEY_FK_CATEGORY_ID, label.getCategoryID());
-        return  db.update(TABLE_CATEGORY_LABELS, contentValues,KEY_LABEL_ID+"="+label.getID(),null);
+        return  db.update(TABLE_CATEGORY_LABELS, contentValues,KEY_LABEL_ID+"="+label.getId(),null);
     }
     public ArrayList<Label> getLabelList(){
 
@@ -302,7 +303,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
             do {
 
                 Label label = new Label();
-                label.setID(cursor.getInt(0));
+                label.setId(cursor.getInt(0));
                 label.setName(cursor.getString(1));
                 label.setDescription(cursor.getString(2));
                 label.setCategoryID(cursor.getInt(3));
