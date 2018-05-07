@@ -330,7 +330,7 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
 
     @Override
     public void setSelectedImages(ArrayList<ImageDetailsPOJO> imagesList , int labelPosition) {
-        reportPOJO.getLabelArrayList().get(labelPosition).setSelectedElevationImages(imagesList);
+        reportPOJO.getLabelArrayList().get(labelPosition).setSelectedImages(imagesList);
 
 
     }

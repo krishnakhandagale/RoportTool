@@ -56,6 +56,7 @@
                 android:textColor="@color/black"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890 "
                 android:hint="@string/enter_client_number" />
         </android.support.design.widget.TextInputLayout>
         <android.support.design.widget.TextInputLayout
