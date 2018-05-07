@@ -19,9 +19,11 @@ import java.util.ArrayList;
 public class CustomCategoryPopUpAdapter extends BaseAdapter {
     Context context;
     ArrayList<Category> categoryArrayList;
-    public CustomCategoryPopUpAdapter(Context context, ArrayList<Category> categoryArrayList){
+    int selectedCategoryPosition;
+    public CustomCategoryPopUpAdapter(Context context, ArrayList<Category> categoryArrayList, int selectedCategoryPosition){
         this.categoryArrayList = categoryArrayList;
         this.context = context;
+        this.selectedCategoryPosition = selectedCategoryPosition;
     }
     @Override
     public int getCount() {
@@ -42,9 +44,30 @@ public class CustomCategoryPopUpAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
        LayoutInflater inflater =  LayoutInflater.from(context);
 
-       View rootView = inflater.inflate(R.layout.custom_category_popup_adapter_layout,parent,false);
-       CheckedTextView checkedTextView = rootView.findViewById(R.id.category_name);
-       checkedTextView.setText(categoryArrayList.get(position).getCategoryName());
-       return rootView;
+
+        ViewHolder holder;
+
+        if (convertView == null) {
+            convertView = inflater.inflate(R.layout.custom_category_popup_adapter_layout, parent, false);
+            holder = new ViewHolder();
+            holder.checkedTextView = convertView.findViewById(R.id.category_name);
+            convertView.setTag(holder);
+        } else {
+            holder = (ViewHolder) convertView.getTag();
+        }
+        holder.checkedTextView.setText(categoryArrayList.get(position).getCategoryName());
+
+        if(selectedCategoryPosition == position){
+            holder.checkedTextView.setChecked(true);
+        }else{
+            holder.checkedTextView.setChecked(false);
+        }
+
+        return convertView;
+    }
+
+    static class ViewHolder {
+        CheckedTextView checkedTextView;
+
     }
 }

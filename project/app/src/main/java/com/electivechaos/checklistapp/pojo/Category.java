@@ -28,4 +28,15 @@ public class Category {
     public void setCategoryDescription(String categoryDescription) {
         this.categoryDescription = categoryDescription;
     }
+
+    @Override
+    public String toString() {
+        return String.valueOf(categoryName);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        Category category = (Category) obj;
+        return this.categoryName.trim().equals(category.getCategoryName().trim());
+    }
 }

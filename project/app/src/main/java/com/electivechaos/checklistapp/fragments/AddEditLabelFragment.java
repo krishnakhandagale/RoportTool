@@ -35,9 +35,9 @@ public class AddEditLabelFragment extends Fragment {
     private ArrayList<Category> categories = null;
     static CategoryListDBHelper mCategoryList;
     private int selectedCategoryPosition = -1;
-    int selectedCategoryID;
-    long editLabelID = -1;
-    int childPosition = -1;
+    private int selectedCategoryID = -1;
+    private long editLabelID = -1;
+    private int childPosition = -1;
 
     AddEditLabelInterface mCallback;
 
@@ -72,6 +72,10 @@ public class AddEditLabelFragment extends Fragment {
             labelDescription.setText(getArguments().getString("labelDesc",""));
             editLabelID = getArguments().getLong("labelID", -1);
             selectedCategoryID = getArguments().getInt("categoryID", -1);
+
+            if(selectedCategoryID != -1){
+                selectedCategoryPosition = getSelectedCategoryPosition(selectedCategoryID, categories);
+            }
             childPosition = getArguments().getInt("childPosition", -1);
             Category selectedCategory = mCategoryList.getCategory(String.valueOf(selectedCategoryID));
             categoryTextView.setText(selectedCategory.getCategoryName());
@@ -87,8 +91,8 @@ public class AddEditLabelFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     if(categories != null && categories.size() > 0){
-                    final CustomCategoryPopUpAdapter adapter = new CustomCategoryPopUpAdapter(getContext(), categories);
-                    final AlertDialog.Builder ad = new AlertDialog.Builder(getContext());
+                    final CustomCategoryPopUpAdapter adapter = new CustomCategoryPopUpAdapter(getActivity(), categories, selectedCategoryPosition);
+                    final AlertDialog.Builder ad = new AlertDialog.Builder(getActivity());
                     ad.setCancelable(true);
                     ad.setTitle("Select Category");
 
@@ -96,6 +100,7 @@ public class AddEditLabelFragment extends Fragment {
 
                         @Override
                         public void onClick(DialogInterface dialogInterface, int pos) {
+
                             selectedCategoryPosition = pos;
                             categoryTextView.setText(categories.get(pos).getCategoryName());
                             selectedCategoryID = categories.get(pos).getCategoryId();
@@ -161,6 +166,15 @@ public class AddEditLabelFragment extends Fragment {
             }
         });
         return layoutView;
+    }
+
+    private int getSelectedCategoryPosition(int selectedCategoryID, ArrayList<Category> categories) {
+        for(int i =0; i< categories.size(); i++){
+            if(selectedCategoryID == categories.get(i).getCategoryId()){
+                return  i;
+            }
+        }
+        return -1;
     }
 
     @Override

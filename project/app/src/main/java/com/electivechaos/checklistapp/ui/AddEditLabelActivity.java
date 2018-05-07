@@ -31,7 +31,7 @@ public class AddEditLabelActivity extends AppCompatActivity {
         //fetch from DB
         mCategoryList = new CategoryListDBHelper(this);
         categories = mCategoryList.getCategoryList();
-        final CustomCategoryPopUpAdapter adapter = new CustomCategoryPopUpAdapter(this, categories);
+        final CustomCategoryPopUpAdapter adapter = new CustomCategoryPopUpAdapter(this, categories, selectedCategoryPosition);
         categoryTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
