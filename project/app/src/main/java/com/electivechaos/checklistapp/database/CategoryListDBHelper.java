@@ -105,7 +105,8 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 + KEY_FILE_PATH + " TEXT,"
                 + KEY_LOCATION_LAT + " TEXT,"
                 + KEY_LOCATION_LONG + " TEXT,"
-                + KEY_CAUSE_OF_LOSS + " TEXT,"+")";
+                + KEY_CAUSE_OF_LOSS + " TEXT"
+                +")";
 
 
         String CREATE_CATEGORY_DETAILS_TABLE = "CREATE TABLE " + TABLE_MASTER_CATEGORY + "("
