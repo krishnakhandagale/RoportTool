@@ -140,7 +140,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             selectedElevationImagesList = (ArrayList<ImageDetailsPOJO>) getArguments().get("selectedElevationImagesList");
-            selectedImageList = (ArrayList<ImageDetailsPOJO>) getArguments().get("selectedImageList");
+            selectedImageList = (ArrayList<ImageDetailsPOJO>) getArguments().get("selectedImagesList");
             labelPosition = (int) getArguments().get("position");
         }
     }
