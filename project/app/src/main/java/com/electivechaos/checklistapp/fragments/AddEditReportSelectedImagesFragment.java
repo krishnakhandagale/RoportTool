@@ -5,12 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
-import android.media.ExifInterface;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -30,7 +25,6 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -44,39 +38,17 @@ import com.electivechaos.checklistapp.ImageHelper;
 import com.electivechaos.checklistapp.PermissionUtilities;
 import com.electivechaos.checklistapp.R;
 import com.electivechaos.checklistapp.SingleMediaScanner;
-import com.electivechaos.checklistapp.database.ReportsListDBHelper;
 import com.electivechaos.checklistapp.interfaces.SelectedImagesDataInterface;
 import com.electivechaos.checklistapp.listeners.OnImageRemovalListener;
 import com.electivechaos.checklistapp.listeners.OnMediaScannerListener;
 import com.electivechaos.checklistapp.pojo.Image;
 import com.electivechaos.checklistapp.pojo.ImageDetailsPOJO;
-import com.electivechaos.checklistapp.pojo.ReportItemPOJO;
 import com.electivechaos.checklistapp.ui.ImagePickerActivity;
 import com.electivechaos.checklistapp.ui.ImageSliderActivity;
 import com.electivechaos.checklistapp.ui.SingleImageDetailsActivity;
 import com.electivechaos.checklistapp.utils.CommonUtils;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Element;
-import com.itextpdf.text.Font;
-import com.itextpdf.text.PageSize;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.Phrase;
-import com.itextpdf.text.Rectangle;
-import com.itextpdf.text.pdf.ColumnText;
-import com.itextpdf.text.pdf.PdfContentByte;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfPageEventHelper;
-import com.itextpdf.text.pdf.PdfWriter;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -367,6 +339,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
             selectedImagesRecyclerView.setAdapter(selectedImagesAdapter);
         }
 
+
         if (selectedElevationImagesList != null && selectedElevationImagesList.size() > 0) {
             if(selectedElevationImagesList.get(0).getImageUrl() != null && !selectedElevationImagesList.get(0).getImageUrl().isEmpty()){
                 Glide.with(getActivity())
@@ -375,7 +348,6 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                         .apply(options)
                         .into(imgViewFrontPreview);
                 imgRemoveBtnFront.setVisibility(View.VISIBLE);
-                selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList,labelPosition);
 
             }
             if(selectedElevationImagesList.get(1).getImageUrl() != null && !selectedElevationImagesList.get(1).getImageUrl().isEmpty()){
@@ -385,7 +357,6 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                         .apply(options)
                         .into(imgViewBackPreview);
                 imgRemoveBtnBack.setVisibility(View.VISIBLE);
-                selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList,labelPosition);
             }
             if(selectedElevationImagesList.get(2).getImageUrl() != null && !selectedElevationImagesList.get(2).getImageUrl().isEmpty()){
                 Glide.with(getActivity())
@@ -394,7 +365,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                         .apply(options)
                         .into(imgViewLeftPreview);
                 imgRemoveBtnLeft.setVisibility(View.VISIBLE);
-                selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList,labelPosition);
+
             }
             if(selectedElevationImagesList.get(3).getImageUrl() != null && !selectedElevationImagesList.get(3).getImageUrl().isEmpty()){
                 Glide.with(getActivity())
@@ -403,7 +374,6 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                         .apply(options)
                         .into(imgViewRightPreview);
                 imgRemoveBtnRight.setVisibility(View.VISIBLE);
-                selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList,labelPosition);
             }
         }
     }
@@ -690,6 +660,8 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                                         .into(imgViewFrontPreview);
                                 imgRemoveBtnFront.setVisibility(View.VISIBLE);
 
+                                selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList,labelPosition);
+
                             }else if(requestId == BACK_IMAGE_REQUEST){
 
                                 final ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
@@ -703,6 +675,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                                         .apply(options)
                                         .into(imgViewBackPreview);
                                 imgRemoveBtnBack.setVisibility(View.VISIBLE);
+                                selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList,labelPosition);
                             }else if(requestId == LEFT_IMAGE_REQUEST){
                                 final ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
                                 imgObj.setDescription("Left View for incidence");
@@ -715,6 +688,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                                         .apply(options)
                                         .into(imgViewLeftPreview);
                                 imgRemoveBtnLeft.setVisibility(View.VISIBLE);
+                                selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList,labelPosition);
                             }else if(requestId == RIGHT_IMAGE_REQUEST){
                                 final ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
                                 imgObj.setDescription("Right View for incidence");
@@ -726,6 +700,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                                         .apply(options)
                                         .thumbnail(0.1f)
                                         .into(imgViewRightPreview);
+                                selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList,labelPosition);
                                 imgRemoveBtnRight.setVisibility(View.VISIBLE);
                             }
 

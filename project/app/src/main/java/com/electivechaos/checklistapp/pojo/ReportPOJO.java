@@ -129,6 +129,6 @@ public class ReportPOJO {
 
     @Override
     public String toString() {
-        return this.getReportTitle() + " "+ this.getClientName() +" "+this.getLocationLat();
+        return this.getReportTitle();
     }
 }
