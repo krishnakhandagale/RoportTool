@@ -7,12 +7,22 @@ import java.util.ArrayList;
  */
 
 public class Label {
-    String name;
-    String description;
     long id;
-    int categoryID;
-    ArrayList<ImageDetailsPOJO> selectedImages;
-    ArrayList<ImageDetailsPOJO> selectedElevationImages;
+    private String name;
+    private String description;
+    private int categoryID;
+    private ArrayList<ImageDetailsPOJO> selectedImages;
+    private ArrayList<ImageDetailsPOJO> selectedElevationImages;
+
+
+    public Label(){
+        id = -1;
+        name = "";
+        description = "";
+        categoryID = -1;
+        selectedImages = new ArrayList<>();
+        selectedElevationImages = new ArrayList<>();
+    }
 
     public long getId() {
         return id;
@@ -38,15 +48,6 @@ public class Label {
         this.selectedElevationImages = selectedElevationImages;
     }
 
-
-
-    public long getID() {
-        return id;
-    }
-
-    public void setID(long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;

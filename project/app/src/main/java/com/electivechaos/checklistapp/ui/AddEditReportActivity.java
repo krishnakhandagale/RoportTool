@@ -27,6 +27,7 @@ import com.electivechaos.checklistapp.fragments.ClaimDetailsFragment;
 import com.electivechaos.checklistapp.fragments.PointOfOriginFragment;
 import com.electivechaos.checklistapp.interfaces.ClaimDetailsDataInterface;
 import com.electivechaos.checklistapp.interfaces.LossLocationDataInterface;
+import com.electivechaos.checklistapp.pojo.ImageDetailsPOJO;
 import com.electivechaos.checklistapp.pojo.Label;
 import com.electivechaos.checklistapp.pojo.ReportPOJO;
 
@@ -61,15 +62,11 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
         tabName="ClaimDetailsFragment";
-
-
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionbar = getSupportActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
-
 
 
         mExpandableListView = findViewById(R.id.slider_menu);
@@ -241,11 +238,13 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
         FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
         AddEditLabelFragment addEditLabelFragment = new AddEditLabelFragment();
         Bundle bundle = new Bundle();
-        bundle.putLong("labelID", label.getID());
+
+        bundle.putLong("labelID", label.getId());
         bundle.putString("labelName", label.getName());
         bundle.putString("labelDesc", label.getDescription());
         bundle.putInt("categoryID", label.getCategoryID());
         bundle.putInt("childPosition", childPosition);
+
         addEditLabelFragment.setArguments(bundle);
         fragmentTransaction.replace(R.id.content_frame, addEditLabelFragment);
         fragmentTransaction.addToBackStack(null);
@@ -257,16 +256,31 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
     public void onLabelAdded(Label label) {
        List<Label> labelList =  childMenuItems.get("Inspection");
        labelList.add(label);
-       childMenuItems.put("Inspection", labelList);
        drawerMenuListAdapter.notifyDataSetChanged();
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment = AddEditReportSelectedImagesFragment.initFragment(new ArrayList<ImageDetailsPOJO>(),new ArrayList<ImageDetailsPOJO>());
+        fragmentTransaction.replace(R.id.content_frame, addEditReportSelectedImagesFragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+
+
     }
 
     @Override
     public void onLabelEdited(Label label, int childPosition) {
         List<Label> labelList =  childMenuItems.get("Inspection");
+
         labelList.set(childPosition, label);
-        childMenuItems.put("Inspection", labelList);
         drawerMenuListAdapter.notifyDataSetChanged();
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment = AddEditReportSelectedImagesFragment.initFragment(new ArrayList<ImageDetailsPOJO>(),new ArrayList<ImageDetailsPOJO>());
+        fragmentTransaction.replace(R.id.content_frame, addEditReportSelectedImagesFragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 
     @Override

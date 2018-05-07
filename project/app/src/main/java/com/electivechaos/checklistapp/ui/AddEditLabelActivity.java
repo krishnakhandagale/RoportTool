@@ -21,7 +21,7 @@ public class AddEditLabelActivity extends AppCompatActivity {
     private ArrayList<Category> categories = null;
     static CategoryListDBHelper mCategoryList;
     private int selectedCategoryPosition = -1;
-    int selectedCategoryID;
+    private int selectedCategoryID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

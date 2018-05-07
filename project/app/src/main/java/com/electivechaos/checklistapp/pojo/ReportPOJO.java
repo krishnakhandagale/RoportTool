@@ -3,19 +3,20 @@ package com.electivechaos.checklistapp.pojo;
 import java.util.ArrayList;
 
 public class ReportPOJO {
-    String id;
-    String reportTitle;
-    String reportDescription;
-    String clientName;
-    String claimNumber;
-    String address;
-    String locationLat;
-    String locationLong;
+    private String id;
+    private String reportTitle;
+    private String reportDescription;
+    private String clientName;
+    private String claimNumber;
+    private String address;
+    private String locationLat;
+    private String locationLong;
 
-    String createdDate;
-    String filePath;
-    int causeOfLossId;
-    ArrayList<Label> labelArrayList;
+    private String createdDate;
+    private String filePath;
+    private int causeOfLossId;
+
+    private ArrayList<Label> labelArrayList;
 
     public ReportPOJO(){
         id= "";
