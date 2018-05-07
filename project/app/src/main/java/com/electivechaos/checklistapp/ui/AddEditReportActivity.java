@@ -255,9 +255,12 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
 
     @Override
     public void onLabelAdded(Label label) {
-       List<Label> labelList =  childMenuItems.get("Inspection");
-       labelList.add(label);
-       drawerMenuListAdapter.notifyDataSetChanged();
+
+        List<Label> labelList =  childMenuItems.get("Inspection");
+        labelList.add(label);
+        drawerMenuListAdapter.notifyDataSetChanged();
+
+
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -271,10 +274,11 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
 
     @Override
     public void onLabelEdited(Label label, int childPosition) {
-        List<Label> labelList =  childMenuItems.get("Inspection");
 
+        List<Label> labelList =  childMenuItems.get("Inspection");
         labelList.set(childPosition, label);
         drawerMenuListAdapter.notifyDataSetChanged();
+
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
