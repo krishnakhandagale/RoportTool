@@ -47,7 +47,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
     private static final String KEY_FILE_PATH = "file_path";
     private static final String KEY_LOCATION_LAT = "location_lat";
     private static final String KEY_LOCATION_LONG = "location_lang";
-    private static final String KEY_FK_REPORT_CAUSE_OF_LOSS_ID="cause_of_loss_id_fk";
+    private static final String KEY_CAUSE_OF_LOSS="cause_of_loss";
 
 
 
@@ -105,9 +105,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 + KEY_FILE_PATH + " TEXT,"
                 + KEY_LOCATION_LAT + " TEXT,"
                 + KEY_LOCATION_LONG + " TEXT,"
-                + KEY_FK_REPORT_CAUSE_OF_LOSS_ID + " INTEGER,"
-
-                + "FOREIGN KEY("+ KEY_FK_REPORT_CAUSE_OF_LOSS_ID +") REFERENCES "+TABLE_CAUSE_OF_LOSS+"("+KEY_CAUSE_OF_LOSS_ID+ ")"+ " ON DELETE CASCADE )";
+                + KEY_CAUSE_OF_LOSS + " TEXT,"+")";
 
 
         String CREATE_CATEGORY_DETAILS_TABLE = "CREATE TABLE " + TABLE_MASTER_CATEGORY + "("
