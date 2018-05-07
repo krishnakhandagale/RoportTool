@@ -28,6 +28,8 @@ public class ReportPOJO {
         createdDate = "";
         filePath = "";
         causeOfLossId = -1;
+        locationLat = "";
+        locationLong = "";
         labelArrayList = new ArrayList<>();
     }
 
