@@ -27,6 +27,7 @@ import com.electivechaos.checklistapp.fragments.ClaimDetailsFragment;
 import com.electivechaos.checklistapp.fragments.PointOfOriginFragment;
 import com.electivechaos.checklistapp.interfaces.ClaimDetailsDataInterface;
 import com.electivechaos.checklistapp.interfaces.LossLocationDataInterface;
+import com.electivechaos.checklistapp.interfaces.SelectedImagesDataInterface;
 import com.electivechaos.checklistapp.pojo.ImageDetailsPOJO;
 import com.electivechaos.checklistapp.pojo.Label;
 import com.electivechaos.checklistapp.pojo.ReportPOJO;
@@ -35,7 +36,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class AddEditReportActivity extends AppCompatActivity implements  DrawerMenuListAdapter.MyItemClickListener, AddEditLabelFragment.AddEditLabelInterface, ClaimDetailsDataInterface, LossLocationDataInterface{
+public class AddEditReportActivity extends AppCompatActivity implements  DrawerMenuListAdapter.MyItemClickListener, AddEditLabelFragment.AddEditLabelInterface, ClaimDetailsDataInterface, LossLocationDataInterface,SelectedImagesDataInterface{
     private DrawerLayout mDrawerLayout;
     private FloatingActionButton saveReportBtn;
     private ExpandableListView mExpandableListView;
@@ -156,7 +157,7 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
                 mDrawerLayout.closeDrawers();
                 FragmentManager transactionManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
-                AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment= AddEditReportSelectedImagesFragment.initFragment(reportPOJO.getLabelArrayList().get(childPosition).getSelectedImages(),reportPOJO.getLabelArrayList().get(childPosition).getSelectedElevationImages());
+                AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment= AddEditReportSelectedImagesFragment.initFragment(reportPOJO.getLabelArrayList().get(childPosition).getSelectedImages(),reportPOJO.getLabelArrayList().get(childPosition).getSelectedElevationImages(),childPosition);
                 fragmentTransaction.replace(R.id.content_frame,addEditReportSelectedImagesFragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
@@ -260,7 +261,7 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment = AddEditReportSelectedImagesFragment.initFragment(new ArrayList<ImageDetailsPOJO>(),new ArrayList<ImageDetailsPOJO>());
+        AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment = AddEditReportSelectedImagesFragment.initFragment(new ArrayList<ImageDetailsPOJO>(),new ArrayList<ImageDetailsPOJO>(),labelList.size()-1);
         fragmentTransaction.replace(R.id.content_frame, addEditReportSelectedImagesFragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
@@ -277,7 +278,7 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment = AddEditReportSelectedImagesFragment.initFragment(new ArrayList<ImageDetailsPOJO>(),new ArrayList<ImageDetailsPOJO>());
+        AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment = AddEditReportSelectedImagesFragment.initFragment(new ArrayList<ImageDetailsPOJO>(),new ArrayList<ImageDetailsPOJO>(),childPosition);
         fragmentTransaction.replace(R.id.content_frame, addEditReportSelectedImagesFragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
@@ -316,5 +317,17 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
     @Override
     public void setLocationLong(String locationLong) {
         reportPOJO.setLocationLong(locationLong);
+    }
+
+    @Override
+    public void setSelectedElevationImages(ArrayList<ImageDetailsPOJO> elevationImagesList,int labelPosition) {
+        reportPOJO.getLabelArrayList().get(labelPosition).setSelectedElevationImages(elevationImagesList);
+    }
+
+    @Override
+    public void setSelectedImages(ArrayList<ImageDetailsPOJO> imagesList , int labelPosition) {
+        reportPOJO.getLabelArrayList().get(labelPosition).setSelectedElevationImages(imagesList);
+
+
     }
 }

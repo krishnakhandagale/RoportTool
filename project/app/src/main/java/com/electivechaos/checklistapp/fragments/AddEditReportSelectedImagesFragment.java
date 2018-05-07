@@ -45,6 +45,7 @@ import com.electivechaos.checklistapp.PermissionUtilities;
 import com.electivechaos.checklistapp.R;
 import com.electivechaos.checklistapp.SingleMediaScanner;
 import com.electivechaos.checklistapp.database.ReportsListDBHelper;
+import com.electivechaos.checklistapp.interfaces.SelectedImagesDataInterface;
 import com.electivechaos.checklistapp.listeners.OnImageRemovalListener;
 import com.electivechaos.checklistapp.listeners.OnMediaScannerListener;
 import com.electivechaos.checklistapp.pojo.Image;
@@ -132,12 +133,15 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
 
     private ArrayList<ImageDetailsPOJO> selectedImageList = null;
     private ArrayList<ImageDetailsPOJO> selectedElevationImagesList = new ArrayList<>();
+    private  int labelPosition;
 
 
     private OnImageRemovalListener onImageRemovalListener = null;
     static RequestOptions options = null;
 
-    public static AddEditReportSelectedImagesFragment initFragment(ArrayList<ImageDetailsPOJO> selectedImageList, ArrayList<ImageDetailsPOJO> selectedElevationImagesList) {
+    private SelectedImagesDataInterface selectedImagesDataInterface;
+
+    public static AddEditReportSelectedImagesFragment initFragment(ArrayList<ImageDetailsPOJO> selectedImageList, ArrayList<ImageDetailsPOJO> selectedElevationImagesList,int position) {
         AddEditReportSelectedImagesFragment fragment = new AddEditReportSelectedImagesFragment();
         Bundle args = new Bundle();
 
@@ -148,8 +152,11 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
             selectedElevationImagesList.add(new ImageDetailsPOJO());
             selectedElevationImagesList.add(new ImageDetailsPOJO());
         }
+
+
         args.putSerializable("selectedImagesList", selectedImageList);
         args.putSerializable("selectedElevationImagesList", selectedElevationImagesList);
+        args.putInt("position",position);
 
 
         fragment.setArguments(args);
@@ -162,6 +169,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
         if (getArguments() != null) {
             selectedElevationImagesList = (ArrayList<ImageDetailsPOJO>) getArguments().get("selectedElevationImagesList");
             selectedImageList = (ArrayList<ImageDetailsPOJO>) getArguments().get("selectedImageList");
+            labelPosition = (int) getArguments().get("position");
         }
     }
 
@@ -232,6 +240,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
 
                 if (result)
                     cameraIntent(FRONT_IMAGE_REQUEST);
+
             }
         });
 
@@ -366,6 +375,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                         .apply(options)
                         .into(imgViewFrontPreview);
                 imgRemoveBtnFront.setVisibility(View.VISIBLE);
+                selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList,labelPosition);
 
             }
             if(selectedElevationImagesList.get(1).getImageUrl() != null && !selectedElevationImagesList.get(1).getImageUrl().isEmpty()){
@@ -375,6 +385,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                         .apply(options)
                         .into(imgViewBackPreview);
                 imgRemoveBtnBack.setVisibility(View.VISIBLE);
+                selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList,labelPosition);
             }
             if(selectedElevationImagesList.get(2).getImageUrl() != null && !selectedElevationImagesList.get(2).getImageUrl().isEmpty()){
                 Glide.with(getActivity())
@@ -383,6 +394,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                         .apply(options)
                         .into(imgViewLeftPreview);
                 imgRemoveBtnLeft.setVisibility(View.VISIBLE);
+                selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList,labelPosition);
             }
             if(selectedElevationImagesList.get(3).getImageUrl() != null && !selectedElevationImagesList.get(3).getImageUrl().isEmpty()){
                 Glide.with(getActivity())
@@ -391,6 +403,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                         .apply(options)
                         .into(imgViewRightPreview);
                 imgRemoveBtnRight.setVisibility(View.VISIBLE);
+                selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList,labelPosition);
             }
         }
     }
@@ -589,6 +602,9 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
 
                 selectedImagesAdapter = new SelectedImagesAdapter(selectedImageList, getContext(), onImageRemovalListener);
                 selectedImagesRecyclerView.setAdapter(selectedImagesAdapter);
+
+                selectedImagesDataInterface.setSelectedImages(selectedImageList,labelPosition);
+
             } else if (requestCode == SET_CLICKED_IMAGE_DETAILS) {
                 ImageDetailsPOJO imageDetails = (ImageDetailsPOJO) data.getExtras().getSerializable("image_entered_details");
 
@@ -611,9 +627,12 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                     selectedImagesRecyclerView.setAdapter(selectedImagesAdapter);
                 } else {
                     selectedImagesAdapter.notifyDataSetChanged();
-                }
 
+
+                }
+                selectedImagesDataInterface.setSelectedImages(selectedImageList,labelPosition);
             }
+
         }
     }
 
@@ -910,8 +929,13 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
 
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
+    public void onAttach(Context context)
+    {super.onAttach(context);
+        try{
+            selectedImagesDataInterface = (SelectedImagesDataInterface) getActivity();
+        }catch (ClassCastException exception){
+            exception.printStackTrace();
+        }
     }
     @Override
     public void onSaveInstanceState(Bundle outState) {
