@@ -21,6 +21,7 @@ import com.electivechaos.checklistapp.R;
 import com.electivechaos.checklistapp.adapters.CustomCategoryPopUpAdapter;
 import com.electivechaos.checklistapp.database.CategoryListDBHelper;
 import com.electivechaos.checklistapp.pojo.Category;
+import com.electivechaos.checklistapp.pojo.ImageDetailsPOJO;
 import com.electivechaos.checklistapp.pojo.Label;
 import com.electivechaos.checklistapp.utils.CommonUtils;
 
@@ -143,20 +144,15 @@ public class AddEditLabelFragment extends Fragment {
                 label.setCategoryID(selectedCategoryID);
                 label.setName(labelName.getText().toString());
                 label.setDescription(labelDescription.getText().toString());
+
                 if(editLabelID != -1) {
-                    label.setID(editLabelID);
+                    label.setId(editLabelID);
                     mCategoryList.updateLabel(label);
                     mCallback.onLabelEdited(label, childPosition);
                 }else {
-                    label.setID(mCategoryList.addLabel(label));
+                    label.setId(mCategoryList.addLabel(label));
                     mCallback.onLabelAdded(label);
                 }
-
-                FragmentManager fragmentManager = getFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.content_frame, new AddEditReportSelectedImagesFragment());
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
             }
         });
         return layoutView;

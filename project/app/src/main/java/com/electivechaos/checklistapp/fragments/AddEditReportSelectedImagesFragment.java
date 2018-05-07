@@ -141,7 +141,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
         AddEditReportSelectedImagesFragment fragment = new AddEditReportSelectedImagesFragment();
         Bundle args = new Bundle();
 
-        if(selectedElevationImagesList == null){
+        if(selectedElevationImagesList == null || selectedElevationImagesList.size() == 0){
             selectedElevationImagesList = new ArrayList<>();
             selectedElevationImagesList.add(new ImageDetailsPOJO());
             selectedElevationImagesList.add(new ImageDetailsPOJO());
