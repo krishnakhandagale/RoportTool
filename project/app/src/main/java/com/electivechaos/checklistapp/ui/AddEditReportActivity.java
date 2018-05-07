@@ -87,7 +87,7 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
         parentMenuItems.add("Inspection");
 
 
-        inspectionChildMenu = reportPOJO.getLabelArrayList();
+        inspectionChildMenu = (List<Label>) reportPOJO.getLabelArrayList().clone();
         childMenuItems.put("Inspection", inspectionChildMenu);
 
 
@@ -260,7 +260,7 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
         labelList.add(label);
         drawerMenuListAdapter.notifyDataSetChanged();
 
-
+        reportPOJO.getLabelArrayList().add(label);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -279,6 +279,13 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
         labelList.set(childPosition, label);
         drawerMenuListAdapter.notifyDataSetChanged();
 
+
+       Label tempLabel=  reportPOJO.getLabelArrayList().get(childPosition);
+
+
+       tempLabel.setName(label.getName());
+       tempLabel.setDescription(label.getDescription());
+       tempLabel.setCategoryID(label.getCategoryID());
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

@@ -37,7 +37,7 @@ public class AddEditLabelFragment extends Fragment {
     private int selectedCategoryPosition = -1;
     int selectedCategoryID;
     long editLabelID = -1;
-    int childPosition;
+    int childPosition = -1;
 
     AddEditLabelInterface mCallback;
 
@@ -61,23 +61,27 @@ public class AddEditLabelFragment extends Fragment {
          final TextView labelName = layoutView.findViewById(R.id.name);
          final TextView labelDescription = layoutView.findViewById(R.id.description);
          final View parentLayout = layoutView.findViewById(R.id.addEditLabelParentLayout);
+         final Button saveLabelBtn = layoutView.findViewById(R.id.addLabel);
+
          mCategoryList = new CategoryListDBHelper(getContext());
          categories = mCategoryList.getCategoryList();
 
 
         if(getArguments() != null) {
-            labelName.setText( getArguments().getString("labelName"));
-            labelDescription.setText(getArguments().getString("labelDesc"));
-            editLabelID = getArguments().getLong("labelID");
-            selectedCategoryID = getArguments().getInt("categoryID");
-            childPosition = getArguments().getInt("childPosition");
+            labelName.setText( getArguments().getString("labelName",""));
+            labelDescription.setText(getArguments().getString("labelDesc",""));
+            editLabelID = getArguments().getLong("labelID", -1);
+            selectedCategoryID = getArguments().getInt("categoryID", -1);
+            childPosition = getArguments().getInt("childPosition", -1);
             Category selectedCategory = mCategoryList.getCategory(String.valueOf(selectedCategoryID));
             categoryTextView.setText(selectedCategory.getCategoryName());
         }
 
 
 
-
+            if(editLabelID != -1){
+                saveLabelBtn.setText(R.string.edit_label);
+            }
 
             categoryTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -119,8 +123,8 @@ public class AddEditLabelFragment extends Fragment {
 
 
 
-        Button addInspectionView = layoutView.findViewById(R.id.addLabel);
-        addInspectionView.setOnClickListener(new View.OnClickListener() {
+
+        saveLabelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -150,7 +154,8 @@ public class AddEditLabelFragment extends Fragment {
                     mCategoryList.updateLabel(label);
                     mCallback.onLabelEdited(label, childPosition);
                 }else {
-                    label.setId(mCategoryList.addLabel(label));
+                    long id = mCategoryList.addLabel(label);
+                    label.setId(id);
                     mCallback.onLabelAdded(label);
                 }
             }
