@@ -334,6 +334,8 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
 
         mDrawerLayout.closeDrawer(Gravity.LEFT);
 
+
+
     }
 
     @Override
