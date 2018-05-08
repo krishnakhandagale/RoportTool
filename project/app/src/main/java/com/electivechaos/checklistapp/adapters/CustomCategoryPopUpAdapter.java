@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckedTextView;
+import android.widget.TextView;
 
 import com.electivechaos.checklistapp.pojo.Category;
 import com.electivechaos.checklistapp.R;
@@ -51,24 +52,19 @@ public class CustomCategoryPopUpAdapter extends BaseAdapter {
             LayoutInflater inflater =  LayoutInflater.from(context);
             convertView = inflater.inflate(R.layout.custom_category_popup_adapter_layout, parent, false);
             holder = new ViewHolder();
-            holder.checkedTextView = convertView.findViewById(R.id.category_name);
+            holder.textView = convertView.findViewById(R.id.category_name);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.checkedTextView.setText(categoryArrayList.get(position).getCategoryName());
+        holder.textView.setText(categoryArrayList.get(position).getCategoryName());
 
-        if(selectedCategoryPosition == position){
-            holder.checkedTextView.setChecked(true);
-        }else{
-            holder.checkedTextView.setChecked(false);
-        }
 
         return convertView;
     }
 
     static class ViewHolder {
-        CheckedTextView checkedTextView;
+        TextView textView;
 
     }
 }

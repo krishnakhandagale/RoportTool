@@ -53,6 +53,9 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
     ArrayList<String> parentMenuItems;
 
     int selectedFragmentPosition;
+    int parentPosition=0;
+    int childPositionn;
+    String labelName;
 
     private ArrayList<Category> categories = null;
     static CategoryListDBHelper mCategoryList;
@@ -120,6 +123,16 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
 
                 }
                 else {
+                    if(childPositionn!=0) {
+                        FragmentManager transactionManager = getSupportFragmentManager();
+                        FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
+                        AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment = AddEditReportSelectedImagesFragment.initFragment(reportPOJO.getLabelArrayList().get(childPositionn).getSelectedImages(), reportPOJO.getLabelArrayList().get(childPositionn).getSelectedElevationImages(), childPositionn);
+                        fragmentTransaction.replace(R.id.content_frame, addEditReportSelectedImagesFragment);
+                        fragmentTransaction.addToBackStack(null);
+                        fragmentTransaction.commit();
+                        tabName = "AddEditReportSelectedImagesFragment";
+
+                    }
 
                 }
                 Toast.makeText(AddEditReportActivity.this,"My next",Toast.LENGTH_SHORT).show();
@@ -174,10 +187,11 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
                     fragmentTransaction.commit();
                     tabName="ClaimDetailsFragment";
 
-                    getSupportActionBar().setTitle("Claim Details");
-
 
                     selectedFragmentPosition=0;
+                    getSupportActionBar().setTitle("Claim Details");
+
+                   // parentPosition=groupPosition;
 
 
                 } else if (parentMenuItems.get(groupPosition).equals("Cause Of Loss")) {
@@ -192,6 +206,9 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
                     selectedFragmentPosition=1;
                     getSupportActionBar().setTitle("Cause Of Loss");
 
+                    /*parentPosition=groupPosition;
+                    getSupportActionBar().setTitle("Cause Of Loss");*/
+
                 } else if (parentMenuItems.get(groupPosition).equals("Point Of Origin")) {
                     mDrawerLayout.closeDrawers();
                     FragmentManager transactionManager = getSupportFragmentManager();
@@ -203,6 +220,9 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
 
                     selectedFragmentPosition=2;
                     getSupportActionBar().setTitle("Point Of Origin");
+
+                   /* parentPosition=groupPosition;
+                    getSupportActionBar().setTitle("Point Of Origin");*/
                 }
                 return false;
             }
@@ -220,6 +240,8 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
                 tabName="AddEditReportSelectedImagesFragment";
+
+                childPositionn=childPosition;
                 return false;
             }
         });
@@ -283,6 +305,7 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
 
     @Override
     public void onItemClick(int position) {
+
         mCategoryList = new CategoryListDBHelper(this);
         categories = mCategoryList.getCategoryList();
         final CustomCategoryPopUpAdapter adapter = new CustomCategoryPopUpAdapter(this, categories, selectedCategoryPosition);
@@ -295,12 +318,22 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
                             public void onClick(DialogInterface dialogInterface, int pos) {
                                 selectedCategoryPosition = pos;
                                 selectedCategoryID = categories.get(pos).getCategoryId();
+                                labelName=categories.get(pos).getCategoryName();
                                 dialogInterface.dismiss();
                             }
                         });
 
                 ad.show();
         mDrawerLayout.closeDrawer(Gravity.LEFT);
+
+                if(selectedCategoryPosition!=-1) {
+                    Label label = new Label();
+                    label.setCategoryID(selectedCategoryID);
+                    long id = mCategoryList.addLabel(label);
+                    label.setId(id);
+                    label.setName(labelName);
+                    onLabelAdded(label);
+                }
 
     }
 
