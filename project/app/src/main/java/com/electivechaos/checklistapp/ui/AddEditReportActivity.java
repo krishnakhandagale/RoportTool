@@ -1,5 +1,6 @@
 package com.electivechaos.checklistapp.ui;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
@@ -20,7 +21,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.electivechaos.checklistapp.R;
+import com.electivechaos.checklistapp.adapters.CustomCategoryPopUpAdapter;
 import com.electivechaos.checklistapp.adapters.DrawerMenuListAdapter;
+import com.electivechaos.checklistapp.database.CategoryListDBHelper;
 import com.electivechaos.checklistapp.fragments.AddEditLabelFragment;
 import com.electivechaos.checklistapp.fragments.AddEditReportSelectedImagesFragment;
 import com.electivechaos.checklistapp.fragments.CauseOfLossFragment;
@@ -29,6 +32,7 @@ import com.electivechaos.checklistapp.fragments.PointOfOriginFragment;
 import com.electivechaos.checklistapp.interfaces.ClaimDetailsDataInterface;
 import com.electivechaos.checklistapp.interfaces.LossLocationDataInterface;
 import com.electivechaos.checklistapp.interfaces.SelectedImagesDataInterface;
+import com.electivechaos.checklistapp.pojo.Category;
 import com.electivechaos.checklistapp.pojo.ImageDetailsPOJO;
 import com.electivechaos.checklistapp.pojo.Label;
 import com.electivechaos.checklistapp.pojo.ReportPOJO;
@@ -49,6 +53,11 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
     ArrayList<String> parentMenuItems;
 
     int selectedFragmentPosition;
+
+    private ArrayList<Category> categories = null;
+    static CategoryListDBHelper mCategoryList;
+    private int selectedCategoryPosition = -1;
+    private int selectedCategoryID;
 
 
     ReportPOJO reportPOJO = new ReportPOJO();
@@ -274,13 +283,28 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
 
     @Override
     public void onItemClick(int position) {
-        FragmentManager transactionManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
-        fragmentTransaction.replace(R.id.content_frame, new AddEditLabelFragment());
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
+        mCategoryList = new CategoryListDBHelper(this);
+        categories = mCategoryList.getCategoryList();
+        final CustomCategoryPopUpAdapter adapter = new CustomCategoryPopUpAdapter(this, categories, selectedCategoryPosition);
+                final android.app.AlertDialog.Builder ad = new android.app.AlertDialog.Builder(AddEditReportActivity.this);
+                ad.setCancelable(true);
+                ad.setTitle("Select Category");
+
+                ad.setSingleChoiceItems(adapter, selectedCategoryPosition,  new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int pos) {
+                                selectedCategoryPosition = pos;
+                                selectedCategoryID = categories.get(pos).getCategoryId();
+                                dialogInterface.dismiss();
+                            }
+                        });
+
+                ad.show();
         mDrawerLayout.closeDrawer(Gravity.LEFT);
+
     }
+
+
 
     @Override
     public void onEditLabelClick(Label label, int childPosition) {
