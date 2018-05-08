@@ -72,6 +72,8 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionbar = getSupportActionBar();
+        getSupportActionBar().setTitle("Claim Details");
+
         actionbar.setDisplayHomeAsUpEnabled(true);
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
 
@@ -93,6 +95,7 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
                     tabName="CauseOfLossFragment";
 
                     selectedFragmentPosition=1;
+                    getSupportActionBar().setTitle("Cause Of Loss");
                 }
                 else if(selectedFragmentPosition==1) {
                     mDrawerLayout.closeDrawers();
@@ -104,6 +107,7 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
                     tabName="PointOfOriginFragment";
 
                     selectedFragmentPosition=2;
+                    getSupportActionBar().setTitle("Point Of Origin");
 
                 }
                 else {
@@ -161,6 +165,9 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
                     fragmentTransaction.commit();
                     tabName="ClaimDetailsFragment";
 
+                    getSupportActionBar().setTitle("Claim Details");
+
+
                     selectedFragmentPosition=0;
 
 
@@ -174,6 +181,7 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
                     tabName="CauseOfLossFragment";
 
                     selectedFragmentPosition=1;
+                    getSupportActionBar().setTitle("Cause Of Loss");
 
                 } else if (parentMenuItems.get(groupPosition).equals("Point Of Origin")) {
                     mDrawerLayout.closeDrawers();
@@ -185,6 +193,7 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
                     tabName="PointOfOriginFragment";
 
                     selectedFragmentPosition=2;
+                    getSupportActionBar().setTitle("Point Of Origin");
                 }
                 return false;
             }
