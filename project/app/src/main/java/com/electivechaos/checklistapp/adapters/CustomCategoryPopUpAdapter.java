@@ -21,7 +21,7 @@ public class CustomCategoryPopUpAdapter extends BaseAdapter {
     Context context;
     ArrayList<Category> categoryArrayList;
     int selectedCategoryPosition;
-    public CustomCategoryPopUpAdapter(Context context, ArrayList<Category> categoryArrayList, int selectedCategoryPosition){
+    public CustomCategoryPopUpAdapter(Context context, ArrayList<Category> categoryArrayList){
         this.categoryArrayList = categoryArrayList;
         this.context = context;
         this.selectedCategoryPosition = selectedCategoryPosition;

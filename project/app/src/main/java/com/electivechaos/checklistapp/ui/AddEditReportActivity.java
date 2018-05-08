@@ -24,11 +24,11 @@ import com.electivechaos.checklistapp.R;
 import com.electivechaos.checklistapp.adapters.CustomCategoryPopUpAdapter;
 import com.electivechaos.checklistapp.adapters.DrawerMenuListAdapter;
 import com.electivechaos.checklistapp.database.CategoryListDBHelper;
-import com.electivechaos.checklistapp.fragments.AddEditLabelFragment;
 import com.electivechaos.checklistapp.fragments.AddEditReportSelectedImagesFragment;
 import com.electivechaos.checklistapp.fragments.CauseOfLossFragment;
 import com.electivechaos.checklistapp.fragments.ClaimDetailsFragment;
 import com.electivechaos.checklistapp.fragments.PointOfOriginFragment;
+import com.electivechaos.checklistapp.interfaces.AddEditLabelInterface;
 import com.electivechaos.checklistapp.interfaces.ClaimDetailsDataInterface;
 import com.electivechaos.checklistapp.interfaces.LossLocationDataInterface;
 import com.electivechaos.checklistapp.interfaces.SelectedImagesDataInterface;
@@ -41,7 +41,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class AddEditReportActivity extends AppCompatActivity implements  DrawerMenuListAdapter.MyItemClickListener, AddEditLabelFragment.AddEditLabelInterface, ClaimDetailsDataInterface, LossLocationDataInterface,SelectedImagesDataInterface{
+public class AddEditReportActivity extends AppCompatActivity implements  DrawerMenuListAdapter.MyItemClickListener, AddEditLabelInterface, ClaimDetailsDataInterface, LossLocationDataInterface,SelectedImagesDataInterface{
     private DrawerLayout mDrawerLayout;
     private FloatingActionButton saveReportBtn;
     private ExpandableListView mExpandableListView;
@@ -56,10 +56,10 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
     int parentPosition=0;
     int childPositionn;
     String labelName;
+    int labelSize;
 
     private ArrayList<Category> categories = null;
     static CategoryListDBHelper mCategoryList;
-    private int selectedCategoryPosition = -1;
     private int selectedCategoryID;
 
 
@@ -124,13 +124,13 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
                 }
                 else {
                     if(childPositionn!=0) {
-                        FragmentManager transactionManager = getSupportFragmentManager();
-                        FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
-                        AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment = AddEditReportSelectedImagesFragment.initFragment(reportPOJO.getLabelArrayList().get(childPositionn).getSelectedImages(), reportPOJO.getLabelArrayList().get(childPositionn).getSelectedElevationImages(), childPositionn);
-                        fragmentTransaction.replace(R.id.content_frame, addEditReportSelectedImagesFragment);
-                        fragmentTransaction.addToBackStack(null);
-                        fragmentTransaction.commit();
-                        tabName = "AddEditReportSelectedImagesFragment";
+                            FragmentManager transactionManager = getSupportFragmentManager();
+                            FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
+                            AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment = AddEditReportSelectedImagesFragment.initFragment(reportPOJO.getLabelArrayList().get(childPositionn).getSelectedImages(), reportPOJO.getLabelArrayList().get(childPositionn).getSelectedElevationImages(), childPositionn);
+                            fragmentTransaction.replace(R.id.content_frame, addEditReportSelectedImagesFragment);
+                            fragmentTransaction.addToBackStack(null);
+                            fragmentTransaction.commit();
+                            tabName = "AddEditReportSelectedImagesFragment";
 
                     }
 
@@ -308,65 +308,49 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
 
         mCategoryList = new CategoryListDBHelper(this);
         categories = mCategoryList.getCategoryList();
-        final CustomCategoryPopUpAdapter adapter = new CustomCategoryPopUpAdapter(this, categories, selectedCategoryPosition);
+        final CustomCategoryPopUpAdapter adapter = new CustomCategoryPopUpAdapter(this, categories);
                 final android.app.AlertDialog.Builder ad = new android.app.AlertDialog.Builder(AddEditReportActivity.this);
                 ad.setCancelable(true);
                 ad.setTitle("Select Category");
 
-                ad.setSingleChoiceItems(adapter, selectedCategoryPosition,  new DialogInterface.OnClickListener() {
+
+                ad.setSingleChoiceItems(adapter, -1,  new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int pos) {
-                                selectedCategoryPosition = pos;
                                 selectedCategoryID = categories.get(pos).getCategoryId();
                                 labelName=categories.get(pos).getCategoryName();
+
+                                    Label label = new Label();
+                                    label.setCategoryID(selectedCategoryID);
+                                    long id = mCategoryList.addLabel(label);
+                                    label.setId(id);
+                                    label.setName(labelName);
+                                    onLabelAdded(label);
+
                                 dialogInterface.dismiss();
                             }
                         });
-
                 ad.show();
-        mDrawerLayout.closeDrawer(Gravity.LEFT);
 
-                if(selectedCategoryPosition!=-1) {
-                    Label label = new Label();
-                    label.setCategoryID(selectedCategoryID);
-                    long id = mCategoryList.addLabel(label);
-                    label.setId(id);
-                    label.setName(labelName);
-                    onLabelAdded(label);
-                }
+        mDrawerLayout.closeDrawer(Gravity.LEFT);
 
     }
 
-
-
     @Override
     public void onEditLabelClick(Label label, int childPosition) {
-        FragmentManager transactionManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
-        AddEditLabelFragment addEditLabelFragment = new AddEditLabelFragment();
-        Bundle bundle = new Bundle();
 
-        bundle.putLong("labelID", label.getId());
-        bundle.putString("labelName", label.getName());
-        bundle.putString("labelDesc", label.getDescription());
-        bundle.putInt("categoryID", label.getCategoryID());
-        bundle.putInt("childPosition", childPosition);
-
-        addEditLabelFragment.setArguments(bundle);
-        fragmentTransaction.replace(R.id.content_frame, addEditLabelFragment);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
-        mDrawerLayout.closeDrawer(Gravity.LEFT);
     }
 
     @Override
     public void onLabelAdded(Label label) {
 
         List<Label> labelList =  childMenuItems.get("Inspection");
+
         labelList.add(label);
         drawerMenuListAdapter.notifyDataSetChanged();
-
         reportPOJO.getLabelArrayList().add(label);
+
+        labelSize=reportPOJO.getLabelArrayList().size();
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -378,28 +362,6 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
 
     }
 
-    @Override
-    public void onLabelEdited(Label label, int childPosition) {
-
-        List<Label> labelList =  childMenuItems.get("Inspection");
-        labelList.set(childPosition, label);
-        drawerMenuListAdapter.notifyDataSetChanged();
-
-
-       Label tempLabel=  reportPOJO.getLabelArrayList().get(childPosition);
-
-
-       tempLabel.setName(label.getName());
-       tempLabel.setDescription(label.getDescription());
-       tempLabel.setCategoryID(label.getCategoryID());
-
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment = AddEditReportSelectedImagesFragment.initFragment(reportPOJO.getLabelArrayList().get(childPosition).getSelectedImages(),reportPOJO.getLabelArrayList().get(childPosition).getSelectedElevationImages(),childPosition);
-        fragmentTransaction.replace(R.id.content_frame, addEditReportSelectedImagesFragment);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
-    }
 
     @Override
     public void setReportTitle(String reportTitle) {
@@ -440,7 +402,6 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
     @Override
     public void setSelectedImages(ArrayList<ImageDetailsPOJO> imagesList , int labelPosition) {
         reportPOJO.getLabelArrayList().get(labelPosition).setSelectedImages(imagesList);
-
 
     }
 

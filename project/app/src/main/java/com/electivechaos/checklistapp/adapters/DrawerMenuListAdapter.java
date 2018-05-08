@@ -130,7 +130,6 @@ public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
             convertView = LayoutInflater.from(context).inflate(R.layout.drawer_layout_child_menu_item, parent, false);
             holder = new ChildViewHolder();
             holder.menuTitle = convertView.findViewById(R.id.menuTitle);
-            holder.editLabel = convertView.findViewById(R.id.editLabel);
             convertView.setTag(holder);
 
         }else{
@@ -138,15 +137,6 @@ public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
         }
 
 
-
-        holder.editLabel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Label label = childMenuList.get("Inspection").get(childPosition);
-                myItemClickListener.onEditLabelClick(label, childPosition);
-
-            }
-        });
         holder.menuTitle.setText(childMenuList.get(parentMenuList.get(groupPosition)).get(childPosition).toString());
         return convertView;
     }
@@ -160,7 +150,6 @@ public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
 
     static class ChildViewHolder{
         TextView menuTitle;
-        Button editLabel;
     }
 
     static class ParentViewHolder{
