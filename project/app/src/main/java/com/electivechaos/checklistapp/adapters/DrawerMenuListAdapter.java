@@ -14,6 +14,8 @@ import android.widget.TextView;
 import com.electivechaos.checklistapp.pojo.Label;
 import com.electivechaos.checklistapp.R;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -76,27 +78,29 @@ public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getGroupView(final int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+        ParentViewHolder holder;
 
         if(convertView == null){
+
             convertView = LayoutInflater.from(context).inflate(R.layout.drawer_layout_menu_item, parent, false);
+            holder = new ParentViewHolder();
+
+            holder.menuTitle =  convertView.findViewById(R.id.menuTitle);
+            holder.imageView = convertView.findViewById(R.id.menuIcon);
+            holder.addInspectionView = convertView.findViewById(R.id.addInspection);
+
+            convertView.setTag(holder);
+        }else{
+            holder = (ParentViewHolder) convertView.getTag();
         }
 
 
 
-        TextView menuTitle = convertView.findViewById(R.id.menuTitle);
-//        if(isExpanded){
-//            menuTitle.setTextColor(ContextCompat.getColor(context,R.color.colorPrimary));
-//        }else{
-//             menuTitle.setTextColor(ContextCompat.getColor(context,R.color.grayMenu));
-//        }
-        ImageView imageView = convertView.findViewById(R.id.menuIcon);
-        Button addInspectionView = convertView.findViewById(R.id.addInspection);
-
         String parentMenuString = parentMenuList.get(groupPosition);
 
-        menuTitle.setText(parentMenuString);
+        holder.menuTitle.setText(parentMenuString);
 
-        addInspectionView.setOnClickListener(new View.OnClickListener() {
+        holder.addInspectionView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 myItemClickListener.onItemClick(groupPosition);
@@ -106,36 +110,44 @@ public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
         });
 
         if(parentMenuString.equals("Claim Details")){
-            imageView.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_reports));
+            holder.imageView.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_reports));
         }else if(parentMenuString.equals("Cause Of Loss")){
-            imageView.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_location));
+            holder.imageView.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_location));
         }else if(parentMenuString.equals("Point Of Origin")){
-            imageView.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_point_of_origin));
+            holder.imageView.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_point_of_origin));
         }else{
 
-            imageView.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_damage));
-            addInspectionView.setVisibility(View.VISIBLE);
+            holder.imageView.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_damage));
+            holder.addInspectionView.setVisibility(View.VISIBLE);
         }
         return convertView;
     }
 
     @Override
     public View getChildView(final int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+        ChildViewHolder holder;
         if(convertView == null){
             convertView = LayoutInflater.from(context).inflate(R.layout.drawer_layout_child_menu_item, parent, false);
-            Button editLabel = convertView.findViewById(R.id.editLabel);
-            editLabel.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Label label = childMenuList.get("Inspection").get(childPosition);
-                    myItemClickListener.onEditLabelClick(label, childPosition);
+            holder = new ChildViewHolder();
+            holder.menuTitle = convertView.findViewById(R.id.menuTitle);
+            holder.editLabel = convertView.findViewById(R.id.editLabel);
+            convertView.setTag(holder);
 
-                }
-            });
+        }else{
+            holder = (ChildViewHolder) convertView.getTag();
         }
 
-        TextView  menuTitle = convertView.findViewById(R.id.menuTitle);
-        menuTitle.setText(childMenuList.get(parentMenuList.get(groupPosition)).get(childPosition).toString());
+
+
+        holder.editLabel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Label label = childMenuList.get("Inspection").get(childPosition);
+                myItemClickListener.onEditLabelClick(label, childPosition);
+
+            }
+        });
+        holder.menuTitle.setText(childMenuList.get(parentMenuList.get(groupPosition)).get(childPosition).toString());
         return convertView;
     }
 
@@ -143,6 +155,19 @@ public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
     }
+
+
+    static class ChildViewHolder{
+        TextView menuTitle;
+        Button editLabel;
+    }
+
+    static class ParentViewHolder{
+        TextView menuTitle;
+        ImageView imageView;
+        Button addInspectionView;
+    }
+
 
 
 }

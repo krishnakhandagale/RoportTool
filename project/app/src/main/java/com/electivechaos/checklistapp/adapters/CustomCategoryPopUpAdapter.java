@@ -42,12 +42,13 @@ public class CustomCategoryPopUpAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-       LayoutInflater inflater =  LayoutInflater.from(context);
+
 
 
         ViewHolder holder;
 
         if (convertView == null) {
+            LayoutInflater inflater =  LayoutInflater.from(context);
             convertView = inflater.inflate(R.layout.custom_category_popup_adapter_layout, parent, false);
             holder = new ViewHolder();
             holder.checkedTextView = convertView.findViewById(R.id.category_name);
