@@ -42,7 +42,6 @@ public class ClaimDetailsFragment  extends Fragment{
             reportDescription = passedArgs.get("reportDescription").toString();
             clientName = passedArgs.get("clientName").toString();
             claimNumber = passedArgs.get("claimNumber").toString();
-            address = passedArgs.get("address").toString();
 
             locationLat = passedArgs.get("locationLat").toString();
             locationLong = passedArgs.get("locationLong").toString();

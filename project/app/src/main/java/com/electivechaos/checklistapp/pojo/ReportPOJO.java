@@ -8,7 +8,6 @@ public class ReportPOJO {
     private String reportDescription;
     private String clientName;
     private String claimNumber;
-    private String address;
     private String locationLat;
     private String locationLong;
 
@@ -24,7 +23,6 @@ public class ReportPOJO {
         reportDescription = "";
         clientName = "";
         claimNumber = "";
-        address = "";
         createdDate = "";
         filePath = "";
         causeOfLossId = -1;
@@ -87,14 +85,6 @@ public class ReportPOJO {
 
     public void setClaimNumber(String claimNumber) {
         this.claimNumber = claimNumber;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
     }
 
     public String getCreatedDate() {

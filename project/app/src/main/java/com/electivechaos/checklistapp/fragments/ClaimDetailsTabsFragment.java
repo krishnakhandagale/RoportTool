@@ -21,14 +21,14 @@ public class ClaimDetailsTabsFragment extends Fragment {
     private EditText reportDescriptionEditText;
     private EditText clientNameEditText ;
     private EditText claimNumberEditText;
-    private EditText addressEditText;
+
 
 
     private String reportTitle;
     private String reportDescription;
     private String clientName;
     private String claimNumber;
-    private String address;
+
 
     private ClaimDetailsDataInterface claimDetailsDataInterface;
 
@@ -41,7 +41,7 @@ public class ClaimDetailsTabsFragment extends Fragment {
         reportDescription = getArguments() != null ? getArguments().getString("reportDescription") : "";
         clientName = getArguments() != null ? getArguments().getString("clientName") : "";
         claimNumber = getArguments() != null ? getArguments().getString("claimNumber") : "";
-        address = getArguments() != null ? getArguments().getString("address") : "";
+
     }
 
     @Nullable
@@ -53,14 +53,14 @@ public class ClaimDetailsTabsFragment extends Fragment {
         reportDescriptionEditText =view.findViewById(R.id.reportDescription);
         clientNameEditText = view.findViewById(R.id.clientName);
         claimNumberEditText = view.findViewById(R.id.claimNumber);
-        addressEditText = view.findViewById(R.id.address);
+
 
 
         reportTitleEditText.setText(reportTitle);
         reportDescriptionEditText.setText(reportDescription);
         clientNameEditText.setText(clientName);
         claimNumberEditText.setText(claimNumber);
-        addressEditText.setText(address);
+
 
 
         reportTitleEditText.addTextChangedListener(new TextWatcher() {
@@ -133,25 +133,6 @@ public class ClaimDetailsTabsFragment extends Fragment {
             }
         });
 
-        addressEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                claimDetailsDataInterface.setReportAddress(s.toString().trim());
-            }
-        });
-
-
-
         return view;
     }
 
@@ -173,7 +154,6 @@ public class ClaimDetailsTabsFragment extends Fragment {
         reportDescriptionEditText.setText(reportDescription);
         clientNameEditText.setText(clientName);
         claimNumberEditText.setText(claimNumber);
-        addressEditText.setText(address);
     }
 
     @Override

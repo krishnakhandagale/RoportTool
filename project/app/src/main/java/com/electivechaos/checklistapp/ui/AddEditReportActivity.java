@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.electivechaos.checklistapp.R;
 import com.electivechaos.checklistapp.adapters.DrawerMenuListAdapter;
@@ -47,6 +48,8 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
     List<Label> inspectionChildMenu = new ArrayList<>();
     ArrayList<String> parentMenuItems;
 
+    int selectedFragmentPosition;
+
 
     ReportPOJO reportPOJO = new ReportPOJO();
 
@@ -63,6 +66,9 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
         tabName="ClaimDetailsFragment";
+
+        selectedFragmentPosition=0;
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionbar = getSupportActionBar();
@@ -76,6 +82,35 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
         saveReportBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if(selectedFragmentPosition==0) {
+                    mDrawerLayout.closeDrawers();
+                    FragmentManager transactionManager = getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.content_frame,new CauseOfLossFragment());
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+                    tabName="CauseOfLossFragment";
+
+                    selectedFragmentPosition=1;
+                }
+                else if(selectedFragmentPosition==1) {
+                    mDrawerLayout.closeDrawers();
+                    FragmentManager transactionManager = getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.content_frame,new PointOfOriginFragment());
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+                    tabName="PointOfOriginFragment";
+
+                    selectedFragmentPosition=2;
+
+                }
+                else {
+
+                }
+                Toast.makeText(AddEditReportActivity.this,"My next",Toast.LENGTH_SHORT).show();
+
                 Log.d("reportPOJO",reportPOJO.toString());
             }
         });
@@ -116,7 +151,6 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
                     claimDetailsData.putString("claimNumber",reportPOJO.getClaimNumber());
                     claimDetailsData.putString("claimNumber",reportPOJO.getClaimNumber());
                     claimDetailsData.putString("clientName",reportPOJO.getClientName());
-                    claimDetailsData.putString("address",reportPOJO.getAddress());
 
                     claimDetailsData.putString("locationLat",reportPOJO.getLocationLat());
                     claimDetailsData.putString("locationLong",reportPOJO.getLocationLong());
@@ -126,6 +160,8 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
                     fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.commit();
                     tabName="ClaimDetailsFragment";
+
+                    selectedFragmentPosition=0;
 
 
                 } else if (parentMenuItems.get(groupPosition).equals("Cause Of Loss")) {
@@ -137,6 +173,8 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
                     fragmentTransaction.commit();
                     tabName="CauseOfLossFragment";
 
+                    selectedFragmentPosition=1;
+
                 } else if (parentMenuItems.get(groupPosition).equals("Point Of Origin")) {
                     mDrawerLayout.closeDrawers();
                     FragmentManager transactionManager = getSupportFragmentManager();
@@ -145,6 +183,8 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
                     fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.commit();
                     tabName="PointOfOriginFragment";
+
+                    selectedFragmentPosition=2;
                 }
                 return false;
             }
@@ -315,10 +355,6 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
         reportPOJO.setClaimNumber(reportClaimNumber);
     }
 
-    @Override
-    public void setReportAddress(String reportAddress) {
-        reportPOJO.setAddress(reportAddress);
-    }
 
     @Override
     public void setLocationLat(String locationLat) {
@@ -341,4 +377,6 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
 
 
     }
+
+
 }

@@ -17,6 +17,7 @@
         android:contentDescription="@string/menu_image"
         android:src="@drawable/ic_cloud" />
     <TextView
+        android:textSize="16sp"
         android:padding="10dp"
         android:id="@+id/menuTitle"
         android:layout_width="0dip"
