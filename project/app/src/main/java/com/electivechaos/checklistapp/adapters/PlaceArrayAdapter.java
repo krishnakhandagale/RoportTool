@@ -2,10 +2,10 @@ package com.electivechaos.checklistapp.adapters;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.style.StyleSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.electivechaos.checklistapp.R;
+import com.electivechaos.checklistapp.utils.CommonUtils;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.Status;
@@ -29,6 +30,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.concurrent.TimeUnit;
 
+import static android.os.Looper.getMainLooper;
+
 public class PlaceArrayAdapter extends ArrayAdapter<PlaceArrayAdapter.PlaceAutocomplete> implements Filterable {
     private static final String TAG = "PlaceArrayAdapter";
     private GoogleApiClient mGoogleApiClient;
@@ -36,15 +39,8 @@ public class PlaceArrayAdapter extends ArrayAdapter<PlaceArrayAdapter.PlaceAutoc
     private LatLngBounds mBounds;
     private ArrayList<PlaceAutocomplete> mResultList;
     private int mLayoutResourceId;
-    private   Context mContext;
-    /**
-     * Constructor
-     *
-     * @param context  Context
-     * @param resource Layout resource
-     * @param bounds   Used to specify the search bounds
-     * @param filter   Used to specify place types
-     */
+    private Context mContext;
+
     public PlaceArrayAdapter(Context context, int resource, LatLngBounds bounds, AutocompleteFilter filter) {
         super(context, resource);
         mBounds = bounds;
@@ -71,7 +67,6 @@ public class PlaceArrayAdapter extends ArrayAdapter<PlaceArrayAdapter.PlaceAutoc
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         try{
             if(convertView==null){
-                // inflate the layout
                 LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 convertView = inflater.inflate(mLayoutResourceId, parent, false);
             }
@@ -99,26 +94,25 @@ public class PlaceArrayAdapter extends ArrayAdapter<PlaceArrayAdapter.PlaceAutoc
 
     private ArrayList<PlaceAutocomplete> getPredictions(CharSequence constraint) {
         if (mGoogleApiClient != null) {
-            Log.i(TAG, "Executing autocomplete query for: " + constraint);
-            PendingResult<AutocompletePredictionBuffer> results =
-                    Places.GeoDataApi
-                            .getAutocompletePredictions(mGoogleApiClient, constraint.toString(),
-                                    mBounds, mPlaceFilter);
-            // Wait for predictions, set the timeout.
-            AutocompletePredictionBuffer autocompletePredictions = results
-                    .await(60, TimeUnit.SECONDS);
+            PendingResult<AutocompletePredictionBuffer> results = Places.GeoDataApi.getAutocompletePredictions(mGoogleApiClient, constraint.toString(), mBounds, mPlaceFilter);
+
+
+            AutocompletePredictionBuffer autocompletePredictions = results.await(60, TimeUnit.SECONDS);
+
             final Status status = autocompletePredictions.getStatus();
+
             if (!status.isSuccess()) {
-                Toast.makeText(getContext(), "Error: " + status.toString(),
-                        Toast.LENGTH_SHORT).show();
-                Log.e(TAG, "Error getting place predictions: " + status
-                        .toString());
+
+                Handler mHandler = new Handler(getMainLooper());
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(mContext,status.getStatusMessage() , Toast.LENGTH_SHORT).show();
+                    }
+                });
                 autocompletePredictions.release();
                 return null;
             }
-
-            Log.i(TAG, "Query completed. Received " + autocompletePredictions.getCount()
-                    + " predictions.");
             Iterator<AutocompletePrediction> iterator = autocompletePredictions.iterator();
             ArrayList resultList = new ArrayList<>(autocompletePredictions.getCount());
             while (iterator.hasNext()) {
@@ -126,11 +120,9 @@ public class PlaceArrayAdapter extends ArrayAdapter<PlaceArrayAdapter.PlaceAutoc
                 resultList.add(new PlaceAutocomplete(prediction.getPlaceId(),
                         prediction.getFullText(new StyleSpan(Typeface.BOLD)),prediction.getPrimaryText(new StyleSpan(Typeface.BOLD))));
             }
-            // Buffer release
             autocompletePredictions.release();
             return resultList;
         }
-        Log.e(TAG, "Google API client is not connected.");
         return null;
     }
 
@@ -141,10 +133,8 @@ public class PlaceArrayAdapter extends ArrayAdapter<PlaceArrayAdapter.PlaceAutoc
             protected FilterResults performFiltering(CharSequence constraint) {
                 FilterResults results = new FilterResults();
                 if (constraint != null) {
-                    // Query the autocomplete API for the entered constraint
                     mResultList = getPredictions(constraint);
                     if (mResultList != null) {
-                        // Results
                         results.values = mResultList;
                         results.count = mResultList.size();
                     }
@@ -155,10 +145,8 @@ public class PlaceArrayAdapter extends ArrayAdapter<PlaceArrayAdapter.PlaceAutoc
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 if (results != null && results.count > 0) {
-                    // The API returned at least one result, update the data.
                     notifyDataSetChanged();
                 } else {
-                    // The API did not return any results, invalidate the data set.
                     notifyDataSetInvalidated();
                 }
             }
