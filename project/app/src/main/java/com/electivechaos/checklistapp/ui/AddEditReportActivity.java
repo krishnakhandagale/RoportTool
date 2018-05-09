@@ -306,7 +306,9 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
     @Override
     public void onItemClick(int position) {
 
+        mDrawerLayout.closeDrawer(Gravity.LEFT);
         mCategoryList = new CategoryListDBHelper(this);
+
         categories = mCategoryList.getCategoryList();
         final CustomCategoryPopUpAdapter adapter = new CustomCategoryPopUpAdapter(this, categories);
                 final android.app.AlertDialog.Builder ad = new android.app.AlertDialog.Builder(AddEditReportActivity.this);
@@ -332,7 +334,7 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
                         });
                 ad.show();
 
-        mDrawerLayout.closeDrawer(Gravity.LEFT);
+
 
 
 
