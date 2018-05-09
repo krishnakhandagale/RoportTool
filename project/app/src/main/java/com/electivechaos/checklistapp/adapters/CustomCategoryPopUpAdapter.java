@@ -5,26 +5,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.CheckedTextView;
 import android.widget.TextView;
 
-import com.electivechaos.checklistapp.pojo.Category;
 import com.electivechaos.checklistapp.R;
+import com.electivechaos.checklistapp.pojo.Category;
 
 import java.util.ArrayList;
 
 /**
- * Created by nafeea on 4/17/18.
+ * Created by nafeesa on 4/17/18.
  */
 
 public class CustomCategoryPopUpAdapter extends BaseAdapter {
-    Context context;
-    ArrayList<Category> categoryArrayList;
-    int selectedCategoryPosition;
+    private Context context;
+    private ArrayList<Category> categoryArrayList;
+
     public CustomCategoryPopUpAdapter(Context context, ArrayList<Category> categoryArrayList){
         this.categoryArrayList = categoryArrayList;
         this.context = context;
-        this.selectedCategoryPosition = selectedCategoryPosition;
     }
     @Override
     public int getCount() {

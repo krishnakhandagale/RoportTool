@@ -2,7 +2,6 @@ package com.electivechaos.checklistapp.adapters;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,10 +10,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.electivechaos.checklistapp.pojo.Label;
 import com.electivechaos.checklistapp.R;
-
-import org.w3c.dom.Text;
+import com.electivechaos.checklistapp.pojo.Label;
 
 import java.util.ArrayList;
 import java.util.HashMap;
