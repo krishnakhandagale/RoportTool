@@ -41,7 +41,7 @@ import java.util.List;
 
 public class AddEditReportActivity extends AppCompatActivity implements  DrawerMenuListAdapter.DrawerItemClickListener, AddEditLabelInterface, ClaimDetailsDataInterface, LossLocationDataInterface,SelectedImagesDataInterface{
     private DrawerLayout mDrawerLayout;
-    private FloatingActionButton saveReportBtn;
+    private FloatingActionButton goToNextBtn;
     private ExpandableListView mExpandableListView;
     private DrawerMenuListAdapter drawerMenuListAdapter;
     private String tabName;
@@ -52,14 +52,8 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
 
     private int selectedFragmentPosition = 0;
 
-
-    String labelName;
-    int labelSize;
-
     private ArrayList<Category> categories = null;
     static CategoryListDBHelper mCategoryList;
-    private int selectedCategoryID;
-
 
     ReportPOJO reportPOJO = new ReportPOJO();
 
@@ -89,9 +83,9 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
 
 
         mExpandableListView = findViewById(R.id.slider_menu);
-        saveReportBtn = findViewById(R.id.saveReport);
+        goToNextBtn = findViewById(R.id.goToNext);
 
-        saveReportBtn.setOnClickListener(new View.OnClickListener() {
+        goToNextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -284,6 +278,7 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
         mDrawerLayout.closeDrawer(Gravity.LEFT);
 
 
+
         categories = mCategoryList.getCategoryList();
 
 
@@ -296,17 +291,21 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
                 ad.setSingleChoiceItems(adapter, -1,  new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int pos) {
-                                selectedCategoryID = categories.get(pos).getCategoryId();
-                                labelName=categories.get(pos).getCategoryName();
+
+
+                                    int selectedCategoryID = categories.get(pos).getCategoryId();
+                                    String labelName = categories.get(pos).getCategoryName();
 
                                     Label label = new Label();
                                     label.setCategoryID(selectedCategoryID);
+
                                     long id = mCategoryList.addLabel(label);
+
                                     label.setId(id);
                                     label.setName(labelName);
                                     onLabelAdded(label);
 
-                                dialogInterface.dismiss();
+                                    dialogInterface.dismiss();
                             }
                         });
                 ad.show();
@@ -327,7 +326,6 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
         drawerMenuListAdapter.notifyDataSetChanged();
         reportPOJO.getLabelArrayList().add(label);
 
-        labelSize=reportPOJO.getLabelArrayList().size();
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
