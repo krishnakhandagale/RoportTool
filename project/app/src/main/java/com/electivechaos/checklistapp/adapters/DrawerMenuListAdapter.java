@@ -29,7 +29,6 @@ public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
 
     public interface MyItemClickListener {
         void onItemClick(int position);
-        void onEditLabelClick(Label label, int childPosition);
     }
 
     public DrawerMenuListAdapter(Context context, ArrayList<String> parentMenuList, HashMap<String,List<Label>> childMenuList){

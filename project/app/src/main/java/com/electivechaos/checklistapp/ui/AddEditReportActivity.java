@@ -338,10 +338,6 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
 
     }
 
-    @Override
-    public void onEditLabelClick(Label label, int childPosition) {
-
-    }
 
     @Override
     public void onLabelAdded(Label label) {
