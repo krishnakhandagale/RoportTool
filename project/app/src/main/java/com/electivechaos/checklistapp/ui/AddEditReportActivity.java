@@ -11,15 +11,12 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
-import android.widget.TextView;
 
 import com.electivechaos.checklistapp.R;
 import com.electivechaos.checklistapp.adapters.CustomCategoryPopUpAdapter;
@@ -56,6 +53,8 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
     ArrayList<String> parentMenuItems;
 
     private int selectedFragmentPosition = 0;
+
+    private int selectedLabelFragmentPoition = -1;
 
     private ArrayList<Category> categories = null;
     static CategoryListDBHelper mCategoryList;
@@ -96,7 +95,7 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
             public void onClick(View v) {
 
                 if(selectedFragmentPosition==0) {
-                    mDrawerLayout.closeDrawers();
+                    mDrawerLayout.closeDrawer(Gravity.LEFT);
                     FragmentManager transactionManager = getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
                     fragmentTransaction.replace(R.id.content_frame,new CauseOfLossFragment());
@@ -106,9 +105,8 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
 
                     selectedFragmentPosition=1;
                     getSupportActionBar().setTitle("Cause Of Loss");
-                }
-                else if(selectedFragmentPosition==1) {
-                    mDrawerLayout.closeDrawers();
+                } else if(selectedFragmentPosition==1) {
+                    mDrawerLayout.closeDrawer(Gravity.LEFT);
                     FragmentManager transactionManager = getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
                     fragmentTransaction.replace(R.id.content_frame,new PointOfOriginFragment());
@@ -118,6 +116,8 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
 
                     selectedFragmentPosition=2;
                     getSupportActionBar().setTitle("Point Of Origin");
+
+                }else if(selectedFragmentPosition == 2){
 
                 }
             }
@@ -148,7 +148,7 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
 
                 if(parentMenuItems.get(groupPosition).equals("Claim Details")){
 
-                    mDrawerLayout.closeDrawers();
+                    mDrawerLayout.closeDrawer(Gravity.LEFT);
                     FragmentManager transactionManager = getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
 
@@ -176,7 +176,7 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
 
 
                 } else if (parentMenuItems.get(groupPosition).equals("Cause Of Loss")) {
-                    mDrawerLayout.closeDrawers();
+                    mDrawerLayout.closeDrawer(Gravity.LEFT);
                     FragmentManager transactionManager = getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
                     fragmentTransaction.replace(R.id.content_frame,new CauseOfLossFragment());
@@ -189,7 +189,7 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
                     getSupportActionBar().setTitle("Cause Of Loss");
 
                 } else if (parentMenuItems.get(groupPosition).equals("Point Of Origin")) {
-                    mDrawerLayout.closeDrawers();
+                    mDrawerLayout.closeDrawer(Gravity.LEFT);
                     FragmentManager transactionManager = getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
                     fragmentTransaction.replace(R.id.content_frame,new PointOfOriginFragment());
@@ -209,7 +209,7 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
         mExpandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                mDrawerLayout.closeDrawers();
+                mDrawerLayout.closeDrawer(Gravity.LEFT);
                 FragmentManager transactionManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
                 AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment= AddEditReportSelectedImagesFragment.initFragment(reportPOJO.getLabelArrayList().get(childPosition).getSelectedImages(),reportPOJO.getLabelArrayList().get(childPosition).getSelectedElevationImages(),childPosition);
@@ -246,36 +246,6 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-    }
-
-    @Override
-    public void onBackPressed() {
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-        LayoutInflater inflater = this.getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.back_button_confirmation_dialog, null);
-        dialogBuilder.setView(dialogView);
-
-        TextView positiveBtn = dialogView.findViewById(R.id.positive_button);
-        TextView negativeBtn = dialogView.findViewById(R.id.negative_button);
-
-
-        final AlertDialog alertDialog = dialogBuilder.create();
-
-        positiveBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alertDialog.dismiss();
-                AddEditReportActivity.super.onBackPressed();
-            }
-        });
-
-        negativeBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alertDialog.dismiss();
-            }
-        });
-        alertDialog.show();
     }
 
     @Override
