@@ -11,14 +11,12 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.electivechaos.checklistapp.R;
 import com.electivechaos.checklistapp.adapters.CustomCategoryPopUpAdapter;
@@ -41,7 +39,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class AddEditReportActivity extends AppCompatActivity implements  DrawerMenuListAdapter.MyItemClickListener, AddEditLabelInterface, ClaimDetailsDataInterface, LossLocationDataInterface,SelectedImagesDataInterface{
+public class AddEditReportActivity extends AppCompatActivity implements  DrawerMenuListAdapter.DrawerItemClickListener, AddEditLabelInterface, ClaimDetailsDataInterface, LossLocationDataInterface,SelectedImagesDataInterface{
     private DrawerLayout mDrawerLayout;
     private FloatingActionButton saveReportBtn;
     private ExpandableListView mExpandableListView;
@@ -71,6 +69,8 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+
+        mCategoryList = new CategoryListDBHelper(this);
 
         FragmentManager transactionManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
@@ -279,12 +279,14 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
     }
 
     @Override
-    public void onItemClick(int position) {
+    public void onDrawerMenuItemClick(int position) {
 
         mDrawerLayout.closeDrawer(Gravity.LEFT);
-        mCategoryList = new CategoryListDBHelper(this);
+
 
         categories = mCategoryList.getCategoryList();
+
+
         final CustomCategoryPopUpAdapter adapter = new CustomCategoryPopUpAdapter(this, categories);
                 final android.app.AlertDialog.Builder ad = new android.app.AlertDialog.Builder(AddEditReportActivity.this);
                 ad.setCancelable(true);

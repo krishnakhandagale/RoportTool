@@ -19,20 +19,20 @@ import java.util.List;
 
 public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
 
-    Context context;
-    HashMap<String,List<Label>> childMenuList;
-    ArrayList<String> parentMenuList;
-    MyItemClickListener myItemClickListener;
+    private Context context;
+    private HashMap<String,List<Label>> childMenuList;
+    private ArrayList<String> parentMenuList;
+    private DrawerItemClickListener myItemClickListener;
 
-    public interface MyItemClickListener {
-        void onItemClick(int position);
+    public interface DrawerItemClickListener {
+        void onDrawerMenuItemClick(int position);
     }
 
     public DrawerMenuListAdapter(Context context, ArrayList<String> parentMenuList, HashMap<String,List<Label>> childMenuList){
         this.context= context;
         this.parentMenuList = parentMenuList ;
         this.childMenuList = childMenuList;
-        this.myItemClickListener = (MyItemClickListener)context;
+        this.myItemClickListener = (DrawerItemClickListener)context;
     }
 
     @Override
@@ -99,7 +99,7 @@ public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
         holder.addInspectionView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                myItemClickListener.onItemClick(groupPosition);
+                myItemClickListener.onDrawerMenuItemClick(groupPosition);
 
 
             }
