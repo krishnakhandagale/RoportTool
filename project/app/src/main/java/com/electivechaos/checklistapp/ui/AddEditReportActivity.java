@@ -52,9 +52,9 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
     List<Label> inspectionChildMenu = new ArrayList<>();
     ArrayList<String> parentMenuItems;
 
-    int selectedFragmentPosition;
-    int parentPosition=0;
-    int childPositionn;
+    private int selectedFragmentPosition = 0;
+
+
     String labelName;
     int labelSize;
 
@@ -78,8 +78,6 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
         tabName="ClaimDetailsFragment";
-
-        selectedFragmentPosition=0;
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -122,22 +120,6 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
                     getSupportActionBar().setTitle("Point Of Origin");
 
                 }
-                else {
-                    if(childPositionn!=0) {
-                            FragmentManager transactionManager = getSupportFragmentManager();
-                            FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
-                            AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment = AddEditReportSelectedImagesFragment.initFragment(reportPOJO.getLabelArrayList().get(childPositionn).getSelectedImages(), reportPOJO.getLabelArrayList().get(childPositionn).getSelectedElevationImages(), childPositionn);
-                            fragmentTransaction.replace(R.id.content_frame, addEditReportSelectedImagesFragment);
-                            fragmentTransaction.addToBackStack(null);
-                            fragmentTransaction.commit();
-                            tabName = "AddEditReportSelectedImagesFragment";
-
-                    }
-
-                }
-                Toast.makeText(AddEditReportActivity.this,"My next",Toast.LENGTH_SHORT).show();
-
-                Log.d("reportPOJO",reportPOJO.toString());
             }
         });
         parentMenuItems = new ArrayList<>();
@@ -188,10 +170,9 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
                     tabName="ClaimDetailsFragment";
 
 
-                    selectedFragmentPosition=0;
+                    selectedFragmentPosition = 0;
                     getSupportActionBar().setTitle("Claim Details");
 
-                   // parentPosition=groupPosition;
 
 
                 } else if (parentMenuItems.get(groupPosition).equals("Cause Of Loss")) {
@@ -203,11 +184,9 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
                     fragmentTransaction.commit();
                     tabName="CauseOfLossFragment";
 
-                    selectedFragmentPosition=1;
-                    getSupportActionBar().setTitle("Cause Of Loss");
+                    selectedFragmentPosition = 1;
 
-                    /*parentPosition=groupPosition;
-                    getSupportActionBar().setTitle("Cause Of Loss");*/
+                    getSupportActionBar().setTitle("Cause Of Loss");
 
                 } else if (parentMenuItems.get(groupPosition).equals("Point Of Origin")) {
                     mDrawerLayout.closeDrawers();
@@ -219,10 +198,8 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
                     tabName="PointOfOriginFragment";
 
                     selectedFragmentPosition=2;
-                    getSupportActionBar().setTitle("Point Of Origin");
 
-                   /* parentPosition=groupPosition;
-                    getSupportActionBar().setTitle("Point Of Origin");*/
+                    getSupportActionBar().setTitle("Point Of Origin");
                 }
                 return false;
             }
@@ -240,8 +217,6 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
                 tabName="AddEditReportSelectedImagesFragment";
-
-                childPositionn=childPosition;
                 return false;
             }
         });
