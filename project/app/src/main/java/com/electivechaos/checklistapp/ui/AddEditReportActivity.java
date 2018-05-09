@@ -55,7 +55,7 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
     private ArrayList<Category> categories = null;
     static CategoryListDBHelper mCategoryList;
 
-    ReportPOJO reportPOJO = new ReportPOJO();
+    private ReportPOJO reportPOJO = new ReportPOJO();
 
 
     @Override
@@ -281,7 +281,6 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
 
         categories = mCategoryList.getCategoryList();
 
-
         final CustomCategoryPopUpAdapter adapter = new CustomCategoryPopUpAdapter(this, categories);
                 final android.app.AlertDialog.Builder ad = new android.app.AlertDialog.Builder(AddEditReportActivity.this);
                 ad.setCancelable(true);
@@ -293,16 +292,15 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
                             public void onClick(DialogInterface dialogInterface, int pos) {
 
 
-                                    int selectedCategoryID = categories.get(pos).getCategoryId();
-                                    String labelName = categories.get(pos).getCategoryName();
 
                                     Label label = new Label();
-                                    label.setCategoryID(selectedCategoryID);
+                                    label.setCategoryID(categories.get(pos).getCategoryId());
+                                    label.setName(categories.get(pos).getCategoryName());
 
                                     long id = mCategoryList.addLabel(label);
 
                                     label.setId(id);
-                                    label.setName(labelName);
+
                                     onLabelAdded(label);
 
                                     dialogInterface.dismiss();
