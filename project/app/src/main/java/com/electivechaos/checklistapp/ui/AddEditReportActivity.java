@@ -1,6 +1,9 @@
 package com.electivechaos.checklistapp.ui;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
@@ -34,10 +37,12 @@ import com.electivechaos.checklistapp.pojo.Category;
 import com.electivechaos.checklistapp.pojo.ImageDetailsPOJO;
 import com.electivechaos.checklistapp.pojo.Label;
 import com.electivechaos.checklistapp.pojo.ReportPOJO;
+import com.electivechaos.checklistapp.utils.CommonUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class AddEditReportActivity extends AppCompatActivity implements  DrawerMenuListAdapter.DrawerItemClickListener, AddEditLabelInterface, ClaimDetailsDataInterface, LossLocationDataInterface,SelectedImagesDataInterface{
     private DrawerLayout mDrawerLayout;
@@ -56,7 +61,7 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
     static CategoryListDBHelper mCategoryList;
 
     private ReportPOJO reportPOJO = new ReportPOJO();
-
+    private  View progressBarLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +69,7 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
 
         setContentView(R.layout.activity_main);
 
+        progressBarLayout = findViewById(R.id.progressBarLayout);
         mCategoryList = new CategoryListDBHelper(this);
 
         FragmentManager transactionManager = getSupportFragmentManager();
@@ -277,45 +283,46 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
 
         mDrawerLayout.closeDrawer(Gravity.LEFT);
 
+        try {
+            categories = new DatabaseTaskCategoryList(AddEditReportActivity.this).execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
 
-
-        categories = mCategoryList.getCategoryList();
 
         final CustomCategoryPopUpAdapter adapter = new CustomCategoryPopUpAdapter(this, categories);
                 final android.app.AlertDialog.Builder ad = new android.app.AlertDialog.Builder(AddEditReportActivity.this);
                 ad.setCancelable(true);
                 ad.setTitle("Select Category");
 
-
                 ad.setSingleChoiceItems(adapter, -1,  new DialogInterface.OnClickListener() {
                             @Override
-                            public void onClick(DialogInterface dialogInterface, int pos) {
+                            public void onClick(final DialogInterface dialogInterface, int pos) {
 
+                                final Label label = new Label();
+                                label.setCategoryID(categories.get(pos).getCategoryId());
+                                label.setName(categories.get(pos).getCategoryName());
+                                long id = 0;
+                                try {
+                                    id = new DatabaseTaskHelper(AddEditReportActivity.this,label).execute().get();
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                } catch (ExecutionException e) {
+                                    e.printStackTrace();
+                                }
 
-
-                                    Label label = new Label();
-                                    label.setCategoryID(categories.get(pos).getCategoryId());
-                                    label.setName(categories.get(pos).getCategoryName());
-
-                                    long id = mCategoryList.addLabel(label);
-
-                                    label.setId(id);
-
-                                    onLabelAdded(label);
-
-                                    dialogInterface.dismiss();
+                                label.setId(id);
+                                onLabelAdded(label);
+                                dialogInterface.dismiss();
                             }
                         });
+
                 ad.show();
-
-
-
-
 
     }
 
-
-    @Override
     public void onLabelAdded(Label label) {
 
         List<Label> labelList =  childMenuItems.get("Inspection");
@@ -379,4 +386,82 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
     }
 
 
+
+
+
+    // Task for label addition
+    class DatabaseTaskHelper extends AsyncTask <String,Void,Long>{
+
+
+        private Label label;
+        private Context context;
+
+
+        public  DatabaseTaskHelper(Context context,Label label) {
+            this.context=context;
+            this.label=label;
+
+        }
+
+        @Override
+        protected void onPreExecute() {
+            CommonUtils.lockOrientation((Activity) context);
+            if(progressBarLayout != null){
+                progressBarLayout.setVisibility(View.VISIBLE);
+            }
+        }
+
+        @Override
+        protected Long doInBackground(String... strings) {
+
+            long id = mCategoryList.addLabel(label);
+            return id;
+        }
+
+        @Override
+        protected void onPostExecute(Long result) {
+            super.onPostExecute(result);
+            if(progressBarLayout != null){
+                progressBarLayout.setVisibility(View.GONE);
+            }
+            CommonUtils.unlockOrientation((Activity)context);
+
+        }
+    }
+
+    // Task for getting  cat list
+    class DatabaseTaskCategoryList extends AsyncTask <String,Void,ArrayList<Category>>{
+
+        private Context context;
+
+
+        public  DatabaseTaskCategoryList(Context context) {
+            this.context=context;
+
+        }
+
+        @Override
+        protected void onPreExecute() {
+            CommonUtils.lockOrientation((Activity) context);
+            if(progressBarLayout != null){
+                progressBarLayout.setVisibility(View.VISIBLE);
+            }
+        }
+
+        @Override
+        protected ArrayList<Category> doInBackground(String... strings) {
+
+          ArrayList<Category> categories= mCategoryList.getCategoryList();
+            return categories;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<Category> result) {
+            if(progressBarLayout != null){
+                progressBarLayout.setVisibility(View.GONE);
+            }
+            CommonUtils.unlockOrientation((Activity)context);
+
+        }
+    }
 }
