@@ -50,7 +50,6 @@ import java.util.concurrent.ExecutionException;
 
 public class AddEditReportActivity extends AppCompatActivity implements  DrawerMenuListAdapter.DrawerItemClickListener, AddEditLabelInterface, ClaimDetailsDataInterface, LossLocationDataInterface,SelectedImagesDataInterface {
     private DrawerLayout mDrawerLayout;
-    private FloatingActionButton goToNextBtn;
     private ExpandableListView mExpandableListView;
     private DrawerMenuListAdapter drawerMenuListAdapter;
     private String tabName;
@@ -96,40 +95,7 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
 
 
         mExpandableListView = findViewById(R.id.slider_menu);
-        goToNextBtn = findViewById(R.id.goToNext);
 
-        goToNextBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if (selectedFragmentPosition == 0) {
-                    mDrawerLayout.closeDrawers();
-                    FragmentManager transactionManager = getSupportFragmentManager();
-                    FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.content_frame, new CauseOfLossFragment());
-                    fragmentTransaction.addToBackStack(null);
-                    fragmentTransaction.commit();
-                    tabName = "CauseOfLossFragment";
-
-                    selectedFragmentPosition = 1;
-                    getSupportActionBar().setTitle("Cause Of Loss");
-
-                } else if (selectedFragmentPosition == 1) {
-                    mDrawerLayout.closeDrawers();
-                    FragmentManager transactionManager = getSupportFragmentManager();
-                    FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.content_frame, new PointOfOriginFragment());
-                    fragmentTransaction.addToBackStack(null);
-                    fragmentTransaction.commit();
-                    tabName = "PointOfOriginFragment";
-
-                    selectedFragmentPosition = 2;
-                    getSupportActionBar().setTitle("Point Of Origin");
-
-
-                }
-            }
-        });
         parentMenuItems = new ArrayList<>();
 
         parentMenuItems.add("Claim Details");

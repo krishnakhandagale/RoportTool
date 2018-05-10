@@ -34,9 +34,7 @@ public class ClaimDetailsTabsFragment extends Fragment {
     private String clientName;
     private String claimNumber;
 
-    private Boolean isFabOpen = false;
-    private FloatingActionButton add_button,goToNextBtn, fab2, fab3, fab4;
-    private Animation fab_open, fab_close, rotate_forward, rotate_backward;
+
 
 
     private ClaimDetailsDataInterface claimDetailsDataInterface;
@@ -58,22 +56,7 @@ public class ClaimDetailsTabsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_claim_details, container, false);
-        add_button = (FloatingActionButton) view.findViewById(R.id.show_fab);
-        goToNextBtn = (FloatingActionButton)view. findViewById(R.id.goToNext);
-        fab2 = (FloatingActionButton)view. findViewById(R.id.fab2);
-        fab3 = (FloatingActionButton) view.findViewById(R.id.fab3);
-        fab4 = (FloatingActionButton) view.findViewById(R.id.fab4);
 
-        fab_open = AnimationUtils.loadAnimation(getActivity(), R.anim.fab_open);
-        fab_close = AnimationUtils.loadAnimation(getActivity(), R.anim.fab_close);
-        rotate_forward = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate_forward);
-        rotate_backward = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate_backward);
-        add_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                animateFAB();
-            }
-        });
         reportTitleEditText = view.findViewById(R.id.reportTitle);
         reportDescriptionEditText =view.findViewById(R.id.reportDescription);
         clientNameEditText = view.findViewById(R.id.clientName);
@@ -187,34 +170,6 @@ public class ClaimDetailsTabsFragment extends Fragment {
         super.onSaveInstanceState(outState);
 
     }
-    public void animateFAB() {
-        CoordinatorLayout.LayoutParams layoutParams = new CoordinatorLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-
-        if (isFabOpen) {
-            add_button.startAnimation(rotate_backward);
-            goToNextBtn.startAnimation(fab_close);
-            fab2.startAnimation(fab_close);
-            fab3.startAnimation(fab_close);
-            fab4.startAnimation(fab_close);
-            fab2.setClickable(false);
-            fab3.setClickable(false);
-            fab4.setClickable(false);
-            isFabOpen = false;
-
-        } else {
-            add_button.startAnimation(rotate_forward);
-            goToNextBtn.startAnimation(fab_open);
-            fab2.startAnimation(fab_open);
-            fab3.startAnimation(fab_open);
-            fab4.startAnimation(fab_open);
-            goToNextBtn.setClickable(true);
-            fab2.setClickable(true);
-            fab3.setClickable(true);
-            fab4.setClickable(true);
-            isFabOpen = true;
-        }
-
-    }
 
 }

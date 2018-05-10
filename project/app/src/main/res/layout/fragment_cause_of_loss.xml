@@ -1,14 +1,69 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.electivechaos.checklistapp.fragments.CauseOfLossFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+ >
 
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Cause Of Loss"
-        android:gravity="center"/>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabGenerateReport"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_gravity="bottom|end"
+        android:layout_marginRight="130dp"
+        android:visibility="invisible"
+        app:elevation="6dp"
+        app:pressedTranslationZ="12dp"
+        android:src="@drawable/ic_add_white" />
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabAddLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="80dp"
+        android:layout_gravity="bottom|end"
+        android:layout_marginRight="120dp"
+        android:visibility="invisible"
+        app:elevation="6dp"
+        app:pressedTranslationZ="12dp"
+        android:src="@drawable/ic_add_white" />
 
-</FrameLayout>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabAddImages"
+        android:layout_width="wrap_content"
+        android:layout_height="58dp"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="125dp"
+        android:layout_marginRight="80dp"
+        android:src="@drawable/image_picker_ic_camera"
+        android:visibility="invisible"
+        app:elevation="6dp"
+        app:pressedTranslationZ="12dp"
+        tools:layout_editor_absoluteY="409dp" />
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabGoNext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="150dp"
+        android:layout_gravity="bottom|end"
+        android:layout_marginRight="@dimen/fab_margin"
+        android:visibility="invisible"
+        app:elevation="6dp"
+        app:pressedTranslationZ="12dp"
+        android:src="@drawable/next_arrow_white" />
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/showFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        app:elevation="6dp"
+        app:backgroundTint="@color/colorPrimary"
+        app:pressedTranslationZ="12dp"
+        android:layout_marginBottom="50dp"
+        android:layout_marginRight="40dp"
+        android:src="@drawable/ic_add_gray" />
+
+
+
+</android.support.design.widget.CoordinatorLayout>

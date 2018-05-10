@@ -25,6 +25,8 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -77,6 +79,11 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
     private RecyclerView selectedImagesRecyclerView;
     private ProgressBar progressBar;
     private SelectedImagesAdapter selectedImagesAdapter;
+
+    private Boolean isFabOpen = false;
+    private FloatingActionButton showFabBtn,fabGoNextBtn, selectPhotoBtn, fabAddLabelBtn, fabGenerateReportBtn;
+    private Animation fab_open, fab_close, rotate_forward, rotate_backward;
+
 
 
     private ImageView imgViewFront;
@@ -150,6 +157,21 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
         // Inflate the layout for this fragment
         View selectImageView = inflater.inflate(R.layout.fragment_select_photo, container, false);
 
+        showFabBtn = (FloatingActionButton) selectImageView.findViewById(R.id.showFab);
+        fabGoNextBtn = (FloatingActionButton)selectImageView. findViewById(R.id.fabGoNext);
+        fabAddLabelBtn = (FloatingActionButton)selectImageView. findViewById(R.id.fabAddLabel);
+        fabGenerateReportBtn = (FloatingActionButton) selectImageView.findViewById(R.id.fabGenerateReport);
+
+        fab_open = AnimationUtils.loadAnimation(getActivity(), R.anim.fab_open);
+        fab_close = AnimationUtils.loadAnimation(getActivity(), R.anim.fab_close);
+        rotate_forward = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate_forward);
+        rotate_backward = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate_backward);
+        showFabBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                animateFAB();
+            }
+        });
         onImageRemovalListener = new OnImageRemovalListener() {
             @Override
             public void onImageSelectionChanged(List<ImageDetailsPOJO> selectedImgs) {
@@ -163,7 +185,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                 .centerCrop()
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE);
 
-        FloatingActionButton selectPhotoBtn = selectImageView.findViewById(R.id.btnSelectPhoto);
+        selectPhotoBtn = selectImageView.findViewById(R.id.btnSelectPhoto);
         parentLayout = selectImageView.findViewById(R.id.parentLinearLayout);
         selectedImagesRecyclerView = selectImageView.findViewById(R.id.selectedImagesRecyclerView);
         selectImagesParentLayout = selectImageView.findViewById(R.id.selectImagesParentLayout);
@@ -968,6 +990,33 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                 selectedImagesRecyclerView.setAdapter(selectedImagesAdapter);
             }
         }
+    }
+    public void animateFAB() {
+        if (isFabOpen) {
+            showFabBtn.startAnimation(rotate_backward);
+            fabGoNextBtn.startAnimation(fab_close);
+            selectPhotoBtn.startAnimation(fab_close);
+            fabAddLabelBtn.startAnimation(fab_close);
+            fabGenerateReportBtn.startAnimation(fab_close);
+            fabGoNextBtn.setClickable(false);
+            selectPhotoBtn.setClickable(false);
+            fabAddLabelBtn.setClickable(false);
+            fabGenerateReportBtn.setClickable(false);
+            isFabOpen = false;
+
+        } else {
+            showFabBtn.startAnimation(rotate_forward);
+            fabGoNextBtn.startAnimation(fab_open);
+            selectPhotoBtn.startAnimation(fab_open);
+            fabAddLabelBtn.startAnimation(fab_open);
+            fabGenerateReportBtn.startAnimation(fab_open);
+            fabGoNextBtn.setClickable(true);
+            selectPhotoBtn.setClickable(true);
+            fabAddLabelBtn.setClickable(true);
+            fabGenerateReportBtn.setClickable(true);
+            isFabOpen = true;
+        }
+
     }
 }
 
