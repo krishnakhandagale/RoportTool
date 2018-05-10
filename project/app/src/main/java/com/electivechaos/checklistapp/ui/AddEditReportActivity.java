@@ -15,7 +15,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -77,11 +76,11 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-        add_button = (FloatingActionButton) findViewById(R.id.show_fab);
-        goToNextBtn = (FloatingActionButton) findViewById(R.id.goToNext);
-        fab2 = (FloatingActionButton) findViewById(R.id.fab2);
-        fab3 = (FloatingActionButton) findViewById(R.id.fab3);
-        fab4 = (FloatingActionButton) findViewById(R.id.fab4);
+        add_button = findViewById(R.id.show_fab);
+        goToNextBtn = findViewById(R.id.goToNext);
+        fab2 = findViewById(R.id.fab2);
+        fab3 = findViewById(R.id.fab3);
+        fab4 = findViewById(R.id.fab4);
 
         fab_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
         fab_close = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close);
@@ -252,7 +251,6 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
 
 
     public void animateFAB() {
-        CoordinatorLayout.LayoutParams layoutParams = new CoordinatorLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
 
         if (isFabOpen) {
