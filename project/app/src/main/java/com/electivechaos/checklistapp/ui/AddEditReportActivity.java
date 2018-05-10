@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -14,11 +15,15 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ExpandableListView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.electivechaos.checklistapp.R;
@@ -44,14 +49,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-public class AddEditReportActivity extends AppCompatActivity implements  DrawerMenuListAdapter.DrawerItemClickListener, AddEditLabelInterface, ClaimDetailsDataInterface, LossLocationDataInterface,SelectedImagesDataInterface{
+public class AddEditReportActivity extends AppCompatActivity implements  DrawerMenuListAdapter.DrawerItemClickListener, AddEditLabelInterface, ClaimDetailsDataInterface, LossLocationDataInterface,SelectedImagesDataInterface {
     private DrawerLayout mDrawerLayout;
     private FloatingActionButton goToNextBtn;
     private ExpandableListView mExpandableListView;
     private DrawerMenuListAdapter drawerMenuListAdapter;
     private String tabName;
 
-    HashMap<String,List<Label>> childMenuItems = new HashMap<>();
+    HashMap<String, List<Label>> childMenuItems = new HashMap<>();
     List<Label> inspectionChildMenu = new ArrayList<>();
     ArrayList<String> parentMenuItems;
 
@@ -61,23 +66,44 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
     static CategoryListDBHelper mCategoryList;
 
     private ReportPOJO reportPOJO = new ReportPOJO();
-    private  View progressBarLayout;
+    private View progressBarLayout;
+
+    private Boolean isFabOpen = false;
+    private FloatingActionButton add_button, fab2, fab3, fab4;
+    private Animation fab_open, fab_close, rotate_forward, rotate_backward;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+        add_button = (FloatingActionButton) findViewById(R.id.show_fab);
+        goToNextBtn = (FloatingActionButton) findViewById(R.id.goToNext);
+        fab2 = (FloatingActionButton) findViewById(R.id.fab2);
+        fab3 = (FloatingActionButton) findViewById(R.id.fab3);
+        fab4 = (FloatingActionButton) findViewById(R.id.fab4);
+
+        fab_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
+        fab_close = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close);
+        rotate_forward = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_forward);
+        rotate_backward = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_backward);
+        add_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                animateFAB();
+            }
+        });
+
 
         progressBarLayout = findViewById(R.id.progressBarLayout);
         mCategoryList = new CategoryListDBHelper(this);
 
         FragmentManager transactionManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
-        fragmentTransaction.replace(R.id.content_frame,new ClaimDetailsFragment());
+        fragmentTransaction.replace(R.id.content_frame, new ClaimDetailsFragment());
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
-        tabName="ClaimDetailsFragment";
+        tabName = "ClaimDetailsFragment";
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -89,35 +115,36 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
 
 
         mExpandableListView = findViewById(R.id.slider_menu);
-        goToNextBtn = findViewById(R.id.goToNext);
+        //goToNextBtn = findViewById(R.id.goToNext);
 
         goToNextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if(selectedFragmentPosition==0) {
+                if (selectedFragmentPosition == 0) {
                     mDrawerLayout.closeDrawers();
                     FragmentManager transactionManager = getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.content_frame,new CauseOfLossFragment());
+                    fragmentTransaction.replace(R.id.content_frame, new CauseOfLossFragment());
                     fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.commit();
-                    tabName="CauseOfLossFragment";
+                    tabName = "CauseOfLossFragment";
 
-                    selectedFragmentPosition=1;
+                    selectedFragmentPosition = 1;
                     getSupportActionBar().setTitle("Cause Of Loss");
-                }
-                else if(selectedFragmentPosition==1) {
+
+                } else if (selectedFragmentPosition == 1) {
                     mDrawerLayout.closeDrawers();
                     FragmentManager transactionManager = getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.content_frame,new PointOfOriginFragment());
+                    fragmentTransaction.replace(R.id.content_frame, new PointOfOriginFragment());
                     fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.commit();
-                    tabName="PointOfOriginFragment";
+                    tabName = "PointOfOriginFragment";
 
-                    selectedFragmentPosition=2;
+                    selectedFragmentPosition = 2;
                     getSupportActionBar().setTitle("Point Of Origin");
+
 
                 }
             }
@@ -136,8 +163,8 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
 
         mDrawerLayout = findViewById(R.id.drawer_layout);
 
-        if(parentMenuItems != null && parentMenuItems.size() > 0){
-            drawerMenuListAdapter = new DrawerMenuListAdapter(this,parentMenuItems, childMenuItems);
+        if (parentMenuItems != null && parentMenuItems.size() > 0) {
+            drawerMenuListAdapter = new DrawerMenuListAdapter(this, parentMenuItems, childMenuItems);
             mExpandableListView.setAdapter(drawerMenuListAdapter);
             mExpandableListView.setIndicatorBounds(0, 20);
         }
@@ -146,7 +173,7 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
 
-                if(parentMenuItems.get(groupPosition).equals("Claim Details")){
+                if (parentMenuItems.get(groupPosition).equals("Claim Details")) {
 
                     mDrawerLayout.closeDrawers();
                     FragmentManager transactionManager = getSupportFragmentManager();
@@ -154,35 +181,34 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
 
                     ClaimDetailsFragment claimDetailsFragment = new ClaimDetailsFragment();
                     Bundle claimDetailsData = new Bundle();
-                    claimDetailsData.putString("reportTitle",reportPOJO.getReportTitle());
-                    claimDetailsData.putString("reportDescription",reportPOJO.getReportDescription());
-                    claimDetailsData.putString("claimNumber",reportPOJO.getClaimNumber());
-                    claimDetailsData.putString("claimNumber",reportPOJO.getClaimNumber());
-                    claimDetailsData.putString("clientName",reportPOJO.getClientName());
+                    claimDetailsData.putString("reportTitle", reportPOJO.getReportTitle());
+                    claimDetailsData.putString("reportDescription", reportPOJO.getReportDescription());
+                    claimDetailsData.putString("claimNumber", reportPOJO.getClaimNumber());
+                    claimDetailsData.putString("claimNumber", reportPOJO.getClaimNumber());
+                    claimDetailsData.putString("clientName", reportPOJO.getClientName());
 
-                    claimDetailsData.putString("locationLat",reportPOJO.getLocationLat());
-                    claimDetailsData.putString("locationLong",reportPOJO.getLocationLong());
+                    claimDetailsData.putString("locationLat", reportPOJO.getLocationLat());
+                    claimDetailsData.putString("locationLong", reportPOJO.getLocationLong());
 
                     claimDetailsFragment.setArguments(claimDetailsData);
-                    fragmentTransaction.replace(R.id.content_frame,claimDetailsFragment );
+                    fragmentTransaction.replace(R.id.content_frame, claimDetailsFragment);
                     fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.commit();
-                    tabName="ClaimDetailsFragment";
+                    tabName = "ClaimDetailsFragment";
 
 
                     selectedFragmentPosition = 0;
                     getSupportActionBar().setTitle("Claim Details");
 
 
-
                 } else if (parentMenuItems.get(groupPosition).equals("Cause Of Loss")) {
                     mDrawerLayout.closeDrawers();
                     FragmentManager transactionManager = getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.content_frame,new CauseOfLossFragment());
+                    fragmentTransaction.replace(R.id.content_frame, new CauseOfLossFragment());
                     fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.commit();
-                    tabName="CauseOfLossFragment";
+                    tabName = "CauseOfLossFragment";
 
                     selectedFragmentPosition = 1;
 
@@ -192,12 +218,12 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
                     mDrawerLayout.closeDrawers();
                     FragmentManager transactionManager = getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.content_frame,new PointOfOriginFragment());
+                    fragmentTransaction.replace(R.id.content_frame, new PointOfOriginFragment());
                     fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.commit();
-                    tabName="PointOfOriginFragment";
+                    tabName = "PointOfOriginFragment";
 
-                    selectedFragmentPosition=2;
+                    selectedFragmentPosition = 2;
 
                     getSupportActionBar().setTitle("Point Of Origin");
                 }
@@ -212,16 +238,47 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
                 mDrawerLayout.closeDrawers();
                 FragmentManager transactionManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
-                AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment= AddEditReportSelectedImagesFragment.initFragment(reportPOJO.getLabelArrayList().get(childPosition).getSelectedImages(),reportPOJO.getLabelArrayList().get(childPosition).getSelectedElevationImages(),childPosition);
-                fragmentTransaction.replace(R.id.content_frame,addEditReportSelectedImagesFragment);
+                AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment = AddEditReportSelectedImagesFragment.initFragment(reportPOJO.getLabelArrayList().get(childPosition).getSelectedImages(), reportPOJO.getLabelArrayList().get(childPosition).getSelectedElevationImages(), childPosition);
+                fragmentTransaction.replace(R.id.content_frame, addEditReportSelectedImagesFragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
-                tabName="AddEditReportSelectedImagesFragment";
+                tabName = "AddEditReportSelectedImagesFragment";
                 return false;
             }
         });
 
 
+    }
+
+
+    public void animateFAB() {
+        CoordinatorLayout.LayoutParams layoutParams = new CoordinatorLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+
+        if (isFabOpen) {
+            add_button.startAnimation(rotate_backward);
+            goToNextBtn.startAnimation(fab_close);
+            fab2.startAnimation(fab_close);
+            fab3.startAnimation(fab_close);
+            fab4.startAnimation(fab_close);
+            fab2.setClickable(false);
+            fab3.setClickable(false);
+            fab4.setClickable(false);
+            isFabOpen = false;
+
+        } else {
+            add_button.startAnimation(rotate_forward);
+            goToNextBtn.startAnimation(fab_open);
+            fab2.startAnimation(fab_open);
+            fab3.startAnimation(fab_open);
+            fab4.startAnimation(fab_open);
+            goToNextBtn.setClickable(true);
+            fab2.setClickable(true);
+            fab3.setClickable(true);
+            fab4.setClickable(true);
+            isFabOpen = true;
+        }
+        
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
