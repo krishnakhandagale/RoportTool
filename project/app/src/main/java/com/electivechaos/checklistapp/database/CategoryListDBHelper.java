@@ -121,9 +121,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 + KEY_FK_CATEGORY_ID + " INTEGER,"
                 + KEY_FK_LABEL_REPORT_ID + " INTEGER,"
 
-
-                + "FOREIGN KEY("+ KEY_FK_LABEL_REPORT_ID+") REFERENCES "+TABLE_REPORTS_LIST+"("+ KEY_REPORT_ID +")" + " ON DELETE CASCADE ,"
-                + "FOREIGN KEY("+ KEY_FK_CATEGORY_ID +") REFERENCES "+TABLE_MASTER_CATEGORY+"("+KEY_CATEGORY_ID +")"+ " ON DELETE CASCADE)";
+                + "FOREIGN KEY("+ KEY_FK_LABEL_REPORT_ID +") REFERENCES "+TABLE_REPORTS_LIST+"("+KEY_CATEGORY_ID +")"+ " ON DELETE CASCADE)";
 
         String CREATE_CAUSE_OF_LOSS_TABLE = "CREATE TABLE "
                 + TABLE_CAUSE_OF_LOSS + "("
