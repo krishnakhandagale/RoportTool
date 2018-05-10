@@ -4,5 +4,5 @@ import com.electivechaos.checklistapp.pojo.Label;
 
 public  interface AddEditLabelInterface {
 
-     public void onLabelAdded(Label label);
+     void onLabelAdded(Label label);
 }
