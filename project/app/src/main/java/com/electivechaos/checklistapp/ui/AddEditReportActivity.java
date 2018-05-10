@@ -67,31 +67,13 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
     private ReportPOJO reportPOJO = new ReportPOJO();
     private View progressBarLayout;
 
-    private Boolean isFabOpen = false;
-    private FloatingActionButton add_button, fab2, fab3, fab4;
-    private Animation fab_open, fab_close, rotate_forward, rotate_backward;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-        add_button = findViewById(R.id.show_fab);
-        goToNextBtn = findViewById(R.id.goToNext);
-        fab2 = findViewById(R.id.fab2);
-        fab3 = findViewById(R.id.fab3);
-        fab4 = findViewById(R.id.fab4);
 
-        fab_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
-        fab_close = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close);
-        rotate_forward = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_forward);
-        rotate_backward = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_backward);
-        add_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                animateFAB();
-            }
-        });
 
 
         progressBarLayout = findViewById(R.id.progressBarLayout);
@@ -114,7 +96,7 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
 
 
         mExpandableListView = findViewById(R.id.slider_menu);
-        //goToNextBtn = findViewById(R.id.goToNext);
+        goToNextBtn = findViewById(R.id.goToNext);
 
         goToNextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -250,34 +232,7 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
     }
 
 
-    public void animateFAB() {
 
-
-        if (isFabOpen) {
-            add_button.startAnimation(rotate_backward);
-            goToNextBtn.startAnimation(fab_close);
-            fab2.startAnimation(fab_close);
-            fab3.startAnimation(fab_close);
-            fab4.startAnimation(fab_close);
-            fab2.setClickable(false);
-            fab3.setClickable(false);
-            fab4.setClickable(false);
-            isFabOpen = false;
-
-        } else {
-            add_button.startAnimation(rotate_forward);
-            goToNextBtn.startAnimation(fab_open);
-            fab2.startAnimation(fab_open);
-            fab3.startAnimation(fab_open);
-            fab4.startAnimation(fab_open);
-            goToNextBtn.setClickable(true);
-            fab2.setClickable(true);
-            fab3.setClickable(true);
-            fab4.setClickable(true);
-            isFabOpen = true;
-        }
-        
-    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
