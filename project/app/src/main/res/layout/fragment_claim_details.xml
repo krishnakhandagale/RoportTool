@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/parentLinearLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,11 +7,6 @@
     android:weightSum="5"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:weightSum="5">
         <android.support.design.widget.TextInputLayout
             android:layout_marginTop="30dp"
             android:id="@+id/textInputLayout"
@@ -67,63 +62,3 @@
                 android:textSize="16sp" />
         </android.support.design.widget.TextInputLayout>
     </LinearLayout>
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:layout_gravity="bottom|end"
-        android:layout_marginRight="130dp"
-        android:visibility="invisible"
-        app:elevation="6dp"
-        app:pressedTranslationZ="12dp"
-        android:src="@drawable/ic_add_white" />
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="80dp"
-        android:layout_gravity="bottom|end"
-        android:layout_marginRight="120dp"
-        android:visibility="invisible"
-        app:elevation="6dp"
-        app:pressedTranslationZ="12dp"
-        android:src="@drawable/ic_add_white" />
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab2"
-        android:layout_width="wrap_content"
-        android:layout_height="58dp"
-        android:layout_gravity="bottom|end"
-        android:layout_marginBottom="125dp"
-        android:layout_marginRight="80dp"
-        android:src="@drawable/image_picker_ic_camera"
-        android:visibility="invisible"
-        app:elevation="6dp"
-        app:pressedTranslationZ="12dp"
-        tools:layout_editor_absoluteY="409dp" />
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/goToNext"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="150dp"
-        android:layout_gravity="bottom|end"
-        android:layout_marginRight="@dimen/fab_margin"
-        android:visibility="invisible"
-        app:elevation="6dp"
-        app:pressedTranslationZ="12dp"
-        android:src="@drawable/next_arrow_white" />
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/show_fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        app:elevation="6dp"
-        app:backgroundTint="@color/colorPrimary"
-        app:pressedTranslationZ="12dp"
-        android:layout_marginBottom="50dp"
-        android:layout_marginRight="40dp"
-        android:src="@drawable/ic_add_gray" />
-
-    </android.support.design.widget.CoordinatorLayout>
-
