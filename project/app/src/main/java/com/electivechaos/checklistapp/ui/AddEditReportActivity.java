@@ -253,7 +253,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     }
 
     @Override
-    public void onLabelAddClick(int position) {
+    public void onLabelAddClick() {
 
         mDrawerLayout.closeDrawer(Gravity.LEFT);
 

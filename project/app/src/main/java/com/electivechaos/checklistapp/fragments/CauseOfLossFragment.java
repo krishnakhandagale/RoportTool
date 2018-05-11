@@ -13,6 +13,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
 import com.electivechaos.checklistapp.R;
+import com.electivechaos.checklistapp.adapters.DrawerMenuListAdapter;
 import com.electivechaos.checklistapp.interfaces.NextButtonClickListener;
 
 public class CauseOfLossFragment extends Fragment {
@@ -22,6 +23,7 @@ public class CauseOfLossFragment extends Fragment {
     private Animation fab_open, fab_close, rotate_forward, rotate_backward;
 
     private NextButtonClickListener nextButtonClickListener;
+    private DrawerMenuListAdapter.OnLabelAddClickListener onLabelAddClickListener;
 
     @Nullable
     @Override
@@ -48,6 +50,13 @@ public class CauseOfLossFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 nextButtonClickListener.onNextButtonClick();
+            }
+        });
+
+        fabAddLabelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onLabelAddClickListener.onLabelAddClick();
             }
         });
 
@@ -93,6 +102,12 @@ public class CauseOfLossFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        nextButtonClickListener=(NextButtonClickListener)getActivity();
+        try {
+            nextButtonClickListener = (NextButtonClickListener) getActivity();
+            onLabelAddClickListener = (DrawerMenuListAdapter.OnLabelAddClickListener)getActivity();
+
+        }catch (ClassCastException ex) {
+            ex.printStackTrace();
+        }
     }
 }

@@ -19,6 +19,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 
 import com.electivechaos.checklistapp.R;
+import com.electivechaos.checklistapp.adapters.DrawerMenuListAdapter;
 import com.electivechaos.checklistapp.interfaces.NextButtonClickListener;
 
 public class ClaimDetailsFragment  extends Fragment{
@@ -44,6 +45,7 @@ public class ClaimDetailsFragment  extends Fragment{
     private Animation fab_open, fab_close, rotate_forward, rotate_backward;
 
     private NextButtonClickListener nextButtonClickListener;
+    private DrawerMenuListAdapter.OnLabelAddClickListener onLabelAddClickListener;
 
     @Override
     public void onStart() {
@@ -99,7 +101,12 @@ public class ClaimDetailsFragment  extends Fragment{
         tabLayout.setupWithViewPager(viewPager);
 
 
-
+        fabAddLabelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onLabelAddClickListener.onLabelAddClick();
+            }
+        });
 
         ClaimDetailsTabsPagerAdapter adapter=new ClaimDetailsTabsPagerAdapter(getActivity().getSupportFragmentManager());
         viewPager.setAdapter(adapter);
@@ -215,6 +222,11 @@ public class ClaimDetailsFragment  extends Fragment{
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        nextButtonClickListener=(NextButtonClickListener)getActivity();
+        try {
+            nextButtonClickListener = (NextButtonClickListener) getActivity();
+            onLabelAddClickListener = (DrawerMenuListAdapter.OnLabelAddClickListener)getActivity();
+        }catch (ClassCastException ex) {
+            ex.printStackTrace();
+        }
     }
 }
