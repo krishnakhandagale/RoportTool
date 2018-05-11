@@ -30,7 +30,7 @@
         android:visibility="invisible"
         app:elevation="6dp"
         app:pressedTranslationZ="12dp"
-        android:src="@drawable/ic_add_white" />
+        android:src="@drawable/pdf_gen" />
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabAddLabel"
         android:layout_width="wrap_content"
@@ -41,7 +41,7 @@
         android:visibility="invisible"
         app:elevation="6dp"
         app:pressedTranslationZ="12dp"
-        android:src="@drawable/ic_add_white" />
+        android:src="@drawable/label_add" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabAddImages"
@@ -72,7 +72,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         app:elevation="6dp"
-        app:backgroundTint="@color/colorPrimary"
+        app:backgroundTint="@color/colorPrimaryDark"
         app:pressedTranslationZ="12dp"
         android:layout_marginBottom="50dp"
         android:layout_marginRight="40dp"
