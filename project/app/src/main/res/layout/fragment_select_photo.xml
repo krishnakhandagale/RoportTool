@@ -167,7 +167,7 @@
             android:id="@+id/selectedImagesRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="0dip"
-            android:layout_weight="4"
+            android:layout_weight="4.5"
             android:scrollbars="vertical">
 
         </android.support.v7.widget.RecyclerView>

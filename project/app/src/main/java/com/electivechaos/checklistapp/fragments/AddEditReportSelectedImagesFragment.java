@@ -40,6 +40,7 @@ import com.electivechaos.checklistapp.ImageHelper;
 import com.electivechaos.checklistapp.PermissionUtilities;
 import com.electivechaos.checklistapp.R;
 import com.electivechaos.checklistapp.SingleMediaScanner;
+import com.electivechaos.checklistapp.interfaces.NextButtonClickListener;
 import com.electivechaos.checklistapp.interfaces.SelectedImagesDataInterface;
 import com.electivechaos.checklistapp.listeners.OnImageRemovalListener;
 import com.electivechaos.checklistapp.listeners.OnMediaScannerListener;
@@ -119,6 +120,8 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
     static RequestOptions options = null;
 
     private SelectedImagesDataInterface selectedImagesDataInterface;
+
+    private NextButtonClickListener nextButtonClickListener;
 
     public static AddEditReportSelectedImagesFragment initFragment(ArrayList<ImageDetailsPOJO> selectedImageList, ArrayList<ImageDetailsPOJO> selectedElevationImagesList,int position) {
         AddEditReportSelectedImagesFragment fragment = new AddEditReportSelectedImagesFragment();
@@ -342,6 +345,13 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 selectImage();
+            }
+        });
+
+        fabGoNextBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nextButtonClickListener.onNextButtonClick();
             }
         });
         return selectImageView;
@@ -930,6 +940,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
     {super.onAttach(context);
         try{
             selectedImagesDataInterface = (SelectedImagesDataInterface) getActivity();
+            nextButtonClickListener = (NextButtonClickListener) getActivity();
         }catch (ClassCastException exception){
             exception.printStackTrace();
         }

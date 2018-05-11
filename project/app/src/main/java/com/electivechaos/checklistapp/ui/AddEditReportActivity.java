@@ -38,6 +38,7 @@ import com.electivechaos.checklistapp.pojo.ImageDetailsPOJO;
 import com.electivechaos.checklistapp.pojo.Label;
 import com.electivechaos.checklistapp.pojo.ReportPOJO;
 import com.electivechaos.checklistapp.utils.CommonUtils;
+import com.itextpdf.text.LargeElement;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -118,7 +119,7 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
 
                 if (parentMenuItems.get(groupPosition).equals("Claim Details")) {
 
-                    mDrawerLayout.closeDrawers();
+                    mDrawerLayout.closeDrawer(Gravity.LEFT);
                     FragmentManager transactionManager = getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
 
@@ -145,7 +146,7 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
 
 
                 } else if (parentMenuItems.get(groupPosition).equals("Cause Of Loss")) {
-                    mDrawerLayout.closeDrawers();
+                    mDrawerLayout.closeDrawer(Gravity.LEFT);
                     FragmentManager transactionManager = getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
                     fragmentTransaction.replace(R.id.content_frame, new CauseOfLossFragment());
@@ -157,7 +158,7 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
                     getSupportActionBar().setTitle("Cause Of Loss");
 
                 } else if (parentMenuItems.get(groupPosition).equals("Point Of Origin")) {
-                    mDrawerLayout.closeDrawers();
+                    mDrawerLayout.closeDrawer(Gravity.LEFT);
                     FragmentManager transactionManager = getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
                     fragmentTransaction.replace(R.id.content_frame, new PointOfOriginFragment());
@@ -177,14 +178,16 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
         mExpandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                mDrawerLayout.closeDrawers();
+                mDrawerLayout.closeDrawer(Gravity.LEFT);
                 FragmentManager transactionManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
                 AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment = AddEditReportSelectedImagesFragment.initFragment(reportPOJO.getLabelArrayList().get(childPosition).getSelectedImages(), reportPOJO.getLabelArrayList().get(childPosition).getSelectedElevationImages(), childPosition);
                 fragmentTransaction.replace(R.id.content_frame, addEditReportSelectedImagesFragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
+                selectedFragmentPosition = childPosition + 3;
                 tabName = "AddEditReportSelectedImagesFragment";
+                getSupportActionBar().setTitle(reportPOJO.getLabelArrayList().get(childPosition).getName());
                 return false;
             }
         });
@@ -308,9 +311,11 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
         AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment = AddEditReportSelectedImagesFragment.initFragment(new ArrayList<ImageDetailsPOJO>(),new ArrayList<ImageDetailsPOJO>(),labelList.size()-1);
         fragmentTransaction.replace(R.id.content_frame, addEditReportSelectedImagesFragment);
         fragmentTransaction.addToBackStack(null);
+
         fragmentTransaction.commit();
 
-
+        selectedFragmentPosition = labelList.size() -1;
+        getSupportActionBar().setTitle(label.getName());
     }
 
 
@@ -359,8 +364,9 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
     @Override
     public void onNextButtonClick() {
 
-        if(selectedFragmentPosition==0) {
-            mDrawerLayout.closeDrawers();
+        selectedFragmentPosition = selectedFragmentPosition + 1;
+        if(selectedFragmentPosition == 1) {
+            mDrawerLayout.closeDrawer(Gravity.LEFT);
             FragmentManager transactionManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
             fragmentTransaction.replace(R.id.content_frame,new CauseOfLossFragment());
@@ -369,10 +375,9 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
             tabName="CauseOfLossFragment";
 
             getSupportActionBar().setTitle("Cause Of Loss");
-            selectedFragmentPosition=1;
         }
-        else if(selectedFragmentPosition==1) {
-            mDrawerLayout.closeDrawers();
+        else if(selectedFragmentPosition == 2) {
+            mDrawerLayout.closeDrawer(Gravity.LEFT);
             FragmentManager transactionManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
             fragmentTransaction.replace(R.id.content_frame,new PointOfOriginFragment());
@@ -381,7 +386,24 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
             tabName="PointOfOriginFragment";
 
             getSupportActionBar().setTitle("Point Of Origin");
-            selectedFragmentPosition=2;
+
+        }else if(selectedFragmentPosition > 2){
+
+            ArrayList<Label> labelArrayList =  reportPOJO.getLabelArrayList();
+            if( labelArrayList!= null && labelArrayList.size() > selectedFragmentPosition - 3 && labelArrayList.get(selectedFragmentPosition - 3) != null){
+                FragmentManager transactionManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
+                AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment = AddEditReportSelectedImagesFragment.initFragment(labelArrayList.get(selectedFragmentPosition - 3).getSelectedImages(),labelArrayList.get(selectedFragmentPosition - 3).getSelectedElevationImages(), selectedFragmentPosition - 3);
+                fragmentTransaction.replace(R.id.content_frame, addEditReportSelectedImagesFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+                tabName = "AddEditReportSelectedImagesFragment";
+
+                getSupportActionBar().setTitle(labelArrayList.get(selectedFragmentPosition - 3).getName());
+            }else{
+                selectedFragmentPosition = selectedFragmentPosition -1;
+            }
+
 
         }
 

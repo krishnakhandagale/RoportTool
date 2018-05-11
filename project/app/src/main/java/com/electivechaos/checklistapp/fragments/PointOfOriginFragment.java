@@ -1,5 +1,6 @@
 package com.electivechaos.checklistapp.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,6 +13,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
 import com.electivechaos.checklistapp.R;
+import com.electivechaos.checklistapp.interfaces.NextButtonClickListener;
 
 
 public class PointOfOriginFragment extends Fragment {
@@ -19,6 +21,7 @@ public class PointOfOriginFragment extends Fragment {
     private Boolean isFabOpen = false;
     private FloatingActionButton showFabBtn,fabGoNextBtn, fabAddImagesBtn, fabAddLabelBtn, fabGenerateReportBtn;
     private Animation fab_open, fab_close, rotate_forward, rotate_backward;
+    private NextButtonClickListener nextButtonClickListener;
 
     @Nullable
     @Override
@@ -34,6 +37,13 @@ public class PointOfOriginFragment extends Fragment {
         fab_close = AnimationUtils.loadAnimation(getActivity(), R.anim.fab_close);
         rotate_forward = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate_forward);
         rotate_backward = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate_backward);
+
+        fabGoNextBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nextButtonClickListener.onNextButtonClick();
+            }
+        });
         showFabBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -42,6 +52,9 @@ public class PointOfOriginFragment extends Fragment {
         });
         return view;
     }
+
+
+
 
     public void animateFAB() {
         if (isFabOpen) {
@@ -71,4 +84,9 @@ public class PointOfOriginFragment extends Fragment {
 
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+         nextButtonClickListener =  (NextButtonClickListener)getActivity();
+    }
 }
