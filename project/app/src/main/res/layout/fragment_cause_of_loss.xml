@@ -13,7 +13,7 @@
         android:layout_marginBottom="20dp"
         android:layout_gravity="bottom|end"
         android:layout_marginRight="130dp"
-        android:visibility="invisible"
+        android:visibility="visible"
         app:elevation="6dp"
         app:pressedTranslationZ="12dp"
         android:src="@drawable/ic_add_white" />
@@ -24,7 +24,7 @@
         android:layout_marginBottom="80dp"
         android:layout_gravity="bottom|end"
         android:layout_marginRight="120dp"
-        android:visibility="invisible"
+        android:visibility="visible"
         app:elevation="6dp"
         app:pressedTranslationZ="12dp"
         android:src="@drawable/ic_add_white" />
