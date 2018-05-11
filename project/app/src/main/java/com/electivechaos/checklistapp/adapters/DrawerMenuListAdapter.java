@@ -22,17 +22,17 @@ public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
     private Context context;
     private HashMap<String,List<Label>> childMenuList;
     private ArrayList<String> parentMenuList;
-    private DrawerItemClickListener myItemClickListener;
+    private OnLabelAddClickListener onLabelAddClickListener;
 
-    public interface DrawerItemClickListener {
-        void onDrawerMenuItemClick(int position);
+    public interface OnLabelAddClickListener {
+        void onLabelAddClick(int position);
     }
 
     public DrawerMenuListAdapter(Context context, ArrayList<String> parentMenuList, HashMap<String,List<Label>> childMenuList){
         this.context= context;
         this.parentMenuList = parentMenuList ;
         this.childMenuList = childMenuList;
-        this.myItemClickListener = (DrawerItemClickListener)context;
+        this.onLabelAddClickListener = (OnLabelAddClickListener)context;
     }
 
     @Override
@@ -99,7 +99,7 @@ public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
         holder.addInspectionView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                myItemClickListener.onDrawerMenuItemClick(groupPosition);
+                onLabelAddClickListener.onLabelAddClick(groupPosition);
             }
         });
 

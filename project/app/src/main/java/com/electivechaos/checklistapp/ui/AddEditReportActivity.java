@@ -45,7 +45,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-public class AddEditReportActivity extends AppCompatActivity implements  DrawerMenuListAdapter.DrawerItemClickListener, AddEditLabelInterface, ClaimDetailsDataInterface, LossLocationDataInterface,SelectedImagesDataInterface,NextButtonClickListener {
+public class AddEditReportActivity extends AppCompatActivity implements DrawerMenuListAdapter.OnLabelAddClickListener, AddEditLabelInterface, ClaimDetailsDataInterface, LossLocationDataInterface,SelectedImagesDataInterface,NextButtonClickListener {
     private DrawerLayout mDrawerLayout;
     private ExpandableListView mExpandableListView;
     private DrawerMenuListAdapter drawerMenuListAdapter;
@@ -253,7 +253,7 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
     }
 
     @Override
-    public void onDrawerMenuItemClick(int position) {
+    public void onLabelAddClick(int position) {
 
         mDrawerLayout.closeDrawer(Gravity.LEFT);
 
@@ -408,6 +408,8 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
         }
 
     }
+
+
 
 
     // Task for label addition
