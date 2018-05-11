@@ -27,10 +27,10 @@ import com.electivechaos.checklistapp.BaseActivity;
 import com.electivechaos.checklistapp.DepthPageTransformer;
 import com.electivechaos.checklistapp.ImageFragment;
 import com.electivechaos.checklistapp.R;
+import com.electivechaos.checklistapp.listeners.OnLastSelectionChangeListener;
 import com.electivechaos.checklistapp.pojo.Image;
 import com.electivechaos.checklistapp.pojo.ImageDetailsPOJO;
-import com.electivechaos.checklistapp.database.ReportsListDBHelper;
-import com.electivechaos.checklistapp.listeners.OnLastSelectionChangeListener;
+
 import java.util.ArrayList;
 
 public class ImageSliderActivity extends BaseActivity implements ImageFragment.MonitorImageDetailsChange {
@@ -38,7 +38,6 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
     ImagePagerAdapter mAdapter;
     ImagePreviewListAdapter mImagePreviewListAdapter;
     static ViewPager mPager;
-    static ReportsListDBHelper reportsListDBHelper;
     RecyclerView mImagePreviewList;
     ImageButton selectImagesBtn;
 
@@ -52,7 +51,6 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
         super.onCreate(savedInstanceState);
         setContentView(R.layout.image_slider_layout);
 
-        reportsListDBHelper = ReportsListDBHelper.getInstance(ImageSliderActivity.this);
 
         if(savedInstanceState != null){
             lastSelectedPosition = savedInstanceState.getInt("lastSelectedPosition",-1);
@@ -134,7 +132,7 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
 
         @Override
         public Fragment getItem(int position) {
-            return ImageFragment.init(imagesInformation.get(position),position,mPager,reportsListDBHelper);
+            return ImageFragment.init(imagesInformation.get(position),position,mPager);
         }
     }
 

@@ -5,8 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -19,10 +17,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ExpandableListView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.electivechaos.checklistapp.R;
@@ -62,7 +57,7 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
     private int selectedFragmentPosition = 0;
 
     private ArrayList<Category> categories = null;
-    static CategoryListDBHelper mCategoryList;
+    static CategoryListDBHelper categoryListDBHelper;
 
     private ReportPOJO reportPOJO = new ReportPOJO();
     private View progressBarLayout;
@@ -77,7 +72,7 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
 
 
         progressBarLayout = findViewById(R.id.progressBarLayout);
-        mCategoryList = new CategoryListDBHelper(this);
+        categoryListDBHelper = CategoryListDBHelper.getInstance(this);
 
         FragmentManager transactionManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
@@ -417,7 +412,7 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
         @Override
         protected Long doInBackground(String... strings) {
 
-            long id = mCategoryList.addLabel(label);
+            long id = categoryListDBHelper.addLabel(label);
             return id;
         }
 
@@ -454,7 +449,7 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
         @Override
         protected ArrayList<Category> doInBackground(String... strings) {
 
-          ArrayList<Category> categories= mCategoryList.getCategoryList();
+          ArrayList<Category> categories= categoryListDBHelper.getCategoryList();
             return categories;
         }
 

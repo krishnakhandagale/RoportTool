@@ -45,7 +45,7 @@ public class CauseOfLossListFragment  extends Fragment {
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        mCategoryListDBHelper = new CategoryListDBHelper(getContext());
+        mCategoryListDBHelper = CategoryListDBHelper.getInstance(getActivity());
         updateCauseOfLossList();
 
         FloatingActionButton btnAddReport = view.findViewById(R.id.btnAddCauseOfLoss);

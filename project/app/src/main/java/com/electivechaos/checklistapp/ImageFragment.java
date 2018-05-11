@@ -4,9 +4,7 @@ package com.electivechaos.checklistapp;
  * Created by krishna on 11/7/17.
  */
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -23,30 +21,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-
-import com.electivechaos.checklistapp.pojo.Category;
 import com.electivechaos.checklistapp.pojo.ImageDetailsPOJO;
-import com.electivechaos.checklistapp.adapters.CustomCategoryPopUpAdapter;
-import com.electivechaos.checklistapp.database.ReportsListDBHelper;
-
-import java.util.ArrayList;
-import java.util.Collections;
 
 public class ImageFragment extends Fragment {
     String imageUrl;
     String imgTitle;
     String imgDescription;
-    String imgCategory;
     int position;
     MonitorImageDetailsChange monitorImageDetailsChange;
     static ViewPager mPagerInstance;
-    static ReportsListDBHelper mReportsListDBHelper;
 
-    public static ImageFragment init(ImageDetailsPOJO imageDetails, int position, ViewPager mPager, ReportsListDBHelper reportsListDBHelper) {
+    public static ImageFragment init(ImageDetailsPOJO imageDetails, int position, ViewPager mPager) {
         ImageFragment imageFragment = new ImageFragment();
         mPagerInstance = mPager;
-        mReportsListDBHelper = reportsListDBHelper;
-        // Supply val input as an argument.
+
         Bundle args = new Bundle();
 
         args.putString("imageUrl", imageDetails.getImageUrl());

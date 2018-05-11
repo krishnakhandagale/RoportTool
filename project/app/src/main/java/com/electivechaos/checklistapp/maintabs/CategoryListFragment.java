@@ -23,10 +23,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.electivechaos.checklistapp.ui.AddEditCategoryActivity;
-import com.electivechaos.checklistapp.pojo.Category;
 import com.electivechaos.checklistapp.R;
 import com.electivechaos.checklistapp.database.CategoryListDBHelper;
+import com.electivechaos.checklistapp.pojo.Category;
+import com.electivechaos.checklistapp.ui.AddEditCategoryActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +48,7 @@ public class CategoryListFragment  extends Fragment {
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        mCategoryListDBHelper = new CategoryListDBHelper(getActivity());
+        mCategoryListDBHelper = CategoryListDBHelper.getInstance(getActivity());
         getCategoryList();
 
         FloatingActionButton btnAddReport = view.findViewById(R.id.btnAddCategory);

@@ -1,7 +1,5 @@
 package com.electivechaos.checklistapp.ui;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,20 +7,11 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.electivechaos.checklistapp.BaseActivity;
-import com.electivechaos.checklistapp.CustomCategoryComparator;
 import com.electivechaos.checklistapp.R;
-import com.electivechaos.checklistapp.pojo.Category;
 import com.electivechaos.checklistapp.pojo.ImageDetailsPOJO;
-import com.electivechaos.checklistapp.adapters.CustomCategoryPopUpAdapter;
-import com.electivechaos.checklistapp.database.ReportsListDBHelper;
-
-
-import java.util.ArrayList;
-import java.util.Collections;
 
 /**
  * Created by krishna on 11/10/17.
@@ -37,7 +26,6 @@ public class SingleImageDetailsActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.single_image_details_layout);
-        ReportsListDBHelper dbHelper = new ReportsListDBHelper(SingleImageDetailsActivity.this);
         ImageView imgView = findViewById(R.id.imageView);
         final EditText title = findViewById(R.id.clicked_image_title);
         final EditText description = findViewById(R.id.clicked_image_description);
