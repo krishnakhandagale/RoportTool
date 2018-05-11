@@ -15,12 +15,13 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
-import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ExpandableListView;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import com.electivechaos.checklistapp.R;
 import com.electivechaos.checklistapp.adapters.CustomCategoryPopUpAdapter;
@@ -40,7 +41,6 @@ import com.electivechaos.checklistapp.pojo.ImageDetailsPOJO;
 import com.electivechaos.checklistapp.pojo.Label;
 import com.electivechaos.checklistapp.pojo.ReportPOJO;
 import com.electivechaos.checklistapp.utils.CommonUtils;
-import com.itextpdf.text.LargeElement;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -70,7 +70,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.add_edit_report_activity_layout);
 
         progressBarLayout = findViewById(R.id.progressBarLayout);
         categoryListDBHelper = CategoryListDBHelper.getInstance(this);
@@ -83,8 +83,10 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         fragmentTransaction.commit();
         tabName = "ClaimDetailsFragment";
 
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         ActionBar actionbar = getSupportActionBar();
         getSupportActionBar().setTitle("Claim Details");
 
@@ -195,14 +197,31 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(final MenuItem item) {
+
         switch (item.getItemId()) {
             case android.R.id.home:
                 mDrawerLayout.openDrawer(GravityCompat.START);
                 return true;
+            case R.id.edit:
+                getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+                getSupportActionBar().setDisplayShowCustomEnabled(true);
 
+                View view = getLayoutInflater().inflate(R.layout.edit_label_actionbar_layout, null);
+                view.findViewById(R.id.backButton).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP);
+                        getSupportActionBar().setDisplayShowCustomEnabled(false);
+                        item.setVisible(true);
+                    }
+                });
+
+                Toolbar.LayoutParams layout = new Toolbar.LayoutParams(Toolbar.LayoutParams.FILL_PARENT, Toolbar.LayoutParams.FILL_PARENT);
+                getSupportActionBar().setCustomView(view, layout);
+                item.setVisible(false);
         }
-        return super.onOptionsItemSelected(item);
+        return true;
     }
 
     @Override
@@ -473,5 +492,11 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.actionbar_action_menu, menu);
+        return true;
 
+    }
 }
