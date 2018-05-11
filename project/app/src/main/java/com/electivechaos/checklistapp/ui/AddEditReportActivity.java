@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -17,6 +18,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
@@ -78,7 +80,6 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         FragmentManager transactionManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
         fragmentTransaction.replace(R.id.content_frame, new ClaimDetailsFragment());
-        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
         tabName = "ClaimDetailsFragment";
 
@@ -136,7 +137,6 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
                     claimDetailsFragment.setArguments(claimDetailsData);
                     fragmentTransaction.replace(R.id.content_frame, claimDetailsFragment);
-                    fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.commit();
                     tabName = "ClaimDetailsFragment";
 
@@ -150,7 +150,6 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                     FragmentManager transactionManager = getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
                     fragmentTransaction.replace(R.id.content_frame, new CauseOfLossFragment());
-                    fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.commit();
                     tabName = "CauseOfLossFragment";
 
@@ -162,7 +161,6 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                     FragmentManager transactionManager = getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
                     fragmentTransaction.replace(R.id.content_frame, new PointOfOriginFragment());
-                    fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.commit();
                     tabName = "PointOfOriginFragment";
 
@@ -183,7 +181,6 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                 FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
                 AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment = AddEditReportSelectedImagesFragment.initFragment(reportPOJO.getLabelArrayList().get(childPosition).getSelectedImages(), reportPOJO.getLabelArrayList().get(childPosition).getSelectedElevationImages(), childPosition);
                 fragmentTransaction.replace(R.id.content_frame, addEditReportSelectedImagesFragment);
-                fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
                 selectedFragmentPosition = childPosition + 3;
                 tabName = "AddEditReportSelectedImagesFragment";
@@ -224,32 +221,26 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
     @Override
     public void onBackPressed() {
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-        LayoutInflater inflater = this.getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.back_button_confirmation_dialog, null);
-        dialogBuilder.setView(dialogView);
 
-        TextView positiveBtn = dialogView.findViewById(R.id.positive_button);
-        TextView negativeBtn = dialogView.findViewById(R.id.negative_button);
-
-
-        final AlertDialog alertDialog = dialogBuilder.create();
-
-        positiveBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alertDialog.dismiss();
-                AddEditReportActivity.super.onBackPressed();
-            }
-        });
-
-        negativeBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alertDialog.dismiss();
-            }
-        });
-        alertDialog.show();
+        AlertDialog.Builder builder = new AlertDialog.Builder(AddEditReportActivity.this);
+        builder.setTitle("Go Back")
+                .setMessage("Pressing back will take you to previous screen, are you sure wanna go back ?")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                      AddEditReportActivity.super.onBackPressed();
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+        Button negativeButton = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
+        negativeButton.setTextColor(ContextCompat.getColor(AddEditReportActivity.this,R.color.colorPrimaryDark));
+        Button positiveButton = alert.getButton(DialogInterface.BUTTON_POSITIVE);
+        positiveButton.setTextColor(ContextCompat.getColor(AddEditReportActivity.this,R.color.colorPrimaryDark));
     }
 
     @Override
@@ -310,10 +301,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment = AddEditReportSelectedImagesFragment.initFragment(new ArrayList<ImageDetailsPOJO>(),new ArrayList<ImageDetailsPOJO>(),labelList.size()-1);
         fragmentTransaction.replace(R.id.content_frame, addEditReportSelectedImagesFragment);
-        fragmentTransaction.addToBackStack(null);
-
         fragmentTransaction.commit();
-
         selectedFragmentPosition = labelList.size() -1;
         getSupportActionBar().setTitle(label.getName());
     }
@@ -370,7 +358,6 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
             FragmentManager transactionManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
             fragmentTransaction.replace(R.id.content_frame,new CauseOfLossFragment());
-            fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
             tabName="CauseOfLossFragment";
 
@@ -381,7 +368,6 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
             FragmentManager transactionManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
             fragmentTransaction.replace(R.id.content_frame,new PointOfOriginFragment());
-            fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
             tabName="PointOfOriginFragment";
 
@@ -395,7 +381,6 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                 FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
                 AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment = AddEditReportSelectedImagesFragment.initFragment(labelArrayList.get(selectedFragmentPosition - 3).getSelectedImages(),labelArrayList.get(selectedFragmentPosition - 3).getSelectedElevationImages(), selectedFragmentPosition - 3);
                 fragmentTransaction.replace(R.id.content_frame, addEditReportSelectedImagesFragment);
-                fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
                 tabName = "AddEditReportSelectedImagesFragment";
 
