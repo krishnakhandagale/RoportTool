@@ -10,6 +10,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -192,23 +193,27 @@ public class ClaimDetailsFragment  extends Fragment{
     }
     public void animateFAB() {
         if (isFabOpen) {
-            showFabBtn.startAnimation(rotate_backward);
+
             fabGoNextBtn.startAnimation(fab_close);
             fabAddLabelBtn.startAnimation(fab_close);
             fabGenerateReportBtn.startAnimation(fab_close);
             fabGoNextBtn.setClickable(false);
             fabAddLabelBtn.setClickable(false);
             fabGenerateReportBtn.setClickable(false);
+            showFabBtn.setImageResource(R.drawable.ic_more_vertical_white);
             isFabOpen = false;
 
         } else {
-            showFabBtn.startAnimation(rotate_forward);
+
+
+
             fabGoNextBtn.startAnimation(fab_open);
             fabAddLabelBtn.startAnimation(fab_open);
             fabGenerateReportBtn.startAnimation(fab_open);
             fabGoNextBtn.setClickable(true);
             fabAddLabelBtn.setClickable(true);
             fabGenerateReportBtn.setClickable(true);
+            showFabBtn.setImageResource(R.drawable.ic_close_white);
             isFabOpen = true;
         }
 
