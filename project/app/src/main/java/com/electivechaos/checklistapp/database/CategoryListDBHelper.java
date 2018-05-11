@@ -17,7 +17,7 @@ import java.util.ArrayList;
  */
 
 public class CategoryListDBHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 23;
+    private static final int DATABASE_VERSION = 25;
 
 
     // Database Name
@@ -88,7 +88,6 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
 
     public static synchronized CategoryListDBHelper getInstance(Context context) {
 
-        // Use the application context, which will ensure that you
         // don't accidentally leak an Activity's context.
         if (sInstance == null) {
             sInstance = new CategoryListDBHelper(context.getApplicationContext());
