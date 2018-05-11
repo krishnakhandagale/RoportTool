@@ -36,6 +36,7 @@ import com.electivechaos.checklistapp.fragments.PointOfOriginFragment;
 import com.electivechaos.checklistapp.interfaces.AddEditLabelInterface;
 import com.electivechaos.checklistapp.interfaces.ClaimDetailsDataInterface;
 import com.electivechaos.checklistapp.interfaces.LossLocationDataInterface;
+import com.electivechaos.checklistapp.interfaces.NextButtonClickListener;
 import com.electivechaos.checklistapp.interfaces.SelectedImagesDataInterface;
 import com.electivechaos.checklistapp.pojo.Category;
 import com.electivechaos.checklistapp.pojo.ImageDetailsPOJO;
@@ -48,7 +49,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-public class AddEditReportActivity extends AppCompatActivity implements  DrawerMenuListAdapter.DrawerItemClickListener, AddEditLabelInterface, ClaimDetailsDataInterface, LossLocationDataInterface,SelectedImagesDataInterface {
+public class AddEditReportActivity extends AppCompatActivity implements  DrawerMenuListAdapter.DrawerItemClickListener, AddEditLabelInterface, ClaimDetailsDataInterface, LossLocationDataInterface,SelectedImagesDataInterface,NextButtonClickListener {
     private DrawerLayout mDrawerLayout;
     private ExpandableListView mExpandableListView;
     private DrawerMenuListAdapter drawerMenuListAdapter;
@@ -361,8 +362,34 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
 
     }
 
+    @Override
+    public void onNextButtonClick() {
 
+        if(selectedFragmentPosition==0) {
+            mDrawerLayout.closeDrawers();
+            FragmentManager transactionManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
+            fragmentTransaction.replace(R.id.content_frame,new CauseOfLossFragment());
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
+            tabName="CauseOfLossFragment";
 
+            selectedFragmentPosition=1;
+        }
+        else if(selectedFragmentPosition==1) {
+            mDrawerLayout.closeDrawers();
+            FragmentManager transactionManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
+            fragmentTransaction.replace(R.id.content_frame,new PointOfOriginFragment());
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
+            tabName="PointOfOriginFragment";
+
+            selectedFragmentPosition=2;
+
+        }
+
+    }
 
 
     // Task for label addition
@@ -440,4 +467,6 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
 
         }
     }
+
+
 }

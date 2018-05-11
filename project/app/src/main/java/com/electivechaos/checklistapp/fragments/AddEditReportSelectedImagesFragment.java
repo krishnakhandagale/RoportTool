@@ -157,10 +157,10 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
         // Inflate the layout for this fragment
         View selectImageView = inflater.inflate(R.layout.fragment_select_photo, container, false);
 
-        showFabBtn = (FloatingActionButton) selectImageView.findViewById(R.id.showFab);
-        fabGoNextBtn = (FloatingActionButton)selectImageView. findViewById(R.id.fabGoNext);
-        fabAddLabelBtn = (FloatingActionButton)selectImageView. findViewById(R.id.fabAddLabel);
-        fabGenerateReportBtn = (FloatingActionButton) selectImageView.findViewById(R.id.fabGenerateReport);
+        showFabBtn =  selectImageView.findViewById(R.id.showFab);
+        fabGoNextBtn = selectImageView.findViewById(R.id.fabGoNext);
+        fabAddLabelBtn = selectImageView.findViewById(R.id.fabAddLabel);
+        fabGenerateReportBtn = selectImageView.findViewById(R.id.fabGenerateReport);
 
         fab_open = AnimationUtils.loadAnimation(getActivity(), R.anim.fab_open);
         fab_close = AnimationUtils.loadAnimation(getActivity(), R.anim.fab_close);

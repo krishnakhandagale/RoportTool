@@ -24,11 +24,11 @@ public class PointOfOriginFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view= inflater.inflate(R.layout.fragment_point_of_origin, container, false);
-        showFabBtn = (FloatingActionButton) view.findViewById(R.id.showFab);
-        fabGoNextBtn = (FloatingActionButton)view. findViewById(R.id.fabGoNext);
-        fabAddLabelBtn = (FloatingActionButton)view. findViewById(R.id.fabAddLabel);
-        fabAddImagesBtn = (FloatingActionButton) view.findViewById(R.id.fabAddImages);
-        fabGenerateReportBtn = (FloatingActionButton) view.findViewById(R.id.fabGenerateReport);
+        showFabBtn = view.findViewById(R.id.showFab);
+        fabGoNextBtn = view.findViewById(R.id.fabGoNext);
+        fabAddLabelBtn = view.findViewById(R.id.fabAddLabel);
+        fabAddImagesBtn = view.findViewById(R.id.fabAddImages);
+        fabGenerateReportBtn = view.findViewById(R.id.fabGenerateReport);
 
         fab_open = AnimationUtils.loadAnimation(getActivity(), R.anim.fab_open);
         fab_close = AnimationUtils.loadAnimation(getActivity(), R.anim.fab_close);
