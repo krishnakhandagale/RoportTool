@@ -1015,7 +1015,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
     }
     public void animateFAB() {
         if (isFabOpen) {
-            showFabBtn.startAnimation(rotate_backward);
+            showFabBtn.setImageResource(R.drawable.ic_more_vertical_white);
             fabGoNextBtn.startAnimation(fab_close);
             selectPhotoBtn.startAnimation(fab_close);
             fabAddLabelBtn.startAnimation(fab_close);
@@ -1027,7 +1027,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
             isFabOpen = false;
 
         } else {
-            showFabBtn.startAnimation(rotate_forward);
+            showFabBtn.setImageResource(R.drawable.ic_close_white);
             fabGoNextBtn.startAnimation(fab_open);
             selectPhotoBtn.startAnimation(fab_open);
             fabAddLabelBtn.startAnimation(fab_open);
