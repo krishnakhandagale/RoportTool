@@ -17,7 +17,7 @@ import java.util.ArrayList;
  */
 
 public class CategoryListDBHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 22;
+    private static final int DATABASE_VERSION = 23;
 
 
     // Database Name
@@ -84,6 +84,18 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
     private static final String KEY_CAUSE_OF_LOSS_NAME = "name";
     private static final String KEY_CAUSE_OF_LOSS_DESCRIPTION = "description";
 
+    private static CategoryListDBHelper sInstance;
+
+    public static synchronized CategoryListDBHelper getInstance(Context context) {
+
+        // Use the application context, which will ensure that you
+        // don't accidentally leak an Activity's context.
+        if (sInstance == null) {
+            sInstance = new CategoryListDBHelper(context.getApplicationContext());
+        }
+        return sInstance;
+    }
+
 
 
     public CategoryListDBHelper(Context context) {
@@ -117,8 +129,6 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 + KEY_LABEL_NAME + " TEXT,"
                 + KEY_LABEL_DESCRIPTION + " TEXT,"
 
-
-                + KEY_FK_CATEGORY_ID + " INTEGER,"
                 + KEY_FK_LABEL_REPORT_ID + " INTEGER,"
 
                 + "FOREIGN KEY("+ KEY_FK_LABEL_REPORT_ID +") REFERENCES "+TABLE_REPORTS_LIST+"("+KEY_CATEGORY_ID +")"+ " ON DELETE CASCADE)";
