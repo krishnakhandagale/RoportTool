@@ -41,7 +41,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
                 <TextView
-                    android:background="@color/card_view_dark_background"
+                    android:background="@color/cardview_dark_background"
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
                     android:text="Front"
@@ -79,7 +79,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
                     android:text="Back"
-                    android:background="@color/card_view_dark_background"
+                    android:background="@color/cardview_dark_background"
                     android:textColor="@color/white_color"
                     android:gravity="center"
                     android:layout_gravity="bottom"/>
@@ -111,7 +111,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
                     android:text="Left"
-                    android:background="@color/card_view_dark_background"
+                    android:background="@color/cardview_dark_background"
                     android:textColor="@color/white_color"
                     android:gravity="center"
                     android:layout_gravity="bottom"/>
@@ -143,7 +143,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
                     android:text="Right"
-                    android:background="@color/card_view_dark_background"
+                    android:background="@color/cardview_dark_background"
                     android:textColor="@color/white_color"
                     android:gravity="center"
                     android:layout_gravity="bottom"/>

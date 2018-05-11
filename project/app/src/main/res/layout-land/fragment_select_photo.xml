@@ -47,7 +47,7 @@
                     android:text="Front"
                     android:textColor="@color/white_color"
                     android:gravity="center"
-                    android:background="@color/card_view_dark_background"
+                    android:background="@color/cardview_dark_background"
                     android:layout_gravity="bottom"/>
 
                 <ImageView
@@ -81,7 +81,7 @@
                     android:text="Back"
                     android:textColor="@color/white_color"
                     android:gravity="center"
-                    android:background="@color/card_view_dark_background"
+                    android:background="@color/cardview_dark_background"
                     android:layout_gravity="bottom"/>
                 <ImageView
                     android:id="@+id/imgViewBack"
@@ -113,7 +113,7 @@
                     android:text="Left"
                     android:textColor="@color/white_color"
                     android:gravity="center"
-                    android:background="@color/card_view_dark_background"
+                    android:background="@color/cardview_dark_background"
                     android:layout_gravity="bottom"/>
 
 
@@ -147,7 +147,7 @@
                     android:text="Right"
                     android:textColor="@color/white_color"
                     android:gravity="center"
-                    android:background="@color/card_view_dark_background"
+                    android:background="@color/cardview_dark_background"
                     android:layout_gravity="bottom"/>
 
                 <ImageView
