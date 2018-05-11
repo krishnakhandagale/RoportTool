@@ -40,6 +40,7 @@ import com.electivechaos.checklistapp.ImageHelper;
 import com.electivechaos.checklistapp.PermissionUtilities;
 import com.electivechaos.checklistapp.R;
 import com.electivechaos.checklistapp.SingleMediaScanner;
+import com.electivechaos.checklistapp.adapters.DrawerMenuListAdapter;
 import com.electivechaos.checklistapp.interfaces.NextButtonClickListener;
 import com.electivechaos.checklistapp.interfaces.SelectedImagesDataInterface;
 import com.electivechaos.checklistapp.listeners.OnImageRemovalListener;
@@ -123,6 +124,8 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
 
     private NextButtonClickListener nextButtonClickListener;
 
+    private DrawerMenuListAdapter.OnLabelAddClickListener onLabelAddClickListener;
+
     public static AddEditReportSelectedImagesFragment initFragment(ArrayList<ImageDetailsPOJO> selectedImageList, ArrayList<ImageDetailsPOJO> selectedElevationImagesList,int position) {
         AddEditReportSelectedImagesFragment fragment = new AddEditReportSelectedImagesFragment();
         Bundle args = new Bundle();
@@ -181,6 +184,13 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                 selectedImageList = (ArrayList<ImageDetailsPOJO>) selectedImgs;
             }
         };
+
+        fabAddLabelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onLabelAddClickListener.onLabelAddClick();
+            }
+        });
 
         options = new RequestOptions()
                 .placeholder(R.drawable.imagepicker_image_placeholder)
@@ -941,6 +951,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
         try{
             selectedImagesDataInterface = (SelectedImagesDataInterface) getActivity();
             nextButtonClickListener = (NextButtonClickListener) getActivity();
+            onLabelAddClickListener = (DrawerMenuListAdapter.OnLabelAddClickListener)getActivity();
         }catch (ClassCastException exception){
             exception.printStackTrace();
         }
