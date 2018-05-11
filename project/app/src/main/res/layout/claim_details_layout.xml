@@ -17,8 +17,7 @@
         android:layout_marginTop="36dp"
         android:id="@+id/claim_details_view_pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/title_tabs_layout"/>
+        android:layout_height="match_parent" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabGenerateReport"

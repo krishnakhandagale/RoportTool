@@ -4,9 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:weightSum="5"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:weightSum="5">
         <android.support.design.widget.TextInputLayout
             android:layout_marginTop="30dp"
             android:id="@+id/textInputLayout"
