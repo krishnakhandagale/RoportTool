@@ -1,5 +1,6 @@
 package com.electivechaos.checklistapp.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,12 +13,15 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
 import com.electivechaos.checklistapp.R;
+import com.electivechaos.checklistapp.interfaces.NextButtonClickListener;
 
 public class CauseOfLossFragment extends Fragment {
 
     private Boolean isFabOpen = false;
     private FloatingActionButton showFabBtn,fabGoNextBtn, fabAddImagesBtn, fabAddLabelBtn, fabGenerateReportBtn;
     private Animation fab_open, fab_close, rotate_forward, rotate_backward;
+
+    private NextButtonClickListener nextButtonClickListener;
 
     @Nullable
     @Override
@@ -39,6 +43,15 @@ public class CauseOfLossFragment extends Fragment {
                 animateFAB();
             }
         });
+
+        fabGoNextBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nextButtonClickListener.onNextButtonClick();
+            }
+        });
+
+
 
         return view;
     }
@@ -75,5 +88,11 @@ public class CauseOfLossFragment extends Fragment {
             isFabOpen = true;
         }
 
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        nextButtonClickListener=(NextButtonClickListener)getActivity();
     }
 }

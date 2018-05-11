@@ -39,8 +39,6 @@ public class ClaimDetailsTabsFragment extends Fragment {
 
 
     private ClaimDetailsDataInterface claimDetailsDataInterface;
-    private NextButtonClickListener nextButtonClickListener;
-    private FloatingActionButton fabGoToNextBtn;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,7 +70,7 @@ public class ClaimDetailsTabsFragment extends Fragment {
         clientNameEditText.setText(clientName);
         claimNumberEditText.setText(claimNumber);
 
-      // fabGoToNextBtn=(FloatingActionButton) view.findViewById(R.id.fabGoNext);
+
 
         reportTitleEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -144,12 +142,7 @@ public class ClaimDetailsTabsFragment extends Fragment {
             }
         });
 
-       /* fabGoToNextBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                nextButtonClickListener.onNextButtonClick();
-            }
-        });*/
+
 
         return view;
     }
@@ -163,7 +156,7 @@ public class ClaimDetailsTabsFragment extends Fragment {
             exception.printStackTrace();
         }
 
-       // nextButtonClickListener=(NextButtonClickListener)getActivity();
+
 
 
     }

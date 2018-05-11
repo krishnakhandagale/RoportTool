@@ -69,10 +69,10 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
 
         setContentView(R.layout.activity_main);
 
-
-
         progressBarLayout = findViewById(R.id.progressBarLayout);
         categoryListDBHelper = CategoryListDBHelper.getInstance(this);
+
+        selectedFragmentPosition=0;
 
         FragmentManager transactionManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
@@ -154,7 +154,6 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
                     tabName = "CauseOfLossFragment";
 
                     selectedFragmentPosition = 1;
-
                     getSupportActionBar().setTitle("Cause Of Loss");
 
                 } else if (parentMenuItems.get(groupPosition).equals("Point Of Origin")) {
@@ -369,6 +368,7 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
             fragmentTransaction.commit();
             tabName="CauseOfLossFragment";
 
+            getSupportActionBar().setTitle("Cause Of Loss");
             selectedFragmentPosition=1;
         }
         else if(selectedFragmentPosition==1) {
@@ -380,6 +380,7 @@ public class AddEditReportActivity extends AppCompatActivity implements  DrawerM
             fragmentTransaction.commit();
             tabName="PointOfOriginFragment";
 
+            getSupportActionBar().setTitle("Point Of Origin");
             selectedFragmentPosition=2;
 
         }
