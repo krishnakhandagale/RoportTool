@@ -302,7 +302,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment = AddEditReportSelectedImagesFragment.initFragment(new ArrayList<ImageDetailsPOJO>(),new ArrayList<ImageDetailsPOJO>(),labelList.size()-1);
         fragmentTransaction.replace(R.id.content_frame, addEditReportSelectedImagesFragment);
         fragmentTransaction.commit();
-        selectedFragmentPosition = labelList.size() -1;
+        selectedFragmentPosition = (labelList.size() -1) - 3;
         getSupportActionBar().setTitle(label.getName());
     }
 

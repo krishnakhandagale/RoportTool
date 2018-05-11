@@ -205,8 +205,7 @@ public class ClaimDetailsFragment  extends Fragment{
 
         } else {
 
-
-
+            
             fabGoNextBtn.startAnimation(fab_open);
             fabAddLabelBtn.startAnimation(fab_open);
             fabGenerateReportBtn.startAnimation(fab_open);
