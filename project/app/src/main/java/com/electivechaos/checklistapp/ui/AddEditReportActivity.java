@@ -221,17 +221,18 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
             case R.id.edit:
 
                 View view = getLayoutInflater().inflate(R.layout.edit_label_actionbar_layout, null);
-                EditText editLabel=view.findViewById(R.id.editText);
+                final EditText editLabel=view.findViewById(R.id.editText);
 
                 editLabel.setText(activityActionBar.getTitle());
                 editLabel.setFocusableInTouchMode(true);
                 editLabel.setFocusable(true);
                 editLabel.requestFocus();
-                Label label=(Label)toolbar.getTag();
+                final Label label=(Label)toolbar.getTag();
 
                 if(label != null){
                   // Here we get all the label information
                 }
+
                 view.findViewById(R.id.backButton).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -246,8 +247,15 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                     @Override
                     public void onClick(View v) {
                         //database call for edit label and notify data set changed for expandable list view.
+                        label.setName(editLabel.getText().toString());
+                        categoryListDBHelper.updateLabel(label);
+                        activityActionBar.setTitle(editLabel.getText().toString());
+                        drawerMenuListAdapter.notifyDataSetChanged();
 
-
+                        activityActionBar.setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP);
+                        activityActionBar.setDisplayShowTitleEnabled(true);
+                        activityActionBar.setDisplayShowCustomEnabled(false);
+                        item.setVisible(true);
                     }
                 });
 
@@ -363,7 +371,6 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         selectedFragmentPosition = (labelList.size() -1) - 3;
         activityActionBar.setTitle(label.getName());
         actionBarEditBtn.setVisible(true);
-
         toolbar.setTag(label);
 
     }

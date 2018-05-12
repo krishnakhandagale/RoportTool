@@ -293,7 +293,6 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(KEY_CATEGORY_NAME, label.getName());
         contentValues.put(KEY_CATEGORY_DESCRIPTION, label.getDescription());
-        contentValues.put(KEY_FK_CATEGORY_ID, label.getCategoryID());
         return  db.update(TABLE_CATEGORY_LABELS, contentValues,KEY_LABEL_ID+"="+label.getId(),null);
     }
     public ArrayList<Label> getLabelList(){
