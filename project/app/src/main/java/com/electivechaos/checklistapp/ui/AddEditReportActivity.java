@@ -212,6 +212,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                     @Override
                     public void onClick(View v) {
                         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP);
+                        getSupportActionBar().setDisplayShowTitleEnabled(true);
                         getSupportActionBar().setDisplayShowCustomEnabled(false);
                         item.setVisible(true);
                     }
