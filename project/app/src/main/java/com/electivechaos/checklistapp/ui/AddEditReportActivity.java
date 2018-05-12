@@ -20,6 +20,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.Toast;
 
@@ -65,6 +66,12 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     private ReportPOJO reportPOJO = new ReportPOJO();
     private View progressBarLayout;
 
+    private  Toolbar toolbar;
+    private MenuItem actionBarEditBtn;
+    private ActionBar activityActionBar;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,14 +91,16 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         tabName = "ClaimDetailsFragment";
 
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        ActionBar actionbar = getSupportActionBar();
-        getSupportActionBar().setTitle("Claim Details");
 
-        actionbar.setDisplayHomeAsUpEnabled(true);
-        actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
+        activityActionBar = getSupportActionBar();
+        activityActionBar.setTitle("Claim Details");
+
+
+        activityActionBar.setDisplayHomeAsUpEnabled(true);
+        activityActionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
 
 
         mExpandableListView = findViewById(R.id.slider_menu);
@@ -144,7 +153,8 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
 
                     selectedFragmentPosition = 0;
-                    getSupportActionBar().setTitle("Claim Details");
+                    activityActionBar.setTitle("Claim Details");
+                    actionBarEditBtn.setVisible(false);
 
 
                 } else if (parentMenuItems.get(groupPosition).equals("Cause Of Loss")) {
@@ -156,7 +166,8 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                     tabName = "CauseOfLossFragment";
 
                     selectedFragmentPosition = 1;
-                    getSupportActionBar().setTitle("Cause Of Loss");
+                    activityActionBar.setTitle("Cause Of Loss");
+                    actionBarEditBtn.setVisible(false);
 
                 } else if (parentMenuItems.get(groupPosition).equals("Point Of Origin")) {
                     mDrawerLayout.closeDrawer(Gravity.LEFT);
@@ -168,7 +179,8 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
                     selectedFragmentPosition = 2;
 
-                    getSupportActionBar().setTitle("Point Of Origin");
+                    activityActionBar.setTitle("Point Of Origin");
+                    actionBarEditBtn.setVisible(false);
                 }
                 return false;
             }
@@ -178,6 +190,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         mExpandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+
                 mDrawerLayout.closeDrawer(Gravity.LEFT);
                 FragmentManager transactionManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
@@ -186,7 +199,9 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                 fragmentTransaction.commit();
                 selectedFragmentPosition = childPosition + 3;
                 tabName = "AddEditReportSelectedImagesFragment";
-                getSupportActionBar().setTitle(reportPOJO.getLabelArrayList().get(childPosition).getName());
+                activityActionBar.setTitle(reportPOJO.getLabelArrayList().get(childPosition).getName());
+                actionBarEditBtn.setVisible(true);
+                toolbar.setTag(reportPOJO.getLabelArrayList().get(childPosition));
                 return false;
             }
         });
@@ -204,22 +219,45 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                 mDrawerLayout.openDrawer(GravityCompat.START);
                 return true;
             case R.id.edit:
-                getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-                getSupportActionBar().setDisplayShowCustomEnabled(true);
 
                 View view = getLayoutInflater().inflate(R.layout.edit_label_actionbar_layout, null);
+                EditText editLabel=view.findViewById(R.id.editText);
+
+                editLabel.setText(activityActionBar.getTitle());
+                editLabel.setFocusableInTouchMode(true);
+                editLabel.setFocusable(true);
+                editLabel.requestFocus();
+                Label label=(Label)toolbar.getTag();
+
+                if(label != null){
+                  // Here we get all the label information
+                }
                 view.findViewById(R.id.backButton).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP);
-                        getSupportActionBar().setDisplayShowTitleEnabled(true);
-                        getSupportActionBar().setDisplayShowCustomEnabled(false);
+                        activityActionBar.setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP);
+                        activityActionBar.setDisplayShowTitleEnabled(true);
+                        activityActionBar.setDisplayShowCustomEnabled(false);
                         item.setVisible(true);
                     }
                 });
 
+                view.findViewById(R.id.doneBtn).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //database call for edit label and notify data set changed for expandable list view.
+
+
+                    }
+                });
+
+                activityActionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+                activityActionBar.setDisplayShowCustomEnabled(true);
+
+
+
                 Toolbar.LayoutParams layout = new Toolbar.LayoutParams(Toolbar.LayoutParams.FILL_PARENT, Toolbar.LayoutParams.FILL_PARENT);
-                getSupportActionBar().setCustomView(view, layout);
+                activityActionBar.setCustomView(view, layout);
                 item.setVisible(false);
         }
         return true;
@@ -323,7 +361,11 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         fragmentTransaction.replace(R.id.content_frame, addEditReportSelectedImagesFragment);
         fragmentTransaction.commit();
         selectedFragmentPosition = (labelList.size() -1) - 3;
-        getSupportActionBar().setTitle(label.getName());
+        activityActionBar.setTitle(label.getName());
+        actionBarEditBtn.setVisible(true);
+
+        toolbar.setTag(label);
+
     }
 
 
@@ -381,7 +423,9 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
             fragmentTransaction.commit();
             tabName="CauseOfLossFragment";
 
-            getSupportActionBar().setTitle("Cause Of Loss");
+            activityActionBar.setTitle("Cause Of Loss");
+            actionBarEditBtn.setVisible(false);
+
         }
         else if(selectedFragmentPosition == 2) {
             mDrawerLayout.closeDrawer(Gravity.LEFT);
@@ -391,7 +435,8 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
             fragmentTransaction.commit();
             tabName="PointOfOriginFragment";
 
-            getSupportActionBar().setTitle("Point Of Origin");
+            activityActionBar.setTitle("Point Of Origin");
+            actionBarEditBtn.setVisible(false);
 
         }else if(selectedFragmentPosition > 2){
 
@@ -404,7 +449,9 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                 fragmentTransaction.commit();
                 tabName = "AddEditReportSelectedImagesFragment";
 
-                getSupportActionBar().setTitle(labelArrayList.get(selectedFragmentPosition - 3).getName());
+                activityActionBar.setTitle(labelArrayList.get(selectedFragmentPosition - 3).getName());
+                actionBarEditBtn.setVisible(true);
+                toolbar.setTag(labelArrayList.get(selectedFragmentPosition - 3));
             }else{
                 selectedFragmentPosition = selectedFragmentPosition -1;
             }
@@ -497,6 +544,9 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.actionbar_action_menu, menu);
+        actionBarEditBtn= menu.findItem(R.id.edit);
+        actionBarEditBtn.setVisible(false);
+
         return true;
 
     }

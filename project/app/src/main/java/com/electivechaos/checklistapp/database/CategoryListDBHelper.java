@@ -17,7 +17,7 @@ import java.util.ArrayList;
  */
 
 public class CategoryListDBHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 25;
+    private static final int DATABASE_VERSION = 30;
 
 
     // Database Name
@@ -128,9 +128,9 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 + KEY_LABEL_NAME + " TEXT,"
                 + KEY_LABEL_DESCRIPTION + " TEXT,"
 
-                + KEY_FK_LABEL_REPORT_ID + " INTEGER,"
+                + KEY_FK_LABEL_REPORT_ID + " TEXT,"
 
-                + "FOREIGN KEY("+ KEY_FK_LABEL_REPORT_ID +") REFERENCES "+TABLE_REPORTS_LIST+"("+KEY_CATEGORY_ID +")"+ " ON DELETE CASCADE)";
+                + "FOREIGN KEY("+ KEY_FK_LABEL_REPORT_ID +") REFERENCES "+TABLE_REPORTS_LIST+"("+ KEY_REPORT_ID +")"+ " ON DELETE CASCADE)";
 
         String CREATE_CAUSE_OF_LOSS_TABLE = "CREATE TABLE "
                 + TABLE_CAUSE_OF_LOSS + "("
@@ -285,7 +285,6 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(KEY_LABEL_NAME, label.getName());
         contentValues.put(KEY_LABEL_DESCRIPTION, label.getDescription());
-        contentValues.put(KEY_FK_CATEGORY_ID, label.getCategoryID());
         return  db.insert(TABLE_CATEGORY_LABELS,null,contentValues);
     }
 
