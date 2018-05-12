@@ -372,6 +372,9 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         activityActionBar.setTitle(label.getName());
         actionBarEditBtn.setVisible(true);
         toolbar.setTag(label);
+        activityActionBar.setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP);
+        activityActionBar.setDisplayShowTitleEnabled(true);
+        activityActionBar.setDisplayShowCustomEnabled(false);
 
     }
 
