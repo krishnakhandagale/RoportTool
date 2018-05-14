@@ -8,44 +8,45 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="@drawable/ic_launcher_background" />
+
     <LinearLayout
-        android:layout_margin="5dp"
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_gravity="bottom"
+        android:layout_margin="5dp"
         android:gravity="bottom"
-        android:layout_gravity="bottom">
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/shape_chip_drawable_gray"
-            android:text="This is chip!"
+            android:text="@string/damage"
             android:textColor="@android:color/white"
             android:textStyle="bold" />
 
         <EditText
-            android:layout_marginTop="5dp"
-            android:padding="5dp"
-            android:background="@drawable/rounded_edit_text"
             android:id="@+id/image_title"
-            android:imeOptions="actionNext"
-            android:nextFocusRight="@+id/image_description"
-            android:hint="@string/enter_title"
-            android:inputType="text"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_width="match_parent" />
+            android:layout_marginTop="5dp"
+            android:background="@drawable/rounded_edit_text"
+            android:hint="@string/enter_title"
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:nextFocusRight="@+id/image_description"
+            android:padding="5dp" />
 
         <EditText
-            android:layout_marginTop="5dp"
-            android:padding="5dp"
-            android:background="@drawable/rounded_edit_text"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:imeOptions="actionDone"
             android:id="@+id/image_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/rounded_edit_text"
             android:hint="@string/enter_note"
-            android:inputType="textImeMultiLine" />
+            android:imeOptions="actionDone"
+            android:inputType="textImeMultiLine"
+            android:padding="5dp" />
 
 
     </LinearLayout>
