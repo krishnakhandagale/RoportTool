@@ -18,6 +18,7 @@
         android:orientation="vertical">
 
         <CheckedTextView
+            android:id="@+id/damageTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/shape_chip_drawable_gray"
@@ -26,7 +27,7 @@
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/image_title"
+            android:id="@+id/imageTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"

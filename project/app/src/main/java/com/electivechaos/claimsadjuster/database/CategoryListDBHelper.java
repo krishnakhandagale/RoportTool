@@ -72,6 +72,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
     private static final String KEY_IMAGE_TITLE = "image_title";
     private static final String KEY_IMAGE_DESCRIPTION = "image_description";
     private static final String KEY_IMAGE_URL = "image_url";
+    private static final String KEY_IS_DAMAGE = "set_damage";
 
 
 
@@ -145,6 +146,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 + KEY_IMAGE_DESCRIPTION + " TEXT,"
 
                 + KEY_IMAGE_URL+ " TEXT,"
+                + KEY_IS_DAMAGE+ " BOOLEAN,"
                 + KEY_FK_LABEL_ID+ " INTEGER,"
                 + "FOREIGN KEY("+ KEY_FK_LABEL_ID +") REFERENCES "+TABLE_CATEGORY_LABELS+"("+KEY_LABEL_ID+ ")"+ " ON DELETE CASCADE )";
 

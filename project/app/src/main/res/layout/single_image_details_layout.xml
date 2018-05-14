@@ -27,6 +27,7 @@
             android:background="@drawable/rounded_button"
             android:src="@drawable/ic_send_white" />
         <CheckedTextView
+            android:id="@+id/isDamageTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/shape_chip_drawable_gray"
