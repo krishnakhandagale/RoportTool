@@ -17,7 +17,7 @@
         android:gravity="bottom"
         android:orientation="vertical">
 
-        <TextView
+        <CheckedTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/shape_chip_drawable_gray"
@@ -47,6 +47,7 @@
             android:imeOptions="actionDone"
             android:inputType="textImeMultiLine"
             android:padding="5dp" />
+
 
 
     </LinearLayout>
