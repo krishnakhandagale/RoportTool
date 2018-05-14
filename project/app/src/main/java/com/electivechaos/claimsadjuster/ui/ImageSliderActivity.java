@@ -120,6 +120,11 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
         imagesInformation.get(position).setDescription(description);
     }
 
+    @Override
+    public void setUnsetDamage(boolean isDamage, int position) {
+        imagesInformation.get(position).setIsDamage(isDamage);
+    }
+
     public class ImagePagerAdapter extends FragmentStatePagerAdapter {
         public ImagePagerAdapter(FragmentManager fragmentManager) {
             super(fragmentManager);

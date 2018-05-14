@@ -627,6 +627,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                     selectedImageList.get(position).setTitle(imageDetails.getTitle());
                     selectedImageList.get(position).setImageUrl(imageDetails.getImageUrl());
                     selectedImageList.get(position).setDescription(imageDetails.getDescription());
+                    selectedImageList.get(position).setIsDamage(imageDetails.getIsDamage());
 
                 } else {
                     if (selectedImageList == null) {
@@ -765,6 +766,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                     ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
                     imgObj.setDescription("");
                     imgObj.setTitle("");
+                    imgObj.setIsDamage(false);
                     imgObj.setImageUrl(path);
                     ImageHelper.revokeAppPermission(getContext(), fileUri);
                     Intent intent = new Intent(getContext(), SingleImageDetailsActivity.class);

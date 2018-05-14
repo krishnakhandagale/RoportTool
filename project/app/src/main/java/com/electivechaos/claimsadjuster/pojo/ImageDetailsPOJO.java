@@ -10,6 +10,15 @@ public class ImageDetailsPOJO implements Serializable {
     private String imageUrl;
     private String title;
     private String description;
+    private boolean isDamage;
+
+    public boolean getIsDamage() {
+        return isDamage;
+    }
+
+    public void setIsDamage(boolean damage) {
+        isDamage = damage;
+    }
 
     public ImageDetailsPOJO(){
         this.imageUrl = "";
@@ -39,4 +48,6 @@ public class ImageDetailsPOJO implements Serializable {
     public void setTitle(String title) {
         this.title = title;
     }
+
+
 }
