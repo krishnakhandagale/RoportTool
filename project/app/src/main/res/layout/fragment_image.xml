@@ -16,10 +16,18 @@
         android:gravity="bottom"
         android:layout_gravity="bottom">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_chip_drawable_gray"
+            android:text="This is chip!"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
+
         <EditText
             android:layout_marginTop="5dp"
             android:padding="5dp"
-            android:background="@drawable/rounded_edittext"
+            android:background="@drawable/rounded_edit_text"
             android:id="@+id/image_title"
             android:imeOptions="actionNext"
             android:nextFocusRight="@+id/image_description"
@@ -31,7 +39,7 @@
         <EditText
             android:layout_marginTop="5dp"
             android:padding="5dp"
-            android:background="@drawable/rounded_edittext"
+            android:background="@drawable/rounded_edit_text"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:imeOptions="actionDone"
