@@ -36,7 +36,7 @@
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/clicked_image_title"
+            android:id="@+id/clickedImageTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
@@ -44,11 +44,11 @@
             android:hint="@string/enter_title"
             android:imeOptions="actionNext"
             android:inputType="text"
-            android:nextFocusRight="@+id/clicked_image_description"
+            android:nextFocusRight="@+id/clickedImageDescription"
             android:padding="5dp" />
 
         <EditText
-            android:id="@+id/clicked_image_description"
+            android:id="@+id/clickedImageDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"

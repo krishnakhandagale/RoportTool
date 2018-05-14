@@ -12,7 +12,6 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.electivechaos.claimsadjuster.BaseActivity;
-import com.electivechaos.claimsadjuster.ImageFragment;
 import com.electivechaos.claimsadjuster.R;
 import com.electivechaos.claimsadjuster.pojo.ImageDetailsPOJO;
 
@@ -30,8 +29,8 @@ public class SingleImageDetailsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.single_image_details_layout);
         ImageView imgView = findViewById(R.id.imageView);
-        final EditText title = findViewById(R.id.clicked_image_title);
-        final EditText description = findViewById(R.id.clicked_image_description);
+        final EditText title = findViewById(R.id.clickedImageTitle);
+        final EditText description = findViewById(R.id.clickedImageDescription);
         final CheckedTextView isDamageTextView = findViewById(R.id.isDamageTextView);
 
 
