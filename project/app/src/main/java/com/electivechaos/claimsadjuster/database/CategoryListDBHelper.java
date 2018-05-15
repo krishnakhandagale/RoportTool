@@ -8,9 +8,13 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.electivechaos.claimsadjuster.pojo.Category;
 import com.electivechaos.claimsadjuster.pojo.CauseOfLoss;
+import com.electivechaos.claimsadjuster.pojo.ImageDetailsPOJO;
 import com.electivechaos.claimsadjuster.pojo.Label;
+import com.electivechaos.claimsadjuster.pojo.ReportItemPOJO;
+import com.electivechaos.claimsadjuster.pojo.ReportPOJO;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Created by barkhasikka on 26/04/18.
@@ -41,7 +45,6 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
     private static final String KEY_REPORT_DESCRIPTION  = "report_description";
     private static final String KEY_CLIENT_NAME = "report_client_name";
     private static final String KEY_CLAIM_NUMBER = "report_claim_number";
-    private static final String KEY_ADDRESS = "address";
     private static final String KEY_DATE_CREATED = "created_date";
     private static final String KEY_FILE_PATH = "file_path";
     private static final String KEY_LOCATION_LAT = "location_lat";
@@ -72,7 +75,8 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
     private static final String KEY_IMAGE_TITLE = "image_title";
     private static final String KEY_IMAGE_DESCRIPTION = "image_description";
     private static final String KEY_IMAGE_URL = "image_url";
-    private static final String KEY_IS_DAMAGE = "set_damage";
+    private static final String KEY_IS_DAMAGE = "is_damage";
+    private static final String KEY_IS_OVERVIEW= "is_overview";
 
 
 
@@ -111,7 +115,6 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 + KEY_REPORT_DESCRIPTION + " TEXT,"
                 + KEY_CLIENT_NAME + " TEXT,"
                 + KEY_CLAIM_NUMBER + " TEXT,"
-                + KEY_ADDRESS + " TEXT,"
                 + KEY_DATE_CREATED + " TEXT,"
                 + KEY_FILE_PATH + " TEXT,"
                 + KEY_LOCATION_LAT + " TEXT,"
@@ -147,6 +150,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
 
                 + KEY_IMAGE_URL+ " TEXT,"
                 + KEY_IS_DAMAGE+ " BOOLEAN,"
+                + KEY_IS_OVERVIEW+ " BOOLEAN,"
                 + KEY_FK_LABEL_ID+ " INTEGER,"
                 + "FOREIGN KEY("+ KEY_FK_LABEL_ID +") REFERENCES "+TABLE_CATEGORY_LABELS+"("+KEY_LABEL_ID+ ")"+ " ON DELETE CASCADE )";
 
@@ -354,6 +358,61 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         }
         return  tempList;
     }
+
+    public void addReportEntry(ReportPOJO reportItemPOJO) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        String reportId = reportItemPOJO.getId();
+        values.put(KEY_REPORT_ID, reportId);
+        values.put(KEY_REPORT_NAME, reportItemPOJO.getReportTitle());
+        values.put(KEY_REPORT_DESCRIPTION, reportItemPOJO.getReportDescription());
+        values.put(KEY_CLIENT_NAME, reportItemPOJO.getClientName());
+        values.put(KEY_CLAIM_NUMBER, reportItemPOJO.getClaimNumber());
+        values.put(KEY_DATE_CREATED, reportItemPOJO.getCreatedDate());
+        values.put(KEY_FILE_PATH, reportItemPOJO.getFilePath());
+        values.put(KEY_LOCATION_LAT, reportItemPOJO.getLocationLat());
+        values.put(KEY_LOCATION_LONG, reportItemPOJO.getLocationLong());
+        values.put(KEY_CAUSE_OF_LOSS, reportItemPOJO.getCauseOfLoss());
+        long insertIntoReportList = db.insert(TABLE_REPORTS_LIST, null, values);
+        if (insertIntoReportList != -1) {
+            ArrayList<Label> labelArrayList = reportItemPOJO.getLabelArrayList();
+            Iterator itr = labelArrayList.iterator();
+            while (itr.hasNext()) {
+                Label label = (Label) itr.next();
+                ArrayList<ImageDetailsPOJO> reportsImageList = label.getSelectedImages();
+                if (reportsImageList != null && reportsImageList.size() > 0) {
+                    for (int index = 0; index < reportsImageList.size(); index++) {
+                        ImageDetailsPOJO imageItem = reportsImageList.get(index);
+                        ContentValues imageEntry = new ContentValues();
+                        imageEntry.put(KEY_IMAGE_TITLE, imageItem.getTitle());
+                        imageEntry.put(KEY_IMAGE_DESCRIPTION, imageItem.getDescription());
+                        imageEntry.put(KEY_IMAGE_URL, imageItem.getImageUrl());
+                        imageEntry.put(KEY_IS_DAMAGE, imageItem.getIsDamage());
+                        //imageEntry.put(KEY_IS_OVERVIEW, imageItem.getOverView());
+                        imageEntry.put(KEY_FK_LABEL_ID, label.getId());
+                        db.insert(TABLE_REPORTS_IMAGE_DETAILS, null, imageEntry);
+                    }
+                }
+                ArrayList<ImageDetailsPOJO> reportsElevationImageList = label.getSelectedElevationImages();
+                if (reportsImageList != null && reportsElevationImageList.size() > 0) {
+                    for (int index = 0; index < reportsElevationImageList.size(); index++) {
+                        ImageDetailsPOJO imageItem = reportsElevationImageList.get(index);
+                        ContentValues imageEntry = new ContentValues();
+                        imageEntry.put(KEY_IMAGE_TITLE, imageItem.getTitle());
+                        imageEntry.put(KEY_IMAGE_DESCRIPTION, imageItem.getDescription());
+                        imageEntry.put(KEY_IMAGE_URL, imageItem.getImageUrl());
+                        imageEntry.put(KEY_FK_LABEL_ID, label.getId());
+                        db.insert(TABLE_REPORTS_ELEVATION_IMAGE_DETAILS, null, imageEntry);
+                    }
+                }
+            }
+
+        }
+    }
+
+
 
 
     @Override
