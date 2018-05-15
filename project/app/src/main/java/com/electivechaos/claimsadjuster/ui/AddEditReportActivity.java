@@ -71,6 +71,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     private MenuItem actionBarEditBtn;
     private ActionBar activityActionBar;
 
+    private Boolean isReportSaved = false;
 
 
 
@@ -300,6 +301,8 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                 .setMessage("Pressing back will take you to previous screen, are you sure wanna go back ?")
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+
+                      //TODO: check if report is explicitly saved , else delete it
                       AddEditReportActivity.super.onBackPressed();
                     }
                 })
@@ -557,6 +560,9 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
     @Override
     public void onReportSave() {
+
+        //TODO:Add validations here where manually adding entry by clicking on save
+
         categoryListDBHelper.addReportEntry(reportPOJO);
     }
 
