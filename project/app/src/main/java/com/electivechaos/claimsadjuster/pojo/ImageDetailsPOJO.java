@@ -11,8 +11,9 @@ public class ImageDetailsPOJO implements Serializable {
     private String title;
     private String description;
     private boolean isDamage;
+    private boolean isOverview;
 
-    public boolean getIsDamage() {
+    public boolean isDamage() {
         return isDamage;
     }
 
@@ -49,5 +50,15 @@ public class ImageDetailsPOJO implements Serializable {
         this.title = title;
     }
 
+    public void setDamage(boolean damage) {
+        isDamage = damage;
+    }
 
+    public boolean isOverview() {
+        return isOverview;
+    }
+
+    public void setOverview(boolean overview) {
+        isOverview = overview;
+    }
 }

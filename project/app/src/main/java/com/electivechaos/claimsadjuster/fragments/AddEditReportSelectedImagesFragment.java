@@ -12,7 +12,6 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -31,7 +30,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -48,7 +46,6 @@ import com.electivechaos.claimsadjuster.listeners.OnImageRemovalListener;
 import com.electivechaos.claimsadjuster.listeners.OnMediaScannerListener;
 import com.electivechaos.claimsadjuster.pojo.Image;
 import com.electivechaos.claimsadjuster.pojo.ImageDetailsPOJO;
-import com.electivechaos.claimsadjuster.ui.AddEditReportActivity;
 import com.electivechaos.claimsadjuster.ui.ImagePickerActivity;
 import com.electivechaos.claimsadjuster.ui.ImageSliderActivity;
 import com.electivechaos.claimsadjuster.ui.SingleImageDetailsActivity;
@@ -67,6 +64,7 @@ import java.util.List;
  */
 
 public class AddEditReportSelectedImagesFragment extends Fragment {
+
     private int REQUEST_CAMERA = 0;
     private int FRONT_IMAGE_REQUEST = 100;
     private int BACK_IMAGE_REQUEST = 200;
@@ -79,14 +77,12 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
 
 
     private LinearLayout parentLayout;
-    private CoordinatorLayout selectImagesParentLayout;
     private RecyclerView selectedImagesRecyclerView;
-    private ProgressBar progressBar;
     private SelectedImagesAdapter selectedImagesAdapter;
 
     private Boolean isFabOpen = false;
     private FloatingActionButton showFabBtn,fabGoNextBtn, selectPhotoBtn, fabAddLabelBtn, fabGenerateReportBtn;
-    private Animation fab_open, fab_close, rotate_forward, rotate_backward;
+    private Animation fab_open, fab_close;
 
 
 
@@ -172,8 +168,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
 
         fab_open = AnimationUtils.loadAnimation(getActivity(), R.anim.fab_open);
         fab_close = AnimationUtils.loadAnimation(getActivity(), R.anim.fab_close);
-        rotate_forward = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate_forward);
-        rotate_backward = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate_backward);
+
         showFabBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -203,8 +198,6 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
         selectPhotoBtn = selectImageView.findViewById(R.id.btnSelectPhoto);
         parentLayout = selectImageView.findViewById(R.id.parentLinearLayout);
         selectedImagesRecyclerView = selectImageView.findViewById(R.id.selectedImagesRecyclerView);
-        selectImagesParentLayout = selectImageView.findViewById(R.id.selectImagesParentLayout);
-        progressBar = selectImageView.findViewById(R.id.progressBar);
 
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getContext(), CommonUtils.calculateNoOfColumns(getContext()));
         selectedImagesRecyclerView.setLayoutManager(mLayoutManager);
@@ -627,7 +620,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                     selectedImageList.get(position).setTitle(imageDetails.getTitle());
                     selectedImageList.get(position).setImageUrl(imageDetails.getImageUrl());
                     selectedImageList.get(position).setDescription(imageDetails.getDescription());
-                    selectedImageList.get(position).setIsDamage(imageDetails.getIsDamage());
+                    selectedImageList.get(position).setIsDamage(imageDetails.isDamage());
 
                 } else {
                     if (selectedImageList == null) {

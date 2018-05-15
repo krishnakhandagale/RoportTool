@@ -30,6 +30,8 @@ public class ImageFragment extends Fragment {
     String imgTitle;
     String imgDescription;
     Boolean imgIsDamage;
+    Boolean imgIsOverview;
+
     int position;
     MonitorImageDetailsChange monitorImageDetailsChange;
     static ViewPager mPagerInstance;
@@ -43,7 +45,8 @@ public class ImageFragment extends Fragment {
         args.putString("imageUrl", imageDetails.getImageUrl());
         args.putString("title",imageDetails.getTitle());
         args.putString("description",imageDetails.getDescription());
-        args.putBoolean("imgIsDamage", imageDetails.getIsDamage());
+        args.putBoolean("imgIsDamage", imageDetails.isDamage());
+        args.putBoolean("imgIsOverview", imageDetails.isOverview());
         args.putInt("position", position);
 
         imageFragment.setArguments(args);
@@ -58,7 +61,8 @@ public class ImageFragment extends Fragment {
         position = getArguments() != null ? getArguments().getInt("position") : 0;
         imgTitle = getArguments() != null ? getArguments().getString("title") : "";
         imgDescription =getArguments() != null ? getArguments().getString("description") : "";
-        imgIsDamage = getArguments() != null ? getArguments().getBoolean("imgIsDamage") : false ;
+        imgIsDamage = getArguments() != null && getArguments().getBoolean("imgIsDamage");
+        imgIsOverview = getArguments() != null && getArguments().getBoolean("imgIsOverview");
   }
 
 
@@ -69,16 +73,32 @@ public class ImageFragment extends Fragment {
                 false);
         ImageView iv = layoutView.findViewById(R.id.imageView1);
         EditText title = layoutView.findViewById(R.id.imageTitle);
-        CheckedTextView damageTextView= layoutView.findViewById(R.id.damageTextView);
+        EditText description = layoutView.findViewById(R.id.image_description);
 
+
+        final CheckedTextView damageTextView = layoutView.findViewById(R.id.damageTextView);
+        final CheckedTextView overviewTextView = layoutView.findViewById(R.id.overviewTextView);
+
+        // For damage text view
         damageTextView.setChecked(imgIsDamage);
+
         if(imgIsDamage) {
             damageTextView.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.shape_chip_drawable_active));
         }else {
             damageTextView.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.shape_chip_drawable_gray));
         }
+
+        // For over view  text view
+        overviewTextView.setChecked(imgIsOverview);
+
+        if(imgIsOverview) {
+            overviewTextView.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.shape_chip_drawable_active));
+        }else {
+            overviewTextView.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.shape_chip_drawable_gray));
+        }
+
         title.setText(imgTitle);
-        final EditText description = layoutView.findViewById(R.id.image_description);
+
         description.setText(imgDescription);
 
 
@@ -119,6 +139,13 @@ public class ImageFragment extends Fragment {
         damageTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(overviewTextView.isChecked()){
+                    overviewTextView.setChecked(false);
+                    overviewTextView.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.shape_chip_drawable_gray));
+                    overviewTextView.setChecked(false);
+                    monitorImageDetailsChange.setUnsetOverview(false,position);
+                }
+
                 if(((CheckedTextView)v).isChecked()){
                     ((CheckedTextView)v).setChecked(false);
                     v.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.shape_chip_drawable_gray));
@@ -128,8 +155,35 @@ public class ImageFragment extends Fragment {
                     v.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.shape_chip_drawable_active));
                     monitorImageDetailsChange.setUnsetDamage(true,position);
                 }
+
             }
         });
+
+        overviewTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(damageTextView.isChecked()){
+                    damageTextView.setChecked(false);
+                    damageTextView.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.shape_chip_drawable_gray));
+                    monitorImageDetailsChange.setUnsetDamage(false,position);
+                }
+                if(((CheckedTextView)v).isChecked()){
+                    ((CheckedTextView)v).setChecked(false);
+                    v.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.shape_chip_drawable_gray));
+                    monitorImageDetailsChange.setUnsetOverview(false,position);
+                }else{
+
+                    ((CheckedTextView)v).setChecked(true);
+                    v.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.shape_chip_drawable_active));
+                    monitorImageDetailsChange.setUnsetOverview(true,position);
+                }
+            }
+        });
+
+
+
+
         description.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -150,6 +204,7 @@ public class ImageFragment extends Fragment {
         void updateImageTitle(String title, int position);
         void updateImageDescription(String description, int position);
         void setUnsetDamage(boolean isDamage, int position);
+        void setUnsetOverview(boolean isOverview, int position);
 
     }
 
