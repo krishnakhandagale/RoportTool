@@ -660,6 +660,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                     selectedImageList.get(position).setImageUrl(imageDetails.getImageUrl());
                     selectedImageList.get(position).setDescription(imageDetails.getDescription());
                     selectedImageList.get(position).setIsDamage(imageDetails.isDamage());
+                    selectedImageList.get(position).setOverview(imageDetails.isOverview());
 
                 } else {
                     if (selectedImageList == null) {

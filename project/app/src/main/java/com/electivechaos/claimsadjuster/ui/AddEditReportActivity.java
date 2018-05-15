@@ -346,6 +346,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                                 }
 
                                 label.setId(id);
+
                                 onLabelAdded(label);
                                 dialogInterface.dismiss();
                             }
@@ -354,6 +355,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                 ad.show();
 
     }
+
 
     public void onLabelAdded(Label label) {
 
