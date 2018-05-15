@@ -21,7 +21,7 @@ import java.util.Iterator;
  */
 
 public class CategoryListDBHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 30;
+    private static final int DATABASE_VERSION = 31;
 
 
     // Database Name
@@ -65,7 +65,6 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
     private static final String KEY_LABEL_DESCRIPTION  = "description";
 
     private static final String KEY_FK_LABEL_REPORT_ID  = "report_id_fk";
-    private static final String KEY_FK_CATEGORY_ID = "category_id_fk";
 
     private static final String KEY_FK_LABEL_ID = "label_id_fk";
 
@@ -89,15 +88,15 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
     private static final String KEY_CAUSE_OF_LOSS_NAME = "name";
     private static final String KEY_CAUSE_OF_LOSS_DESCRIPTION = "description";
 
-    private static CategoryListDBHelper sInstance;
+    private static CategoryListDBHelper categoryListDBHelperInstance;
 
     public static synchronized CategoryListDBHelper getInstance(Context context) {
 
         // don't accidentally leak an Activity's context.
-        if (sInstance == null) {
-            sInstance = new CategoryListDBHelper(context.getApplicationContext());
+        if (categoryListDBHelperInstance == null) {
+            categoryListDBHelperInstance = new CategoryListDBHelper(context.getApplicationContext());
         }
-        return sInstance;
+        return categoryListDBHelperInstance;
     }
 
 
@@ -225,26 +224,6 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         return  db.delete(TABLE_MASTER_CATEGORY,whereClause,new String[]{categoryId});
     }
 
-    public Category getCategory(String categoryId){
-        Category category = null;
-        SQLiteDatabase db = getReadableDatabase();
-        String where = KEY_CATEGORY_ID + " = ?";
-        String[] whereArgs = {categoryId};
-        Cursor cursor = db.query(TABLE_MASTER_CATEGORY, null, where, whereArgs, null, null, null);
-        try {
-            if (cursor.moveToFirst()) {
-                // read column data
-                category = new Category();
-                category.setCategoryId(cursor.getInt(0));
-                category.setCategoryName(cursor.getString(1));
-                category.setCategoryDescription(cursor.getString(2));
-            }
-        } finally {
-            cursor.close();
-        }
-        return category;
-    }
-
     public long addCategory(Category category){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -260,13 +239,14 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         contentValues.put(KEY_CATEGORY_DESCRIPTION, category.getCategoryDescription());
         return  db.update(TABLE_MASTER_CATEGORY, contentValues,KEY_CATEGORY_ID+"="+category.getCategoryId(),null);
     }
+
     public ArrayList<Category> getCategoryList(){
 
         ArrayList<Category> tempList = new ArrayList<>();
         String selectQueryReportTable = "SELECT  * FROM " + TABLE_MASTER_CATEGORY;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQueryReportTable, null);
-        // looping through all rows and adding to list
+
         if (cursor.moveToFirst()) {
             do {
 
@@ -410,6 +390,27 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
             }
 
         }
+    }
+
+    public ArrayList<ReportItemPOJO> getReports(){
+
+        ArrayList<ReportItemPOJO> tempList = new ArrayList<>();
+        String selectQueryReportTable = "SELECT  * FROM " + TABLE_REPORTS_LIST;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQueryReportTable, null);
+        if (cursor.moveToFirst()) {
+            do {
+                ReportItemPOJO reportItemPOJO = new ReportItemPOJO();
+                reportItemPOJO.setId(cursor.getString(0));
+                reportItemPOJO.setReportTitle(cursor.getString(1));
+                reportItemPOJO.setReportDescription(cursor.getString(2));
+                reportItemPOJO.setCreatedDate(cursor.getString(5));
+                reportItemPOJO.setFilePath(cursor.getString(6));
+
+                tempList.add(reportItemPOJO);
+            } while (cursor.moveToNext());
+        }
+        return  tempList;
     }
 
 
