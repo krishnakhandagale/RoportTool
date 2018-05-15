@@ -13,7 +13,7 @@ public class ReportPOJO {
 
     private String createdDate;
     private String filePath;
-    private int causeOfLossId;
+    private String causeOfLoss;
 
     private ArrayList<Label> labelArrayList;
 
@@ -25,7 +25,7 @@ public class ReportPOJO {
         claimNumber = "";
         createdDate = "";
         filePath = "";
-        causeOfLossId = -1;
+        causeOfLoss = "";
         locationLat = "";
         locationLong = "";
         labelArrayList = new ArrayList<>();
@@ -103,12 +103,12 @@ public class ReportPOJO {
         this.filePath = filePath;
     }
 
-    public int getCauseOfLossId() {
-        return causeOfLossId;
+    public String getCauseOfLoss() {
+        return causeOfLoss;
     }
 
-    public void setCauseOfLossId(int causeOfLossId) {
-        this.causeOfLossId = causeOfLossId;
+    public void setCauseOfLossId(String causeOfLoss) {
+        this.causeOfLoss = causeOfLoss;
     }
 
     public ArrayList<Label> getLabelArrayList() {

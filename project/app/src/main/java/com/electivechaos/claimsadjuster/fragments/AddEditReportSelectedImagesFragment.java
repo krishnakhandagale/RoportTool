@@ -41,6 +41,7 @@ import com.electivechaos.claimsadjuster.R;
 import com.electivechaos.claimsadjuster.SingleMediaScanner;
 import com.electivechaos.claimsadjuster.adapters.DrawerMenuListAdapter;
 import com.electivechaos.claimsadjuster.interfaces.NextButtonClickListener;
+import com.electivechaos.claimsadjuster.interfaces.OnSaveReportClickListener;
 import com.electivechaos.claimsadjuster.interfaces.SelectedImagesDataInterface;
 import com.electivechaos.claimsadjuster.listeners.OnImageRemovalListener;
 import com.electivechaos.claimsadjuster.listeners.OnMediaScannerListener;
@@ -124,6 +125,8 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
 
     private DrawerMenuListAdapter.OnLabelAddClickListener onLabelAddClickListener;
 
+    private OnSaveReportClickListener onSaveReportClickListener;
+
     public static AddEditReportSelectedImagesFragment initFragment(ArrayList<ImageDetailsPOJO> selectedImageList, ArrayList<ImageDetailsPOJO> selectedElevationImagesList,int position) {
         AddEditReportSelectedImagesFragment fragment = new AddEditReportSelectedImagesFragment();
         Bundle args = new Bundle();
@@ -165,6 +168,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
         fabGoNextBtn = selectImageView.findViewById(R.id.fabGoNext);
         fabAddLabelBtn = selectImageView.findViewById(R.id.fabAddLabel);
         fabGenerateReportBtn = selectImageView.findViewById(R.id.fabGenerateReport);
+        fabSaveReportBtn = selectImageView.findViewById(R.id.fabSaveReport);
 
         fab_open = AnimationUtils.loadAnimation(getActivity(), R.anim.fab_open);
         fab_close = AnimationUtils.loadAnimation(getActivity(), R.anim.fab_close);
@@ -188,6 +192,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                 onLabelAddClickListener.onLabelAddClick();
             }
         });
+
 
         options = new RequestOptions()
                 .placeholder(R.drawable.imagepicker_image_placeholder)
@@ -359,9 +364,24 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                 nextButtonClickListener.onNextButtonClick();
             }
         });
+
+
+
+        fabSaveReportBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onSaveReportClickListener.onReportSave();
+            }
+        });
+
+
         return selectImageView;
 
 
+
+    }
+
+    public void saveReportData() {
 
     }
 
@@ -945,6 +965,8 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
             selectedImagesDataInterface = (SelectedImagesDataInterface) getActivity();
             nextButtonClickListener = (NextButtonClickListener) getActivity();
             onLabelAddClickListener = (DrawerMenuListAdapter.OnLabelAddClickListener)getActivity();
+            onSaveReportClickListener = (OnSaveReportClickListener)getActivity();
+
         }catch (ClassCastException exception){
             exception.printStackTrace();
         }
@@ -1013,10 +1035,12 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
             selectPhotoBtn.startAnimation(fab_close);
             fabAddLabelBtn.startAnimation(fab_close);
             fabGenerateReportBtn.startAnimation(fab_close);
+            fabSaveReportBtn.startAnimation(fab_close);
             fabGoNextBtn.setClickable(false);
             selectPhotoBtn.setClickable(false);
             fabAddLabelBtn.setClickable(false);
             fabGenerateReportBtn.setClickable(false);
+            fabSaveReportBtn.setClickable(false);
             isFabOpen = false;
 
         } else {
@@ -1025,10 +1049,12 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
             selectPhotoBtn.startAnimation(fab_open);
             fabAddLabelBtn.startAnimation(fab_open);
             fabGenerateReportBtn.startAnimation(fab_open);
+            fabSaveReportBtn.startAnimation(fab_open);
             fabGoNextBtn.setClickable(true);
             selectPhotoBtn.setClickable(true);
             fabAddLabelBtn.setClickable(true);
             fabGenerateReportBtn.setClickable(true);
+            fabSaveReportBtn.setClickable(true);
             isFabOpen = true;
         }
 

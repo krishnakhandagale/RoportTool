@@ -175,6 +175,18 @@
     </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabSaveReport"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:layout_gravity="bottom|end"
+        android:layout_marginRight="180dp"
+        android:visibility="invisible"
+        app:elevation="6dp"
+        app:pressedTranslationZ="12dp"
+        android:src="@drawable/pdf_gen" />
+
+    <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabGenerateReport"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
