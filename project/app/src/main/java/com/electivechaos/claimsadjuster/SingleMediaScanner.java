@@ -11,7 +11,6 @@ import android.net.Uri;
 
 import com.electivechaos.claimsadjuster.listeners.OnMediaScannerListener;
 
-
 import java.io.File;
 
 public class SingleMediaScanner implements MediaScannerConnectionClient {

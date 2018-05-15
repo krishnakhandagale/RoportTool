@@ -2,7 +2,6 @@ package com.electivechaos.claimsadjuster;
 
 import com.electivechaos.claimsadjuster.pojo.Image;
 
-
 import java.util.ArrayList;
 
 /**
