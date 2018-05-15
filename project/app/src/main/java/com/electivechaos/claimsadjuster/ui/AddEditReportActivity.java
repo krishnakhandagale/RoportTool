@@ -80,10 +80,14 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.add_edit_report_activity_layout);
+        categoryListDBHelper = CategoryListDBHelper.getInstance(this);
 
         reportPOJO.setId(String.valueOf(new Date().getTime()));
+
+        onReportSave();
+
         progressBarLayout = findViewById(R.id.progressBarLayout);
-        categoryListDBHelper = CategoryListDBHelper.getInstance(this);
+
 
         selectedFragmentPosition=0;
 
@@ -339,7 +343,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                                 final Label label = new Label();
                                 label.setCategoryID(categories.get(pos).getCategoryId());
                                 label.setName(categories.get(pos).getCategoryName());
-                                label.setReportId(categories.get(pos).getCategoryName());
+                                label.setReportId(reportPOJO.getId());
                                 long id = 0;
                                 try {
                                     id = new DatabaseTaskHelper(AddEditReportActivity.this,label).execute().get();
@@ -364,7 +368,6 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     public void onLabelAdded(Label label) {
 
         List<Label> labelList =  childMenuItems.get("Inspection");
-
         labelList.add(label);
         drawerMenuListAdapter.notifyDataSetChanged();
         reportPOJO.getLabelArrayList().add(label);
@@ -387,7 +390,53 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
     @Override
     public void onLabelDeleted(int position) {
+        childMenuItems.get("Inspection").remove(position);
+        drawerMenuListAdapter.notifyDataSetChanged();
         reportPOJO.getLabelArrayList().remove(position);
+
+        if(reportPOJO.getLabelArrayList().size() > 0 ){
+            selectedFragmentPosition = position == 0 ? position + 1 + 3 : position - 1 + 3;
+            ArrayList<Label> labelArrayList =  reportPOJO.getLabelArrayList();
+            if( labelArrayList!= null && labelArrayList.size() > selectedFragmentPosition - 3 && labelArrayList.get(selectedFragmentPosition - 3) != null) {
+                FragmentManager transactionManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
+                AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment = AddEditReportSelectedImagesFragment.initFragment(labelArrayList.get(selectedFragmentPosition - 3).getSelectedImages(), labelArrayList.get(selectedFragmentPosition - 3).getSelectedElevationImages(), selectedFragmentPosition - 3);
+                fragmentTransaction.replace(R.id.content_frame, addEditReportSelectedImagesFragment);
+                fragmentTransaction.commit();
+                tabName = "AddEditReportSelectedImagesFragment";
+
+                activityActionBar.setTitle(labelArrayList.get(selectedFragmentPosition - 3).getName());
+                actionBarEditBtn.setVisible(true);
+                toolbar.setTag(labelArrayList.get(selectedFragmentPosition - 3));
+            }
+        }else{
+            mDrawerLayout.closeDrawer(Gravity.LEFT);
+            FragmentManager transactionManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
+
+            ClaimDetailsFragment claimDetailsFragment = new ClaimDetailsFragment();
+            Bundle claimDetailsData = new Bundle();
+            claimDetailsData.putString("reportTitle", reportPOJO.getReportTitle());
+            claimDetailsData.putString("reportDescription", reportPOJO.getReportDescription());
+            claimDetailsData.putString("claimNumber", reportPOJO.getClaimNumber());
+            claimDetailsData.putString("claimNumber", reportPOJO.getClaimNumber());
+            claimDetailsData.putString("clientName", reportPOJO.getClientName());
+
+            claimDetailsData.putString("locationLat", reportPOJO.getLocationLat());
+            claimDetailsData.putString("locationLong", reportPOJO.getLocationLong());
+
+            claimDetailsFragment.setArguments(claimDetailsData);
+            fragmentTransaction.replace(R.id.content_frame, claimDetailsFragment);
+            fragmentTransaction.commit();
+            tabName = "ClaimDetailsFragment";
+
+
+            selectedFragmentPosition = 0;
+            activityActionBar.setTitle("Claim Details");
+            actionBarEditBtn.setVisible(false);
+
+        }
+
 
     }
 
@@ -510,7 +559,6 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     @Override
     public void onReportSave() {
         categoryListDBHelper.addReportEntry(reportPOJO);
-        Toast.makeText(AddEditReportActivity.this,"Data added",Toast.LENGTH_SHORT).show();
     }
 
 
