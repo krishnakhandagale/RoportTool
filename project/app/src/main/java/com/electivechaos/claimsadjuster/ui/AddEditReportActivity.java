@@ -45,6 +45,7 @@ import com.electivechaos.claimsadjuster.pojo.ReportPOJO;
 import com.electivechaos.claimsadjuster.utils.CommonUtils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -80,6 +81,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
         setContentView(R.layout.add_edit_report_activity_layout);
 
+        reportPOJO.setId(String.valueOf(new Date().getTime()));
         progressBarLayout = findViewById(R.id.progressBarLayout);
         categoryListDBHelper = CategoryListDBHelper.getInstance(this);
 
@@ -138,6 +140,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
                     ClaimDetailsFragment claimDetailsFragment = new ClaimDetailsFragment();
                     Bundle claimDetailsData = new Bundle();
+
                     claimDetailsData.putString("reportTitle", reportPOJO.getReportTitle());
                     claimDetailsData.putString("reportDescription", reportPOJO.getReportDescription());
                     claimDetailsData.putString("claimNumber", reportPOJO.getClaimNumber());
@@ -336,6 +339,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                                 final Label label = new Label();
                                 label.setCategoryID(categories.get(pos).getCategoryId());
                                 label.setName(categories.get(pos).getCategoryName());
+                                label.setReportId(categories.get(pos).getCategoryName());
                                 long id = 0;
                                 try {
                                     id = new DatabaseTaskHelper(AddEditReportActivity.this,label).execute().get();

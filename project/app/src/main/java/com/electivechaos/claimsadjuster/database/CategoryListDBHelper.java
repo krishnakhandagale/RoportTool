@@ -21,7 +21,7 @@ import java.util.Iterator;
  */
 
 public class CategoryListDBHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 31;
+    private static final int DATABASE_VERSION = 32;
 
 
     // Database Name
@@ -271,6 +271,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(KEY_LABEL_NAME, label.getName());
         contentValues.put(KEY_LABEL_DESCRIPTION, label.getDescription());
+        contentValues.put(KEY_FK_LABEL_REPORT_ID, label.getReportId());
         return  db.insert(TABLE_CATEGORY_LABELS,null,contentValues);
     }
 
