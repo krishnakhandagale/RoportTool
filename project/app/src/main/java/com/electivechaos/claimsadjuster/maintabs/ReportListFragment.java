@@ -20,18 +20,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.electivechaos.claimsadjuster.R;
 import com.electivechaos.claimsadjuster.database.CategoryListDBHelper;
-import com.electivechaos.claimsadjuster.pojo.Category;
 import com.electivechaos.claimsadjuster.pojo.ReportItemPOJO;
-import com.electivechaos.claimsadjuster.ui.AddEditCategoryActivity;
 import com.electivechaos.claimsadjuster.ui.AddEditReportActivity;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class ReportListFragment extends Fragment {
     private RecyclerView recyclerView;
@@ -129,8 +125,8 @@ public class ReportListFragment extends Fragment {
                                     break;
                                 case R.id.delete:
                                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                                    builder.setTitle("Delete Category")
-                                            .setMessage("Are you sure you want to delete this category ?")
+                                    builder.setTitle(R.string.delete_report_dialog_title)
+                                            .setMessage(R.string.delete_report_msg)
                                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                                 public void onClick(DialogInterface dialog, int which) {
 
