@@ -368,7 +368,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment = AddEditReportSelectedImagesFragment.initFragment(new ArrayList<ImageDetailsPOJO>(),new ArrayList<ImageDetailsPOJO>(),labelList.size()-1);
         fragmentTransaction.replace(R.id.content_frame, addEditReportSelectedImagesFragment);
         fragmentTransaction.commit();
-        selectedFragmentPosition = (labelList.size() -1) - 3;
+        selectedFragmentPosition = (labelList.size() -1) + 3;
         activityActionBar.setTitle(label.getName());
         actionBarEditBtn.setVisible(true);
         toolbar.setTag(label);
@@ -463,7 +463,30 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                 actionBarEditBtn.setVisible(true);
                 toolbar.setTag(labelArrayList.get(selectedFragmentPosition - 3));
             }else{
-                selectedFragmentPosition = selectedFragmentPosition -1;
+                mDrawerLayout.closeDrawer(Gravity.LEFT);
+                FragmentManager transactionManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
+
+                ClaimDetailsFragment claimDetailsFragment = new ClaimDetailsFragment();
+                Bundle claimDetailsData = new Bundle();
+                claimDetailsData.putString("reportTitle", reportPOJO.getReportTitle());
+                claimDetailsData.putString("reportDescription", reportPOJO.getReportDescription());
+                claimDetailsData.putString("claimNumber", reportPOJO.getClaimNumber());
+                claimDetailsData.putString("claimNumber", reportPOJO.getClaimNumber());
+                claimDetailsData.putString("clientName", reportPOJO.getClientName());
+
+                claimDetailsData.putString("locationLat", reportPOJO.getLocationLat());
+                claimDetailsData.putString("locationLong", reportPOJO.getLocationLong());
+
+                claimDetailsFragment.setArguments(claimDetailsData);
+                fragmentTransaction.replace(R.id.content_frame, claimDetailsFragment);
+                fragmentTransaction.commit();
+                tabName = "ClaimDetailsFragment";
+
+
+                selectedFragmentPosition = 0;
+                activityActionBar.setTitle("Claim Details");
+                actionBarEditBtn.setVisible(false);
             }
 
 

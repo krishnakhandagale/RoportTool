@@ -125,6 +125,11 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
         imagesInformation.get(position).setIsDamage(isDamage);
     }
 
+    @Override
+    public void setUnsetOverview(boolean isDamage, int position) {
+        imagesInformation.get(position).setOverview(isDamage);
+    }
+
     public class ImagePagerAdapter extends FragmentStatePagerAdapter {
         public ImagePagerAdapter(FragmentManager fragmentManager) {
             super(fragmentManager);
