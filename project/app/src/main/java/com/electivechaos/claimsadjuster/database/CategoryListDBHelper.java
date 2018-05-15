@@ -389,8 +389,8 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                         imageEntry.put(KEY_IMAGE_TITLE, imageItem.getTitle());
                         imageEntry.put(KEY_IMAGE_DESCRIPTION, imageItem.getDescription());
                         imageEntry.put(KEY_IMAGE_URL, imageItem.getImageUrl());
-                        imageEntry.put(KEY_IS_DAMAGE, imageItem.getIsDamage());
-                        //imageEntry.put(KEY_IS_OVERVIEW, imageItem.getOverView());
+                        imageEntry.put(KEY_IS_DAMAGE, imageItem.isDamage());
+                        imageEntry.put(KEY_IS_OVERVIEW, imageItem.isOverview());
                         imageEntry.put(KEY_FK_LABEL_ID, label.getId());
                         db.insert(TABLE_REPORTS_IMAGE_DETAILS, null, imageEntry);
                     }
