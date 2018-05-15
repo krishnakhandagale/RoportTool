@@ -28,9 +28,9 @@ import com.electivechaos.claimsadjuster.Folder;
 import com.electivechaos.claimsadjuster.GridSpacingItemDecoration;
 import com.electivechaos.claimsadjuster.ImageHelper;
 import com.electivechaos.claimsadjuster.R;
-import com.electivechaos.claimsadjuster.pojo.Image;
 import com.electivechaos.claimsadjuster.listeners.FolderClickListener;
 import com.electivechaos.claimsadjuster.listeners.ImageClickListener;
+import com.electivechaos.claimsadjuster.pojo.Image;
 import com.electivechaos.claimsadjuster.utils.CommonUtils;
 
 import java.io.File;
