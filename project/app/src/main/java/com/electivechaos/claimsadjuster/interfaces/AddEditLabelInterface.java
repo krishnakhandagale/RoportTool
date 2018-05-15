@@ -5,4 +5,5 @@ import com.electivechaos.claimsadjuster.pojo.Label;
 public  interface AddEditLabelInterface {
 
      void onLabelAdded(Label label);
+     void onLabelDeleted(int position);
 }

@@ -1,7 +1,9 @@
 package com.electivechaos.claimsadjuster.adapters;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,8 +11,11 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.electivechaos.claimsadjuster.R;
+import com.electivechaos.claimsadjuster.database.CategoryListDBHelper;
+import com.electivechaos.claimsadjuster.interfaces.AddEditLabelInterface;
 import com.electivechaos.claimsadjuster.pojo.Label;
 
 import java.util.ArrayList;
@@ -23,6 +28,8 @@ public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
     private HashMap<String,List<Label>> childMenuList;
     private ArrayList<String> parentMenuList;
     private OnLabelAddClickListener onLabelAddClickListener;
+    private CategoryListDBHelper mCategoryList;
+    private AddEditLabelInterface addEditLabelInterface;
 
     public interface OnLabelAddClickListener {
         void onLabelAddClick();
@@ -33,6 +40,8 @@ public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
         this.parentMenuList = parentMenuList ;
         this.childMenuList = childMenuList;
         this.onLabelAddClickListener = (OnLabelAddClickListener)context;
+        this.addEditLabelInterface= (AddEditLabelInterface)context;
+        mCategoryList=CategoryListDBHelper.getInstance(context);
     }
 
     @Override
@@ -124,14 +133,48 @@ public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
             convertView = LayoutInflater.from(context).inflate(R.layout.drawer_layout_child_menu_item, parent, false);
             holder = new ChildViewHolder();
             holder.menuTitle = convertView.findViewById(R.id.menuTitle);
+            holder.labelDeleteBtn = convertView.findViewById(R.id.labelDeleteBtn);
             convertView.setTag(holder);
 
         }else{
             holder = (ChildViewHolder) convertView.getTag();
         }
-
-
         holder.menuTitle.setText(childMenuList.get(parentMenuList.get(groupPosition)).get(childPosition).toString());
+        holder.labelDeleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(context != null){
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setTitle("Remove Image")
+                            .setMessage("Are you sure wanna remove label ?")
+                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    long id=childMenuList.get(parentMenuList.get(groupPosition)).get(childPosition).getId();
+                                    int result= mCategoryList.deleteLabel(String.valueOf(id));
+                                    if(result>0) {
+                                        childMenuList.get(parentMenuList.get(groupPosition)).remove(childPosition);
+                                        addEditLabelInterface.onLabelDeleted(childPosition);
+                                    }
+                                    notifyDataSetChanged();
+                                    dialog.cancel();
+                                }
+                            })
+                            .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                    Button negativeButton = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
+                    negativeButton.setTextColor(ContextCompat.getColor(context,R.color.colorPrimaryDark));
+                    Button positiveButton = alert.getButton(DialogInterface.BUTTON_POSITIVE);
+                    positiveButton.setTextColor(ContextCompat.getColor(context,R.color.colorPrimaryDark));
+                }
+            }
+        });
+
+
         return convertView;
     }
 
@@ -144,6 +187,7 @@ public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
 
     static class ChildViewHolder{
         TextView menuTitle;
+        Button labelDeleteBtn;
     }
 
     static class ParentViewHolder{

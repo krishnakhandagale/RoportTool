@@ -381,6 +381,12 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
     }
 
+    @Override
+    public void onLabelDeleted(int position) {
+        reportPOJO.getLabelArrayList().remove(position);
+
+    }
+
 
     @Override
     public void setReportTitle(String reportTitle) {
