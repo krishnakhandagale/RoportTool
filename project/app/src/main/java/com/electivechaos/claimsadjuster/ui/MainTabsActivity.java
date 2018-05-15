@@ -11,7 +11,6 @@ import android.support.v7.widget.Toolbar;
 
 import com.electivechaos.claimsadjuster.BaseActivity;
 import com.electivechaos.claimsadjuster.R;
-import com.electivechaos.claimsadjuster.fragments.CauseOfLossFragment;
 import com.electivechaos.claimsadjuster.maintabs.CategoryListFragment;
 import com.electivechaos.claimsadjuster.maintabs.CauseOfLossListFragment;
 import com.electivechaos.claimsadjuster.maintabs.ReportListFragment;
