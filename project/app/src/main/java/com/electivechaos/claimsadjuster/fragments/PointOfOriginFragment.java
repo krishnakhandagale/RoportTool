@@ -15,15 +15,17 @@ import android.view.animation.AnimationUtils;
 import com.electivechaos.claimsadjuster.R;
 import com.electivechaos.claimsadjuster.adapters.DrawerMenuListAdapter;
 import com.electivechaos.claimsadjuster.interfaces.NextButtonClickListener;
+import com.electivechaos.claimsadjuster.interfaces.OnSaveReportClickListener;
 
 
 public class PointOfOriginFragment extends Fragment {
 
     private Boolean isFabOpen = false;
-    private FloatingActionButton showFabBtn,fabGoNextBtn, fabAddLabelBtn, fabGenerateReportBtn;
+    private FloatingActionButton showFabBtn,fabGoNextBtn, fabAddLabelBtn, fabGenerateReportBtn, fabSaveReportBtn;
     private Animation fab_open, fab_close, rotate_forward, rotate_backward;
     private NextButtonClickListener nextButtonClickListener;
     private DrawerMenuListAdapter.OnLabelAddClickListener onLabelAddClickListener;
+    private OnSaveReportClickListener onSaveReportClickListener;
 
     @Nullable
     @Override
@@ -33,6 +35,7 @@ public class PointOfOriginFragment extends Fragment {
         fabGoNextBtn = view.findViewById(R.id.fabGoNext);
         fabAddLabelBtn = view.findViewById(R.id.fabAddLabel);
         fabGenerateReportBtn = view.findViewById(R.id.fabGenerateReport);
+        fabSaveReportBtn = view.findViewById(R.id.fabSaveReport);
 
         fab_open = AnimationUtils.loadAnimation(getActivity(), R.anim.fab_open);
         fab_close = AnimationUtils.loadAnimation(getActivity(), R.anim.fab_close);
@@ -43,6 +46,7 @@ public class PointOfOriginFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 nextButtonClickListener.onNextButtonClick();
+                animateFAB();
             }
         });
         showFabBtn.setOnClickListener(new View.OnClickListener() {
@@ -56,6 +60,22 @@ public class PointOfOriginFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 onLabelAddClickListener.onLabelAddClick();
+                animateFAB();
+            }
+        });
+
+        fabGenerateReportBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                animateFAB();
+            }
+        });
+
+        fabSaveReportBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onSaveReportClickListener.onReportSave();
+                animateFAB();
             }
         });
         return view;
@@ -70,9 +90,11 @@ public class PointOfOriginFragment extends Fragment {
             fabGoNextBtn.startAnimation(fab_close);
             fabAddLabelBtn.startAnimation(fab_close);
             fabGenerateReportBtn.startAnimation(fab_close);
+            fabSaveReportBtn.startAnimation(fab_close);
             fabGoNextBtn.setClickable(false);
             fabAddLabelBtn.setClickable(false);
             fabGenerateReportBtn.setClickable(false);
+            fabSaveReportBtn.setClickable(false);
             isFabOpen = false;
 
         } else {
@@ -80,9 +102,11 @@ public class PointOfOriginFragment extends Fragment {
             fabGoNextBtn.startAnimation(fab_open);
             fabAddLabelBtn.startAnimation(fab_open);
             fabGenerateReportBtn.startAnimation(fab_open);
+            fabSaveReportBtn.startAnimation(fab_open);
             fabGoNextBtn.setClickable(true);
             fabAddLabelBtn.setClickable(true);
             fabGenerateReportBtn.setClickable(true);
+            fabSaveReportBtn.setClickable(true);
             isFabOpen = true;
         }
 
@@ -94,6 +118,7 @@ public class PointOfOriginFragment extends Fragment {
         try {
             nextButtonClickListener = (NextButtonClickListener) getActivity();
             onLabelAddClickListener = (DrawerMenuListAdapter.OnLabelAddClickListener)getActivity();
+            onSaveReportClickListener = (OnSaveReportClickListener)getActivity();
         }catch (ClassCastException ex) {
             ex.printStackTrace();
         }

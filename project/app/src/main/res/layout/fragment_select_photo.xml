@@ -175,18 +175,6 @@
     </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fabSaveReport"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
-        android:layout_gravity="bottom|end"
-        android:layout_marginRight="180dp"
-        android:visibility="invisible"
-        app:elevation="6dp"
-        app:pressedTranslationZ="12dp"
-        android:src="@drawable/pdf_gen" />
-
-    <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabGenerateReport"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -211,13 +199,13 @@
         android:layout_marginEnd="120dp" />
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/btnSelectPhoto"
+        android:id="@+id/fabSaveReport"
         android:layout_width="wrap_content"
         android:layout_height="58dp"
         android:layout_gravity="bottom|end"
         android:layout_marginBottom="125dp"
         android:layout_marginRight="80dp"
-        android:src="@drawable/image_picker_ic_camera"
+        android:src="@drawable/ic_white_save_24dp"
         android:visibility="invisible"
         app:elevation="6dp"
         app:pressedTranslationZ="12dp"
@@ -246,5 +234,18 @@
         android:layout_marginRight="40dp"
         android:src="@drawable/ic_more_vertical_white"
         android:layout_marginEnd="40dp" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/btnSelectPhoto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|left"
+        app:elevation="6dp"
+        app:backgroundTint="@color/colorPrimaryDark"
+        app:pressedTranslationZ="12dp"
+        android:layout_marginBottom="50dp"
+        android:layout_marginLeft="40dp"
+        android:src="@drawable/image_picker_ic_camera"
+        android:layout_marginStart="40dp" />
 
 </android.support.design.widget.CoordinatorLayout>

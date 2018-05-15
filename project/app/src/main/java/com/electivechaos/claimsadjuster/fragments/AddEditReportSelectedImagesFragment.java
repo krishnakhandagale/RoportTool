@@ -82,7 +82,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
     private SelectedImagesAdapter selectedImagesAdapter;
 
     private Boolean isFabOpen = false;
-    private FloatingActionButton showFabBtn,fabGoNextBtn, selectPhotoBtn, fabAddLabelBtn, fabGenerateReportBtn;
+    private FloatingActionButton showFabBtn,fabGoNextBtn, selectPhotoBtn, fabAddLabelBtn, fabGenerateReportBtn, fabSaveReportBtn;
     private Animation fab_open, fab_close;
 
 
@@ -169,6 +169,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
         fabAddLabelBtn = selectImageView.findViewById(R.id.fabAddLabel);
         fabGenerateReportBtn = selectImageView.findViewById(R.id.fabGenerateReport);
         fabSaveReportBtn = selectImageView.findViewById(R.id.fabSaveReport);
+        selectPhotoBtn = selectImageView.findViewById(R.id.btnSelectPhoto);
 
         fab_open = AnimationUtils.loadAnimation(getActivity(), R.anim.fab_open);
         fab_close = AnimationUtils.loadAnimation(getActivity(), R.anim.fab_close);
@@ -190,6 +191,15 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 onLabelAddClickListener.onLabelAddClick();
+                animateFAB();
+            }
+        });
+
+
+        fabGenerateReportBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                animateFAB();
             }
         });
 
@@ -199,8 +209,6 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                 .error(R.drawable.imagepicker_image_placeholder)
                 .centerCrop()
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE);
-
-        selectPhotoBtn = selectImageView.findViewById(R.id.btnSelectPhoto);
         parentLayout = selectImageView.findViewById(R.id.parentLinearLayout);
         selectedImagesRecyclerView = selectImageView.findViewById(R.id.selectedImagesRecyclerView);
 
@@ -355,6 +363,19 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 selectImage();
+                if (isFabOpen) {
+                    showFabBtn.setImageResource(R.drawable.ic_more_vertical_white);
+                    fabGoNextBtn.startAnimation(fab_close);
+                    fabAddLabelBtn.startAnimation(fab_close);
+                    fabGenerateReportBtn.startAnimation(fab_close);
+                    fabSaveReportBtn.startAnimation(fab_close);
+                    fabGoNextBtn.setClickable(false);
+                    fabAddLabelBtn.setClickable(false);
+                    fabGenerateReportBtn.setClickable(false);
+                    fabSaveReportBtn.setClickable(false);
+                    isFabOpen = false;
+
+                }
             }
         });
 
@@ -362,6 +383,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 nextButtonClickListener.onNextButtonClick();
+                animateFAB();
             }
         });
 
@@ -371,6 +393,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 onSaveReportClickListener.onReportSave();
+                animateFAB();
             }
         });
 
@@ -378,10 +401,6 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
         return selectImageView;
 
 
-
-    }
-
-    public void saveReportData() {
 
     }
 
@@ -1032,12 +1051,10 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
         if (isFabOpen) {
             showFabBtn.setImageResource(R.drawable.ic_more_vertical_white);
             fabGoNextBtn.startAnimation(fab_close);
-            selectPhotoBtn.startAnimation(fab_close);
             fabAddLabelBtn.startAnimation(fab_close);
             fabGenerateReportBtn.startAnimation(fab_close);
             fabSaveReportBtn.startAnimation(fab_close);
             fabGoNextBtn.setClickable(false);
-            selectPhotoBtn.setClickable(false);
             fabAddLabelBtn.setClickable(false);
             fabGenerateReportBtn.setClickable(false);
             fabSaveReportBtn.setClickable(false);
@@ -1046,12 +1063,10 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
         } else {
             showFabBtn.setImageResource(R.drawable.ic_close_white);
             fabGoNextBtn.startAnimation(fab_open);
-            selectPhotoBtn.startAnimation(fab_open);
             fabAddLabelBtn.startAnimation(fab_open);
             fabGenerateReportBtn.startAnimation(fab_open);
             fabSaveReportBtn.startAnimation(fab_open);
             fabGoNextBtn.setClickable(true);
-            selectPhotoBtn.setClickable(true);
             fabAddLabelBtn.setClickable(true);
             fabGenerateReportBtn.setClickable(true);
             fabSaveReportBtn.setClickable(true);
