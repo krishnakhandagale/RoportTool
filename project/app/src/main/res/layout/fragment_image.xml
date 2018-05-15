@@ -17,14 +17,28 @@
         android:gravity="bottom"
         android:orientation="vertical">
 
-        <CheckedTextView
-            android:id="@+id/damageTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/shape_chip_drawable_gray"
-            android:text="@string/damage"
-            android:textColor="@android:color/white"
-            android:textStyle="bold" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <CheckedTextView
+                android:id="@+id/damageTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_chip_drawable_gray"
+                android:text="@string/damage"
+                android:textColor="@android:color/white"
+                android:textStyle="bold" />
+            <CheckedTextView
+                android:layout_marginLeft="5dp"
+                android:id="@+id/overviewTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_chip_drawable_gray"
+                android:text="@string/overview"
+                android:textColor="@android:color/white"
+                android:textStyle="bold" />
+        </LinearLayout>
 
         <EditText
             android:id="@+id/imageTitle"

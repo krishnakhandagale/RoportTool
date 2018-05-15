@@ -26,7 +26,7 @@ public class CommonUtils {
     }
     /** Locks the device window in actual screen mode. */
     public static void lockOrientation(Activity activity) {
-        int orientation = activity.getRequestedOrientation();
+        int orientation;
         int rotation = ((WindowManager) activity.getSystemService(
                 Context.WINDOW_SERVICE)).getDefaultDisplay().getRotation();
         switch (rotation) {

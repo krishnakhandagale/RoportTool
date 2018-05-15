@@ -25,15 +25,32 @@
             android:layout_marginBottom="5dp"
             android:layout_marginRight="5dp"
             android:background="@drawable/rounded_button"
-            android:src="@drawable/ic_send_white" />
-        <CheckedTextView
-            android:id="@+id/isDamageTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/shape_chip_drawable_gray"
-            android:text="@string/damage"
-            android:textColor="@android:color/white"
-            android:textStyle="bold" />
+            android:src="@drawable/ic_send_white"
+            android:layout_marginEnd="5dp" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <CheckedTextView
+                android:id="@+id/isDamageTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_chip_drawable_gray"
+                android:text="@string/damage"
+                android:textColor="@android:color/white"
+                android:textStyle="bold" />
+            <CheckedTextView
+                android:layout_marginLeft="5dp"
+                android:id="@+id/isOverviewTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_chip_drawable_gray"
+                android:text="@string/overview"
+                android:textColor="@android:color/white"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+
 
         <EditText
             android:id="@+id/clickedImageTitle"

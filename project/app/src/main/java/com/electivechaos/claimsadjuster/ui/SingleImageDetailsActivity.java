@@ -32,6 +32,7 @@ public class SingleImageDetailsActivity extends BaseActivity {
         final EditText title = findViewById(R.id.clickedImageTitle);
         final EditText description = findViewById(R.id.clickedImageDescription);
         final CheckedTextView isDamageTextView = findViewById(R.id.isDamageTextView);
+        final CheckedTextView isOverviewTextView = findViewById(R.id.isOverviewTextView);
 
 
 
@@ -43,17 +44,32 @@ public class SingleImageDetailsActivity extends BaseActivity {
         if(imageDetails != null && isEdit == true ){
             title.setText(imageDetails.getTitle());
             description.setText(imageDetails.getDescription());
-            isDamageTextView.setChecked(imageDetails.getIsDamage());
-            if(imageDetails.getIsDamage()) {
+
+            isDamageTextView.setChecked(imageDetails.isDamage());
+            if(imageDetails.isDamage()) {
                 isDamageTextView.setBackground(ContextCompat.getDrawable(this,R.drawable.shape_chip_drawable_active));
             }else {
                 isDamageTextView.setBackground(ContextCompat.getDrawable(this,R.drawable.shape_chip_drawable_gray));
+            }
+
+
+            isOverviewTextView.setChecked(imageDetails.isOverview());
+            if(imageDetails.isOverview()) {
+                isOverviewTextView.setBackground(ContextCompat.getDrawable(this,R.drawable.shape_chip_drawable_active));
+            }else {
+                isOverviewTextView.setBackground(ContextCompat.getDrawable(this,R.drawable.shape_chip_drawable_gray));
             }
         }
 
         isDamageTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if(isOverviewTextView.isChecked()){
+                    isOverviewTextView.setChecked(false);
+                    isOverviewTextView.setBackground(ContextCompat.getDrawable(SingleImageDetailsActivity.this,R.drawable.shape_chip_drawable_gray));
+                    imageDetails.setOverview(false);
+                }
                 if(((CheckedTextView)v).isChecked()){
                     ((CheckedTextView)v).setChecked(false);
                     imageDetails.setIsDamage(false);
@@ -66,11 +82,26 @@ public class SingleImageDetailsActivity extends BaseActivity {
             }
         });
 
+        isOverviewTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-        if(savedInstanceState != null ){
-        }
-
-
+                if(isDamageTextView.isChecked()){
+                    isDamageTextView.setChecked(false);
+                    isDamageTextView.setBackground(ContextCompat.getDrawable(SingleImageDetailsActivity.this,R.drawable.shape_chip_drawable_gray));
+                    imageDetails.setDamage(false);
+                }
+                if(((CheckedTextView)v).isChecked()){
+                    ((CheckedTextView)v).setChecked(false);
+                    imageDetails.setOverview(false);
+                    v.setBackground(ContextCompat.getDrawable(SingleImageDetailsActivity.this,R.drawable.shape_chip_drawable_gray));
+                }else{
+                    ((CheckedTextView)v).setChecked(true);
+                    imageDetails.setOverview(true);
+                    v.setBackground(ContextCompat.getDrawable(SingleImageDetailsActivity.this,R.drawable.shape_chip_drawable_active));
+                }
+            }
+        });
 
 
         ImageButton imageButton = findViewById(R.id.submitImageDetails);
@@ -82,7 +113,8 @@ public class SingleImageDetailsActivity extends BaseActivity {
                 shareImageDetails.setTitle(title.getText().toString());
                 shareImageDetails.setDescription(description.getText().toString());
                 shareImageDetails.setImageUrl(imageDetails.getImageUrl());
-                shareImageDetails.setIsDamage(imageDetails.getIsDamage());
+                shareImageDetails.setIsDamage(imageDetails.isDamage());
+                shareImageDetails.setOverview(imageDetails.isOverview());
                 Intent intent = new Intent();
                 intent.putExtra("image_entered_details", shareImageDetails);
                 intent.putExtra("isEdit", isEdit);
