@@ -4,22 +4,16 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 
 import com.electivechaos.claimsadjuster.R;
 import com.electivechaos.claimsadjuster.interfaces.ClaimDetailsDataInterface;
-import com.electivechaos.claimsadjuster.interfaces.NextButtonClickListener;
 
 public class ClaimDetailsTabsFragment extends Fragment {
 

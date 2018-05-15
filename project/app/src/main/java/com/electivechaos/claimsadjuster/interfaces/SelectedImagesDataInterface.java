@@ -3,7 +3,6 @@ package com.electivechaos.claimsadjuster.interfaces;
 import com.electivechaos.claimsadjuster.pojo.ImageDetailsPOJO;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public  interface SelectedImagesDataInterface {
 
