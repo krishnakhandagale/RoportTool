@@ -427,6 +427,23 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         return  db.delete(TABLE_REPORTS_LIST,KEY_REPORT_ID+"=?",new String[]{id});
     }
 
+    public ReportPOJO getReportItem(String id){
+        ReportPOJO reportPOJO = new ReportPOJO();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT * FROM generated_reports WHERE report_id = '"+id+"'", null);
+        reportPOJO.setId(c.getString(0));
+        reportPOJO.setReportTitle(c.getString(1));
+        reportPOJO.setReportDescription(c.getString(2));
+        reportPOJO.setClientName(c.getString(3));
+        reportPOJO.setClaimNumber(c.getString(4));
+        reportPOJO.setCreatedDate(c.getString(5));
+        reportPOJO.setFilePath(c.getString(6));
+        reportPOJO.setLocationLat(c.getString(7));
+        reportPOJO.setLocationLong(c.getString(8));
+        reportPOJO.setCauseOfLossId(c.getString(9));
+
+        return  reportPOJO;
+    }
 
 
     @Override

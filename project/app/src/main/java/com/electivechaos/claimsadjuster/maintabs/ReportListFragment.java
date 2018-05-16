@@ -121,7 +121,7 @@ public class ReportListFragment extends Fragment {
                         public boolean onMenuItemClick(MenuItem item) {
                             switch (item.getItemId()) {
                                 case R.id.edit:
-
+                                        mCategoryListDBHelper.getReportItem(reportItemPOJO.getId());
                                     break;
                                 case R.id.delete:
                                     AlertDialog.Builder builder = new AlertDialog.Builder(context);

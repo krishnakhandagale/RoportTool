@@ -1,8 +1,11 @@
 package com.electivechaos.claimsadjuster.pojo;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 
-public class ReportPOJO {
+public class ReportPOJO  implements Parcelable{
     private String id;
     private String reportTitle;
     private String reportDescription;
@@ -136,5 +139,19 @@ public class ReportPOJO {
     @Override
     public String toString() {
         return this.getReportTitle();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeList(labelArrayList);
+        dest.writeString(id);
+        dest.writeString(reportTitle);
+        dest.writeString(reportTitle);
+        dest.writeString(reportTitle);
     }
 }
