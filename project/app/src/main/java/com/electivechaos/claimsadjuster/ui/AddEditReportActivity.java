@@ -72,7 +72,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     private MenuItem actionBarEditBtn;
     private ActionBar activityActionBar;
 
-    private Boolean isReportSaved = false;
+    private boolean isReportSavedManually = false;
 
 
 
@@ -89,7 +89,8 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
 
 
-        selectedFragmentPosition=0;
+
+        selectedFragmentPosition = 0;
 
         FragmentManager transactionManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
@@ -397,7 +398,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         reportPOJO.getLabelArrayList().remove(position);
 
         if(reportPOJO.getLabelArrayList().size() > 0 ){
-            selectedFragmentPosition = position == 0 ? position + 1 + 3 : position - 1 + 3;
+            selectedFragmentPosition = position > 0 ? position - 1 + 3 : position + 3;
             ArrayList<Label> labelArrayList =  reportPOJO.getLabelArrayList();
             if( labelArrayList!= null && labelArrayList.size() > selectedFragmentPosition - 3 && labelArrayList.get(selectedFragmentPosition - 3) != null) {
                 FragmentManager transactionManager = getSupportFragmentManager();
