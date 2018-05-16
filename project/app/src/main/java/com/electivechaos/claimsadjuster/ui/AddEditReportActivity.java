@@ -479,6 +479,12 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     }
 
     @Override
+    public void setAddressLine(String addressLine) {
+        reportPOJO.setAddressLine(addressLine);
+    }
+
+
+    @Override
     public void setSelectedElevationImages(ArrayList<ImageDetailsPOJO> elevationImagesList,int labelPosition) {
         reportPOJO.getLabelArrayList().get(labelPosition).setSelectedElevationImages(elevationImagesList);
     }

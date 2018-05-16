@@ -11,6 +11,20 @@ public class ReportPOJO {
     private String locationLat;
     private String locationLong;
 
+    public String getAddressLine() {
+        return addressLine;
+    }
+
+    public void setAddressLine(String addressLine) {
+        this.addressLine = addressLine;
+    }
+
+    public void setCauseOfLoss(String causeOfLoss) {
+        this.causeOfLoss = causeOfLoss;
+    }
+
+    private String addressLine;
+
     private String createdDate;
     private String filePath;
     private String causeOfLoss;

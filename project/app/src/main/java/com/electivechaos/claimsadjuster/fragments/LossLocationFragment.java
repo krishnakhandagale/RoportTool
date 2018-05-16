@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +39,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 
 /**
@@ -61,6 +65,7 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
 
     private String locationLat = "";
     private String locationLong = "";
+    private String addressLine = "";
 
     MarkerOptions a = new MarkerOptions().position(new LatLng(50,6));
     Marker mGoogleMapMarker = null;
@@ -129,6 +134,25 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
         mPlaceArrayAdapter = new PlaceArrayAdapter(getActivity(), R.layout.places_autocomplete_item, BOUNDS_MOUNTAIN_VIEW, null);
         mAutocompleteTextView.setAdapter(mPlaceArrayAdapter);
 
+        mAutocompleteTextView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                lossLocationDataInterface.setAddressLine(mAutocompleteTextView.getText().toString());
+                lossLocationDataInterface.setLocationLat("");
+                lossLocationDataInterface.setLocationLong("");
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
 
         return rootView;
     }
@@ -157,6 +181,8 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
             lossLocationDataInterface.setLocationLat(String.valueOf(currentLocation.latitude));
 
             lossLocationDataInterface.setLocationLong(String.valueOf(currentLocation.longitude));
+
+            lossLocationDataInterface.setAddressLine(places.get(0).getAddress().toString());
 
             mGoogleMapMarker.setPosition(currentLocation);
             mGoogleMapMarker.setTitle("Your Location");
@@ -209,6 +235,7 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
 
                             lossLocationDataInterface.setLocationLong(String.valueOf(currentLocation.longitude));
 
+                            lossLocationDataInterface.setAddressLine(likelyPlaces.get(0).getPlace().getAddress().toString());
 
                             mGoogleMapMarker.setPosition(currentLocation);
                             mGoogleMapMarker.setTitle("Your Location");
@@ -220,7 +247,12 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
                             likelyPlaces.release();
                         }
                     }
-                });
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     @Override

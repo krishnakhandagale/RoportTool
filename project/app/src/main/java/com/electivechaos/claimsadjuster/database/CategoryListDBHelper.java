@@ -21,7 +21,7 @@ import java.util.Iterator;
  */
 
 public class CategoryListDBHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 39;
+    private static final int DATABASE_VERSION = 40;
 
 
     // Database Name
@@ -49,6 +49,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
     private static final String KEY_FILE_PATH = "file_path";
     private static final String KEY_LOCATION_LAT = "location_lat";
     private static final String KEY_LOCATION_LONG = "location_lang";
+    private static final String KEY_ADDRESS_LINE = "address_line";
     private static final String KEY_CAUSE_OF_LOSS="cause_of_loss";
 
 
@@ -118,6 +119,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 + KEY_FILE_PATH + " TEXT,"
                 + KEY_LOCATION_LAT + " TEXT,"
                 + KEY_LOCATION_LONG + " TEXT,"
+                + KEY_ADDRESS_LINE + " TEXT,"
                 + KEY_CAUSE_OF_LOSS + " TEXT"+")";
 
 
@@ -359,6 +361,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         values.put(KEY_FILE_PATH, reportItemPOJO.getFilePath());
         values.put(KEY_LOCATION_LAT, reportItemPOJO.getLocationLat());
         values.put(KEY_LOCATION_LONG, reportItemPOJO.getLocationLong());
+        values.put(KEY_ADDRESS_LINE, reportItemPOJO.getAddressLine());
         values.put(KEY_CAUSE_OF_LOSS, reportItemPOJO.getCauseOfLoss());
         long insertIntoReportList = db.insert(TABLE_REPORTS_LIST, null, values);
         if (insertIntoReportList != -1) {
