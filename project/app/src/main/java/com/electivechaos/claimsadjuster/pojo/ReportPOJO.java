@@ -14,6 +14,32 @@ public class ReportPOJO  implements Parcelable{
     private String locationLat;
     private String locationLong;
 
+    protected ReportPOJO(Parcel in) {
+        id = in.readString();
+        reportTitle = in.readString();
+        reportDescription = in.readString();
+        clientName = in.readString();
+        claimNumber = in.readString();
+        locationLat = in.readString();
+        locationLong = in.readString();
+        addressLine = in.readString();
+        createdDate = in.readString();
+        filePath = in.readString();
+        causeOfLoss = in.readString();
+    }
+
+    public static final Creator<ReportPOJO> CREATOR = new Creator<ReportPOJO>() {
+        @Override
+        public ReportPOJO createFromParcel(Parcel in) {
+            return new ReportPOJO(in);
+        }
+
+        @Override
+        public ReportPOJO[] newArray(int size) {
+            return new ReportPOJO[size];
+        }
+    };
+
     public String getAddressLine() {
         return addressLine;
     }
