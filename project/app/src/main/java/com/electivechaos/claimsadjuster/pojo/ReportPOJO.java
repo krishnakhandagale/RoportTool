@@ -13,6 +13,27 @@ public class ReportPOJO  implements Parcelable{
     private String claimNumber;
     private String locationLat;
     private String locationLong;
+    private String addressLine;
+
+    private String createdDate;
+    private String filePath;
+    private String causeOfLoss;
+
+    private ArrayList<Label> labelArrayList;
+
+    public ReportPOJO(){
+        id= "";
+        reportTitle = "";
+        reportDescription = "";
+        clientName = "";
+        claimNumber = "";
+        createdDate = "";
+        filePath = "";
+        causeOfLoss = "";
+        locationLat = "";
+        locationLong = "";
+        labelArrayList = new ArrayList<>();
+    }
 
     protected ReportPOJO(Parcel in) {
         id = in.readString();
@@ -52,27 +73,7 @@ public class ReportPOJO  implements Parcelable{
         this.causeOfLoss = causeOfLoss;
     }
 
-    private String addressLine;
 
-    private String createdDate;
-    private String filePath;
-    private String causeOfLoss;
-
-    private ArrayList<Label> labelArrayList;
-
-    public ReportPOJO(){
-        id= "";
-        reportTitle = "";
-        reportDescription = "";
-        clientName = "";
-        claimNumber = "";
-        createdDate = "";
-        filePath = "";
-        causeOfLoss = "";
-        locationLat = "";
-        locationLong = "";
-        labelArrayList = new ArrayList<>();
-    }
 
     public String getLocationLat() {
         return locationLat;
@@ -148,10 +149,6 @@ public class ReportPOJO  implements Parcelable{
 
     public String getCauseOfLoss() {
         return causeOfLoss;
-    }
-
-    public void setCauseOfLossId(String causeOfLoss) {
-        this.causeOfLoss = causeOfLoss;
     }
 
     public ArrayList<Label> getLabelArrayList() {

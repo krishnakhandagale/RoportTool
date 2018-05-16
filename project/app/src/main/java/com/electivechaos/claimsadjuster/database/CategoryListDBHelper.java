@@ -442,7 +442,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         reportPOJO.setFilePath(c.getString(6));
         reportPOJO.setLocationLat(c.getString(7));
         reportPOJO.setLocationLong(c.getString(8));
-        reportPOJO.setCauseOfLossId(c.getString(9));
+        reportPOJO.setCauseOfLoss(c.getString(9));
 
         // query for labels using report id
         // loop on cursor and form label array list
