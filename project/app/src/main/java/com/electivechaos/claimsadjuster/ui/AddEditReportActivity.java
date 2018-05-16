@@ -303,7 +303,10 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
 
-                      //TODO: check if report is explicitly saved , else delete it
+                      if(!isReportSavedManually){
+                          categoryListDBHelper.deleteReportEntry(reportPOJO.getId());
+                      }
+
                       AddEditReportActivity.super.onBackPressed();
                     }
                 })

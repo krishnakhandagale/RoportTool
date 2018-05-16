@@ -21,7 +21,7 @@ import java.util.Iterator;
  */
 
 public class CategoryListDBHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 33;
+    private static final int DATABASE_VERSION = 35;
 
 
     // Database Name
@@ -414,6 +414,11 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         return  tempList;
     }
 
+
+    public int deleteReportEntry(String id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        return  db.delete(TABLE_REPORTS_LIST,KEY_REPORT_ID+"=?",new String[]{id});
+    }
 
 
 
