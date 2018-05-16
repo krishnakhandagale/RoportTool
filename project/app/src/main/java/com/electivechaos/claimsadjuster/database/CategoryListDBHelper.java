@@ -21,7 +21,7 @@ import java.util.Iterator;
  */
 
 public class CategoryListDBHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 35;
+    private static final int DATABASE_VERSION = 38;
 
 
     // Database Name
@@ -344,8 +344,12 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
+
         ContentValues values = new ContentValues();
         String reportId = reportItemPOJO.getId();
+
+        //Delete id any record exist and add it again instead of update
+        deleteReportEntry(reportId);
         values.put(KEY_REPORT_ID, reportId);
         values.put(KEY_REPORT_NAME, reportItemPOJO.getReportTitle());
         values.put(KEY_REPORT_DESCRIPTION, reportItemPOJO.getReportDescription());

@@ -27,7 +27,7 @@ import com.electivechaos.claimsadjuster.R;
 import com.electivechaos.claimsadjuster.adapters.CustomCategoryPopUpAdapter;
 import com.electivechaos.claimsadjuster.adapters.DrawerMenuListAdapter;
 import com.electivechaos.claimsadjuster.database.CategoryListDBHelper;
-import com.electivechaos.claimsadjuster.databasehelpers.DatabaseSaveReportTask;
+import com.electivechaos.claimsadjuster.asynctasks.DatabaseSaveReportTask;
 import com.electivechaos.claimsadjuster.fragments.AddEditReportSelectedImagesFragment;
 import com.electivechaos.claimsadjuster.fragments.CauseOfLossFragment;
 import com.electivechaos.claimsadjuster.fragments.ClaimDetailsFragment;
@@ -570,6 +570,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         if(isProgressBar){
             isReportSavedManually = true;
         }
+
 
         try {
             new DatabaseSaveReportTask(AddEditReportActivity.this, progressBarLayout,reportPOJO,false,categoryListDBHelper).execute().get();

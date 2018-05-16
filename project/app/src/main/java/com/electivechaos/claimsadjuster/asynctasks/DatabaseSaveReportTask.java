@@ -1,10 +1,9 @@
-package com.electivechaos.claimsadjuster.databasehelpers;
+package com.electivechaos.claimsadjuster.asynctasks;
 
 import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.view.View;
-import android.widget.ProgressBar;
 
 import com.electivechaos.claimsadjuster.database.CategoryListDBHelper;
 import com.electivechaos.claimsadjuster.pojo.ReportPOJO;
