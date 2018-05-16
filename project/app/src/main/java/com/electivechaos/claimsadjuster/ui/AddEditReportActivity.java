@@ -564,6 +564,13 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
     @Override
     public void onReportSave(boolean isProgressBar) {
+
+
+
+        if(isProgressBar){
+            isReportSavedManually = true;
+        }
+
         try {
             new DatabaseSaveReportTask(AddEditReportActivity.this, progressBarLayout,reportPOJO,false,categoryListDBHelper).execute().get();
         } catch (InterruptedException e) {
