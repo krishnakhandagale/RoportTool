@@ -392,7 +392,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
         fabSaveReportBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onSaveReportClickListener.onReportSave();
+                onSaveReportClickListener.onReportSave(true);
                 animateFAB();
             }
         });

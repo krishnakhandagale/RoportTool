@@ -27,6 +27,7 @@ import com.electivechaos.claimsadjuster.R;
 import com.electivechaos.claimsadjuster.adapters.CustomCategoryPopUpAdapter;
 import com.electivechaos.claimsadjuster.adapters.DrawerMenuListAdapter;
 import com.electivechaos.claimsadjuster.database.CategoryListDBHelper;
+import com.electivechaos.claimsadjuster.databasehelpers.DatabaseSaveReportTask;
 import com.electivechaos.claimsadjuster.fragments.AddEditReportSelectedImagesFragment;
 import com.electivechaos.claimsadjuster.fragments.CauseOfLossFragment;
 import com.electivechaos.claimsadjuster.fragments.ClaimDetailsFragment;
@@ -80,13 +81,12 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.add_edit_report_activity_layout);
+        progressBarLayout = findViewById(R.id.progressBarLayout);
         categoryListDBHelper = CategoryListDBHelper.getInstance(this);
 
         reportPOJO.setId(String.valueOf(new Date().getTime()));
+        onReportSave(false);
 
-        onReportSave();
-
-        progressBarLayout = findViewById(R.id.progressBarLayout);
 
 
         selectedFragmentPosition=0;
@@ -559,11 +559,15 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     }
 
     @Override
-    public void onReportSave() {
+    public void onReportSave(boolean isProgressBar) {
+        try {
+            new DatabaseSaveReportTask(AddEditReportActivity.this, progressBarLayout,reportPOJO,false,categoryListDBHelper).execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
 
-        //TODO:Add validations here where manually adding entry by clicking on save
-
-        categoryListDBHelper.addReportEntry(reportPOJO);
     }
 
 
@@ -653,4 +657,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         return true;
 
     }
+
+
+
 }
