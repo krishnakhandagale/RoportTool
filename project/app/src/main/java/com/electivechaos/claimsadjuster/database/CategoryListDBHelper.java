@@ -428,7 +428,9 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
     }
 
     public ReportPOJO getReportItem(String id){
+
         ReportPOJO reportPOJO = new ReportPOJO();
+
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor c = db.rawQuery("SELECT * FROM generated_reports WHERE report_id = '"+id+"'", null);
         reportPOJO.setId(c.getString(0));
@@ -441,6 +443,11 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         reportPOJO.setLocationLat(c.getString(7));
         reportPOJO.setLocationLong(c.getString(8));
         reportPOJO.setCauseOfLossId(c.getString(9));
+
+        // query for labels using report id
+        // loop on cursor and form label array list
+        // get elevation and selected images using label id and set respective pojo
+
 
         return  reportPOJO;
     }
