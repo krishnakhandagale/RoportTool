@@ -216,6 +216,7 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
 
 
     private void showCurrentPlace() {
+
         if (googleMap == null) {
             return;
         }

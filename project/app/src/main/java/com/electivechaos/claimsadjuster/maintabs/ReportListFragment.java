@@ -121,7 +121,9 @@ public class ReportListFragment extends Fragment {
                         public boolean onMenuItemClick(MenuItem item) {
                             switch (item.getItemId()) {
                                 case R.id.edit:
-                                        mCategoryListDBHelper.getReportItem(reportItemPOJO.getId());
+                                        Intent intent=new Intent(context,AddEditReportActivity.class);
+                                        intent.putExtra("reportId",reportItemPOJO.getId());
+                                        startActivityForResult(intent,1);
                                     break;
                                 case R.id.delete:
                                     AlertDialog.Builder builder = new AlertDialog.Builder(context);

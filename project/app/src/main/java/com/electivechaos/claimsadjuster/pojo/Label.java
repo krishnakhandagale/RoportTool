@@ -10,6 +10,8 @@ public class Label {
     private long id;
     private String name;
     private String description;
+
+    //remove category id
     private int categoryID;
     private String reportId;
     private ArrayList<ImageDetailsPOJO> selectedImages;

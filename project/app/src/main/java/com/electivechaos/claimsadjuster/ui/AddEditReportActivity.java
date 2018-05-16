@@ -65,14 +65,13 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     private ArrayList<Category> categories = null;
     static CategoryListDBHelper categoryListDBHelper;
 
-    private ReportPOJO reportPOJO = new ReportPOJO();
+    private ReportPOJO reportPOJO ;
     private View progressBarLayout;
 
     private  Toolbar toolbar;
     private MenuItem actionBarEditBtn;
     private ActionBar activityActionBar;
 
-    private boolean isReportSavedManually = false;
 
 
 
@@ -84,19 +83,18 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         progressBarLayout = findViewById(R.id.progressBarLayout);
         categoryListDBHelper = CategoryListDBHelper.getInstance(this);
 
-        reportPOJO.setId(String.valueOf(new Date().getTime()));
-        onReportSave(false);
-
-
+        if(getIntent().getExtras() != null){
+            reportPOJO = categoryListDBHelper.getReportItem(getIntent().getExtras().getString("reportId"));
+        }else{
+            reportPOJO = new ReportPOJO();
+            reportPOJO.setId(String.valueOf(new Date().getTime()));
+            onReportSave(false);
+        }
 
 
         selectedFragmentPosition = 0;
 
-        FragmentManager transactionManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
-        fragmentTransaction.replace(R.id.content_frame, new ClaimDetailsFragment());
-        fragmentTransaction.commit();
-        tabName = "ClaimDetailsFragment";
+
 
 
         toolbar = findViewById(R.id.toolbar);
@@ -112,6 +110,13 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
 
         mExpandableListView = findViewById(R.id.slider_menu);
+
+
+        putClaimDetailsFragment();
+
+
+
+
 
         parentMenuItems = new ArrayList<>();
 
@@ -140,29 +145,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                 if (parentMenuItems.get(groupPosition).equals("Claim Details")) {
 
                     mDrawerLayout.closeDrawer(Gravity.LEFT);
-                    FragmentManager transactionManager = getSupportFragmentManager();
-                    FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
-
-                    ClaimDetailsFragment claimDetailsFragment = new ClaimDetailsFragment();
-                    Bundle claimDetailsData = new Bundle();
-
-                    claimDetailsData.putString("reportTitle", reportPOJO.getReportTitle());
-                    claimDetailsData.putString("reportDescription", reportPOJO.getReportDescription());
-                    claimDetailsData.putString("claimNumber", reportPOJO.getClaimNumber());
-                    claimDetailsData.putString("claimNumber", reportPOJO.getClaimNumber());
-                    claimDetailsData.putString("clientName", reportPOJO.getClientName());
-
-                    claimDetailsData.putString("locationLat", reportPOJO.getLocationLat());
-                    claimDetailsData.putString("locationLong", reportPOJO.getLocationLong());
-
-                    claimDetailsFragment.setArguments(claimDetailsData);
-                    fragmentTransaction.replace(R.id.content_frame, claimDetailsFragment);
-                    fragmentTransaction.commit();
-                    tabName = "ClaimDetailsFragment";
-
-
-                    selectedFragmentPosition = 0;
-                    activityActionBar.setTitle("Claim Details");
+                    putClaimDetailsFragment();
                     actionBarEditBtn.setVisible(false);
 
 
@@ -218,6 +201,30 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
     }
 
+    private void putClaimDetailsFragment() {
+        FragmentManager transactionManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
+
+        ClaimDetailsFragment claimDetailsFragment = new ClaimDetailsFragment();
+        Bundle claimDetailsData = new Bundle();
+
+        claimDetailsData.putString("reportTitle", reportPOJO.getReportTitle());
+        claimDetailsData.putString("reportDescription", reportPOJO.getReportDescription());
+        claimDetailsData.putString("claimNumber", reportPOJO.getClaimNumber());
+        claimDetailsData.putString("clientName", reportPOJO.getClientName());
+        claimDetailsData.putString("createdDate", reportPOJO.getCreatedDate());
+        claimDetailsData.putString("locationLat", reportPOJO.getLocationLat());
+        claimDetailsData.putString("locationLong", reportPOJO.getLocationLong());
+
+        claimDetailsFragment.setArguments(claimDetailsData);
+        fragmentTransaction.replace(R.id.content_frame, claimDetailsFragment);
+        fragmentTransaction.commit();
+        tabName = "ClaimDetailsFragment";
+
+
+        selectedFragmentPosition = 0;
+        activityActionBar.setTitle("Claim Details");
+    }
 
 
     @Override
@@ -302,10 +309,6 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                 .setMessage("Pressing back will take you to previous screen, are you sure wanna go back ?")
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-
-                      if(!isReportSavedManually){
-                          categoryListDBHelper.deleteReportEntry(reportPOJO.getId());
-                      }
 
                       AddEditReportActivity.super.onBackPressed();
                     }
@@ -417,28 +420,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
             }
         }else{
             mDrawerLayout.closeDrawer(Gravity.LEFT);
-            FragmentManager transactionManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
-
-            ClaimDetailsFragment claimDetailsFragment = new ClaimDetailsFragment();
-            Bundle claimDetailsData = new Bundle();
-            claimDetailsData.putString("reportTitle", reportPOJO.getReportTitle());
-            claimDetailsData.putString("reportDescription", reportPOJO.getReportDescription());
-            claimDetailsData.putString("claimNumber", reportPOJO.getClaimNumber());
-            claimDetailsData.putString("claimNumber", reportPOJO.getClaimNumber());
-            claimDetailsData.putString("clientName", reportPOJO.getClientName());
-
-            claimDetailsData.putString("locationLat", reportPOJO.getLocationLat());
-            claimDetailsData.putString("locationLong", reportPOJO.getLocationLong());
-
-            claimDetailsFragment.setArguments(claimDetailsData);
-            fragmentTransaction.replace(R.id.content_frame, claimDetailsFragment);
-            fragmentTransaction.commit();
-            tabName = "ClaimDetailsFragment";
-
-
-            selectedFragmentPosition = 0;
-            activityActionBar.setTitle("Claim Details");
+            putClaimDetailsFragment();
             actionBarEditBtn.setVisible(false);
 
         }
@@ -538,28 +520,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                 toolbar.setTag(labelArrayList.get(selectedFragmentPosition - 3));
             }else{
                 mDrawerLayout.closeDrawer(Gravity.LEFT);
-                FragmentManager transactionManager = getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
-
-                ClaimDetailsFragment claimDetailsFragment = new ClaimDetailsFragment();
-                Bundle claimDetailsData = new Bundle();
-                claimDetailsData.putString("reportTitle", reportPOJO.getReportTitle());
-                claimDetailsData.putString("reportDescription", reportPOJO.getReportDescription());
-                claimDetailsData.putString("claimNumber", reportPOJO.getClaimNumber());
-                claimDetailsData.putString("claimNumber", reportPOJO.getClaimNumber());
-                claimDetailsData.putString("clientName", reportPOJO.getClientName());
-
-                claimDetailsData.putString("locationLat", reportPOJO.getLocationLat());
-                claimDetailsData.putString("locationLong", reportPOJO.getLocationLong());
-
-                claimDetailsFragment.setArguments(claimDetailsData);
-                fragmentTransaction.replace(R.id.content_frame, claimDetailsFragment);
-                fragmentTransaction.commit();
-                tabName = "ClaimDetailsFragment";
-
-
-                selectedFragmentPosition = 0;
-                activityActionBar.setTitle("Claim Details");
+                putClaimDetailsFragment();
                 actionBarEditBtn.setVisible(false);
             }
 
@@ -570,12 +531,6 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
     @Override
     public void onReportSave(boolean isProgressBar) {
-
-
-
-        if(isProgressBar){
-            isReportSavedManually = true;
-        }
 
 
         try {
@@ -676,6 +631,8 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
     }
 
-
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 }
