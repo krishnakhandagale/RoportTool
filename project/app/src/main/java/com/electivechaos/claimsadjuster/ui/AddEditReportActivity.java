@@ -231,6 +231,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
         switch (item.getItemId()) {
             case android.R.id.home:
+                CommonUtils.hideKeyboard(AddEditReportActivity.this);
                 mDrawerLayout.openDrawer(GravityCompat.START);
                 return true;
             case R.id.edit:
@@ -243,10 +244,6 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                 editLabel.setFocusable(true);
                 editLabel.requestFocus();
                 final Label label=(Label)toolbar.getTag();
-
-                if(label != null){
-                  // Here we get all the label information
-                }
 
                 view.findViewById(R.id.backButton).setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -271,6 +268,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                         activityActionBar.setDisplayShowTitleEnabled(true);
                         activityActionBar.setDisplayShowCustomEnabled(false);
                         item.setVisible(true);
+                        CommonUtils.hideKeyboard(AddEditReportActivity.this);
                     }
                 });
 

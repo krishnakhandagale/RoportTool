@@ -482,8 +482,8 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                             sImageDetailsPOJO.setTitle(cSelectedImages.getString(1));
                             sImageDetailsPOJO.setDescription(cSelectedImages.getString(2));
                             sImageDetailsPOJO.setImageUrl(cSelectedImages.getString(3));
-                            sImageDetailsPOJO.setIsDamage(cSelectedImages.getString(4).equals("true"));
-                            sImageDetailsPOJO.setOverview(cSelectedImages.getString(5).equals("true"));
+                            sImageDetailsPOJO.setIsDamage(cSelectedImages.getString(4).equals("1"));
+                            sImageDetailsPOJO.setOverview(cSelectedImages.getString(5).equals("1"));
                             selectedImagesList.add(sImageDetailsPOJO);
 
                         } while (cSelectedImages.moveToNext());
