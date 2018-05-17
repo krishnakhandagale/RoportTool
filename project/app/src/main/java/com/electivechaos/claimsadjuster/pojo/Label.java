@@ -7,11 +7,9 @@ import java.util.ArrayList;
  */
 
 public class Label {
-    private long id;
+    private String id;
     private String name;
     private String description;
-
-    //remove category id
     private int categoryID;
     private String reportId;
     private ArrayList<ImageDetailsPOJO> selectedImages;
@@ -19,7 +17,7 @@ public class Label {
 
 
     public Label(){
-        id = -1;
+        id = "";
         name = "";
         description = "";
         categoryID = -1;
@@ -36,11 +34,11 @@ public class Label {
         this.reportId = reportId;
     }
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

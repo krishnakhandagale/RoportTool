@@ -22,10 +22,10 @@ public class DBSelectedImagesTask  extends AsyncTask<String,Void,Void> {
     private View progressBarLayout;
     private CategoryListDBHelper categoryListDBHelper;
     String type;
-    long labelId;
+    String labelId;
     ArrayList<Label> labelArrayList;
 
-    public  DBSelectedImagesTask (Context context, ArrayList<Label> labelArrayList,long labelId,  boolean isProgressBar, CategoryListDBHelper categoryListDBHelper, String type) {
+    public  DBSelectedImagesTask (Context context, ArrayList<Label> labelArrayList,String labelId,  boolean isProgressBar, CategoryListDBHelper categoryListDBHelper, String type) {
         this.context = context;
         this.isProgressBar = isProgressBar;
         this.categoryListDBHelper = categoryListDBHelper;

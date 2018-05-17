@@ -13,6 +13,7 @@ import com.electivechaos.claimsadjuster.pojo.ImageDetailsPOJO;
 import com.electivechaos.claimsadjuster.pojo.Label;
 import com.electivechaos.claimsadjuster.pojo.ReportItemPOJO;
 import com.electivechaos.claimsadjuster.pojo.ReportPOJO;
+import com.electivechaos.claimsadjuster.utils.CommonUtils;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -269,13 +270,16 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         return  db.delete(TABLE_CATEGORY_LABELS, whereClause,new String[]{labelID});
     }
 
-    public long addLabel(Label label){
+    public String addLabel(Label label){
         SQLiteDatabase db = this.getWritableDatabase();
+        String id =  CommonUtils.generateId();
         ContentValues contentValues = new ContentValues();
+        contentValues.put(KEY_LABEL_ID,id);
         contentValues.put(KEY_LABEL_NAME, label.getName());
         contentValues.put(KEY_LABEL_DESCRIPTION, label.getDescription());
         contentValues.put(KEY_FK_LABEL_REPORT_ID, label.getReportId());
-        return  db.insert(TABLE_CATEGORY_LABELS,null,contentValues);
+        db.insert(TABLE_CATEGORY_LABELS,null,contentValues);
+        return  id;
     }
 
     public int updateLabel(Label label){
@@ -284,25 +288,6 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         contentValues.put(KEY_CATEGORY_NAME, label.getName());
         contentValues.put(KEY_CATEGORY_DESCRIPTION, label.getDescription());
         return  db.update(TABLE_CATEGORY_LABELS, contentValues,KEY_LABEL_ID+"="+label.getId(),null);
-    }
-    public ArrayList<Label> getLabelList(){
-
-        ArrayList<Label> tempList = new ArrayList<>();
-        String selectQueryReportTable = "SELECT  * FROM " + TABLE_CATEGORY_LABELS;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(selectQueryReportTable, null);
-        if (cursor.moveToFirst()) {
-            do {
-
-                Label label = new Label();
-                label.setId(cursor.getInt(0));
-                label.setName(cursor.getString(1));
-                label.setDescription(cursor.getString(2));
-                label.setCategoryID(cursor.getInt(3));
-                tempList.add(label);
-            } while (cursor.moveToNext());
-        }
-        return  tempList;
     }
 
     public int deleteCauseOfLoss(String id){
@@ -370,13 +355,16 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
             Iterator itr = labelArrayList.iterator();
             while (itr.hasNext()) {
                 Label label = (Label) itr.next();
-                //Give call to add label
-                long labelId= addLabel(label);
+
+                String labelId= addLabel(label);
                 ArrayList<ImageDetailsPOJO> reportsImageList = label.getSelectedImages();
+
                 if (reportsImageList != null && reportsImageList.size() > 0) {
                     for (int index = 0; index < reportsImageList.size(); index++) {
                         ImageDetailsPOJO imageItem = reportsImageList.get(index);
                         ContentValues imageEntry = new ContentValues();
+                        String id = CommonUtils.generateId();
+                        imageEntry.put(KEY_IMAGE_ID, id);
                         imageEntry.put(KEY_IMAGE_TITLE, imageItem.getTitle());
                         imageEntry.put(KEY_IMAGE_DESCRIPTION, imageItem.getDescription());
                         imageEntry.put(KEY_IMAGE_URL, imageItem.getImageUrl());
@@ -394,6 +382,8 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                     for (int index = 0; index < reportsElevationImageList.size(); index++) {
                         ImageDetailsPOJO imageItem = reportsElevationImageList.get(index);
                         ContentValues imageEntry = new ContentValues();
+                        String id = CommonUtils.generateId();
+                        imageEntry.put(KEY_IMAGE_ID, id);
                         imageEntry.put(KEY_IMAGE_TITLE, imageItem.getTitle());
                         imageEntry.put(KEY_IMAGE_DESCRIPTION, imageItem.getDescription());
                         imageEntry.put(KEY_IMAGE_URL, imageItem.getImageUrl());
@@ -465,7 +455,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
             if (cLabelList.moveToFirst()) {
             do {
                 Label label =new Label();
-                label.setId(cLabelList.getInt(0));
+                label.setId(cLabelList.getString(0));
                 label.setName(cLabelList.getString(1));
                 label.setDescription(cLabelList.getString(2));
                 label.setReportId(cLabelList.getString(3));
@@ -534,10 +524,9 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
     }
 
 
-    public void updateElevationImages(long id, ArrayList<Label> labelList) {
+    public void updateElevationImages(String id, ArrayList<Label> labelList) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_REPORTS_ELEVATION_IMAGE_DETAILS, KEY_FK_LABEL_ID + "=" + id, null);
-       // db.execSQL("DELETE  report_elevation_image_details WHERE label_id_fk="+id+"");
 
         ArrayList<Label> labelArrayList = labelList;
         Iterator itr = labelArrayList.iterator();
@@ -559,7 +548,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void updateSelectedImages(long id, ArrayList<Label> labelList){
+    public void updateSelectedImages(String id, ArrayList<Label> labelList){
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_REPORTS_IMAGE_DETAILS, KEY_FK_LABEL_ID + "=" + id, null);
 

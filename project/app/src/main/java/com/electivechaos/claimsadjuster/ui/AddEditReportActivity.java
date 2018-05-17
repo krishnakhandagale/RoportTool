@@ -352,7 +352,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                                 label.setCategoryID(categories.get(pos).getCategoryId());
                                 label.setName(categories.get(pos).getCategoryName());
                                 label.setReportId(reportPOJO.getId());
-                                long id = 0;
+                                String id = "";
                                 try {
                                     id = new DatabaseTaskHelper(AddEditReportActivity.this,label).execute().get();
                                 } catch (InterruptedException e) {
@@ -508,7 +508,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     @Override
     public void setSelectedElevationImages(ArrayList<ImageDetailsPOJO> elevationImagesList,int labelPosition) {
         ArrayList<Label> labelArrayList = reportPOJO.getLabelArrayList();
-        long labelId=labelArrayList.get(labelPosition).getId();
+        String labelId=labelArrayList.get(labelPosition).getId();
 
         try {
             new DBSelectedImagesTask(AddEditReportActivity.this,labelArrayList,labelId,false,categoryListDBHelper,"elevationImages").execute().get();
@@ -523,7 +523,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     @Override
     public void setSelectedImages(ArrayList<ImageDetailsPOJO> imagesList , int labelPosition) {
         ArrayList<Label> labelArrayList = reportPOJO.getLabelArrayList();
-        long labelId=labelArrayList.get(labelPosition).getId();
+        String labelId=labelArrayList.get(labelPosition).getId();
 
         try {
             new DBSelectedImagesTask(AddEditReportActivity.this,labelArrayList,labelId,false,categoryListDBHelper,"selectedImages").execute().get();
@@ -603,7 +603,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
 
     // Task for label addition
-    class DatabaseTaskHelper extends AsyncTask <String,Void,Long>{
+    class DatabaseTaskHelper extends AsyncTask <String,Void,String>{
 
 
         private Label label;
@@ -625,14 +625,13 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         }
 
         @Override
-        protected Long doInBackground(String... strings) {
+        protected String doInBackground(String... strings) {
 
-            long id = categoryListDBHelper.addLabel(label);
-            return id;
+            return categoryListDBHelper.addLabel(label);
         }
 
         @Override
-        protected void onPostExecute(Long result) {
+        protected void onPostExecute(String result) {
             super.onPostExecute(result);
             if(progressBarLayout != null){
                 progressBarLayout.setVisibility(View.GONE);
