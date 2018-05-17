@@ -13,6 +13,9 @@ import android.view.inputmethod.InputMethodManager;
 
 import com.electivechaos.claimsadjuster.R;
 
+import java.util.Date;
+import java.util.Random;
+
 /**
  * Created by krishna on 11/22/17.
  */
@@ -74,6 +77,12 @@ public class CommonUtils {
             view = new View(activity);
         }
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    public static String generateId(){
+         Random random = new Random();
+        int number = 100000 + random.nextInt(900000);
+        return  new Date().getTime() +"" + number;
     }
 
 }

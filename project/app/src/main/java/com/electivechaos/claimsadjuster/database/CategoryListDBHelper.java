@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.electivechaos.claimsadjuster.pojo.Category;
 import com.electivechaos.claimsadjuster.pojo.CauseOfLoss;
@@ -131,7 +130,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 + KEY_CATEGORY_DESCRIPTION +" TEXT "+")";
 
         String CATEGORY_LABELS_TABLE = "CREATE TABLE " + TABLE_CATEGORY_LABELS + "("
-                + KEY_LABEL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT DEFAULT 0,"
+                + KEY_LABEL_ID + " TEXT,"
                 + KEY_LABEL_NAME + " TEXT,"
                 + KEY_LABEL_DESCRIPTION + " TEXT,"
 
@@ -147,7 +146,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
 
 
         String CREATE_IMAGE_DETAILS_TABLE = "CREATE TABLE " + TABLE_REPORTS_IMAGE_DETAILS + "("
-                + KEY_IMAGE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT DEFAULT 0,"
+                + KEY_IMAGE_ID + " TEXT,"
                 + KEY_IMAGE_TITLE + " TEXT,"
                 + KEY_IMAGE_DESCRIPTION + " TEXT,"
 
@@ -159,7 +158,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
 
 
         String CREATE_ELEVATION_IMAGE_DETAILS_TABLE = "CREATE TABLE " + TABLE_REPORTS_ELEVATION_IMAGE_DETAILS + "("
-                + KEY_ELEVATION_IMAGE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT DEFAULT 0,"
+                + KEY_ELEVATION_IMAGE_ID + " TEXT,"
                 + KEY_IMAGE_TITLE + " TEXT,"
                 + KEY_IMAGE_DESCRIPTION + " TEXT,"
                 + KEY_IMAGE_URL+ " TEXT,"
