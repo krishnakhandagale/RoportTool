@@ -27,6 +27,7 @@ import android.widget.ExpandableListView;
 import com.electivechaos.claimsadjuster.R;
 import com.electivechaos.claimsadjuster.adapters.CustomCategoryPopUpAdapter;
 import com.electivechaos.claimsadjuster.adapters.DrawerMenuListAdapter;
+import com.electivechaos.claimsadjuster.asynctasks.DBSelectedImagesTask;
 import com.electivechaos.claimsadjuster.asynctasks.DBUpdateTaskOnTextChanged;
 import com.electivechaos.claimsadjuster.database.CategoryListDBHelper;
 import com.electivechaos.claimsadjuster.asynctasks.DatabaseSaveReportTask;
@@ -506,11 +507,32 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
     @Override
     public void setSelectedElevationImages(ArrayList<ImageDetailsPOJO> elevationImagesList,int labelPosition) {
+        ArrayList<Label> labelArrayList = reportPOJO.getLabelArrayList();
+        long labelId=labelArrayList.get(labelPosition).getId();
+
+        try {
+            new DBSelectedImagesTask(AddEditReportActivity.this,labelArrayList,labelId,false,categoryListDBHelper,"elevationImages").execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
         reportPOJO.getLabelArrayList().get(labelPosition).setSelectedElevationImages(elevationImagesList);
     }
 
     @Override
     public void setSelectedImages(ArrayList<ImageDetailsPOJO> imagesList , int labelPosition) {
+        ArrayList<Label> labelArrayList = reportPOJO.getLabelArrayList();
+        long labelId=labelArrayList.get(labelPosition).getId();
+
+        try {
+            new DBSelectedImagesTask(AddEditReportActivity.this,labelArrayList,labelId,false,categoryListDBHelper,"selectedImages").execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
         reportPOJO.getLabelArrayList().get(labelPosition).setSelectedImages(imagesList);
 
     }

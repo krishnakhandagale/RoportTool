@@ -391,7 +391,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                     }
                 }
                 ArrayList<ImageDetailsPOJO> reportsElevationImageList = label.getSelectedElevationImages();
-                if (reportsImageList != null && reportsElevationImageList.size() > 0) {
+                if (reportsElevationImageList != null && reportsElevationImageList.size() > 0) {
                     for (int index = 0; index < reportsElevationImageList.size(); index++) {
                         ImageDetailsPOJO imageItem = reportsElevationImageList.get(index);
                         ContentValues imageEntry = new ContentValues();
@@ -534,6 +534,63 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         db.execSQL("UPDATE generated_reports SET address_line='"+value+"' WHERE report_id='"+reportId+"'");
     }
 
+
+    public void updateElevationImages(long id, ArrayList<Label> labelList) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_REPORTS_ELEVATION_IMAGE_DETAILS, KEY_FK_LABEL_ID + "=" + id, null);
+       // db.execSQL("DELETE  report_elevation_image_details WHERE label_id_fk="+id+"");
+
+        ArrayList<Label> labelArrayList = labelList;
+        Iterator itr = labelArrayList.iterator();
+        while (itr.hasNext()) {
+            Label label = (Label) itr.next();
+
+            ArrayList<ImageDetailsPOJO> reportsElevationImageList = label.getSelectedElevationImages();
+            if (reportsElevationImageList != null && reportsElevationImageList.size() > 0) {
+                for (int index = 0; index < reportsElevationImageList.size(); index++) {
+                    ImageDetailsPOJO imageItem = reportsElevationImageList.get(index);
+                    ContentValues imageEntry = new ContentValues();
+                    imageEntry.put(KEY_IMAGE_TITLE, imageItem.getTitle());
+                    imageEntry.put(KEY_IMAGE_DESCRIPTION, imageItem.getDescription());
+                    imageEntry.put(KEY_IMAGE_URL, imageItem.getImageUrl());
+                    imageEntry.put(KEY_FK_LABEL_ID, id);
+                    db.insert(TABLE_REPORTS_ELEVATION_IMAGE_DETAILS, null, imageEntry);
+                }
+            }
+        }
+    }
+
+    public void updateSelectedImages(long id, ArrayList<Label> labelList){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_REPORTS_IMAGE_DETAILS, KEY_FK_LABEL_ID + "=" + id, null);
+
+
+        ArrayList<Label> labelArrayList = labelList;
+        Iterator itr = labelArrayList.iterator();
+        while (itr.hasNext()) {
+            Label label = (Label) itr.next();
+
+            ArrayList<ImageDetailsPOJO> reportsImageList = label.getSelectedImages();
+            if (reportsImageList != null && reportsImageList.size() > 0) {
+                for (int index = 0; index < reportsImageList.size(); index++) {
+                    ImageDetailsPOJO imageItem = reportsImageList.get(index);
+                    ContentValues imageEntry = new ContentValues();
+                    imageEntry.put(KEY_IMAGE_TITLE, imageItem.getTitle());
+                    imageEntry.put(KEY_IMAGE_DESCRIPTION, imageItem.getDescription());
+                    imageEntry.put(KEY_IMAGE_URL, imageItem.getImageUrl());
+                    imageEntry.put(KEY_IS_DAMAGE, imageItem.isDamage());
+                    imageEntry.put(KEY_IS_OVERVIEW, imageItem.isOverview());
+                    imageEntry.put(KEY_FK_LABEL_ID, id);
+                    long count=  db.insert(TABLE_REPORTS_IMAGE_DETAILS, null, imageEntry);
+                    if(count!=-1) {
+                        Log.d("Error in insertion", String.valueOf(count));
+                    }
+                }
+
+            }
+        }
+
+    }
 
 
     @Override
