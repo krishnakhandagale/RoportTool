@@ -184,6 +184,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
             @Override
             public void onImageSelectionChanged(List<ImageDetailsPOJO> selectedImgs) {
                 selectedImageList = (ArrayList<ImageDetailsPOJO>) selectedImgs;
+                selectedImagesDataInterface.setSelectedImages(selectedImageList,labelPosition);
             }
         };
 
@@ -218,6 +219,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
         ItemTouchHelper.Callback _ithCallback = new ItemTouchHelper.Callback() {
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
                 Collections.swap(selectedImageList, viewHolder.getAdapterPosition(), target.getAdapterPosition());
+                selectedImagesDataInterface.setSelectedImages(selectedImageList,labelPosition);
                 selectedImagesAdapter.notifyItemMoved(viewHolder.getAdapterPosition(), target.getAdapterPosition());
                 return true;
             }
@@ -308,6 +310,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                 if (selectedElevationImagesList != null && selectedElevationImagesList.size() > 0)
                 {
                         selectedElevationImagesList.set(0,new ImageDetailsPOJO());
+                        selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList,labelPosition);
                         imgViewFrontPreview.setImageDrawable(null);
                         imgRemoveBtnFront.setVisibility(View.INVISIBLE);
 
@@ -322,6 +325,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                 if (selectedElevationImagesList != null && selectedElevationImagesList.size() > 0)
                 {
                     selectedElevationImagesList.set(1,new ImageDetailsPOJO());
+                    selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList,labelPosition);
                     imgViewBackPreview.setImageDrawable(null);
                     imgRemoveBtnBack.setVisibility(View.INVISIBLE);
 
@@ -337,6 +341,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                 if (selectedElevationImagesList != null && selectedElevationImagesList.size() > 0)
                 {
                     selectedElevationImagesList.set(2,new ImageDetailsPOJO());
+                    selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList,labelPosition);
                     imgViewLeftPreview.setImageDrawable(null);
                     imgRemoveBtnLeft.setVisibility(View.INVISIBLE);
 
@@ -352,6 +357,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                 if (selectedElevationImagesList != null && selectedElevationImagesList.size() > 0)
                 {
                     selectedElevationImagesList.set(3,new ImageDetailsPOJO());
+                    selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList,labelPosition);
                     imgViewRightPreview.setImageDrawable(null);
                     imgRemoveBtnRight.setVisibility(View.INVISIBLE);
 
