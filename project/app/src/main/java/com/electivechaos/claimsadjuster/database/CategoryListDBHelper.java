@@ -448,8 +448,6 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
             }while (c.moveToNext());
         }
 
-        // query for labels using report id
-
         Cursor cLabelList = db.rawQuery("SELECT * FROM category_label WHERE report_id_fk = '"+id+"'", null);
         ArrayList<Label> labelList=new ArrayList<>();
 
@@ -461,7 +459,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 label.setDescription(cLabelList.getString(2));
                 label.setReportId(cLabelList.getString(3));
 
-                Cursor cElevationImages = db.rawQuery("SELECT * FROM report_elevation_image_details  WHERE  label_id_fk = '"+cLabelList.getInt(0)+"'", null);
+                Cursor cElevationImages = db.rawQuery("SELECT * FROM report_elevation_image_details  WHERE  label_id_fk = '"+cLabelList.getString(0)+"'", null);
                 ArrayList<ImageDetailsPOJO> elevationImagesList=new ArrayList<>();
 
                 if (cElevationImages.moveToFirst()) {
@@ -475,7 +473,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 }
                     label.setSelectedElevationImages(elevationImagesList);
 
-                    Cursor cSelectedImages = db.rawQuery("SELECT * FROM report_image_details  WHERE  label_id_fk = '" + cLabelList.getInt(0) + "'", null);
+                    Cursor cSelectedImages = db.rawQuery("SELECT * FROM report_image_details  WHERE  label_id_fk = '" + cLabelList.getString(0) + "'", null);
                     ArrayList<ImageDetailsPOJO> selectedImagesList = new ArrayList<>();
 
                     if (cSelectedImages.moveToFirst()) {
@@ -485,7 +483,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                             sImageDetailsPOJO.setDescription(cSelectedImages.getString(2));
                             sImageDetailsPOJO.setImageUrl(cSelectedImages.getString(3));
                             sImageDetailsPOJO.setIsDamage(cSelectedImages.getString(4).equals("true"));
-
+                            sImageDetailsPOJO.setOverview(cSelectedImages.getString(5).equals("true"));
                             selectedImagesList.add(sImageDetailsPOJO);
 
                         } while (cSelectedImages.moveToNext());
@@ -525,59 +523,51 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
     }
 
 
-    public void updateElevationImages(String id, ArrayList<Label> labelList) {
+    public void updateElevationImages(Label label) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_REPORTS_ELEVATION_IMAGE_DETAILS, KEY_FK_LABEL_ID + "=" + id, null);
+        db.delete(TABLE_REPORTS_ELEVATION_IMAGE_DETAILS, KEY_FK_LABEL_ID + "=" + label.getId(), null);
 
-        ArrayList<Label> labelArrayList = labelList;
-        Iterator itr = labelArrayList.iterator();
-        while (itr.hasNext()) {
-            Label label = (Label) itr.next();
 
-            ArrayList<ImageDetailsPOJO> reportsElevationImageList = label.getSelectedElevationImages();
-            if (reportsElevationImageList != null && reportsElevationImageList.size() > 0) {
-                for (int index = 0; index < reportsElevationImageList.size(); index++) {
-                    ImageDetailsPOJO imageItem = reportsElevationImageList.get(index);
+            ArrayList<ImageDetailsPOJO> labelSelectedElevationImages = label.getSelectedElevationImages();
+            if (labelSelectedElevationImages != null && labelSelectedElevationImages.size() > 0) {
+                for (int index = 0; index < labelSelectedElevationImages.size(); index++) {
+                    ImageDetailsPOJO imageItem = labelSelectedElevationImages.get(index);
                     ContentValues imageEntry = new ContentValues();
+                    imageEntry.put(KEY_ELEVATION_IMAGE_ID, CommonUtils.generateId());
                     imageEntry.put(KEY_IMAGE_TITLE, imageItem.getTitle());
                     imageEntry.put(KEY_IMAGE_DESCRIPTION, imageItem.getDescription());
                     imageEntry.put(KEY_IMAGE_URL, imageItem.getImageUrl());
-                    imageEntry.put(KEY_FK_LABEL_ID, id);
+                    imageEntry.put(KEY_FK_LABEL_ID, label.getId());
                     db.insert(TABLE_REPORTS_ELEVATION_IMAGE_DETAILS, null, imageEntry);
                 }
             }
-        }
     }
 
-    public void updateSelectedImages(String id, ArrayList<Label> labelList){
+    public void updateSelectedImages(Label label){
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_REPORTS_IMAGE_DETAILS, KEY_FK_LABEL_ID + "=" + id, null);
+
+        db.delete(TABLE_REPORTS_IMAGE_DETAILS, KEY_FK_LABEL_ID + "=" + label.getId(), null);
 
 
-        ArrayList<Label> labelArrayList = labelList;
-        Iterator itr = labelArrayList.iterator();
-        while (itr.hasNext()) {
-            Label label = (Label) itr.next();
 
-            ArrayList<ImageDetailsPOJO> reportsImageList = label.getSelectedImages();
-            if (reportsImageList != null && reportsImageList.size() > 0) {
-                for (int index = 0; index < reportsImageList.size(); index++) {
-                    ImageDetailsPOJO imageItem = reportsImageList.get(index);
+            ArrayList<ImageDetailsPOJO> labelSelectedImages = label.getSelectedImages();
+            if (labelSelectedImages != null && labelSelectedImages.size() > 0) {
+                for (int index = 0; index < labelSelectedImages.size(); index++) {
+                    ImageDetailsPOJO imageItem = labelSelectedImages.get(index);
                     ContentValues imageEntry = new ContentValues();
+                    imageEntry.put(KEY_IMAGE_ID, CommonUtils.generateId());
                     imageEntry.put(KEY_IMAGE_TITLE, imageItem.getTitle());
                     imageEntry.put(KEY_IMAGE_DESCRIPTION, imageItem.getDescription());
                     imageEntry.put(KEY_IMAGE_URL, imageItem.getImageUrl());
                     imageEntry.put(KEY_IS_DAMAGE, imageItem.isDamage());
                     imageEntry.put(KEY_IS_OVERVIEW, imageItem.isOverview());
-                    imageEntry.put(KEY_FK_LABEL_ID, id);
-                    long count=  db.insert(TABLE_REPORTS_IMAGE_DETAILS, null, imageEntry);
-                    if(count!=-1) {
+                    imageEntry.put(KEY_FK_LABEL_ID, label.getId());
+                    long count = db.insert(TABLE_REPORTS_IMAGE_DETAILS, null, imageEntry);
+                    if (count != -1) {
                         Log.d("Error in insertion", String.valueOf(count));
                     }
                 }
-
             }
-        }
 
     }
 

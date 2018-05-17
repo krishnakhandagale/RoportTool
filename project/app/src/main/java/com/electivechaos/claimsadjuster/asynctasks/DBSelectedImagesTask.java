@@ -22,16 +22,14 @@ public class DBSelectedImagesTask  extends AsyncTask<String,Void,Void> {
     private View progressBarLayout;
     private CategoryListDBHelper categoryListDBHelper;
     String type;
-    String labelId;
-    ArrayList<Label> labelArrayList;
+    Label label;
 
-    public  DBSelectedImagesTask (Context context, ArrayList<Label> labelArrayList,String labelId,  boolean isProgressBar, CategoryListDBHelper categoryListDBHelper, String type) {
+    public  DBSelectedImagesTask (Context context, Label label,  boolean isProgressBar, CategoryListDBHelper categoryListDBHelper, String type) {
         this.context = context;
         this.isProgressBar = isProgressBar;
         this.categoryListDBHelper = categoryListDBHelper;
         this.type = type;
-        this.labelArrayList=labelArrayList;
-        this.labelId=labelId;
+        this.label = label;
 
     }
 
@@ -49,10 +47,10 @@ public class DBSelectedImagesTask  extends AsyncTask<String,Void,Void> {
     @Override
     protected Void doInBackground(String... strings) {
         if(type.equalsIgnoreCase("selectedImages")) {
-            categoryListDBHelper.updateSelectedImages(labelId,labelArrayList);
+            categoryListDBHelper.updateSelectedImages(label);
         }
         else if(type.equalsIgnoreCase("elevationImages")){
-            categoryListDBHelper.updateElevationImages(labelId, labelArrayList);
+            categoryListDBHelper.updateElevationImages(label);
         }
 
         return null;

@@ -451,12 +451,10 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-        Log.d("MY VALUE"," "+reportPOJO.getReportDescription());
     }
 
     @Override
     public void setReportClientName(String reportClientName) {
-        //db call
         try {
             new DBUpdateTaskOnTextChanged(AddEditReportActivity.this,reportClientName,reportPOJO.getId(),false,categoryListDBHelper,"client name").execute().get();
         } catch (InterruptedException e) {
@@ -507,33 +505,33 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
     @Override
     public void setSelectedElevationImages(ArrayList<ImageDetailsPOJO> elevationImagesList,int labelPosition) {
-        ArrayList<Label> labelArrayList = reportPOJO.getLabelArrayList();
-        String labelId=labelArrayList.get(labelPosition).getId();
+
+        reportPOJO.getLabelArrayList().get(labelPosition).setSelectedElevationImages(elevationImagesList);
+
 
         try {
-            new DBSelectedImagesTask(AddEditReportActivity.this,labelArrayList,labelId,false,categoryListDBHelper,"elevationImages").execute().get();
+            new DBSelectedImagesTask(AddEditReportActivity.this,reportPOJO.getLabelArrayList().get(labelPosition),false,categoryListDBHelper,"elevationImages").execute().get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-        reportPOJO.getLabelArrayList().get(labelPosition).setSelectedElevationImages(elevationImagesList);
+
     }
 
     @Override
     public void setSelectedImages(ArrayList<ImageDetailsPOJO> imagesList , int labelPosition) {
-        ArrayList<Label> labelArrayList = reportPOJO.getLabelArrayList();
-        String labelId=labelArrayList.get(labelPosition).getId();
+
+        reportPOJO.getLabelArrayList().get(labelPosition).setSelectedImages(imagesList);
+
 
         try {
-            new DBSelectedImagesTask(AddEditReportActivity.this,labelArrayList,labelId,false,categoryListDBHelper,"selectedImages").execute().get();
+            new DBSelectedImagesTask(AddEditReportActivity.this,reportPOJO.getLabelArrayList().get(labelPosition),false,categoryListDBHelper,"selectedImages").execute().get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-
-        reportPOJO.getLabelArrayList().get(labelPosition).setSelectedImages(imagesList);
 
     }
 
