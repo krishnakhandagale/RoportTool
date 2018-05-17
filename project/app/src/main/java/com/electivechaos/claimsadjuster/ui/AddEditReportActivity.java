@@ -14,6 +14,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,6 +27,7 @@ import android.widget.ExpandableListView;
 import com.electivechaos.claimsadjuster.R;
 import com.electivechaos.claimsadjuster.adapters.CustomCategoryPopUpAdapter;
 import com.electivechaos.claimsadjuster.adapters.DrawerMenuListAdapter;
+import com.electivechaos.claimsadjuster.asynctasks.DBUpdateTaskOnTextChanged;
 import com.electivechaos.claimsadjuster.database.CategoryListDBHelper;
 import com.electivechaos.claimsadjuster.asynctasks.DatabaseSaveReportTask;
 import com.electivechaos.claimsadjuster.fragments.AddEditReportSelectedImagesFragment;
@@ -72,6 +74,8 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     private MenuItem actionBarEditBtn;
     private ActionBar activityActionBar;
 
+    private String reportId;
+
 
 
 
@@ -84,6 +88,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         categoryListDBHelper = CategoryListDBHelper.getInstance(this);
 
         if(getIntent().getExtras() != null){
+            reportId = getIntent().getExtras().getString("reportId");
             reportPOJO = categoryListDBHelper.getReportItem(getIntent().getExtras().getString("reportId"));
         }else{
             reportPOJO = new ReportPOJO();
@@ -431,21 +436,52 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
     @Override
     public void setReportTitle(String reportTitle) {
+        try {
+            new DBUpdateTaskOnTextChanged(AddEditReportActivity.this,reportTitle,reportId,false,categoryListDBHelper,"title").execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
         reportPOJO.setReportTitle(reportTitle);
     }
 
     @Override
     public void setReportDescription(String reportDescription) {
+
         reportPOJO.setReportDescription(reportDescription);
+        try {
+            new DBUpdateTaskOnTextChanged(AddEditReportActivity.this,reportDescription,reportId,false,categoryListDBHelper,"description").execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        Log.d("MY VALUE"," "+reportPOJO.getReportDescription());
     }
 
     @Override
     public void setReportClientName(String reportClientName) {
+        //db call
+        try {
+            new DBUpdateTaskOnTextChanged(AddEditReportActivity.this,reportClientName,reportId,false,categoryListDBHelper,"client name").execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
         reportPOJO.setClientName(reportClientName);
     }
 
     @Override
     public void setReportClaimNumber(String reportClaimNumber) {
+        try {
+            new DBUpdateTaskOnTextChanged(AddEditReportActivity.this,reportClaimNumber,reportId,false,categoryListDBHelper,"claim number").execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
         reportPOJO.setClaimNumber(reportClaimNumber);
     }
 
@@ -462,6 +498,13 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
     @Override
     public void setAddressLine(String addressLine) {
+        try {
+            new DBUpdateTaskOnTextChanged(AddEditReportActivity.this,addressLine,reportId,false,categoryListDBHelper,"address line").execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
         reportPOJO.setAddressLine(addressLine);
     }
 
@@ -531,10 +574,8 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
     @Override
     public void onReportSave(boolean isProgressBar) {
-
-
         try {
-            new DatabaseSaveReportTask(AddEditReportActivity.this, progressBarLayout,reportPOJO,false,categoryListDBHelper).execute().get();
+            new DatabaseSaveReportTask(AddEditReportActivity.this,reportPOJO,false,categoryListDBHelper).execute().get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {

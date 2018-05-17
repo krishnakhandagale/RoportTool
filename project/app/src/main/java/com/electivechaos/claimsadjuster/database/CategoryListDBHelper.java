@@ -510,6 +510,30 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         return  reportPOJO;
     }
 
+    public void updateReportTitle(String value, String reportId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+       db.execSQL("UPDATE generated_reports SET report_name='"+value+"' WHERE report_id ='"+reportId+"'");
+    }
+
+    public void updateReportDecription(String value, String reportId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("UPDATE generated_reports SET report_description='"+value+"' WHERE report_id='"+reportId+"'");
+    }
+
+    public void updateClientName(String value, String reportId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("UPDATE generated_reports SET report_client_name='"+value+"' WHERE report_id='"+reportId+"'");
+    }
+    public void updateClaimNumber(String value, String reportId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("UPDATE generated_reports SET report_claim_number='"+value+"' WHERE report_id='"+reportId+"'");
+    }
+    public void updateAddressLine(String value, String reportId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("UPDATE generated_reports SET address_line='"+value+"' WHERE report_id='"+reportId+"'");
+    }
+
+
 
     @Override
     public void onOpen(SQLiteDatabase db){

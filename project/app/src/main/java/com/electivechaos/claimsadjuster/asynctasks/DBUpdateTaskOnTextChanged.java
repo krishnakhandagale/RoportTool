@@ -10,26 +10,29 @@ import com.electivechaos.claimsadjuster.pojo.ReportPOJO;
 import com.electivechaos.claimsadjuster.utils.CommonUtils;
 
 /**
- * Created by nafeesa on 5/16/18.
+ * Created by nafeesa on 5/17/18.
  */
 
-public class DatabaseSaveReportTask extends AsyncTask<String,Void,Void> {
+public class DBUpdateTaskOnTextChanged extends AsyncTask<String,Void,Void> {
 
     private Context context;
     private boolean isProgressBar;
     View progressBarLayout;
     CategoryListDBHelper categoryListDBHelper;
-    ReportPOJO reportPOJO;
+    String value;
+    String type;
+    String reportId;
 
-    public  DatabaseSaveReportTask(Context context, ReportPOJO reportPOJO, boolean isProgressBar, CategoryListDBHelper categoryListDBHelper) {
+    public  DBUpdateTaskOnTextChanged(Context context, String value,String reportId, boolean isProgressBar, CategoryListDBHelper categoryListDBHelper, String type) {
         this.context = context;
         this.isProgressBar = isProgressBar;
         this.categoryListDBHelper = categoryListDBHelper;
-        this.reportPOJO = reportPOJO;
-        this. progressBarLayout = progressBarLayout;
+        this.value = value;
+        this.type = type;
+        this.reportId = reportId;
     }
 
-    @Override
+  @Override
     protected void onPreExecute() {
         CommonUtils.lockOrientation((Activity) context);
         if(isProgressBar)
@@ -42,7 +45,23 @@ public class DatabaseSaveReportTask extends AsyncTask<String,Void,Void> {
 
     @Override
     protected Void doInBackground(String... strings) {
-        categoryListDBHelper.addReportEntry(reportPOJO);
+        if(type.equalsIgnoreCase("title")) {
+            categoryListDBHelper.updateReportTitle(value,reportId);
+        }
+        else if(type.equalsIgnoreCase("description")){
+            categoryListDBHelper.updateReportDecription(value, reportId);
+        }
+        else if(type.equalsIgnoreCase("client name")){
+            categoryListDBHelper.updateClientName(value, reportId);
+        }
+        else if(type.equalsIgnoreCase("claim number")){
+            categoryListDBHelper.updateClaimNumber(value, reportId);
+        }
+        else if(type.equalsIgnoreCase("address line")){
+            categoryListDBHelper.updateAddressLine(value, reportId);
+        }
+
+
         return null;
     }
 
