@@ -23,7 +23,7 @@ import java.util.Iterator;
  */
 
 public class CategoryListDBHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 50;
+    private static final int DATABASE_VERSION = 57;
 
 
     // Database Name
@@ -63,7 +63,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
 
 
     // Label Table Column Names
-    private static final String KEY_LABEL_ID = "_id";
+    private static final String KEY_LABEL_ID = "label_id";
     private static final String KEY_LABEL_NAME = "name";
     private static final String KEY_LABEL_DESCRIPTION  = "description";
 
@@ -131,7 +131,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 + KEY_CATEGORY_DESCRIPTION +" TEXT "+")";
 
         String CATEGORY_LABELS_TABLE = "CREATE TABLE " + TABLE_CATEGORY_LABELS + "("
-                + KEY_LABEL_ID + " TEXT,"
+                + KEY_LABEL_ID + " TEXT PRIMARY KEY,"
                 + KEY_LABEL_NAME + " TEXT,"
                 + KEY_LABEL_DESCRIPTION + " TEXT,"
 
@@ -147,23 +147,23 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
 
 
         String CREATE_IMAGE_DETAILS_TABLE = "CREATE TABLE " + TABLE_REPORTS_IMAGE_DETAILS + "("
-                + KEY_IMAGE_ID + " TEXT,"
+                + KEY_IMAGE_ID + " TEXT PRIMARY KEY,"
                 + KEY_IMAGE_TITLE + " TEXT,"
                 + KEY_IMAGE_DESCRIPTION + " TEXT,"
 
                 + KEY_IMAGE_URL+ " TEXT,"
                 + KEY_IS_DAMAGE+ " BOOLEAN,"
                 + KEY_IS_OVERVIEW+ " BOOLEAN,"
-                + KEY_FK_LABEL_ID+ " INTEGER,"
+                + KEY_FK_LABEL_ID+ " TEXT,"
                 + "FOREIGN KEY("+ KEY_FK_LABEL_ID +") REFERENCES "+TABLE_CATEGORY_LABELS+"("+KEY_LABEL_ID+ ")"+ " ON DELETE CASCADE )";
 
 
         String CREATE_ELEVATION_IMAGE_DETAILS_TABLE = "CREATE TABLE " + TABLE_REPORTS_ELEVATION_IMAGE_DETAILS + "("
-                + KEY_ELEVATION_IMAGE_ID + " TEXT,"
+                + KEY_ELEVATION_IMAGE_ID + " TEXT PRIMARY KEY,"
                 + KEY_IMAGE_TITLE + " TEXT,"
                 + KEY_IMAGE_DESCRIPTION + " TEXT,"
                 + KEY_IMAGE_URL+ " TEXT,"
-                + KEY_FK_LABEL_ID+ " INTEGER,"
+                + KEY_FK_LABEL_ID+ " TEXT,"
 
                 + "FOREIGN KEY("+ KEY_FK_LABEL_ID +") REFERENCES "+TABLE_CATEGORY_LABELS+"("+KEY_LABEL_ID+ ")"+ " ON DELETE CASCADE )";;
 
@@ -338,6 +338,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
 
         //Delete id any record exist and add it again instead of update
         deleteReportEntry(reportId);
+
         values.put(KEY_REPORT_ID, reportId);
         values.put(KEY_REPORT_NAME, reportItemPOJO.getReportTitle());
         values.put(KEY_REPORT_DESCRIPTION, reportItemPOJO.getReportDescription());

@@ -149,8 +149,8 @@ public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
                             .setMessage("Are you sure wanna remove label ?")
                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
-                                    long id = childMenuList.get(parentMenuList.get(groupPosition)).get(childPosition).getId();
-                                    int result = mCategoryList.deleteLabel(String.valueOf(id));
+                                    String id = childMenuList.get(parentMenuList.get(groupPosition)).get(childPosition).getId();
+                                    int result = mCategoryList.deleteLabel(id);
                                     if(result > 0) {
                                         addEditLabelInterface.onLabelDeleted(childPosition);
                                     }
