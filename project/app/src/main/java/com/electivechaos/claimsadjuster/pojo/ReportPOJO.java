@@ -32,6 +32,7 @@ public class ReportPOJO  implements Parcelable{
         causeOfLoss = "";
         locationLat = "";
         locationLong = "";
+        addressLine = "";
         labelArrayList = new ArrayList<>();
     }
 

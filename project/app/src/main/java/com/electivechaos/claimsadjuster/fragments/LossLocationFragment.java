@@ -74,13 +74,6 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
     public void onStart() {
         super.onStart();
 
-        Bundle bundle = getArguments();
-
-        if(bundle != null){
-            locationLat = bundle.get("locationLat").toString();
-            locationLong = bundle.get("locationLong").toString();
-        }
-
         if(mGoogleApiClient != null && !mGoogleApiClient.isConnected()){
             mGoogleApiClient.connect();
         }
@@ -93,6 +86,20 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
                 .addApi(Places.GEO_DATA_API)
                 .build();
         mGoogleApiClient.connect();
+    }
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        Bundle bundle = getArguments();
+
+        if(bundle != null){
+            locationLat = bundle.get("locationLat").toString();
+            locationLong = bundle.get("locationLong").toString();
+            addressLine = bundle.get("addressLine").toString();
+        }
     }
 
     @Nullable
@@ -129,6 +136,7 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
 
 
         mAutocompleteTextView = rootView.findViewById(R.id.place_autocomplete_text_view);
+        mAutocompleteTextView.setText(addressLine);
         mAutocompleteTextView.setThreshold(2);
         mAutocompleteTextView.setOnItemClickListener(mAutocompleteClickListener);
         mPlaceArrayAdapter = new PlaceArrayAdapter(getActivity(), R.layout.places_autocomplete_item, BOUNDS_MOUNTAIN_VIEW, null);
@@ -142,14 +150,14 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                lossLocationDataInterface.setAddressLine(mAutocompleteTextView.getText().toString());
-                lossLocationDataInterface.setLocationLat("");
-                lossLocationDataInterface.setLocationLong("");
+
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                lossLocationDataInterface.setLocationLat("");
+                lossLocationDataInterface.setLocationLong("");
+                lossLocationDataInterface.setAddressLine(s.toString());
             }
         });
 

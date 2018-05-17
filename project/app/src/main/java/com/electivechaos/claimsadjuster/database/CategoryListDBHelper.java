@@ -23,7 +23,7 @@ import java.util.Iterator;
  */
 
 public class CategoryListDBHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 46;
+    private static final int DATABASE_VERSION = 50;
 
 
     // Database Name
@@ -453,7 +453,8 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 reportPOJO.setFilePath(c.getString(6));
                 reportPOJO.setLocationLat(c.getString(7));
                 reportPOJO.setLocationLong(c.getString(8));
-                reportPOJO.setCauseOfLoss(c.getString(9));
+                reportPOJO.setAddressLine(c.getString(9));
+                reportPOJO.setCauseOfLoss(c.getString(10));
             }while (c.moveToNext());
         }
 

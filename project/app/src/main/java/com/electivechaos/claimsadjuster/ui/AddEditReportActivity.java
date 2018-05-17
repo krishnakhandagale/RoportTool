@@ -212,6 +212,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         claimDetailsData.putString("createdDate", reportPOJO.getCreatedDate());
         claimDetailsData.putString("locationLat", reportPOJO.getLocationLat());
         claimDetailsData.putString("locationLong", reportPOJO.getLocationLong());
+        claimDetailsData.putString("addressLine", reportPOJO.getAddressLine());
 
         claimDetailsFragment.setArguments(claimDetailsData);
         fragmentTransaction.replace(R.id.content_frame, claimDetailsFragment);
@@ -490,6 +491,8 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
     @Override
     public void setAddressLine(String addressLine) {
+
+        reportPOJO.setAddressLine(addressLine);
         try {
             new DBUpdateTaskOnTextChanged(AddEditReportActivity.this,addressLine,reportPOJO.getId(),false,categoryListDBHelper,"address line").execute().get();
         } catch (InterruptedException e) {
@@ -497,7 +500,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-        reportPOJO.setAddressLine(addressLine);
+
     }
 
 

@@ -38,10 +38,12 @@ public class ClaimDetailsFragment  extends Fragment{
 
     String locationLat = "";
     String locationLong = "";
+    String addressLine = "";
 
     private Boolean isFabOpen = false;
     private FloatingActionButton showFabBtn,fabGoNextBtn, fabAddLabelBtn, fabGenerateReportBtn, fabSaveReportBtn;
-    private Animation fab_open, fab_close, rotate_forward, rotate_backward;
+    private Animation fab_open;
+    private Animation fab_close;
 
     private NextButtonClickListener nextButtonClickListener;
     private DrawerMenuListAdapter.OnLabelAddClickListener onLabelAddClickListener;
@@ -60,6 +62,7 @@ public class ClaimDetailsFragment  extends Fragment{
 
             locationLat = passedArgs.get("locationLat").toString();
             locationLong = passedArgs.get("locationLong").toString();
+            addressLine = passedArgs.get("addressLine").toString();
 
         }
     }
@@ -88,8 +91,6 @@ public class ClaimDetailsFragment  extends Fragment{
 
         fab_open = AnimationUtils.loadAnimation(getActivity(), R.anim.fab_open);
         fab_close = AnimationUtils.loadAnimation(getActivity(), R.anim.fab_close);
-        rotate_forward = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate_forward);
-        rotate_backward = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate_backward);
         showFabBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -183,6 +184,8 @@ public class ClaimDetailsFragment  extends Fragment{
                 Bundle claimDetailsLocationArgs = new Bundle();
                 claimDetailsLocationArgs.putString("locationLat", locationLat);
                 claimDetailsLocationArgs.putString("locationLong", locationLong);
+                claimDetailsLocationArgs.putString("addressLine", addressLine);
+
                 fragment.setArguments(claimDetailsLocationArgs);
                 return fragment;
             }
