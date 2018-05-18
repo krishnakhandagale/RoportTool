@@ -28,8 +28,8 @@ import com.electivechaos.claimsadjuster.adapters.CustomCategoryPopUpAdapter;
 import com.electivechaos.claimsadjuster.adapters.DrawerMenuListAdapter;
 import com.electivechaos.claimsadjuster.asynctasks.DBSelectedImagesTask;
 import com.electivechaos.claimsadjuster.asynctasks.DBUpdateTaskOnTextChanged;
-import com.electivechaos.claimsadjuster.database.CategoryListDBHelper;
 import com.electivechaos.claimsadjuster.asynctasks.DatabaseSaveReportTask;
+import com.electivechaos.claimsadjuster.database.CategoryListDBHelper;
 import com.electivechaos.claimsadjuster.fragments.AddEditReportSelectedImagesFragment;
 import com.electivechaos.claimsadjuster.fragments.CauseOfLossFragment;
 import com.electivechaos.claimsadjuster.fragments.ClaimDetailsFragment;
@@ -432,7 +432,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-        reportPOJO.setReportTitle(reportTitle);
+            reportPOJO.setReportTitle(reportTitle);
     }
 
     @Override
@@ -589,6 +589,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         if(isProgressBar) {
           if(reportPOJO.getReportTitle().trim().isEmpty()){
               CommonUtils.showSnackbarMessage(getString(R.string.please_enter_title), true, true,parentLayoutForMessages, AddEditReportActivity.this);
+
           return;
           }else if(reportPOJO.getReportDescription().trim().isEmpty()){
               CommonUtils.showSnackbarMessage(getString(R.string.enter_description_message), true, true, parentLayoutForMessages, AddEditReportActivity.this);
