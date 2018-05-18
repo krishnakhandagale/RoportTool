@@ -102,4 +102,9 @@
     <string name="report_description">Report Description</string>
     <string name="delete_report_msg">Are you sure you want to delete this report ?</string>
     <string name="delete_report_dialog_title">Delete Report</string>
+    <string name="please_enter_title">Please enter title.</string>
+    <string name="enter_description_message">Please enter description.</string>
+    <string name="enter_client_name_message">Please enter client name.</string>
+    <string name="enter_claim_number_message">Please enter claim number.</string>
+    <string name="please_add_address_message">Please enter address for incidence.</string>
 </resources>
