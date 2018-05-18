@@ -113,11 +113,6 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
 
         putClaimDetailsFragment();
-
-
-
-
-
         parentMenuItems = new ArrayList<>();
 
         parentMenuItems.add("Claim Details");
@@ -431,7 +426,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     @Override
     public void setReportTitle(String reportTitle) {
         try {
-            new DBUpdateTaskOnTextChanged(AddEditReportActivity.this,reportTitle,reportPOJO.getId(),false,categoryListDBHelper,"title").execute().get();
+            new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout,reportTitle,reportPOJO.getId(),false,categoryListDBHelper,"title").execute().get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -445,7 +440,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
         reportPOJO.setReportDescription(reportDescription);
         try {
-            new DBUpdateTaskOnTextChanged(AddEditReportActivity.this,reportDescription,reportPOJO.getId(),false,categoryListDBHelper,"description").execute().get();
+            new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout,reportDescription,reportPOJO.getId(),false,categoryListDBHelper,"description").execute().get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -456,7 +451,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     @Override
     public void setReportClientName(String reportClientName) {
         try {
-            new DBUpdateTaskOnTextChanged(AddEditReportActivity.this,reportClientName,reportPOJO.getId(),false,categoryListDBHelper,"client name").execute().get();
+            new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout,reportClientName,reportPOJO.getId(),false,categoryListDBHelper,"client name").execute().get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -468,7 +463,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     @Override
     public void setReportClaimNumber(String reportClaimNumber) {
         try {
-            new DBUpdateTaskOnTextChanged(AddEditReportActivity.this,reportClaimNumber,reportPOJO.getId(),false,categoryListDBHelper,"claim number").execute().get();
+            new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, reportClaimNumber,reportPOJO.getId(),false,categoryListDBHelper,"claim number").execute().get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -493,7 +488,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
         reportPOJO.setAddressLine(addressLine);
         try {
-            new DBUpdateTaskOnTextChanged(AddEditReportActivity.this,addressLine,reportPOJO.getId(),false,categoryListDBHelper,"address line").execute().get();
+            new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, addressLine,reportPOJO.getId(),false,categoryListDBHelper,"address line").execute().get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -510,7 +505,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
 
         try {
-            new DBSelectedImagesTask(AddEditReportActivity.this,reportPOJO.getLabelArrayList().get(labelPosition),false,categoryListDBHelper,"elevationImages").execute().get();
+            new DBSelectedImagesTask(AddEditReportActivity.this, progressBarLayout, reportPOJO.getLabelArrayList().get(labelPosition),false,categoryListDBHelper,"elevationImages").execute().get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -526,7 +521,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
 
         try {
-            new DBSelectedImagesTask(AddEditReportActivity.this,reportPOJO.getLabelArrayList().get(labelPosition),false,categoryListDBHelper,"selectedImages").execute().get();
+            new DBSelectedImagesTask(AddEditReportActivity.this, progressBarLayout, reportPOJO.getLabelArrayList().get(labelPosition),false,categoryListDBHelper,"selectedImages").execute().get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -611,7 +606,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
         }
         try {
-            new DatabaseSaveReportTask(AddEditReportActivity.this,reportPOJO,false,categoryListDBHelper).execute().get();
+            new DatabaseSaveReportTask(AddEditReportActivity.this, progressBarLayout, reportPOJO,false,categoryListDBHelper).execute().get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
