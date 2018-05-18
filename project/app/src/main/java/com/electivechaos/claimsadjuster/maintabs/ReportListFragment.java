@@ -114,7 +114,7 @@ public class ReportListFragment extends Fragment {
         }
 
         @Override
-        public void onBindViewHolder(final ReportListAdapter.MyViewHolder holder, int position) {
+        public void onBindViewHolder(final ReportListAdapter.MyViewHolder holder, final int position) {
             final ReportItemPOJO reportItemPOJO = reportItemPOJOArrayList.get(position);
             if(reportItemPOJO.getReportTitle().isEmpty() || reportItemPOJO.getReportTitle()==null) {
 
@@ -138,6 +138,7 @@ public class ReportListFragment extends Fragment {
                                         Intent intent=new Intent(context,AddEditReportActivity.class);
                                         intent.putExtra("reportId",reportItemPOJO.getId());
                                         startActivityForResult(intent,1);
+                                        notifyDataSetChanged();
                                     break;
                                 case R.id.delete:
                                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -145,7 +146,10 @@ public class ReportListFragment extends Fragment {
                                             .setMessage(R.string.delete_report_msg)
                                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                                 public void onClick(DialogInterface dialog, int which) {
-
+                                                    mCategoryListDBHelper. deleteReportEntry(reportItemPOJO.getId());
+                                                    reportItemPOJOArrayList.remove(position);
+                                                    notifyItemRemoved(position);
+                                                    notifyItemRangeChanged(position, reportItemPOJOArrayList.size());
                                                 }
                                             })
                                             .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
