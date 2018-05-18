@@ -15,6 +15,7 @@ import android.view.animation.AnimationUtils;
 import com.electivechaos.claimsadjuster.R;
 import com.electivechaos.claimsadjuster.adapters.DrawerMenuListAdapter;
 import com.electivechaos.claimsadjuster.interfaces.NextButtonClickListener;
+import com.electivechaos.claimsadjuster.interfaces.OnGenerateReportClickListener;
 import com.electivechaos.claimsadjuster.interfaces.OnSaveReportClickListener;
 
 public class CauseOfLossFragment extends Fragment {
@@ -26,6 +27,7 @@ public class CauseOfLossFragment extends Fragment {
     private NextButtonClickListener nextButtonClickListener;
     private DrawerMenuListAdapter.OnLabelAddClickListener onLabelAddClickListener;
     private OnSaveReportClickListener onSaveReportClickListener;
+    private OnGenerateReportClickListener onGenerateReportClickListener;
 
     @Nullable
     @Override
@@ -66,6 +68,7 @@ public class CauseOfLossFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 animateFAB();
+                onGenerateReportClickListener.onReportGenerateClicked();
             }
         });
 
@@ -121,6 +124,8 @@ public class CauseOfLossFragment extends Fragment {
             nextButtonClickListener = (NextButtonClickListener) getActivity();
             onLabelAddClickListener = (DrawerMenuListAdapter.OnLabelAddClickListener)getActivity();
             onSaveReportClickListener = (OnSaveReportClickListener)getActivity();
+            onGenerateReportClickListener = (OnGenerateReportClickListener)getActivity();
+
         }catch (ClassCastException ex) {
             ex.printStackTrace();
         }

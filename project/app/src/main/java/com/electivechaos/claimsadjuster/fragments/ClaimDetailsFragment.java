@@ -19,6 +19,7 @@ import android.view.animation.AnimationUtils;
 import com.electivechaos.claimsadjuster.R;
 import com.electivechaos.claimsadjuster.adapters.DrawerMenuListAdapter;
 import com.electivechaos.claimsadjuster.interfaces.NextButtonClickListener;
+import com.electivechaos.claimsadjuster.interfaces.OnGenerateReportClickListener;
 import com.electivechaos.claimsadjuster.interfaces.OnSaveReportClickListener;
 
 public class ClaimDetailsFragment  extends Fragment{
@@ -48,6 +49,7 @@ public class ClaimDetailsFragment  extends Fragment{
     private NextButtonClickListener nextButtonClickListener;
     private DrawerMenuListAdapter.OnLabelAddClickListener onLabelAddClickListener;
     private OnSaveReportClickListener onSaveReportClickListener;
+    private OnGenerateReportClickListener onGenerateReportClickListener;
 
     @Override
     public void onStart() {
@@ -151,6 +153,8 @@ public class ClaimDetailsFragment  extends Fragment{
             @Override
             public void onClick(View v) {
                 animateFAB();
+                onGenerateReportClickListener.onReportGenerateClicked();
+
             }
         });
         return view;
@@ -250,6 +254,8 @@ public class ClaimDetailsFragment  extends Fragment{
             nextButtonClickListener = (NextButtonClickListener) getActivity();
             onLabelAddClickListener = (DrawerMenuListAdapter.OnLabelAddClickListener)getActivity();
             onSaveReportClickListener = (OnSaveReportClickListener)getActivity();
+            onGenerateReportClickListener = (OnGenerateReportClickListener)getActivity();
+
         }catch (ClassCastException ex) {
             ex.printStackTrace();
         }
