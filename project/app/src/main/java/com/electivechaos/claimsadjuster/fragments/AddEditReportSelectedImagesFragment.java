@@ -41,6 +41,7 @@ import com.electivechaos.claimsadjuster.R;
 import com.electivechaos.claimsadjuster.SingleMediaScanner;
 import com.electivechaos.claimsadjuster.adapters.DrawerMenuListAdapter;
 import com.electivechaos.claimsadjuster.interfaces.NextButtonClickListener;
+import com.electivechaos.claimsadjuster.interfaces.OnGenerateReportClickListener;
 import com.electivechaos.claimsadjuster.interfaces.OnSaveReportClickListener;
 import com.electivechaos.claimsadjuster.interfaces.SelectedImagesDataInterface;
 import com.electivechaos.claimsadjuster.listeners.OnImageRemovalListener;
@@ -127,6 +128,8 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
 
     private OnSaveReportClickListener onSaveReportClickListener;
 
+    private OnGenerateReportClickListener onGenerateReportClickListener;
+
     public static AddEditReportSelectedImagesFragment initFragment(ArrayList<ImageDetailsPOJO> selectedImageList, ArrayList<ImageDetailsPOJO> selectedElevationImagesList,int position) {
         AddEditReportSelectedImagesFragment fragment = new AddEditReportSelectedImagesFragment();
         Bundle args = new Bundle();
@@ -200,6 +203,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
         fabGenerateReportBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                onGenerateReportClickListener.onReportGenerateClicked();
                 animateFAB();
             }
         });
@@ -992,7 +996,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
             nextButtonClickListener = (NextButtonClickListener) getActivity();
             onLabelAddClickListener = (DrawerMenuListAdapter.OnLabelAddClickListener)getActivity();
             onSaveReportClickListener = (OnSaveReportClickListener)getActivity();
-
+            onGenerateReportClickListener = (OnGenerateReportClickListener)getActivity();
         }catch (ClassCastException exception){
             exception.printStackTrace();
         }
