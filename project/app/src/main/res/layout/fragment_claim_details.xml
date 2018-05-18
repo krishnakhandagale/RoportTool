@@ -46,6 +46,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLength="37"
+                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz "
                 android:hint="@string/enter_client_name" />
         </android.support.design.widget.TextInputLayout>
         <android.support.design.widget.TextInputLayout
