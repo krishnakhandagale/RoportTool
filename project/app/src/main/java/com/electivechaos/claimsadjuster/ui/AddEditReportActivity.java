@@ -41,6 +41,7 @@ import com.electivechaos.claimsadjuster.interfaces.LossLocationDataInterface;
 import com.electivechaos.claimsadjuster.interfaces.NextButtonClickListener;
 import com.electivechaos.claimsadjuster.interfaces.OnGenerateReportClickListener;
 import com.electivechaos.claimsadjuster.interfaces.OnSaveReportClickListener;
+import com.electivechaos.claimsadjuster.interfaces.PreferenceDialogCallback;
 import com.electivechaos.claimsadjuster.interfaces.SelectedImagesDataInterface;
 import com.electivechaos.claimsadjuster.pojo.Category;
 import com.electivechaos.claimsadjuster.pojo.ImageDetailsPOJO;
@@ -434,50 +435,26 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
     @Override
     public void setReportTitle(String reportTitle) {
-        try {
-            new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout,reportTitle,reportPOJO.getId(),false,categoryListDBHelper,"title").execute().get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-            reportPOJO.setReportTitle(reportTitle);
+        new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout,reportTitle,reportPOJO.getId(),false,categoryListDBHelper,"title").execute();
+        reportPOJO.setReportTitle(reportTitle);
     }
 
     @Override
     public void setReportDescription(String reportDescription) {
 
         reportPOJO.setReportDescription(reportDescription);
-        try {
-            new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout,reportDescription,reportPOJO.getId(),false,categoryListDBHelper,"description").execute().get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
+        new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout,reportDescription,reportPOJO.getId(),false,categoryListDBHelper,"description").execute();
     }
 
     @Override
     public void setReportClientName(String reportClientName) {
-        try {
-            new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout,reportClientName,reportPOJO.getId(),false,categoryListDBHelper,"client name").execute().get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
+        new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout,reportClientName,reportPOJO.getId(),false,categoryListDBHelper,"client name").execute();
         reportPOJO.setClientName(reportClientName);
     }
 
     @Override
     public void setReportClaimNumber(String reportClaimNumber) {
-        try {
-            new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, reportClaimNumber,reportPOJO.getId(),false,categoryListDBHelper,"claim number").execute().get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
+        new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, reportClaimNumber,reportPOJO.getId(),false,categoryListDBHelper,"claim number").execute();
         reportPOJO.setClaimNumber(reportClaimNumber);
     }
 
@@ -501,13 +478,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     public void setAddressLine(String addressLine) {
 
         reportPOJO.setAddressLine(addressLine);
-        try {
-            new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, addressLine,reportPOJO.getId(),false,categoryListDBHelper,"address line").execute().get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
+        new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, addressLine,reportPOJO.getId(),false,categoryListDBHelper,"address line").execute();
 
     }
 
@@ -518,13 +489,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         reportPOJO.getLabelArrayList().get(labelPosition).setSelectedElevationImages(elevationImagesList);
 
 
-        try {
-            new DBSelectedImagesTask(AddEditReportActivity.this, progressBarLayout, reportPOJO.getLabelArrayList().get(labelPosition),false,categoryListDBHelper,"elevationImages").execute().get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
+        new DBSelectedImagesTask(AddEditReportActivity.this, progressBarLayout, reportPOJO.getLabelArrayList().get(labelPosition),false,categoryListDBHelper,"elevationImages").execute();
 
     }
 
@@ -534,13 +499,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         reportPOJO.getLabelArrayList().get(labelPosition).setSelectedImages(imagesList);
 
 
-        try {
-            new DBSelectedImagesTask(AddEditReportActivity.this, progressBarLayout, reportPOJO.getLabelArrayList().get(labelPosition),false,categoryListDBHelper,"selectedImages").execute().get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
+        new DBSelectedImagesTask(AddEditReportActivity.this, progressBarLayout, reportPOJO.getLabelArrayList().get(labelPosition),false,categoryListDBHelper,"selectedImages").execute();
 
     }
 
@@ -596,53 +555,59 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
     }
 
+    public  boolean validateData(){
+        if(reportPOJO.getReportTitle().trim().isEmpty()){
+            CommonUtils.showSnackbarMessage(getString(R.string.please_enter_title), true, true,parentLayoutForMessages, AddEditReportActivity.this);
+
+            return false;
+        }else if(reportPOJO.getReportDescription().trim().isEmpty()){
+            CommonUtils.showSnackbarMessage(getString(R.string.enter_description_message), true, true, parentLayoutForMessages, AddEditReportActivity.this);
+            return false;
+        }else if(reportPOJO.getClientName().trim().isEmpty()){
+            CommonUtils.showSnackbarMessage(getString(R.string.enter_client_name_message), true, true, parentLayoutForMessages, AddEditReportActivity.this);
+            return false;
+        }else if(reportPOJO.getClaimNumber().trim().isEmpty()){
+            CommonUtils.showSnackbarMessage(getString(R.string.enter_claim_number_message), true, true, parentLayoutForMessages, AddEditReportActivity.this);
+            return false;
+        }else if(reportPOJO.getAddressLine().trim().isEmpty()){
+            CommonUtils.showSnackbarMessage(getString(R.string.please_add_address_message), true, true, parentLayoutForMessages, AddEditReportActivity.this);
+            return false;
+        }
+        return true;
+    }
+
     @Override
     public void onReportSave(boolean isProgressBar) {
 
         //Is from user action then validate
+        boolean isValid =  false;
         if(isProgressBar) {
-          if(reportPOJO.getReportTitle().trim().isEmpty()){
-              CommonUtils.showSnackbarMessage(getString(R.string.please_enter_title), true, true,parentLayoutForMessages, AddEditReportActivity.this);
-
-          return;
-          }else if(reportPOJO.getReportDescription().trim().isEmpty()){
-              CommonUtils.showSnackbarMessage(getString(R.string.enter_description_message), true, true, parentLayoutForMessages, AddEditReportActivity.this);
-          return;
-          }else if(reportPOJO.getClientName().trim().isEmpty()){
-              CommonUtils.showSnackbarMessage(getString(R.string.enter_client_name_message), true, true, parentLayoutForMessages, AddEditReportActivity.this);
-          return;
-          }else if(reportPOJO.getClaimNumber().trim().isEmpty()){
-              CommonUtils.showSnackbarMessage(getString(R.string.enter_claim_number_message), true, true, parentLayoutForMessages, AddEditReportActivity.this);
-          return;
-          }else if(reportPOJO.getAddressLine().trim().isEmpty()){
-              CommonUtils.showSnackbarMessage(getString(R.string.please_add_address_message), true, true, parentLayoutForMessages, AddEditReportActivity.this);
-              return;
-          }
+            isValid = validateData();
 
         }
-        try {
-            new DatabaseSaveReportTask(AddEditReportActivity.this, progressBarLayout, reportPOJO,false,categoryListDBHelper).execute().get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
+        if(isValid){
+            new DatabaseSaveReportTask(AddEditReportActivity.this, progressBarLayout, reportPOJO,false,categoryListDBHelper).execute();
         }
+
 
     }
 
     @Override
     public void onReportGenerateClicked() {
+        boolean isValid = validateData();
+        if(isValid){
+            showReportPreferenceDialog(new PreferenceDialogCallback() {
+                @Override
+                public void onTwoImagesPerPage() {
+                    new DBUpdateFilePath(AddEditReportActivity.this,findViewById(R.id.progressBarLayout), reportPOJO, true, categoryListDBHelper).execute(2);
+                }
 
-
-        try {
-            new DBUpdateFilePath(AddEditReportActivity.this,findViewById(R.id.progressBarLayout), reportPOJO, true, categoryListDBHelper).execute().get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
+                @Override
+                public void onFourImagesPerPage() {
+                    new DBUpdateFilePath(AddEditReportActivity.this,findViewById(R.id.progressBarLayout), reportPOJO, true, categoryListDBHelper).execute(4);
+                }
+            });
         }
-
-
     }
 
 
@@ -735,6 +700,26 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    public void showReportPreferenceDialog(final PreferenceDialogCallback callback) {
+        final CharSequence[] items = {"2", "4"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(AddEditReportActivity.this);
+
+        builder.setTitle("Number of images per page ?");
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+
+                if (items[item].equals("2")) {
+                    callback.onTwoImagesPerPage();
+                } else if (items[item].equals("4")) {
+                    callback.onFourImagesPerPage();
+                }
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 
 }

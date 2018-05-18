@@ -1085,5 +1085,9 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
         }
 
     }
+
+
+
+
 }
 
