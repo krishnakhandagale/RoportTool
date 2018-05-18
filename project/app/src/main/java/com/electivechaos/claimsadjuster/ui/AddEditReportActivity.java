@@ -830,15 +830,11 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
     public PdfPCell getCell(String title, String description, int alignment, Document document, int perPage) {
         PdfPCell cell = new PdfPCell();
-        // Font font=new Font(Font.FontFamily.TIMES_ROMAN, 16, Font.BOLD);
-        cell.addElement(new Phrase(title));
-        cell.addElement(new Phrase(description));
+         Font font=new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.NORMAL);
+        cell.addElement(new Phrase(title,font));
+        cell.addElement(new Phrase(description,font));
         cell.setPadding(0);
         cell.setBorder(Rectangle.NO_BORDER);
-        //cell.setBorderWidth(1);
-        //BaseColor baseColor = new BaseColor(99,100,99);
-        //cell.setBorderColor(baseColor);
-        //cell.setBorder(Rectangle.NO_BORDER);
 
         if (perPage == 2) {
             cell.setFixedHeight(document.getPageSize().getHeight() / perPage - 100);
@@ -856,9 +852,6 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         cell.setPadding(0);
         cell.setHorizontalAlignment(alignment);
         cell.setBorder(Rectangle.NO_BORDER);
-        //cell.setBorderWidth(1);
-        //BaseColor baseColor = new BaseColor(99,100,99);
-        //cell.setBorderColor(baseColor);
         if (perPage == 2) {
             cell.setFixedHeight(document.getPageSize().getHeight() / perPage - 100);
 
@@ -954,7 +947,8 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     }
 
     class PDFDocHeader extends PdfPageEventHelper {
-        Font font = new Font(Font.FontFamily.TIMES_ROMAN, 18, Font.ITALIC);
+        Font footerFont = new Font(Font.FontFamily.TIMES_ROMAN, 18, Font.ITALIC);
+        Font headerFont = new Font(Font.FontFamily.TIMES_ROMAN, 18, Font.BOLD);
         String reportTitle;
 
         PDFDocHeader(String reportTitle) {
@@ -969,12 +963,12 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         @Override
         public void onEndPage(PdfWriter writer, Document document) {
             PdfContentByte cb = writer.getDirectContent();
-            Phrase header = new Phrase(reportTitle, font);
+            Phrase header = new Phrase(reportTitle, headerFont);
             ColumnText.showTextAligned(cb, Element.ALIGN_CENTER,
                     header,
                     (document.right() - document.left()) / 2 + document.leftMargin(),
                     document.top() + 10, 0);
-            Phrase footer = new Phrase("Page " + writer.getPageNumber() + "", font);
+            Phrase footer = new Phrase("Page " + writer.getPageNumber() + "", footerFont);
             ColumnText.showTextAligned(cb, Element.ALIGN_RIGHT,
                     footer,
                     (document.right()),
