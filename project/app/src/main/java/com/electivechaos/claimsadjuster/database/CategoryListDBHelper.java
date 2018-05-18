@@ -23,7 +23,7 @@ import java.util.Iterator;
  */
 
 public class CategoryListDBHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 63;
+    private static final int DATABASE_VERSION = 64;
 
 
     // Database Name
@@ -207,6 +207,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         }
     }
 
+
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
@@ -218,6 +219,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_REPORTS_IMAGE_DETAILS);
         onCreate(db);
     }
+
 
     public int deleteCategoryEntry(String categoryId){
         SQLiteDatabase db = this.getWritableDatabase();
@@ -291,6 +293,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         return  db.delete(TABLE_CAUSE_OF_LOSS,"_id=?",new String[]{id});
     }
+
     public long addCauseOfLoss(CauseOfLoss causeOfLoss){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -422,6 +425,12 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         return  db.delete(TABLE_REPORTS_LIST,KEY_REPORT_ID+"=?",new String[]{id});
     }
 
+    public void updateFilePath(String filePath, String reportId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("UPDATE generated_reports SET file_path='"+filePath+"' WHERE report_id ='"+reportId+"'");
+
+    }
+
     public ReportPOJO getReportItem(String id){
 
 
@@ -498,7 +507,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
 
     public void updateReportTitle(String value, String reportId) {
         SQLiteDatabase db = this.getWritableDatabase();
-       db.execSQL("UPDATE generated_reports SET report_name='"+value+"' WHERE report_id ='"+reportId+"'");
+        db.execSQL("UPDATE generated_reports SET report_name='"+value+"' WHERE report_id ='"+reportId+"'");
     }
 
     public void updateReportDecription(String value, String reportId) {

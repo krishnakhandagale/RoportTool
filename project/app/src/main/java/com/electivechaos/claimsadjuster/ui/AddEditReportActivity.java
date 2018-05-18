@@ -33,6 +33,7 @@ import com.electivechaos.claimsadjuster.R;
 import com.electivechaos.claimsadjuster.adapters.CustomCategoryPopUpAdapter;
 import com.electivechaos.claimsadjuster.adapters.DrawerMenuListAdapter;
 import com.electivechaos.claimsadjuster.asynctasks.DBSelectedImagesTask;
+import com.electivechaos.claimsadjuster.asynctasks.DBUpdateFilePath;
 import com.electivechaos.claimsadjuster.asynctasks.DBUpdateTaskOnTextChanged;
 import com.electivechaos.claimsadjuster.asynctasks.DatabaseSaveReportTask;
 import com.electivechaos.claimsadjuster.database.CategoryListDBHelper;
@@ -673,6 +674,8 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         FileOutputStream fo;
         Font fontTitles = new Font(Font.FontFamily.TIMES_ROMAN, 16, Font.BOLD);
 
+
+
         
         // This will be dynamic
         int numberOfImagesPerPage = 4;
@@ -778,6 +781,14 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
                 document.newPage();
 
+            }
+
+            try {
+                new DBUpdateFilePath(AddEditReportActivity.this,progressBarLayout, reportPOJO.getId(), destination.getAbsolutePath(), true, categoryListDBHelper).execute().get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
             }
 
             document.close();
