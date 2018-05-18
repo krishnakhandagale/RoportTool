@@ -9,7 +9,9 @@ import android.media.ExifInterface;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.view.View;
+import android.widget.Toast;
 
+import com.electivechaos.claimsadjuster.R;
 import com.electivechaos.claimsadjuster.database.CategoryListDBHelper;
 import com.electivechaos.claimsadjuster.pojo.ImageDetailsPOJO;
 import com.electivechaos.claimsadjuster.pojo.Label;
@@ -47,7 +49,7 @@ import java.util.Date;
  * Created by nafeesa on 5/18/18.
  */
 
-public class DBUpdateFilePath extends AsyncTask<String,Void,Void> {
+public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
 
     private Context context;
     private boolean isProgressBar;
@@ -68,14 +70,14 @@ public class DBUpdateFilePath extends AsyncTask<String,Void,Void> {
         CommonUtils.lockOrientation((Activity) context);
         if(isProgressBar)
         {
-            if (progressBarLayout != null) {
+            if (progressBarLayout != null && progressBarLayout.getVisibility() == View.GONE) {
                 progressBarLayout.setVisibility(View.VISIBLE);
             }
         }
     }
 
     @Override
-    protected Void doInBackground(String... strings) {
+    protected Void doInBackground(Integer... integers) {
         // If report already exists , delete it
         if(!reportPOJO.getFilePath().trim().isEmpty()){
             File file = new File(reportPOJO.getFilePath());
@@ -94,7 +96,7 @@ public class DBUpdateFilePath extends AsyncTask<String,Void,Void> {
 
 
         // This will be dynamic
-        int numberOfImagesPerPage = 4;
+        int numberOfImagesPerPage = integers[0];
 
         PDFDocHeader event = new PDFDocHeader(reportPOJO.getReportTitle());
         try{
@@ -215,9 +217,10 @@ public class DBUpdateFilePath extends AsyncTask<String,Void,Void> {
 
     @Override
     protected void onPostExecute(Void result) {
-        if(progressBarLayout != null){
+        if(progressBarLayout != null && progressBarLayout.getVisibility() == View.VISIBLE){
             progressBarLayout.setVisibility(View.GONE);
         }
+        Toast.makeText(context, R.string.report_gen_success_msg, Toast.LENGTH_SHORT).show();
         CommonUtils.unlockOrientation((Activity)context);
 
     }

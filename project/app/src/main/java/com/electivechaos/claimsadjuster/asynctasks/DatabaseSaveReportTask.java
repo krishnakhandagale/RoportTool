@@ -17,9 +17,9 @@ public class DatabaseSaveReportTask extends AsyncTask<String,Void,Void> {
 
     private Context context;
     private boolean isProgressBar;
-    View progressBarLayout;
-    CategoryListDBHelper categoryListDBHelper;
-    ReportPOJO reportPOJO;
+    private View progressBarLayout;
+    private CategoryListDBHelper categoryListDBHelper;
+    private ReportPOJO reportPOJO;
 
     public  DatabaseSaveReportTask(Context context, View progressBarLayout, ReportPOJO reportPOJO, boolean isProgressBar, CategoryListDBHelper categoryListDBHelper) {
         this.context = context;
