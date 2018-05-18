@@ -16,11 +16,6 @@ import android.widget.EditText;
 import com.electivechaos.claimsadjuster.R;
 import com.electivechaos.claimsadjuster.interfaces.ClaimDetailsDataInterface;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 public class ClaimDetailsTabsFragment extends Fragment {
 
     private EditText reportTitleEditText;
@@ -85,17 +80,7 @@ public class ClaimDetailsTabsFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(s.toString().trim().isEmpty() || s.toString()==null)
-                {
-                    DateFormat myFormat = new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss a");
-                    String reportSavedDate = myFormat.format(new Date().getTime());
-
-                    claimDetailsDataInterface.setReportTitle(reportSavedDate);
-                }
-                else {
                     claimDetailsDataInterface.setReportTitle(s.toString().trim());
-                }
-
                 Log.d("MY CLAIM"," "+s.toString().trim());
             }
         });

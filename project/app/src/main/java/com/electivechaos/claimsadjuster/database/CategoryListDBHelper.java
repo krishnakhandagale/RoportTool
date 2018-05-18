@@ -23,12 +23,11 @@ import java.util.Iterator;
  */
 
 public class CategoryListDBHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 58;
+    private static final int DATABASE_VERSION = 61;
 
 
     // Database Name
     private static final String DATABASE_NAME = "master_categories_list";
-
 
     // Database table name
     private static final String TABLE_REPORTS_LIST = "generated_reports";
@@ -79,8 +78,6 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
     private static final String KEY_IMAGE_URL = "image_url";
     private static final String KEY_IS_DAMAGE = "is_damage";
     private static final String KEY_IS_OVERVIEW= "is_overview";
-
-
 
 
 

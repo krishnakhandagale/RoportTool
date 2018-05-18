@@ -116,7 +116,13 @@ public class ReportListFragment extends Fragment {
         @Override
         public void onBindViewHolder(final ReportListAdapter.MyViewHolder holder, int position) {
             final ReportItemPOJO reportItemPOJO = reportItemPOJOArrayList.get(position);
-            holder.reportName.setText(reportItemPOJO.getReportTitle());
+            if(reportItemPOJO.getReportTitle().isEmpty() || reportItemPOJO.getReportTitle()==null) {
+
+                holder.reportName.setText(reportItemPOJO.getCreatedDate());
+            }else{
+                holder.reportName.setText(reportItemPOJO.getReportTitle());
+            }
+
             holder.reportDescription.setText(reportItemPOJO.getReportDescription());
 
             holder.textViewOptions.setOnClickListener(new View.OnClickListener() {

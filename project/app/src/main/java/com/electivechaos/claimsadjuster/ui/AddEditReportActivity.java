@@ -46,6 +46,8 @@ import com.electivechaos.claimsadjuster.pojo.Label;
 import com.electivechaos.claimsadjuster.pojo.ReportPOJO;
 import com.electivechaos.claimsadjuster.utils.CommonUtils;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -92,6 +94,11 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         }else{
             reportPOJO = new ReportPOJO();
             reportPOJO.setId(String.valueOf(new Date().getTime()));
+
+            DateFormat myFormat = new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss a");
+            String reportSavedDate = myFormat.format(new Date().getTime());
+
+            setCreatedDate(reportSavedDate);
             onReportSave(false);
         }
 
@@ -470,6 +477,11 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
             e.printStackTrace();
         }
         reportPOJO.setClaimNumber(reportClaimNumber);
+    }
+
+    @Override
+    public void setCreatedDate(String createdDate) {
+        reportPOJO.setCreatedDate(createdDate);
     }
 
 
