@@ -113,11 +113,6 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
 
         putClaimDetailsFragment();
-
-
-
-
-
         parentMenuItems = new ArrayList<>();
 
         parentMenuItems.add("Claim Details");
