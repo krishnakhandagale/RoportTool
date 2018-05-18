@@ -23,13 +23,14 @@ public class DBUpdateTaskOnTextChanged extends AsyncTask<String,Void,Void> {
     String type;
     String reportId;
 
-    public  DBUpdateTaskOnTextChanged(Context context, String value,String reportId, boolean isProgressBar, CategoryListDBHelper categoryListDBHelper, String type) {
+    public  DBUpdateTaskOnTextChanged(Context context, View progressBarLayout, String value,String reportId, boolean isProgressBar, CategoryListDBHelper categoryListDBHelper, String type) {
         this.context = context;
         this.isProgressBar = isProgressBar;
         this.categoryListDBHelper = categoryListDBHelper;
         this.value = value;
         this.type = type;
         this.reportId = reportId;
+        this.progressBarLayout = progressBarLayout;
     }
 
   @Override
