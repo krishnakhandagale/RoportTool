@@ -1074,21 +1074,5 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     protected void onDestroy() {
         super.onDestroy();
     }
-
-
-    public class Header extends PdfPageEventHelper {
-
-        protected Phrase header;
-
-        public void setHeader(Phrase header) {
-            this.header = header;
-        }
-
-        @Override
-        public void onEndPage(PdfWriter writer, Document document) {
-            PdfContentByte canvas = writer.getDirectContentUnder();
-            ColumnText.showTextAligned(canvas, Element.ALIGN_RIGHT, header, 559, 806, 0);
-        }
-    }
-
+    
 }
