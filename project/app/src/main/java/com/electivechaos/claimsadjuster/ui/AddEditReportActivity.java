@@ -14,7 +14,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -74,6 +73,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     private  Toolbar toolbar;
     private MenuItem actionBarEditBtn;
     private ActionBar activityActionBar;
+    private View parentLayoutForMessages;
 
 
 
@@ -82,6 +82,8 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.add_edit_report_activity_layout);
+
+        parentLayoutForMessages = findViewById(R.id.parentLayoutForMessages);
         progressBarLayout = findViewById(R.id.progressBarLayout);
         categoryListDBHelper = CategoryListDBHelper.getInstance(this);
 
@@ -587,6 +589,27 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
     @Override
     public void onReportSave(boolean isProgressBar) {
+
+        //Is from user action then validate
+        if(isProgressBar) {
+          if(reportPOJO.getReportTitle().trim().isEmpty()){
+              CommonUtils.showSnackbarMessage(getString(R.string.please_enter_title), true, true,parentLayoutForMessages, AddEditReportActivity.this);
+          return;
+          }else if(reportPOJO.getReportDescription().trim().isEmpty()){
+              CommonUtils.showSnackbarMessage(getString(R.string.enter_description_message), true, true, parentLayoutForMessages, AddEditReportActivity.this);
+          return;
+          }else if(reportPOJO.getClientName().trim().isEmpty()){
+              CommonUtils.showSnackbarMessage(getString(R.string.enter_client_name_message), true, true, parentLayoutForMessages, AddEditReportActivity.this);
+          return;
+          }else if(reportPOJO.getClaimNumber().trim().isEmpty()){
+              CommonUtils.showSnackbarMessage(getString(R.string.enter_claim_number_message), true, true, parentLayoutForMessages, AddEditReportActivity.this);
+          return;
+          }else if(reportPOJO.getAddressLine().trim().isEmpty()){
+              CommonUtils.showSnackbarMessage(getString(R.string.please_add_address_message), true, true, parentLayoutForMessages, AddEditReportActivity.this);
+              return;
+          }
+
+        }
         try {
             new DatabaseSaveReportTask(AddEditReportActivity.this,reportPOJO,false,categoryListDBHelper).execute().get();
         } catch (InterruptedException e) {
