@@ -9,8 +9,6 @@ import com.electivechaos.claimsadjuster.database.CategoryListDBHelper;
 import com.electivechaos.claimsadjuster.pojo.Label;
 import com.electivechaos.claimsadjuster.utils.CommonUtils;
 
-import java.util.ArrayList;
-
 /**
  * Created by nafeesa on 5/17/18.
  */

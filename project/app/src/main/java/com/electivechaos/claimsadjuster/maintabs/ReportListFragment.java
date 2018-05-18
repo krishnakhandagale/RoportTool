@@ -22,7 +22,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.electivechaos.claimsadjuster.PermissionUtilities;
 import com.electivechaos.claimsadjuster.R;
 import com.electivechaos.claimsadjuster.database.CategoryListDBHelper;
 import com.electivechaos.claimsadjuster.pojo.ReportItemPOJO;
@@ -40,8 +39,7 @@ public class ReportListFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        reportItemPOJOS = mCategoryListDBHelper.getReports();
-        mAdapter.notifyDataSetChanged();
+
 
     }
 
@@ -67,14 +65,12 @@ public class ReportListFragment extends Fragment {
             public void onClick(View v) {
 
                 Intent addReportActivity = new Intent(getActivity(), AddEditReportActivity.class);
-                startActivityForResult(addReportActivity, 499);
+                startActivity(addReportActivity);
             }
         });
 
 
-        reportItemPOJOS = mCategoryListDBHelper.getReports();
-        mAdapter =  new ReportListAdapter(getActivity(), reportItemPOJOS);
-        recyclerView.setAdapter(mAdapter);
+        setReportListAdapter();
 
         return view;
     }
@@ -173,6 +169,15 @@ public class ReportListFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        setReportListAdapter();
+    }
 
-
+    private void setReportListAdapter() {
+        reportItemPOJOS = mCategoryListDBHelper.getReports();
+        mAdapter =  new ReportListAdapter(getActivity(), reportItemPOJOS);
+        recyclerView.setAdapter(mAdapter);
+    }
 }
