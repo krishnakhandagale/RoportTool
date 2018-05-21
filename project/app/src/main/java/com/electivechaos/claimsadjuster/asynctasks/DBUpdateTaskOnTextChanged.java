@@ -61,6 +61,12 @@ public class DBUpdateTaskOnTextChanged extends AsyncTask<String,Void,Void> {
         else if(type.equalsIgnoreCase("address line")){
             categoryListDBHelper.updateAddressLine(value, reportId);
         }
+        else if(type.equalsIgnoreCase("latitude")){
+            categoryListDBHelper.updateLocationLat(value, reportId);
+        }
+        else if(type.equalsIgnoreCase("longitude")){
+            categoryListDBHelper.updateLocationLong(value, reportId);
+        }
 
 
         return null;

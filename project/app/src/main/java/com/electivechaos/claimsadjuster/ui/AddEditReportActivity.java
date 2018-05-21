@@ -467,16 +467,18 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     @Override
     public void setLocationLat(String locationLat) {
         reportPOJO.setLocationLat(locationLat);
+        new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, locationLat,reportPOJO.getId(),false,categoryListDBHelper,"latitude").execute();
+
     }
 
     @Override
     public void setLocationLong(String locationLong) {
         reportPOJO.setLocationLong(locationLong);
+        new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, locationLong,reportPOJO.getId(),false,categoryListDBHelper,"longitude").execute();
     }
 
     @Override
     public void setAddressLine(String addressLine) {
-
         reportPOJO.setAddressLine(addressLine);
         new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, addressLine,reportPOJO.getId(),false,categoryListDBHelper,"address line").execute();
 
