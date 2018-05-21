@@ -59,12 +59,10 @@ import java.util.concurrent.ExecutionException;
 
 public class AddEditReportActivity extends AppCompatActivity implements DrawerMenuListAdapter.OnLabelAddClickListener, AddEditLabelInterface, ClaimDetailsDataInterface, LossLocationDataInterface,SelectedImagesDataInterface,NextButtonClickListener,OnSaveReportClickListener, OnGenerateReportClickListener{
     private DrawerLayout mDrawerLayout;
-    private ExpandableListView mExpandableListView;
     private DrawerMenuListAdapter drawerMenuListAdapter;
     private String tabName;
 
     private HashMap<String, List<Label>> childMenuItems = new HashMap<>();
-    private List<Label> inspectionChildMenu = new ArrayList<>();
     private ArrayList<String> parentMenuItems;
 
     private int selectedFragmentPosition = 0;
@@ -120,7 +118,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         activityActionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
 
 
-        mExpandableListView = findViewById(R.id.slider_menu);
+        ExpandableListView mExpandableListView = findViewById(R.id.slider_menu);
 
 
         putClaimDetailsFragment();
@@ -132,7 +130,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         parentMenuItems.add("Inspection");
 
 
-        inspectionChildMenu = (List<Label>) reportPOJO.getLabelArrayList().clone();
+        List<Label> inspectionChildMenu = (List<Label>) reportPOJO.getLabelArrayList().clone();
         childMenuItems.put("Inspection", inspectionChildMenu);
 
 
@@ -436,7 +434,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
     @Override
     public void setReportTitle(String reportTitle) {
-        
+
         new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout,reportTitle,reportPOJO.getId(),false,categoryListDBHelper,"title").execute();
         reportPOJO.setReportTitle(reportTitle);
     }
