@@ -27,6 +27,7 @@ import com.electivechaos.claimsadjuster.database.CategoryListDBHelper;
 import com.electivechaos.claimsadjuster.pojo.ReportItemPOJO;
 import com.electivechaos.claimsadjuster.ui.AddEditReportActivity;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class ReportListFragment extends Fragment {
@@ -146,7 +147,16 @@ public class ReportListFragment extends Fragment {
                                             .setMessage(R.string.delete_report_msg)
                                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                                 public void onClick(DialogInterface dialog, int which) {
-                                                    mCategoryListDBHelper. deleteReportEntry(reportItemPOJO.getId());
+
+                                                    mCategoryListDBHelper.deleteReportEntry(reportItemPOJO.getId());
+
+                                                    if(!reportItemPOJO.getFilePath().trim().isEmpty()){
+                                                        File file = new File("file:\\"+reportItemPOJO.getFilePath());
+                                                        if (file != null && file.exists()) {
+                                                            file.delete();
+                                                        }
+                                                    }
+
                                                     reportItemPOJOArrayList.remove(position);
                                                     notifyItemRemoved(position);
                                                     notifyItemRangeChanged(position, reportItemPOJOArrayList.size());
