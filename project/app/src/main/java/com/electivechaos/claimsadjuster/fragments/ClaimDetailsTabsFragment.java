@@ -80,8 +80,7 @@ public class ClaimDetailsTabsFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                    claimDetailsDataInterface.setReportTitle(s.toString().trim());
-                Log.d("MY CLAIM"," "+s.toString().trim());
+                 claimDetailsDataInterface.setReportTitle(s.toString().trim());
             }
         });
 

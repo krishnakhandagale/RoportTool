@@ -436,6 +436,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
     @Override
     public void setReportTitle(String reportTitle) {
+        
         new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout,reportTitle,reportPOJO.getId(),false,categoryListDBHelper,"title").execute();
         reportPOJO.setReportTitle(reportTitle);
     }
