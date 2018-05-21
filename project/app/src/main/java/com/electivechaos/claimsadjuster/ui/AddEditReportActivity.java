@@ -35,6 +35,7 @@ import com.electivechaos.claimsadjuster.fragments.AddEditReportSelectedImagesFra
 import com.electivechaos.claimsadjuster.fragments.PerilFragment;
 import com.electivechaos.claimsadjuster.fragments.ClaimDetailsFragment;
 import com.electivechaos.claimsadjuster.fragments.PointOfOriginFragment;
+import com.electivechaos.claimsadjuster.fragments.PropertyDetailsFragment;
 import com.electivechaos.claimsadjuster.interfaces.AddEditLabelInterface;
 import com.electivechaos.claimsadjuster.interfaces.ClaimDetailsDataInterface;
 import com.electivechaos.claimsadjuster.interfaces.LossLocationDataInterface;
@@ -125,6 +126,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         parentMenuItems = new ArrayList<>();
 
         parentMenuItems.add("Claim Details");
+        parentMenuItems.add("Property Details");
         parentMenuItems.add("Peril");
         parentMenuItems.add("Point Of Origin");
         parentMenuItems.add("Inspection");
@@ -153,7 +155,20 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                     actionBarEditBtn.setVisible(false);
 
 
-                } else if (parentMenuItems.get(groupPosition).equals("Peril")) {
+                } else if (parentMenuItems.get(groupPosition).equals("Property Details")) {
+                    mDrawerLayout.closeDrawer(Gravity.LEFT);
+                    FragmentManager transactionManager = getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.content_frame, new PropertyDetailsFragment());
+                    fragmentTransaction.commit();
+                    tabName = "PropertyDetailsFragment";
+
+                    selectedFragmentPosition = 1;
+                    activityActionBar.setTitle("Property Details");
+                    actionBarEditBtn.setVisible(false);
+
+                }
+                else if (parentMenuItems.get(groupPosition).equals("Peril")) {
                     mDrawerLayout.closeDrawer(Gravity.LEFT);
                     FragmentManager transactionManager = getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
@@ -161,7 +176,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                     fragmentTransaction.commit();
                     tabName = "PerilFragment";
 
-                    selectedFragmentPosition = 1;
+                    selectedFragmentPosition = 2;
                     activityActionBar.setTitle("Peril");
                     actionBarEditBtn.setVisible(false);
 
@@ -173,7 +188,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                     fragmentTransaction.commit();
                     tabName = "PointOfOriginFragment";
 
-                    selectedFragmentPosition = 2;
+                    selectedFragmentPosition = 3;
 
                     activityActionBar.setTitle("Point Of Origin");
                     actionBarEditBtn.setVisible(false);
@@ -193,7 +208,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                 AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment = AddEditReportSelectedImagesFragment.initFragment(reportPOJO.getLabelArrayList().get(childPosition).getSelectedImages(), reportPOJO.getLabelArrayList().get(childPosition).getSelectedElevationImages(), childPosition);
                 fragmentTransaction.replace(R.id.content_frame, addEditReportSelectedImagesFragment);
                 fragmentTransaction.commit();
-                selectedFragmentPosition = childPosition + 3;
+                selectedFragmentPosition = childPosition + 4;
                 tabName = "AddEditReportSelectedImagesFragment";
                 activityActionBar.setTitle(reportPOJO.getLabelArrayList().get(childPosition).getName());
                 actionBarEditBtn.setVisible(true);
@@ -390,7 +405,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment = AddEditReportSelectedImagesFragment.initFragment(new ArrayList<ImageDetailsPOJO>(),new ArrayList<ImageDetailsPOJO>(),labelList.size()-1);
         fragmentTransaction.replace(R.id.content_frame, addEditReportSelectedImagesFragment);
         fragmentTransaction.commit();
-        selectedFragmentPosition = (labelList.size() -1) + 3;
+        selectedFragmentPosition = (labelList.size() -1) + 4;
         activityActionBar.setTitle(label.getName());
         actionBarEditBtn.setVisible(true);
         toolbar.setTag(label);
@@ -407,19 +422,19 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         reportPOJO.getLabelArrayList().remove(position);
 
         if(reportPOJO.getLabelArrayList().size() > 0 ){
-            selectedFragmentPosition = position > 0 ? position - 1 + 3 : position + 3;
+            selectedFragmentPosition = position > 0 ? position - 1 + 4 : position + 4;
             ArrayList<Label> labelArrayList =  reportPOJO.getLabelArrayList();
-            if( labelArrayList!= null && labelArrayList.size() > selectedFragmentPosition - 3 && labelArrayList.get(selectedFragmentPosition - 3) != null) {
+            if( labelArrayList!= null && labelArrayList.size() > selectedFragmentPosition - 4 && labelArrayList.get(selectedFragmentPosition - 4) != null) {
                 FragmentManager transactionManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
-                AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment = AddEditReportSelectedImagesFragment.initFragment(labelArrayList.get(selectedFragmentPosition - 3).getSelectedImages(), labelArrayList.get(selectedFragmentPosition - 3).getSelectedElevationImages(), selectedFragmentPosition - 3);
+                AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment = AddEditReportSelectedImagesFragment.initFragment(labelArrayList.get(selectedFragmentPosition - 4).getSelectedImages(), labelArrayList.get(selectedFragmentPosition - 4).getSelectedElevationImages(), selectedFragmentPosition - 4);
                 fragmentTransaction.replace(R.id.content_frame, addEditReportSelectedImagesFragment);
                 fragmentTransaction.commit();
                 tabName = "AddEditReportSelectedImagesFragment";
 
-                activityActionBar.setTitle(labelArrayList.get(selectedFragmentPosition - 3).getName());
+                activityActionBar.setTitle(labelArrayList.get(selectedFragmentPosition - 4).getName());
                 actionBarEditBtn.setVisible(true);
-                toolbar.setTag(labelArrayList.get(selectedFragmentPosition - 3));
+                toolbar.setTag(labelArrayList.get(selectedFragmentPosition - 4));
             }
         }else{
             mDrawerLayout.closeDrawer(Gravity.LEFT);
@@ -509,7 +524,19 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     public void onNextButtonClick() {
 
         selectedFragmentPosition = selectedFragmentPosition + 1;
-        if(selectedFragmentPosition == 1) {
+         if(selectedFragmentPosition == 1) {
+            mDrawerLayout.closeDrawer(Gravity.LEFT);
+            FragmentManager transactionManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
+            fragmentTransaction.replace(R.id.content_frame,new PropertyDetailsFragment());
+            fragmentTransaction.commit();
+            tabName="PropertyDetailsFragment";
+
+            activityActionBar.setTitle("Property Details");
+            actionBarEditBtn.setVisible(false);
+
+        }
+        else if(selectedFragmentPosition == 2) {
             mDrawerLayout.closeDrawer(Gravity.LEFT);
             FragmentManager transactionManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
@@ -521,7 +548,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
             actionBarEditBtn.setVisible(false);
 
         }
-        else if(selectedFragmentPosition == 2) {
+        else if(selectedFragmentPosition == 3) {
             mDrawerLayout.closeDrawer(Gravity.LEFT);
             FragmentManager transactionManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
@@ -532,20 +559,20 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
             activityActionBar.setTitle("Point Of Origin");
             actionBarEditBtn.setVisible(false);
 
-        }else if(selectedFragmentPosition > 2){
+        }else if(selectedFragmentPosition > 3){
 
             ArrayList<Label> labelArrayList =  reportPOJO.getLabelArrayList();
-            if( labelArrayList!= null && labelArrayList.size() > selectedFragmentPosition - 3 && labelArrayList.get(selectedFragmentPosition - 3) != null){
+            if( labelArrayList!= null && labelArrayList.size() > selectedFragmentPosition - 4 && labelArrayList.get(selectedFragmentPosition - 4) != null){
                 FragmentManager transactionManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
-                AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment = AddEditReportSelectedImagesFragment.initFragment(labelArrayList.get(selectedFragmentPosition - 3).getSelectedImages(),labelArrayList.get(selectedFragmentPosition - 3).getSelectedElevationImages(), selectedFragmentPosition - 3);
+                AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment = AddEditReportSelectedImagesFragment.initFragment(labelArrayList.get(selectedFragmentPosition - 4).getSelectedImages(),labelArrayList.get(selectedFragmentPosition - 4).getSelectedElevationImages(), selectedFragmentPosition - 4);
                 fragmentTransaction.replace(R.id.content_frame, addEditReportSelectedImagesFragment);
                 fragmentTransaction.commit();
                 tabName = "AddEditReportSelectedImagesFragment";
 
-                activityActionBar.setTitle(labelArrayList.get(selectedFragmentPosition - 3).getName());
+                activityActionBar.setTitle(labelArrayList.get(selectedFragmentPosition - 4).getName());
                 actionBarEditBtn.setVisible(true);
-                toolbar.setTag(labelArrayList.get(selectedFragmentPosition - 3));
+                toolbar.setTag(labelArrayList.get(selectedFragmentPosition - 4));
             }else{
                 mDrawerLayout.closeDrawer(Gravity.LEFT);
                 putClaimDetailsFragment();

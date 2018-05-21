@@ -108,4 +108,7 @@
     <string name="enter_claim_number_message">Please enter claim number.</string>
     <string name="please_add_address_message">Please enter address for incidence.</string>
     <string name="report_gen_success_msg">Report generated successfully.</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
