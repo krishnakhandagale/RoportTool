@@ -23,7 +23,7 @@ import java.util.Iterator;
  */
 
 public class CategoryListDBHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 64;
+    private static final int DATABASE_VERSION = 65;
 
 
     // Database Name
@@ -526,6 +526,14 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
     public void updateAddressLine(String value, String reportId) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("UPDATE generated_reports SET address_line='"+value+"' WHERE report_id='"+reportId+"'");
+    }
+    public void updateLocationLat(String value, String reportId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("UPDATE generated_reports SET location_lat='"+value+"' WHERE report_id='"+reportId+"'");
+    }
+    public void updateLocationLong(String value, String reportId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("UPDATE generated_reports SET location_lang='"+value+"' WHERE report_id='"+reportId+"'");
     }
 
 
