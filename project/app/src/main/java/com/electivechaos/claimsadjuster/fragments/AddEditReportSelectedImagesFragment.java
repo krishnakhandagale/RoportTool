@@ -898,6 +898,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
             public ImageView imageView;
             public TextView title;
             public TextView description;
+            public TextView imageType;
             public ImageButton editBtn;
             public ImageButton deleteBtn;
 
@@ -905,6 +906,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                 super(view);
                 imageView = view.findViewById(R.id.selectedImagePreview);
                 title = view.findViewById(R.id.title);
+                imageType =  view.findViewById(R.id.imageType);
                 description = view.findViewById(R.id.description);
                 editBtn = view.findViewById(R.id.editBtn);
                 deleteBtn = view.findViewById(R.id.deleteBtn);
@@ -934,6 +936,15 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
             holder.title.setText(imgDetails.getTitle());
             holder.description.setText(imgDetails.getDescription());
 
+            if(imgDetails.isOverview()){
+                holder.imageType.setText("Overview");
+                holder.imageType.setVisibility(View.VISIBLE);
+            }else if(imgDetails.isDamage()){
+                holder.imageType.setText("Damage");
+                holder.imageType.setVisibility(View.VISIBLE);
+            }else{
+                holder.imageType.setVisibility(View.GONE);
+            }
             Glide.with(context)
                     .load("file://" + imgDetails.getImageUrl())
                     .apply(options)
