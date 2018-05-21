@@ -3,8 +3,11 @@ package com.electivechaos.claimsadjuster.ui;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
@@ -23,7 +26,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 
+import com.electivechaos.claimsadjuster.ImageHelper;
 import com.electivechaos.claimsadjuster.R;
+import com.electivechaos.claimsadjuster.SingleMediaScanner;
 import com.electivechaos.claimsadjuster.adapters.CustomCategoryPopUpAdapter;
 import com.electivechaos.claimsadjuster.adapters.DrawerMenuListAdapter;
 import com.electivechaos.claimsadjuster.asynctasks.DBSelectedImagesTask;
@@ -44,12 +49,16 @@ import com.electivechaos.claimsadjuster.interfaces.OnGenerateReportClickListener
 import com.electivechaos.claimsadjuster.interfaces.OnSaveReportClickListener;
 import com.electivechaos.claimsadjuster.interfaces.PreferenceDialogCallback;
 import com.electivechaos.claimsadjuster.interfaces.SelectedImagesDataInterface;
+import com.electivechaos.claimsadjuster.listeners.OnMediaScannerListener;
 import com.electivechaos.claimsadjuster.pojo.Category;
 import com.electivechaos.claimsadjuster.pojo.ImageDetailsPOJO;
 import com.electivechaos.claimsadjuster.pojo.Label;
 import com.electivechaos.claimsadjuster.pojo.ReportPOJO;
 import com.electivechaos.claimsadjuster.utils.CommonUtils;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -497,6 +506,33 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         reportPOJO.setAddressLine(addressLine);
         new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, addressLine,reportPOJO.getId(),false,categoryListDBHelper,"addressLine").execute();
 
+    }
+
+    @Override
+    public void setMapSnapshot(final Bitmap bitmap) {
+
+        File destination = new File(Environment.getExternalStorageDirectory(), reportPOJO.getId() + ".png");
+        ImageHelper.grantAppPermission(this, getIntent(), Uri.fromFile(destination));
+        try {
+            final FileOutputStream fileOutputStream = new FileOutputStream(destination,false);
+
+            new SingleMediaScanner(this, destination, new OnMediaScannerListener(){
+
+                @Override
+                public void onMediaScanComplete(String path, Uri uri) {
+                    if(path != null){
+                        ImageHelper.revokeAppPermission(AddEditReportActivity.this, uri);
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 90, fileOutputStream);
+                        reportPOJO.setgoogleMapSnapShotFilePath(path);
+                        //TODO: Add this in async task
+                        categoryListDBHelper.updateLocationSnapshot(path,reportPOJO.getId());
+                    }
+
+                }
+            });
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
 
