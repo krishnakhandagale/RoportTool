@@ -448,13 +448,13 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
     @Override
     public void setReportClientName(String reportClientName) {
-        new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout,reportClientName,reportPOJO.getId(),false,categoryListDBHelper,"client name").execute();
+        new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout,reportClientName,reportPOJO.getId(),false,categoryListDBHelper,"clientName").execute();
         reportPOJO.setClientName(reportClientName);
     }
 
     @Override
     public void setReportClaimNumber(String reportClaimNumber) {
-        new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, reportClaimNumber,reportPOJO.getId(),false,categoryListDBHelper,"claim number").execute();
+        new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, reportClaimNumber,reportPOJO.getId(),false,categoryListDBHelper,"claimNumber").execute();
         reportPOJO.setClaimNumber(reportClaimNumber);
     }
 
@@ -480,7 +480,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     @Override
     public void setAddressLine(String addressLine) {
         reportPOJO.setAddressLine(addressLine);
-        new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, addressLine,reportPOJO.getId(),false,categoryListDBHelper,"address line").execute();
+        new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, addressLine,reportPOJO.getId(),false,categoryListDBHelper,"addressLine").execute();
 
     }
 

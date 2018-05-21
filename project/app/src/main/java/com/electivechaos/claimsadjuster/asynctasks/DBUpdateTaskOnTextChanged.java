@@ -52,13 +52,13 @@ public class DBUpdateTaskOnTextChanged extends AsyncTask<String,Void,Void> {
         else if(type.equalsIgnoreCase("description")){
             categoryListDBHelper.updateReportDecription(value, reportId);
         }
-        else if(type.equalsIgnoreCase("client name")){
+        else if(type.equalsIgnoreCase("clientName")){
             categoryListDBHelper.updateClientName(value, reportId);
         }
-        else if(type.equalsIgnoreCase("claim number")){
+        else if(type.equalsIgnoreCase("claimNumber")){
             categoryListDBHelper.updateClaimNumber(value, reportId);
         }
-        else if(type.equalsIgnoreCase("address line")){
+        else if(type.equalsIgnoreCase("addressLine")){
             categoryListDBHelper.updateAddressLine(value, reportId);
         }
         else if(type.equalsIgnoreCase("latitude")){
