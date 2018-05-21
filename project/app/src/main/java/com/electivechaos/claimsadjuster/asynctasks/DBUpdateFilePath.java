@@ -80,7 +80,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
     protected Void doInBackground(Integer... integers) {
         // If report already exists , delete it
         if(!reportPOJO.getFilePath().trim().isEmpty()){
-            File file = new File(reportPOJO.getFilePath());
+            File file = new File("file:\\"+reportPOJO.getFilePath());
             if (file != null && file.exists()) {
                 file.delete();
             }
