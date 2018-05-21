@@ -186,7 +186,7 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
                 return;
             }
 
-            LatLng currentLocation =places.get(0).getLatLng();
+            LatLng currentLocation = places.get(0).getLatLng();
 
             lossLocationDataInterface.setLocationLat(String.valueOf(currentLocation.latitude));
 

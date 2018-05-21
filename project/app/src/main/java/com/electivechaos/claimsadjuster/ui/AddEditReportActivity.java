@@ -584,8 +584,10 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         if(isProgressBar) {
             isValid = validateData();
 
-        }
-        if(isValid){
+            if(isValid){
+                new DatabaseSaveReportTask(AddEditReportActivity.this, progressBarLayout, reportPOJO,false,categoryListDBHelper).execute();
+            }
+        }else {
             new DatabaseSaveReportTask(AddEditReportActivity.this, progressBarLayout, reportPOJO,false,categoryListDBHelper).execute();
         }
 
