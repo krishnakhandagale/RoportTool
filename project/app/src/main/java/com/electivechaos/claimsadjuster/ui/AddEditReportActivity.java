@@ -94,13 +94,14 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
         if(getIntent().getExtras() != null){
             reportPOJO = categoryListDBHelper.getReportItem(getIntent().getExtras().getString("reportId"));
+
         }else{
             reportPOJO = new ReportPOJO();
-            reportPOJO.setId(String.valueOf(new Date().getTime()));
+            Date currentDate = new Date();
+            reportPOJO.setId(String.valueOf(currentDate.getTime()));
 
-            DateFormat myFormat = new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss a");
-            String reportSavedDate = myFormat.format(new Date().getTime());
-
+            DateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss a");
+            String reportSavedDate = dateFormat.format(currentDate.getTime());
             setCreatedDate(reportSavedDate);
             onReportSave(false);
         }
