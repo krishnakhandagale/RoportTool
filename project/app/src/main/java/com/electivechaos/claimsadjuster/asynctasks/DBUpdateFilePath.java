@@ -80,7 +80,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
     protected Void doInBackground(Integer... integers) {
         // If report already exists , delete it
         if(!reportPOJO.getFilePath().trim().isEmpty()){
-            File file = new File("file:\\"+reportPOJO.getFilePath());
+            File file = new File(reportPOJO.getFilePath());
             if (file != null && file.exists()) {
                 file.delete();
             }
@@ -200,7 +200,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
                 document.newPage();
 
             }
-
+            reportPOJO.setFilePath(destination.getAbsolutePath());
             categoryListDBHelper.updateFilePath(reportPOJO.getFilePath(),reportPOJO.getId());
 
             document.close();

@@ -151,7 +151,7 @@ public class ReportListFragment extends Fragment {
                                                     mCategoryListDBHelper.deleteReportEntry(reportItemPOJO.getId());
 
                                                     if(!reportItemPOJO.getFilePath().trim().isEmpty()){
-                                                        File file = new File("file:\\"+reportItemPOJO.getFilePath());
+                                                        File file = new File(reportItemPOJO.getFilePath());
                                                         if (file != null && file.exists()) {
                                                             file.delete();
                                                         }

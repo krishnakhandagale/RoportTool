@@ -582,7 +582,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     public void onReportSave(boolean isProgressBar) {
 
         //Is from user action then validate
-        boolean isValid =  false;
+        boolean isValid;
         if(isProgressBar) {
             isValid = validateData();
 
