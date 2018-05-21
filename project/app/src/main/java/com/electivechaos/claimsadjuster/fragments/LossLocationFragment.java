@@ -124,6 +124,8 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
 
 
                 mPlaceDetectionClient = Places.getPlaceDetectionClient(getActivity());
+
+
                 showCurrentPlace();
 
                 }else{
@@ -229,39 +231,53 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
             return;
         }
 
-        @SuppressLint("MissingPermission") final Task<PlaceLikelihoodBufferResponse> placeResult =
-                mPlaceDetectionClient.getCurrentPlace(null);
-        placeResult.addOnCompleteListener
-                (new OnCompleteListener<PlaceLikelihoodBufferResponse>() {
-                    @Override
-                    public void onComplete(@NonNull Task<PlaceLikelihoodBufferResponse> task) {
-                        if (task.isSuccessful() && task.getResult() != null) {
-                            PlaceLikelihoodBufferResponse likelyPlaces = task.getResult();
+        if(locationLat.isEmpty()){
+            @SuppressLint("MissingPermission") final Task<PlaceLikelihoodBufferResponse> placeResult =
+                    mPlaceDetectionClient.getCurrentPlace(null);
+            placeResult.addOnCompleteListener
+                    (new OnCompleteListener<PlaceLikelihoodBufferResponse>() {
+                        @Override
+                        public void onComplete(@NonNull Task<PlaceLikelihoodBufferResponse> task) {
+                            if (task.isSuccessful() && task.getResult() != null) {
+                                PlaceLikelihoodBufferResponse likelyPlaces = task.getResult();
 
-                            LatLng currentLocation = likelyPlaces.get(0).getPlace().getLatLng();
+                                LatLng currentLocation = likelyPlaces.get(0).getPlace().getLatLng();
 
-                            lossLocationDataInterface.setLocationLat(String.valueOf(currentLocation.latitude));
+                                lossLocationDataInterface.setLocationLat(String.valueOf(currentLocation.latitude));
 
-                            lossLocationDataInterface.setLocationLong(String.valueOf(currentLocation.longitude));
+                                lossLocationDataInterface.setLocationLong(String.valueOf(currentLocation.longitude));
 
-                            lossLocationDataInterface.setAddressLine(likelyPlaces.get(0).getPlace().getAddress().toString());
+                                lossLocationDataInterface.setAddressLine(likelyPlaces.get(0).getPlace().getAddress().toString());
 
-                            mGoogleMapMarker.setPosition(currentLocation);
-                            mGoogleMapMarker.setTitle("Your Location");
-                            mGoogleMapMarker.setSnippet(likelyPlaces.get(0).getPlace().getAddress().toString());
+                                mGoogleMapMarker.setPosition(currentLocation);
+                                mGoogleMapMarker.setTitle("Your Location");
+                                mGoogleMapMarker.setSnippet(likelyPlaces.get(0).getPlace().getAddress().toString());
 
-                            CameraPosition cameraPosition = new CameraPosition.Builder().target(currentLocation).zoom(8).build();
-                            googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-                            googleMap.getUiSettings().setMyLocationButtonEnabled(false);
-                            likelyPlaces.release();
+                                CameraPosition cameraPosition = new CameraPosition.Builder().target(currentLocation).zoom(8).build();
+                                googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                                googleMap.getUiSettings().setMyLocationButtonEnabled(false);
+                                likelyPlaces.release();
+                            }
                         }
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                e.printStackTrace();
-            }
-        });
+                    }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        }else{
+            LatLng currentLocation = new LatLng(Double.parseDouble(locationLat), Double.parseDouble(locationLong));
+            mGoogleMapMarker.setPosition(currentLocation);
+            mGoogleMapMarker.setTitle("Your Location");
+            mGoogleMapMarker.setSnippet(addressLine);
+
+            CameraPosition cameraPosition = new CameraPosition.Builder().target(currentLocation).zoom(8).build();
+            googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+            googleMap.getUiSettings().setMyLocationButtonEnabled(false);
+
+        }
+
+
     }
 
     @Override
