@@ -32,7 +32,7 @@ import com.electivechaos.claimsadjuster.asynctasks.DBUpdateTaskOnTextChanged;
 import com.electivechaos.claimsadjuster.asynctasks.DatabaseSaveReportTask;
 import com.electivechaos.claimsadjuster.database.CategoryListDBHelper;
 import com.electivechaos.claimsadjuster.fragments.AddEditReportSelectedImagesFragment;
-import com.electivechaos.claimsadjuster.fragments.CauseOfLossFragment;
+import com.electivechaos.claimsadjuster.fragments.PerilFragment;
 import com.electivechaos.claimsadjuster.fragments.ClaimDetailsFragment;
 import com.electivechaos.claimsadjuster.fragments.PointOfOriginFragment;
 import com.electivechaos.claimsadjuster.interfaces.AddEditLabelInterface;
@@ -125,7 +125,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         parentMenuItems = new ArrayList<>();
 
         parentMenuItems.add("Claim Details");
-        parentMenuItems.add("Cause Of Loss");
+        parentMenuItems.add("Peril");
         parentMenuItems.add("Point Of Origin");
         parentMenuItems.add("Inspection");
 
@@ -153,16 +153,16 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                     actionBarEditBtn.setVisible(false);
 
 
-                } else if (parentMenuItems.get(groupPosition).equals("Cause Of Loss")) {
+                } else if (parentMenuItems.get(groupPosition).equals("Peril")) {
                     mDrawerLayout.closeDrawer(Gravity.LEFT);
                     FragmentManager transactionManager = getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.content_frame, new CauseOfLossFragment());
+                    fragmentTransaction.replace(R.id.content_frame, new PerilFragment());
                     fragmentTransaction.commit();
-                    tabName = "CauseOfLossFragment";
+                    tabName = "PerilFragment";
 
                     selectedFragmentPosition = 1;
-                    activityActionBar.setTitle("Cause Of Loss");
+                    activityActionBar.setTitle("Peril");
                     actionBarEditBtn.setVisible(false);
 
                 } else if (parentMenuItems.get(groupPosition).equals("Point Of Origin")) {
@@ -511,11 +511,11 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
             mDrawerLayout.closeDrawer(Gravity.LEFT);
             FragmentManager transactionManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
-            fragmentTransaction.replace(R.id.content_frame,new CauseOfLossFragment());
+            fragmentTransaction.replace(R.id.content_frame,new PerilFragment());
             fragmentTransaction.commit();
-            tabName="CauseOfLossFragment";
+            tabName="PerilFragment";
 
-            activityActionBar.setTitle("Cause Of Loss");
+            activityActionBar.setTitle("Peril");
             actionBarEditBtn.setVisible(false);
 
         }
