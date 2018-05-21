@@ -114,8 +114,8 @@ public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
 
         if(parentMenuString.equals("Claim Details")){
             holder.imageView.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_reports));
-        }else if(parentMenuString.equals("Cause Of Loss")){
-            holder.imageView.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_location));
+        }else if(parentMenuString.equals("Peril")){
+            holder.imageView.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_warning));
         }else if(parentMenuString.equals("Point Of Origin")){
             holder.imageView.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_point_of_origin));
         }else{
