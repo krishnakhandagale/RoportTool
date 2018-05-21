@@ -1,5 +1,6 @@
 package com.electivechaos.claimsadjuster.fragments;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,6 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.Toast;
 
 import com.electivechaos.claimsadjuster.R;
 import com.electivechaos.claimsadjuster.adapters.DrawerMenuListAdapter;
@@ -19,7 +23,18 @@ import com.electivechaos.claimsadjuster.interfaces.NextButtonClickListener;
 import com.electivechaos.claimsadjuster.interfaces.OnGenerateReportClickListener;
 import com.electivechaos.claimsadjuster.interfaces.OnSaveReportClickListener;
 
-public class PropertyDetailsFragment extends Fragment {
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
+public class PropertyDetailsFragment extends Fragment implements DatePickerDialog.OnDateSetListener{
+
+        Button pickTime;
+        int day,month,year,hour,minute;
+        int dayFinal,monthFinal,yearFinal,hourFinal,minuteFinal;
+        long timeInMilliseconds=0;
+
     private Boolean isFabOpen = false;
     private FloatingActionButton showFabBtn,fabGoNextBtn, fabAddLabelBtn, fabGenerateReportBtn, fabSaveReportBtn;
     private Animation fab_open, fab_close, rotate_forward, rotate_backward;
@@ -42,6 +57,8 @@ public class PropertyDetailsFragment extends Fragment {
         fab_close = AnimationUtils.loadAnimation(getActivity(), R.anim.fab_close);
         rotate_forward = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate_forward);
         rotate_backward = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate_backward);
+
+        pickTime=view.findViewById(R.id.btnTime);
 
         fabGoNextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,6 +97,21 @@ public class PropertyDetailsFragment extends Fragment {
                 animateFAB();
             }
         });
+
+        pickTime.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Calendar c=Calendar.getInstance();
+                year=c.get(Calendar.YEAR);
+                month=c.get(Calendar.MONTH);
+                day=c.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog datePickerDialog=new DatePickerDialog(getContext(),PropertyDetailsFragment.this,year,month,day);
+                datePickerDialog.show();
+
+
+            }
+        });
         return view;
     }
 
@@ -113,6 +145,21 @@ public class PropertyDetailsFragment extends Fragment {
         }
 
     }
+
+    @Override
+    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+        yearFinal=i;
+        monthFinal=i1+1;
+        dayFinal=i2;
+
+        Calendar c=Calendar.getInstance();
+        hour=c.get(Calendar.HOUR_OF_DAY);
+        minute=c.get(Calendar.MINUTE);
+
+        Toast.makeText(getContext(),"year:"+year+"month:"+month+"day"+day+"Time:"+timeInMilliseconds,Toast.LENGTH_SHORT).show();
+
+    }
+
 
     @Override
     public void onAttach(Context context) {
