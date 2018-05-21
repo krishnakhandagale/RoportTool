@@ -26,7 +26,6 @@ public class DatabaseSaveReportTask extends AsyncTask<String,Void,Void> {
         this.isProgressBar = isProgressBar;
         this.categoryListDBHelper = categoryListDBHelper;
         this.reportPOJO = reportPOJO;
-        this. progressBarLayout = progressBarLayout;
         this.progressBarLayout = progressBarLayout;
     }
 
