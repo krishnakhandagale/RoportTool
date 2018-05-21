@@ -3,6 +3,7 @@ package com.electivechaos.claimsadjuster.fragments;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -195,12 +196,20 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
             lossLocationDataInterface.setAddressLine(places.get(0).getAddress().toString());
 
             mGoogleMapMarker.setPosition(currentLocation);
-            mGoogleMapMarker.setTitle("Your Location");
+            mGoogleMapMarker.setTitle("Location");
             mGoogleMapMarker.setSnippet(places.get(0).getAddress().toString());
 
             CameraPosition cameraPosition = new CameraPosition.Builder().target(currentLocation).zoom(8).build();
             googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
             googleMap.getUiSettings().setMyLocationButtonEnabled(false);
+
+            googleMap.snapshot(new GoogleMap.SnapshotReadyCallback() {
+                @Override
+                public void onSnapshotReady(Bitmap bitmap) {
+                    // Save snapshot image here
+                    lossLocationDataInterface.setMapSnapshot(bitmap);
+                }
+            });
         }
     };
 
@@ -248,15 +257,23 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
                                 lossLocationDataInterface.setLocationLong(String.valueOf(currentLocation.longitude));
 
                                 lossLocationDataInterface.setAddressLine(likelyPlaces.get(0).getPlace().getAddress().toString());
-
+                                mAutocompleteTextView.setText(likelyPlaces.get(0).getPlace().getAddress().toString());
                                 mGoogleMapMarker.setPosition(currentLocation);
-                                mGoogleMapMarker.setTitle("Your Location");
+                                mGoogleMapMarker.setTitle("Location");
                                 mGoogleMapMarker.setSnippet(likelyPlaces.get(0).getPlace().getAddress().toString());
 
                                 CameraPosition cameraPosition = new CameraPosition.Builder().target(currentLocation).zoom(8).build();
                                 googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
                                 googleMap.getUiSettings().setMyLocationButtonEnabled(false);
                                 likelyPlaces.release();
+
+                                googleMap.snapshot(new GoogleMap.SnapshotReadyCallback() {
+                                    @Override
+                                    public void onSnapshotReady(Bitmap bitmap) {
+                                        // Save snapshot image here
+                                        lossLocationDataInterface.setMapSnapshot(bitmap);
+                                    }
+                                });
                             }
                         }
                     }).addOnFailureListener(new OnFailureListener() {
@@ -268,7 +285,7 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
         }else{
             LatLng currentLocation = new LatLng(Double.parseDouble(locationLat), Double.parseDouble(locationLong));
             mGoogleMapMarker.setPosition(currentLocation);
-            mGoogleMapMarker.setTitle("Your Location");
+            mGoogleMapMarker.setTitle("Location");
             mGoogleMapMarker.setSnippet(addressLine);
 
             CameraPosition cameraPosition = new CameraPosition.Builder().target(currentLocation).zoom(8).build();

@@ -6,7 +6,6 @@ import android.os.AsyncTask;
 import android.view.View;
 
 import com.electivechaos.claimsadjuster.database.CategoryListDBHelper;
-import com.electivechaos.claimsadjuster.pojo.ReportPOJO;
 import com.electivechaos.claimsadjuster.utils.CommonUtils;
 
 /**
@@ -50,7 +49,7 @@ public class DBUpdateTaskOnTextChanged extends AsyncTask<String,Void,Void> {
             categoryListDBHelper.updateReportTitle(value,reportId);
         }
         else if(type.equalsIgnoreCase("description")){
-            categoryListDBHelper.updateReportDecription(value, reportId);
+            categoryListDBHelper.updateReportDescription(value, reportId);
         }
         else if(type.equalsIgnoreCase("clientName")){
             categoryListDBHelper.updateClientName(value, reportId);

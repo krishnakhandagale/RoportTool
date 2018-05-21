@@ -23,7 +23,7 @@ import java.util.Iterator;
  */
 
 public class CategoryListDBHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 72;
+    private static final int DATABASE_VERSION = 73;
 
 
     // Database Name
@@ -52,6 +52,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
     private static final String KEY_LOCATION_LONG = "location_lang";
     private static final String KEY_ADDRESS_LINE = "address_line";
     private static final String KEY_CAUSE_OF_LOSS="cause_of_loss";
+    private static final String KEY_LOCATION_SNAPSHOT ="location_snapshot";
 
 
 
@@ -119,7 +120,8 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 + KEY_LOCATION_LAT + " TEXT,"
                 + KEY_LOCATION_LONG + " TEXT,"
                 + KEY_ADDRESS_LINE + " TEXT,"
-                + KEY_CAUSE_OF_LOSS + " TEXT"+")";
+                + KEY_CAUSE_OF_LOSS + " TEXT,"
+                + KEY_LOCATION_SNAPSHOT + " TEXT"+")";
 
 
         String CREATE_CATEGORY_DETAILS_TABLE = "CREATE TABLE " + TABLE_MASTER_CATEGORY + "("
@@ -350,6 +352,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         values.put(KEY_LOCATION_LONG, reportItemPOJO.getLocationLong());
         values.put(KEY_ADDRESS_LINE, reportItemPOJO.getAddressLine());
         values.put(KEY_CAUSE_OF_LOSS, reportItemPOJO.getCauseOfLoss());
+        values.put(KEY_LOCATION_SNAPSHOT, reportItemPOJO.getgoogleMapSnapShotFilePath());
         long insertIntoReportList = db.insert(TABLE_REPORTS_LIST, null, values);
         if (insertIntoReportList != -1) {
             ArrayList<Label> labelArrayList = reportItemPOJO.getLabelArrayList();
@@ -451,6 +454,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 reportPOJO.setLocationLong(c.getString(8));
                 reportPOJO.setAddressLine(c.getString(9));
                 reportPOJO.setCauseOfLoss(c.getString(10));
+                reportPOJO.setgoogleMapSnapShotFilePath(c.getString(11));
             }while (c.moveToNext());
         }
 
@@ -510,7 +514,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         db.execSQL("UPDATE generated_reports SET report_name='"+value+"' WHERE report_id ='"+reportId+"'");
     }
 
-    public void updateReportDecription(String value, String reportId) {
+    public void updateReportDescription(String value, String reportId) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("UPDATE generated_reports SET report_description='"+value+"' WHERE report_id='"+reportId+"'");
     }
@@ -534,6 +538,10 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
     public void updateLocationLong(String value, String reportId) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("UPDATE generated_reports SET location_lang='"+value+"' WHERE report_id='"+reportId+"'");
+    }
+    public void updateLocationSnapshot(String value, String reportId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("UPDATE generated_reports SET location_snapshot='"+value+"' WHERE report_id='"+reportId+"'");
     }
 
 

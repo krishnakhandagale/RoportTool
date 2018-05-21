@@ -729,6 +729,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
 
 
 
+
                     ImageHelper.revokeAppPermission(getContext(), fileUri);
                     final String finalPath = path;
                     final String finalPath1 = path;

@@ -124,6 +124,13 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
             document.add(new Paragraph("Address", fontTitles));
             document.add(new Paragraph(reportPOJO.getAddressLine()));
 
+
+            double remainingHeight = Math.abs(document.bottom() -  pdfWriter.getVerticalPosition(true));
+
+            byte[] imgResized = resizeImage(reportPOJO.getgoogleMapSnapShotFilePath(), (int) document.getPageSize().getWidth(), (int) remainingHeight);
+            com.itextpdf.text.Image imgMap = com.itextpdf.text.Image.getInstance(imgResized);
+            document.add(imgMap);
+
             document.newPage();
 
             //Now read labels and show images accordingly.
