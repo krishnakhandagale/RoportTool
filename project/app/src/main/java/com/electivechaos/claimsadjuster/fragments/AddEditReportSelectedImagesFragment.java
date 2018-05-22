@@ -581,7 +581,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                     snackbar.setAction("RETRY", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                           openCamera(PermissionUtilities.MY_APP_TAKE_FRONT_PHOTO_PERMISSIONS, FRONT_IMAGE_REQUEST);
+                            openCamera(PermissionUtilities.MY_APP_TAKE_FRONT_PHOTO_PERMISSIONS, FRONT_IMAGE_REQUEST);
                             v.setVisibility(View.GONE);
                         }
                     });
