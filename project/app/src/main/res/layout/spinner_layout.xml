@@ -5,4 +5,7 @@
     android:layout_height="wrap_content"
     android:maxLines="1"
     android:textSize="16sp"
-    android:textColor="@color/black"/>
+    android:textColor="@color/black"
+    android:padding="12dp"
+    android:background="@layout/spinner_item_divider"
+    />
