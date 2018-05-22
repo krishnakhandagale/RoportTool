@@ -17,11 +17,11 @@ import java.util.ArrayList;
  */
 
 public class CustomeMenuAdapter extends BaseAdapter {
-    Context context;
-    ArrayList arrayList;
-    int selectedPosition;
+    private Context context;
+    private ArrayList arrayList;
+    private int selectedPosition;
 
-    public CustomeMenuAdapter(Context context, ArrayList arrayList,int selectedPosition){
+    public CustomeMenuAdapter(Context context, ArrayList arrayList, int selectedPosition){
         this.arrayList = arrayList;
         this.context = context;
         this.selectedPosition = selectedPosition;

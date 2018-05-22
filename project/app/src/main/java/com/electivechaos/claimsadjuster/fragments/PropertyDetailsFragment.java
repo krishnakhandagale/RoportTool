@@ -204,6 +204,7 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
                 ad.show();
             }
         });
+
         return view;
     }
 
