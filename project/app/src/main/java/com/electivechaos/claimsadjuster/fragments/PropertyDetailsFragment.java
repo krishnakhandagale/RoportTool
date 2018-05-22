@@ -41,7 +41,7 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
 
     private Boolean isFabOpen = false;
     private FloatingActionButton showFabBtn,fabGoNextBtn, fabAddLabelBtn, fabGenerateReportBtn, fabSaveReportBtn;
-    private Animation fab_open, fab_close, rotate_forward, rotate_backward;
+    private Animation fab_open, fab_close;
     private Spinner spinnerMenuOne, spinnerMenuTwo, spinnerMenuThree;
 
     private NextButtonClickListener nextButtonClickListener;
@@ -61,8 +61,6 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
 
         fab_open = AnimationUtils.loadAnimation(getActivity(), R.anim.fab_open);
         fab_close = AnimationUtils.loadAnimation(getActivity(), R.anim.fab_close);
-        rotate_forward = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate_forward);
-        rotate_backward = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate_backward);
 
         pickTime = view.findViewById(R.id.btnTime);
         spinnerMenuOne = view.findViewById(R.id.menuOne);
