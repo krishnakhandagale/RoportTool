@@ -130,7 +130,7 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
 
                 final AlertDialog.Builder ad = new AlertDialog.Builder(getContext());
                 ad.setCancelable(true);
-                ad.setTitle("Roof System ");
+                ad.setTitle("Roof System");
                 CustomMenuAdapter adapter=new CustomMenuAdapter(getContext(),roofSystemList,selectedPositionOne);
 
                 ad.setSingleChoiceItems(adapter, selectedPositionOne,  new DialogInterface.OnClickListener() {
@@ -158,7 +158,7 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
 
                 final AlertDialog.Builder ad = new AlertDialog.Builder(getContext());
                 ad.setCancelable(true);
-                ad.setTitle("Roof System ");
+                ad.setTitle("Siding");
                 CustomMenuAdapter adapter=new CustomMenuAdapter(getContext(),sidingList,selectedPositionTwo);
 
                 ad.setSingleChoiceItems(adapter, selectedPositionTwo,  new DialogInterface.OnClickListener() {
@@ -187,7 +187,7 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
 
                 final AlertDialog.Builder ad = new AlertDialog.Builder(getContext());
                 ad.setCancelable(true);
-                ad.setTitle("Roof System ");
+                ad.setTitle("Foundation");
                 CustomMenuAdapter adapter=new CustomMenuAdapter(getContext(),foundationList,selectedPositionThree);
 
                 ad.setSingleChoiceItems(adapter, selectedPositionThree,  new DialogInterface.OnClickListener() {
