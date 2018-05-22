@@ -33,14 +33,14 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class PropertyDetailsFragment extends Fragment implements DatePickerDialog.OnDateSetListener{
+public class PropertyDetailsFragment extends Fragment implements DatePickerDialog.OnDateSetListener {
 
-        Button pickTime;
-        int day,month,year,dayFinal,monthFinal,yearFinal;
-        long timeInMilliseconds=0;
+    Button pickTime;
+    int day, month, year, dayFinal, monthFinal, yearFinal;
+    long timeInMilliseconds = 0;
 
     private Boolean isFabOpen = false;
-    private FloatingActionButton showFabBtn,fabGoNextBtn, fabAddLabelBtn, fabGenerateReportBtn, fabSaveReportBtn;
+    private FloatingActionButton showFabBtn, fabGoNextBtn, fabAddLabelBtn, fabGenerateReportBtn, fabSaveReportBtn;
     private Animation fab_open, fab_close;
     private Spinner spinnerMenuOne, spinnerMenuTwo, spinnerMenuThree;
     private TextView txtDate;
@@ -53,7 +53,7 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view= inflater.inflate(R.layout.fragment_property_details, container, false);
+        View view = inflater.inflate(R.layout.fragment_property_details, container, false);
         showFabBtn = view.findViewById(R.id.showFab);
         fabGoNextBtn = view.findViewById(R.id.fabGoNext);
         fabAddLabelBtn = view.findViewById(R.id.fabAddLabel);
@@ -113,15 +113,15 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
             }
         });
 
-        pickTime.setOnClickListener(new View.OnClickListener(){
+        pickTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Calendar c=Calendar.getInstance();
+                Calendar c = Calendar.getInstance();
                 year = c.get(Calendar.YEAR);
                 month = c.get(Calendar.MONTH);
                 day = c.get(Calendar.DAY_OF_MONTH);
 
-                DatePickerDialog datePickerDialog=new DatePickerDialog(getContext(),PropertyDetailsFragment.this,year,month,day);
+                DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), PropertyDetailsFragment.this, year, month, day);
                 datePickerDialog.show();
 
             }
@@ -198,12 +198,12 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
 
     @Override
     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-        yearFinal=i;
-        monthFinal=i1+1;
-        dayFinal=i2;
-        txtDate.setText(dayFinal+" /"+monthFinal+" /"+yearFinal);
+        yearFinal = i;
+        monthFinal = i1 + 1;
+        dayFinal = i2;
+        txtDate.setText(dayFinal + " /" + monthFinal + " /" + yearFinal);
 
-        Toast.makeText(getContext(),"year:"+year+"month:"+month+"day"+day+"Time:"+timeInMilliseconds,Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "year:" + year + "month:" + month + "day" + day + "Time:" + timeInMilliseconds, Toast.LENGTH_SHORT).show();
 
     }
 
@@ -213,10 +213,10 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
         super.onAttach(context);
         try {
             nextButtonClickListener = (NextButtonClickListener) getActivity();
-            onLabelAddClickListener = (DrawerMenuListAdapter.OnLabelAddClickListener)getActivity();
-            onSaveReportClickListener = (OnSaveReportClickListener)getActivity();
-            onGenerateReportClickListener = (OnGenerateReportClickListener)getActivity();
-        }catch (ClassCastException ex) {
+            onLabelAddClickListener = (DrawerMenuListAdapter.OnLabelAddClickListener) getActivity();
+            onSaveReportClickListener = (OnSaveReportClickListener) getActivity();
+            onGenerateReportClickListener = (OnGenerateReportClickListener) getActivity();
+        } catch (ClassCastException ex) {
             ex.printStackTrace();
         }
     }
