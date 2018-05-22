@@ -1,7 +1,9 @@
 package com.electivechaos.claimsadjuster.fragments;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,19 +14,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.electivechaos.claimsadjuster.R;
+import com.electivechaos.claimsadjuster.adapters.CustomeMenuAdapter;
 import com.electivechaos.claimsadjuster.adapters.DrawerMenuListAdapter;
 import com.electivechaos.claimsadjuster.interfaces.NextButtonClickListener;
 import com.electivechaos.claimsadjuster.interfaces.OnGenerateReportClickListener;
 import com.electivechaos.claimsadjuster.interfaces.OnSaveReportClickListener;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class PropertyDetailsFragment extends Fragment implements DatePickerDialog.OnDateSetListener {
@@ -35,13 +37,16 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
     private boolean isFabOpen = false;
     private FloatingActionButton showFabBtn, fabGoNextBtn, fabAddLabelBtn, fabGenerateReportBtn, fabSaveReportBtn;
     private Animation fab_open, fab_close;
-    private Spinner spinnerMenuOne, spinnerMenuTwo, spinnerMenuThree;
-    private TextView txtDate;
+    private TextView txtDate, txtMenuOne, txtMenuTwo, txtMenuThree;
 
     private NextButtonClickListener nextButtonClickListener;
     private DrawerMenuListAdapter.OnLabelAddClickListener onLabelAddClickListener;
     private OnSaveReportClickListener onSaveReportClickListener;
     private OnGenerateReportClickListener onGenerateReportClickListener;
+
+    private  int selectedPositionOne = -1;
+    private  int selectedPositionTwo = -1;
+    private  int selectedPositionThree = -1;
 
     @Nullable
     @Override
@@ -57,15 +62,11 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
         fab_close = AnimationUtils.loadAnimation(getActivity(), R.anim.fab_close);
 
         pickTime = view.findViewById(R.id.btnTime);
-        spinnerMenuOne = view.findViewById(R.id.menuOne);
-        spinnerMenuTwo = view.findViewById(R.id.menuTwo);
-        spinnerMenuThree = view.findViewById(R.id.menuThree);
         txtDate = view.findViewById(R.id.txtDate);
+        txtMenuOne = view.findViewById(R.id.menuOne);
+        txtMenuTwo = view.findViewById(R.id.menuTwo);
+        txtMenuThree = view.findViewById(R.id.menuThree);
 
-
-        setListOfMenuOne();
-        setListOfMenuTwo();
-        setListOfMenuThree();
 
 
         fabGoNextBtn.setOnClickListener(new View.OnClickListener() {
@@ -119,36 +120,94 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
 
             }
         });
+
+        txtMenuOne.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final ArrayList<String> roofSystemList = new ArrayList<>();
+                roofSystemList.add("item...1");
+                roofSystemList.add("item...2");
+
+                final AlertDialog.Builder ad = new AlertDialog.Builder(getContext());
+                ad.setCancelable(true);
+                ad.setTitle("Roof System ");
+                CustomeMenuAdapter adapter=new CustomeMenuAdapter(getContext(),roofSystemList);
+
+                ad.setSingleChoiceItems(adapter, selectedPositionOne,  new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int position) {
+                        selectedPositionOne =  position;
+                        txtMenuOne.setText(roofSystemList.get(position).toString());
+                        dialogInterface.dismiss();
+
+                    }
+                });
+
+                ad.show();
+
+            }
+        });
+
+        txtMenuTwo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final ArrayList<String> sidingList = new ArrayList<>();
+                sidingList.add("item...1");
+                sidingList.add("item...2");
+
+                final AlertDialog.Builder ad = new AlertDialog.Builder(getContext());
+                ad.setCancelable(true);
+                ad.setTitle("Roof System ");
+                CustomeMenuAdapter adapter=new CustomeMenuAdapter(getContext(),sidingList);
+
+                ad.setSingleChoiceItems(adapter, selectedPositionTwo,  new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int position) {
+                        selectedPositionOne =  position;
+                        txtMenuTwo.setText(sidingList.get(position).toString());
+                        dialogInterface.dismiss();
+
+                    }
+                });
+
+                ad.show();
+
+            }
+
+        });
+
+        txtMenuThree.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final ArrayList<String> foundationList = new ArrayList<>();
+                foundationList.add("1");
+                foundationList.add("2");
+
+                final AlertDialog.Builder ad = new AlertDialog.Builder(getContext());
+                ad.setCancelable(true);
+                ad.setTitle("Roof System ");
+                CustomeMenuAdapter adapter=new CustomeMenuAdapter(getContext(),foundationList);
+
+                ad.setSingleChoiceItems(adapter, selectedPositionThree,  new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int position) {
+                        selectedPositionOne =  position;
+                        txtMenuThree.setText(foundationList.get(position).toString());
+                        dialogInterface.dismiss();
+
+                    }
+                });
+
+                ad.show();
+            }
+        });
         return view;
     }
 
-    public void setListOfMenuOne() {
 
-        String[] list1=new String[]{"list1","list2"};
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(),
-                R.layout.spinner_layout,list1);
-
-        dataAdapter.setDropDownViewResource(R.layout.spinner_layout);
-        spinnerMenuOne.setAdapter(dataAdapter);
-    }
-
-    public void setListOfMenuTwo() {
-        String[] list2=new String[]{"list1","list2"};
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(),
-                R.layout.spinner_layout,list2);
-
-        dataAdapter.setDropDownViewResource(R.layout.spinner_layout);
-        spinnerMenuTwo.setAdapter(dataAdapter);
-    }
-
-    public void setListOfMenuThree() {
-        String[] list3=new String[]{"list1","list2"};
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(),
-                R.layout.spinner_layout,list3);
-
-        dataAdapter.setDropDownViewResource(R.layout.spinner_layout);
-        spinnerMenuThree.setAdapter(dataAdapter);
-    }
 
     public void animateFAB() {
         if (isFabOpen) {
