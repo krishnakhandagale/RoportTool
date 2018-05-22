@@ -16,12 +16,12 @@ import java.util.ArrayList;
  * Created by nafeesa on 5/22/18.
  */
 
-public class CustomeMenuAdapter extends BaseAdapter {
+public class CustomMenuAdapter extends BaseAdapter {
     private Context context;
     private ArrayList arrayList;
     private int selectedPosition;
 
-    public CustomeMenuAdapter(Context context, ArrayList arrayList, int selectedPosition){
+    public CustomMenuAdapter(Context context, ArrayList arrayList, int selectedPosition){
         this.arrayList = arrayList;
         this.context = context;
         this.selectedPosition = selectedPosition;

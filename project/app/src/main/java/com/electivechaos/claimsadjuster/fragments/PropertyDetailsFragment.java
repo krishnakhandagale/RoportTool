@@ -20,7 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.electivechaos.claimsadjuster.R;
-import com.electivechaos.claimsadjuster.adapters.CustomeMenuAdapter;
+import com.electivechaos.claimsadjuster.adapters.CustomMenuAdapter;
 import com.electivechaos.claimsadjuster.adapters.DrawerMenuListAdapter;
 import com.electivechaos.claimsadjuster.interfaces.NextButtonClickListener;
 import com.electivechaos.claimsadjuster.interfaces.OnGenerateReportClickListener;
@@ -131,7 +131,7 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
                 final AlertDialog.Builder ad = new AlertDialog.Builder(getContext());
                 ad.setCancelable(true);
                 ad.setTitle("Roof System ");
-                CustomeMenuAdapter adapter=new CustomeMenuAdapter(getContext(),roofSystemList,selectedPositionOne);
+                CustomMenuAdapter adapter=new CustomMenuAdapter(getContext(),roofSystemList,selectedPositionOne);
 
                 ad.setSingleChoiceItems(adapter, selectedPositionOne,  new DialogInterface.OnClickListener() {
 
@@ -159,7 +159,7 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
                 final AlertDialog.Builder ad = new AlertDialog.Builder(getContext());
                 ad.setCancelable(true);
                 ad.setTitle("Roof System ");
-                CustomeMenuAdapter adapter=new CustomeMenuAdapter(getContext(),sidingList,selectedPositionTwo);
+                CustomMenuAdapter adapter=new CustomMenuAdapter(getContext(),sidingList,selectedPositionTwo);
 
                 ad.setSingleChoiceItems(adapter, selectedPositionTwo,  new DialogInterface.OnClickListener() {
 
@@ -188,7 +188,7 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
                 final AlertDialog.Builder ad = new AlertDialog.Builder(getContext());
                 ad.setCancelable(true);
                 ad.setTitle("Roof System ");
-                CustomeMenuAdapter adapter=new CustomeMenuAdapter(getContext(),foundationList,selectedPositionThree);
+                CustomMenuAdapter adapter=new CustomMenuAdapter(getContext(),foundationList,selectedPositionThree);
 
                 ad.setSingleChoiceItems(adapter, selectedPositionThree,  new DialogInterface.OnClickListener() {
 
