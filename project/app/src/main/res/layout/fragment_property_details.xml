@@ -7,7 +7,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:weightSum="4">
+        android:weightSum="4"
+        android:layout_marginLeft="2dp">
         <TextView
             android:textSize="16sp"
             android:layout_gravity="center_vertical"
