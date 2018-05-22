@@ -19,10 +19,12 @@ import java.util.ArrayList;
 public class CustomeMenuAdapter extends BaseAdapter {
     Context context;
     ArrayList arrayList;
+    int selectedPosition;
 
-    public CustomeMenuAdapter(Context context, ArrayList arrayList){
+    public CustomeMenuAdapter(Context context, ArrayList arrayList,int selectedPosition){
         this.arrayList = arrayList;
         this.context = context;
+        this.selectedPosition = selectedPosition;
     }
     @Override
     public int getCount() {
@@ -52,6 +54,9 @@ public class CustomeMenuAdapter extends BaseAdapter {
         } else{
           holder = (ViewHolder) convertView.getTag();
         }
+       if(selectedPosition == position) {
+           holder.checkedTextView.setChecked(true);
+       }
 
         holder.checkedTextView.setText(arrayList.get(position).toString());
         return convertView;
