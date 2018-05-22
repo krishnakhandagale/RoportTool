@@ -165,7 +165,7 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
 
                     @Override
                     public void onClick(DialogInterface dialogInterface, int position) {
-                        selectedPositionOne =  position;
+                        selectedPositionTwo =  position;
                         txtMenuTwo.setText(sidingList.get(position).toString());
                         dialogInterface.dismiss();
 
@@ -194,7 +194,7 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
 
                     @Override
                     public void onClick(DialogInterface dialogInterface, int position) {
-                        selectedPositionOne =  position;
+                        selectedPositionThree =  position;
                         txtMenuThree.setText(foundationList.get(position).toString());
                         dialogInterface.dismiss();
 
