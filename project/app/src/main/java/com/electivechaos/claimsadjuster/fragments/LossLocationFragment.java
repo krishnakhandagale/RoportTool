@@ -49,10 +49,9 @@ import com.google.android.gms.tasks.Task;
 
 public class LossLocationFragment extends Fragment implements GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks {
 
-    MapView mMapView;
+    private MapView mMapView;
     private GoogleMap googleMap;
     private View  lossLocationParentLayout;
-    //protected static final int REQUEST_CHECK_SETTINGS = 0x1;
 
 
     private PlaceDetectionClient mPlaceDetectionClient;
@@ -68,8 +67,8 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
     private String locationLong = "";
     private String addressLine = "";
 
-    MarkerOptions a = new MarkerOptions().position(new LatLng(50,6));
-    Marker mGoogleMapMarker = null;
+    private MarkerOptions a = new MarkerOptions().position(new LatLng(50,6));
+    private Marker mGoogleMapMarker = null;
 
     @Override
     public void onStart() {
@@ -201,15 +200,22 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
 
             CameraPosition cameraPosition = new CameraPosition.Builder().target(currentLocation).zoom(8).build();
             googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-            googleMap.getUiSettings().setMyLocationButtonEnabled(false);
 
-            googleMap.snapshot(new GoogleMap.SnapshotReadyCallback() {
+            googleMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
                 @Override
-                public void onSnapshotReady(Bitmap bitmap) {
-                    // Save snapshot image here
-                    lossLocationDataInterface.setMapSnapshot(bitmap);
+                public void onMapLoaded() {
+                    googleMap.snapshot(new GoogleMap.SnapshotReadyCallback() {
+                        @Override
+                        public void onSnapshotReady(Bitmap bitmap) {
+                            lossLocationDataInterface.setMapSnapshot(bitmap);
+                            googleMap.setOnMapLoadedCallback(null);
+                        }
+                    });
                 }
             });
+            googleMap.getUiSettings().setMyLocationButtonEnabled(false);
+
+
         }
     };
 
@@ -267,13 +273,20 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
                                 googleMap.getUiSettings().setMyLocationButtonEnabled(false);
                                 likelyPlaces.release();
 
-                                googleMap.snapshot(new GoogleMap.SnapshotReadyCallback() {
+                                googleMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
                                     @Override
-                                    public void onSnapshotReady(Bitmap bitmap) {
-                                        // Save snapshot image here
-                                        lossLocationDataInterface.setMapSnapshot(bitmap);
+                                    public void onMapLoaded() {
+                                        googleMap.snapshot(new GoogleMap.SnapshotReadyCallback() {
+                                            @Override
+                                            public void onSnapshotReady(Bitmap bitmap) {
+                                                lossLocationDataInterface.setMapSnapshot(bitmap);
+                                                googleMap.setOnMapLoadedCallback(null);
+                                            }
+                                        });
                                     }
                                 });
+
+
                             }
                         }
                     }).addOnFailureListener(new OnFailureListener() {
