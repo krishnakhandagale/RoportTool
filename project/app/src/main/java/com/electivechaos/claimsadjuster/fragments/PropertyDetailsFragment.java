@@ -245,8 +245,6 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
         dayFinal = i2;
         txtDate.setText(dayFinal + "/" + monthFinal + "/" + yearFinal);
 
-        Toast.makeText(getContext(), "year:" + year + "month:" + month + "day" + day, Toast.LENGTH_SHORT).show();
-
     }
 
 
