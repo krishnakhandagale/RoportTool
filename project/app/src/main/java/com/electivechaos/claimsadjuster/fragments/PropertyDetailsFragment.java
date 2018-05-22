@@ -35,8 +35,7 @@ import java.util.List;
 public class PropertyDetailsFragment extends Fragment implements DatePickerDialog.OnDateSetListener{
 
         Button pickTime;
-        int day,month,year,hour,minute;
-        int dayFinal,monthFinal,yearFinal;
+        int day,month,year;
         long timeInMilliseconds=0;
 
     private Boolean isFabOpen = false;
@@ -114,9 +113,9 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
             @Override
             public void onClick(View view) {
                 Calendar c=Calendar.getInstance();
-                year=c.get(Calendar.YEAR);
-                month=c.get(Calendar.MONTH);
-                day=c.get(Calendar.DAY_OF_MONTH);
+                year = c.get(Calendar.YEAR);
+                month = c.get(Calendar.MONTH);
+                day = c.get(Calendar.DAY_OF_MONTH);
 
                 DatePickerDialog datePickerDialog=new DatePickerDialog(getContext(),PropertyDetailsFragment.this,year,month,day);
                 datePickerDialog.show();
@@ -196,14 +195,6 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
 
     @Override
     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-        yearFinal=i;
-        monthFinal=i1+1;
-        dayFinal=i2;
-
-        Calendar c=Calendar.getInstance();
-        hour=c.get(Calendar.HOUR_OF_DAY);
-        minute=c.get(Calendar.MINUTE);
-
         Toast.makeText(getContext(),"year:"+year+"month:"+month+"day"+day+"Time:"+timeInMilliseconds,Toast.LENGTH_SHORT).show();
 
     }
