@@ -17,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.electivechaos.claimsadjuster.R;
@@ -35,13 +36,14 @@ import java.util.List;
 public class PropertyDetailsFragment extends Fragment implements DatePickerDialog.OnDateSetListener{
 
         Button pickTime;
-        int day,month,year;
+        int day,month,year,dayFinal,monthFinal,yearFinal;
         long timeInMilliseconds=0;
 
     private Boolean isFabOpen = false;
     private FloatingActionButton showFabBtn,fabGoNextBtn, fabAddLabelBtn, fabGenerateReportBtn, fabSaveReportBtn;
     private Animation fab_open, fab_close;
     private Spinner spinnerMenuOne, spinnerMenuTwo, spinnerMenuThree;
+    private TextView txtDate;
 
     private NextButtonClickListener nextButtonClickListener;
     private DrawerMenuListAdapter.OnLabelAddClickListener onLabelAddClickListener;
@@ -65,6 +67,8 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
         spinnerMenuOne = view.findViewById(R.id.menuOne);
         spinnerMenuTwo = view.findViewById(R.id.menuTwo);
         spinnerMenuThree = view.findViewById(R.id.menuThree);
+        txtDate = view.findViewById(R.id.txtDate);
+
 
         setListOfMenuOne();
         setListOfMenuTwo();
@@ -119,7 +123,6 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
 
                 DatePickerDialog datePickerDialog=new DatePickerDialog(getContext(),PropertyDetailsFragment.this,year,month,day);
                 datePickerDialog.show();
-
 
             }
         });
@@ -195,6 +198,11 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
 
     @Override
     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+        yearFinal=i;
+        monthFinal=i1+1;
+        dayFinal=i2;
+        txtDate.setText(dayFinal+" /"+monthFinal+" /"+yearFinal);
+
         Toast.makeText(getContext(),"year:"+year+"month:"+month+"day"+day+"Time:"+timeInMilliseconds,Toast.LENGTH_SHORT).show();
 
     }

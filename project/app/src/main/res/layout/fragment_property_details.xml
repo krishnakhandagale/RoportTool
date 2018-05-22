@@ -4,13 +4,29 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
-
-    <Button
-        android:id="@+id/btnTime"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/pick_time"
-      />
+        android:orientation="horizontal">
+        <TextView
+            android:layout_gravity="center_vertical"
+            android:id="@+id/txtDate"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:hint="dd/mm/yyyy"
+            android:textAlignment="center"
+            android:textSize="18dp"
+            android:gravity="center_vertical"
+            android:width="150dp"
+           />
+        <Button
+            android:id="@+id/btnTime"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/ic_date_range_black_24dp"
+            />
+    </LinearLayout>
+
 
     <android.support.design.widget.TextInputLayout
         android:layout_marginTop="50dp"
