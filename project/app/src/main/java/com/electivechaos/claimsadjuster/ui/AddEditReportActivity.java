@@ -91,7 +91,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     private ActionBar activityActionBar;
     private View parentLayoutForMessages;
 
-
+    private  Bitmap googleMapSnapshotBitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -513,29 +513,34 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
     @Override
     public void setMapSnapshot(final Bitmap bitmap) {
+        googleMapSnapshotBitmap =  bitmap;
+        boolean result = PermissionUtilities.checkPermission(AddEditReportActivity.this,null,PermissionUtilities.MY_APP_SAVE_SNAPSHOT_PERMISSIONS);
 
-        File destination = new File(Environment.getExternalStorageDirectory(), reportPOJO.getId() + ".png");
-        ImageHelper.grantAppPermission(this, getIntent(), Uri.fromFile(destination));
-        try {
-            final FileOutputStream fileOutputStream = new FileOutputStream(destination,false);
+        if(result){
+            File destination = new File(Environment.getExternalStorageDirectory(), reportPOJO.getId() + ".png");
+            ImageHelper.grantAppPermission(this, getIntent(), Uri.fromFile(destination));
+            try {
+                final FileOutputStream fileOutputStream = new FileOutputStream(destination,false);
 
-            new SingleMediaScanner(this, destination, new OnMediaScannerListener(){
+                new SingleMediaScanner(this, destination, new OnMediaScannerListener(){
 
-                @Override
-                public void onMediaScanComplete(String path, Uri uri) {
-                    if(path != null){
-                        ImageHelper.revokeAppPermission(AddEditReportActivity.this, uri);
-                        bitmap.compress(Bitmap.CompressFormat.PNG, 90, fileOutputStream);
-                        reportPOJO.setgoogleMapSnapShotFilePath(path);
-                        //TODO: Add this in async task
-                        categoryListDBHelper.updateLocationSnapshot(path,reportPOJO.getId());
+                    @Override
+                    public void onMediaScanComplete(String path, Uri uri) {
+                        if(path != null){
+                            ImageHelper.revokeAppPermission(AddEditReportActivity.this, uri);
+                            googleMapSnapshotBitmap.compress(Bitmap.CompressFormat.PNG, 90, fileOutputStream);
+                            reportPOJO.setgoogleMapSnapShotFilePath(path);
+                            categoryListDBHelper.updateLocationSnapshot(path,reportPOJO.getId());
+                        }
+
                     }
-
-                }
-            });
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+                });
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
         }
+
+
     }
 
 
@@ -672,14 +677,14 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
     @Override
     public void onTwoImagesPerPage() {
-        boolean result = PermissionUtilities.checkPermission(AddEditReportActivity.this,null,PermissionUtilities.MY_APP_GENERATE_REPORT_PERMISSIONS);
+        boolean result = PermissionUtilities.checkPermission(AddEditReportActivity.this,null,PermissionUtilities.MY_APP_GENERATE_REPORT_PERMISSIONS_TWO);
         if(result)
             new DBUpdateFilePath(AddEditReportActivity.this,findViewById(R.id.progressBarLayout), reportPOJO, true, categoryListDBHelper).execute(2);
     }
 
     @Override
     public void onFourImagesPerPage() {
-        boolean result = PermissionUtilities.checkPermission(AddEditReportActivity.this,null,PermissionUtilities.MY_APP_GENERATE_REPORT_PERMISSIONS);
+        boolean result = PermissionUtilities.checkPermission(AddEditReportActivity.this,null,PermissionUtilities.MY_APP_GENERATE_REPORT_PERMISSIONS_FOUR);
         if(result)
             new DBUpdateFilePath(AddEditReportActivity.this,findViewById(R.id.progressBarLayout), reportPOJO, true, categoryListDBHelper).execute(4);
     }
@@ -800,12 +805,29 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
-            case PermissionUtilities.MY_APP_GENERATE_REPORT_PERMISSIONS: {
+            case PermissionUtilities.MY_APP_GENERATE_REPORT_PERMISSIONS_FOUR: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    onFourImagesPerPage();
+                } else {
+                    PermissionUtilities.checkPermission(AddEditReportActivity.this, null, PermissionUtilities.MY_APP_GENERATE_REPORT_PERMISSIONS_FOUR);
+                }
+                break;
+            }
+            case PermissionUtilities.MY_APP_GENERATE_REPORT_PERMISSIONS_TWO: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     onTwoImagesPerPage();
                 } else {
-                    PermissionUtilities.checkPermission(AddEditReportActivity.this, null, PermissionUtilities.MY_APP_GENERATE_REPORT_PERMISSIONS);
+                    PermissionUtilities.checkPermission(AddEditReportActivity.this, null, PermissionUtilities.MY_APP_GENERATE_REPORT_PERMISSIONS_TWO);
                 }
+                break;
+            }
+            case PermissionUtilities.MY_APP_SAVE_SNAPSHOT_PERMISSIONS: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    setMapSnapshot(googleMapSnapshotBitmap);
+                } else {
+                    PermissionUtilities.checkPermission(AddEditReportActivity.this, null, PermissionUtilities.MY_APP_SAVE_SNAPSHOT_PERMISSIONS);
+                }
+                break;
             }
         }
     }

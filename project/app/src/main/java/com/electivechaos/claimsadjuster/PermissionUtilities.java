@@ -19,12 +19,17 @@ import android.support.v7.app.AlertDialog;
 public class PermissionUtilities {
     public static final int MY_APP_TAKE_PHOTO_PERMISSIONS = 126;
     public static final int MY_APP_BROWSE_PHOTO_PERMISSIONS = 127;
-    public static final int MY_APP_GENERATE_REPORT_PERMISSIONS = 128;
+    public static final int MY_APP_GENERATE_REPORT_PERMISSIONS_TWO = 128;
+
+
 
     public static final int MY_APP_TAKE_FRONT_PHOTO_PERMISSIONS = 129;
     public static final int MY_APP_TAKE_BACK_PHOTO_PERMISSIONS = 130;
     public static final int MY_APP_TAKE_LEFT_PHOTO_PERMISSIONS = 131;
     public static final int MY_APP_TAKE_RIGHT_PHOTO_PERMISSIONS = 132;
+
+    public static final int MY_APP_GENERATE_REPORT_PERMISSIONS_FOUR = 133;
+    public static final int MY_APP_SAVE_SNAPSHOT_PERMISSIONS = 134;
 
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -85,7 +90,7 @@ public class PermissionUtilities {
             } else {
                 return true;
             }
-        } else if (type == MY_APP_GENERATE_REPORT_PERMISSIONS) {
+        } else if (type == MY_APP_GENERATE_REPORT_PERMISSIONS_TWO) {
             if (currentAPIVersion >= android.os.Build.VERSION_CODES.M) {
                 if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                     if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) context, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
@@ -96,14 +101,69 @@ public class PermissionUtilities {
                         alertBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
                             public void onClick(DialogInterface dialog, int which) {
-                                ActivityCompat.requestPermissions((Activity) context,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_APP_GENERATE_REPORT_PERMISSIONS);
+                                ActivityCompat.requestPermissions((Activity) context,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_APP_GENERATE_REPORT_PERMISSIONS_TWO);
                             }
                         });
                         AlertDialog alert = alertBuilder.create();
                         alert.show();
 
                     } else {
-                        ActivityCompat.requestPermissions((Activity) context,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_APP_GENERATE_REPORT_PERMISSIONS);
+                        ActivityCompat.requestPermissions((Activity) context,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_APP_GENERATE_REPORT_PERMISSIONS_TWO);
+                    }
+                    return false;
+                } else {
+                    return true;
+                }
+            } else {
+                return true;
+            }
+        }
+        else if (type == MY_APP_GENERATE_REPORT_PERMISSIONS_FOUR) {
+            if (currentAPIVersion >= android.os.Build.VERSION_CODES.M) {
+                if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) context, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
+                        alertBuilder.setCancelable(true);
+                        alertBuilder.setTitle("Permission Required");
+                        alertBuilder.setMessage("External storage permission is necessary");
+                        alertBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+                            public void onClick(DialogInterface dialog, int which) {
+                                ActivityCompat.requestPermissions((Activity) context,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_APP_GENERATE_REPORT_PERMISSIONS_FOUR);
+                            }
+                        });
+                        AlertDialog alert = alertBuilder.create();
+                        alert.show();
+
+                    } else {
+                        ActivityCompat.requestPermissions((Activity) context,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_APP_GENERATE_REPORT_PERMISSIONS_FOUR);
+                    }
+                    return false;
+                } else {
+                    return true;
+                }
+            } else {
+                return true;
+            }
+        }else if (type == MY_APP_SAVE_SNAPSHOT_PERMISSIONS) {
+            if (currentAPIVersion >= android.os.Build.VERSION_CODES.M) {
+                if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) context, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
+                        alertBuilder.setCancelable(true);
+                        alertBuilder.setTitle("Permission Required");
+                        alertBuilder.setMessage("External storage permission is necessary");
+                        alertBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+                            public void onClick(DialogInterface dialog, int which) {
+                                ActivityCompat.requestPermissions((Activity) context,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_APP_SAVE_SNAPSHOT_PERMISSIONS);
+                            }
+                        });
+                        AlertDialog alert = alertBuilder.create();
+                        alert.show();
+
+                    } else {
+                        ActivityCompat.requestPermissions((Activity) context,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_APP_SAVE_SNAPSHOT_PERMISSIONS);
                     }
                     return false;
                 } else {
