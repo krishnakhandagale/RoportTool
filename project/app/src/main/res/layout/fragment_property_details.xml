@@ -1,9 +1,9 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="5dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <LinearLayout
-        android:padding="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -52,23 +52,21 @@
     </android.support.design.widget.TextInputLayout>
 
     <Spinner
+
         android:id="@+id/menuOne"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="110dp"
-        />
+        android:layout_marginTop="110dp" />
     <Spinner
         android:id="@+id/menuTwo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="160dp"
-        />
+        android:layout_marginTop="160dp" />
     <Spinner
         android:id="@+id/menuThree"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="210dp"
-        />
+        android:layout_marginTop="210dp" />
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabGenerateReport"
         android:layout_width="wrap_content"
@@ -79,7 +77,8 @@
         android:visibility="invisible"
         app:elevation="6dp"
         app:pressedTranslationZ="12dp"
-        android:src="@drawable/pdf_gen" />
+        android:src="@drawable/pdf_gen"
+        android:layout_marginEnd="130dp" />
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabAddLabel"
         android:layout_width="wrap_content"
@@ -118,6 +117,7 @@
         android:src="@drawable/next_arrow_white"
         android:layout_marginEnd="@dimen/fab_margin" />
     <android.support.design.widget.FloatingActionButton
+        android:tooltipText="Menu"
         android:id="@+id/showFab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
