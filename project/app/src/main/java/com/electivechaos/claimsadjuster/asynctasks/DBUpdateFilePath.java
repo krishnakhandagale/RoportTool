@@ -81,7 +81,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
         // If report already exists , delete it
         if(!reportPOJO.getFilePath().trim().isEmpty()){
             File file = new File(reportPOJO.getFilePath());
-            if (file != null && file.exists()) {
+            if (file.exists()) {
                 file.delete();
             }
         }
@@ -124,12 +124,18 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
             document.add(new Paragraph("Address", fontTitles));
             document.add(new Paragraph(reportPOJO.getAddressLine()));
 
+            if(!reportPOJO.getgoogleMapSnapShotFilePath().isEmpty()){
 
-            double remainingHeight = Math.abs(document.bottom() -  pdfWriter.getVerticalPosition(true));
+                File file = new File(reportPOJO.getgoogleMapSnapShotFilePath());
+                if (file.exists()) {
+                    double remainingHeight = Math.abs(document.bottom() -  pdfWriter.getVerticalPosition(true));
+                    byte[] imgResized = resizeImage(reportPOJO.getgoogleMapSnapShotFilePath(), (int) document.getPageSize().getWidth(), (int) remainingHeight);
+                    com.itextpdf.text.Image imgMap = com.itextpdf.text.Image.getInstance(imgResized);
+                    document.add(imgMap);
 
-            byte[] imgResized = resizeImage(reportPOJO.getgoogleMapSnapShotFilePath(), (int) document.getPageSize().getWidth(), (int) remainingHeight);
-            com.itextpdf.text.Image imgMap = com.itextpdf.text.Image.getInstance(imgResized);
-            document.add(imgMap);
+                }
+
+            }
 
             document.newPage();
 
