@@ -2,7 +2,6 @@ package com.electivechaos.claimsadjuster.fragments;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -26,11 +25,8 @@ import com.electivechaos.claimsadjuster.interfaces.NextButtonClickListener;
 import com.electivechaos.claimsadjuster.interfaces.OnGenerateReportClickListener;
 import com.electivechaos.claimsadjuster.interfaces.OnSaveReportClickListener;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 public class PropertyDetailsFragment extends Fragment implements DatePickerDialog.OnDateSetListener {
@@ -130,41 +126,30 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
     }
 
     public void setListOfMenuOne() {
-        List<String> list1 = new ArrayList<>();
-        list1.add("Menu One");
-        list1.add("list 1");
-        list1.add("list 2");
-        list1.add("list 3");
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(),
-                android.R.layout.simple_spinner_item, list1);
 
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        String[] list1=new String[]{"list1","list2"};
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(),
+                R.layout.spinner_layout,list1);
+
+        dataAdapter.setDropDownViewResource(R.layout.spinner_layout);
         spinnerMenuOne.setAdapter(dataAdapter);
     }
 
     public void setListOfMenuTwo() {
-        List<String> list1 = new ArrayList<>();
-        list1.add("Menu Two");
-        list1.add("list 1");
-        list1.add("list 2");
-        list1.add("list 3");
+        String[] list2=new String[]{"list1","list2"};
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(),
-                android.R.layout.simple_spinner_item, list1);
+                R.layout.spinner_layout,list2);
 
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        dataAdapter.setDropDownViewResource(R.layout.spinner_layout);
         spinnerMenuTwo.setAdapter(dataAdapter);
     }
 
     public void setListOfMenuThree() {
-        List<String> list1 = new ArrayList<>();
-        list1.add("Menu Three");
-        list1.add("list 1");
-        list1.add("list 2");
-        list1.add("list 3");
+        String[] list3=new String[]{"list1","list2"};
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(),
-                android.R.layout.simple_spinner_item, list1);
+                R.layout.spinner_layout,list3);
 
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        dataAdapter.setDropDownViewResource(R.layout.spinner_layout);
         spinnerMenuThree.setAdapter(dataAdapter);
     }
 
