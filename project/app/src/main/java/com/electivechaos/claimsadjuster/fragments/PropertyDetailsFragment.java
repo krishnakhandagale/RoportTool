@@ -25,17 +25,14 @@ import com.electivechaos.claimsadjuster.interfaces.NextButtonClickListener;
 import com.electivechaos.claimsadjuster.interfaces.OnGenerateReportClickListener;
 import com.electivechaos.claimsadjuster.interfaces.OnSaveReportClickListener;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 public class PropertyDetailsFragment extends Fragment implements DatePickerDialog.OnDateSetListener {
 
-    Button pickTime;
-    int day, month, year, dayFinal, monthFinal, yearFinal;
-    long timeInMilliseconds = 0;
+    private Button pickTime;
+    private int day, month, year, dayFinal, monthFinal, yearFinal;
 
-    private Boolean isFabOpen = false;
+    private boolean isFabOpen = false;
     private FloatingActionButton showFabBtn, fabGoNextBtn, fabAddLabelBtn, fabGenerateReportBtn, fabSaveReportBtn;
     private Animation fab_open, fab_close;
     private Spinner spinnerMenuOne, spinnerMenuTwo, spinnerMenuThree;

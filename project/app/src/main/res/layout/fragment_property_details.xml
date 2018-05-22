@@ -53,17 +53,19 @@
     </android.support.design.widget.TextInputLayout>
 
     <Spinner
-
+        android:overlapAnchor="false"
         android:id="@+id/menuOne"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="110dp" />
     <Spinner
+        android:overlapAnchor="false"
         android:id="@+id/menuTwo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="160dp" />
     <Spinner
+        android:overlapAnchor="false"
         android:id="@+id/menuThree"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
