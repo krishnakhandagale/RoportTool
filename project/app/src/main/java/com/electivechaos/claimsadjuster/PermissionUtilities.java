@@ -96,14 +96,14 @@ public class PermissionUtilities {
                         alertBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
                             public void onClick(DialogInterface dialog, int which) {
-                                fragment.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_APP_GENERATE_REPORT_PERMISSIONS);
+                                ActivityCompat.requestPermissions((Activity) context,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_APP_GENERATE_REPORT_PERMISSIONS);
                             }
                         });
                         AlertDialog alert = alertBuilder.create();
                         alert.show();
 
                     } else {
-                        fragment.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_APP_GENERATE_REPORT_PERMISSIONS);
+                        ActivityCompat.requestPermissions((Activity) context,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_APP_GENERATE_REPORT_PERMISSIONS);
                     }
                     return false;
                 } else {
