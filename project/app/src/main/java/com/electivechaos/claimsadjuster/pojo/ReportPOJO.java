@@ -21,6 +21,7 @@ public class ReportPOJO  implements Parcelable{
     private String googleMapSnapShotFilePath;
 
     public ArrayList labelArrayList;
+    private PropertyDetailsPOJO propertyDetailsPOJO;
 
     public ReportPOJO(){
 
@@ -37,6 +38,15 @@ public class ReportPOJO  implements Parcelable{
         addressLine = "";
         googleMapSnapShotFilePath = "";
         labelArrayList = new ArrayList<>();
+        propertyDetailsPOJO = new PropertyDetailsPOJO();
+    }
+
+    public PropertyDetailsPOJO getPropertyDetailsPOJO() {
+        return propertyDetailsPOJO;
+    }
+
+    public void setPropertyDetailsPOJO(PropertyDetailsPOJO propertyDetailsPOJO) {
+        this.propertyDetailsPOJO = propertyDetailsPOJO;
     }
 
     protected ReportPOJO(Parcel in) {
@@ -47,6 +57,7 @@ public class ReportPOJO  implements Parcelable{
         clientName = in.readString();
         claimNumber = in.readString();
         locationLat = in.readString();
+
         locationLong = in.readString();
         addressLine = in.readString();
         createdDate = in.readString();
@@ -55,6 +66,7 @@ public class ReportPOJO  implements Parcelable{
         filePath = in.readString();
         googleMapSnapShotFilePath = in.readString();
         labelArrayList = in.createTypedArrayList(Label.CREATOR);
+        propertyDetailsPOJO = in.readParcelable(null);
     }
 
 
@@ -194,6 +206,7 @@ public class ReportPOJO  implements Parcelable{
         dest.writeString(filePath);
         dest.writeString(googleMapSnapShotFilePath);
         dest.writeTypedList(labelArrayList);
+        dest.writeParcelable(propertyDetailsPOJO , flags);
     }
 
     public String getGoogleMapSnapShotFilePath() {

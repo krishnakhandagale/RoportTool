@@ -24,7 +24,7 @@ import java.util.Iterator;
  */
 
 public class CategoryListDBHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 79;
+    private static final int DATABASE_VERSION = 81;
 
 
     // Database Name
@@ -94,7 +94,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
 
 
     //Property details table columns name
-    private static final String KEY_PROPERTY_DATE = "property_details";
+    private static final String KEY_PROPERTY_DATE = "property_date";
     private static final String KEY_SQUARE_FOOTAGE = "square_footage";
     private static final String KEY_ROOF_SYSTEM = "roof_system";
     private static final String KEY_SIDING = "siding";
@@ -422,7 +422,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 }
             }
 
-            PropertyDetailsPOJO propertyDetailsPOJO = new PropertyDetailsPOJO();
+            PropertyDetailsPOJO propertyDetailsPOJO =reportItemPOJO.getPropertyDetailsPOJO();
             ContentValues propertyEntry = new ContentValues();
             propertyEntry.put(KEY_PROPERTY_DATE, propertyDetailsPOJO.getPropertyDate());
             propertyEntry.put(KEY_SQUARE_FOOTAGE, propertyDetailsPOJO.getSquareFootage());
@@ -509,6 +509,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
             }while (cProperty.moveToNext());
         }
 
+        reportPOJO.setPropertyDetailsPOJO(propertyPOJO);
 
         Cursor cLabelList = db.rawQuery("SELECT * FROM category_label WHERE report_id_fk = '"+id+"'", null);
         ArrayList<Label> labelList=new ArrayList<>();
@@ -601,7 +602,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         db.execSQL("UPDATE property_details SET property_date='"+value+"' WHERE report_id_fk='"+reportId+"'");
     }
 
-    public void updateSquareFootage(String value, String reportId) {
+    public void updateSquareFootage(double value, String reportId) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("UPDATE property_details SET square_footage='"+value+"' WHERE report_id_fk='"+reportId+"'");
     }

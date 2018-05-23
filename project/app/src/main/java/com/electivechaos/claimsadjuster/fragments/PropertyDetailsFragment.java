@@ -30,6 +30,7 @@ import com.electivechaos.claimsadjuster.interfaces.NextButtonClickListener;
 import com.electivechaos.claimsadjuster.interfaces.OnGenerateReportClickListener;
 import com.electivechaos.claimsadjuster.interfaces.OnPropertyDetailsClickListener;
 import com.electivechaos.claimsadjuster.interfaces.OnSaveReportClickListener;
+import com.electivechaos.claimsadjuster.pojo.PropertyDetailsPOJO;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -56,6 +57,14 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
 
     private EditText squareFootage;
 
+    private PropertyDetailsPOJO propertyDetailsPOJO;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        propertyDetailsPOJO = getArguments() != null ? (PropertyDetailsPOJO) getArguments().getParcelable("propertyDetails") : new PropertyDetailsPOJO();
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -76,7 +85,7 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
         menuSiding = view.findViewById(R.id.menuTwo);
         menuFoundation = view.findViewById(R.id.menuThree);
 
-
+        txtDate.setText(propertyDetailsPOJO.getPropertyDate().toString());
 
 
         fabGoNextBtn.setOnClickListener(new View.OnClickListener() {

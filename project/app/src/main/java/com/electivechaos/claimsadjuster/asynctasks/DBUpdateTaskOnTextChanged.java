@@ -70,7 +70,7 @@ public class DBUpdateTaskOnTextChanged extends AsyncTask<String,Void,Void> {
             categoryListDBHelper.updatePropertyDate(value, reportId);
         }
         else if(type.equalsIgnoreCase("squareFootage")){
-            categoryListDBHelper.updateSquareFootage(value, reportId);
+            categoryListDBHelper.updateSquareFootage(Double.parseDouble(value), reportId);
         }
         else if(type.equalsIgnoreCase("roofSystem")){
             categoryListDBHelper.updateRoofSystem(value, reportId);

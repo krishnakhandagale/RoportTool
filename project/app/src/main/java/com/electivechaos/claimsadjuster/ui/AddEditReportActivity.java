@@ -170,15 +170,9 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
 
                 } else if (parentMenuItems.get(groupPosition).equals("Property Details")) {
-                    mDrawerLayout.closeDrawer(Gravity.LEFT);
-                    FragmentManager transactionManager = getSupportFragmentManager();
-                    FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.content_frame, new PropertyDetailsFragment());
-                    fragmentTransaction.commit();
-                    tabName = "PropertyDetailsFragment";
 
-                    selectedFragmentPosition = 1;
-                    activityActionBar.setTitle("Property Details");
+                    mDrawerLayout.closeDrawer(Gravity.LEFT);
+                    putPropertyDetails();
                     actionBarEditBtn.setVisible(false);
 
                 }
@@ -260,6 +254,23 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         activityActionBar.setTitle("Claim Details");
     }
 
+    private void putPropertyDetails(){
+        FragmentManager transactionManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
+
+        PropertyDetailsFragment propertyDetailsFragment=new PropertyDetailsFragment();
+        Bundle propertyDetailsData = new Bundle();
+
+        propertyDetailsData.putParcelable("propertyDetails",reportPOJO.getPropertyDetailsPOJO());
+        propertyDetailsFragment.setArguments(propertyDetailsData);
+
+        fragmentTransaction.replace(R.id.content_frame, propertyDetailsFragment);
+        fragmentTransaction.commit();
+        tabName = "PropertyDetailsFragment";
+
+        selectedFragmentPosition = 1;
+        activityActionBar.setTitle("Property Details");
+    }
 
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
@@ -463,14 +474,12 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
     @Override
     public void setReportTitle(String reportTitle) {
-
         new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout,reportTitle,reportPOJO.getId(),false,categoryListDBHelper,"title").execute();
         reportPOJO.setReportTitle(reportTitle);
     }
 
     @Override
     public void setReportDescription(String reportDescription) {
-
         reportPOJO.setReportDescription(reportDescription);
         new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout,reportDescription,reportPOJO.getId(),false,categoryListDBHelper,"description").execute();
     }
@@ -697,27 +706,33 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
     @Override
     public void setPropertyDate(String propertyDate) {
+        reportPOJO.getPropertyDetailsPOJO().setPropertyDate(propertyDate);
         new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, propertyDate,reportPOJO.getId(),false,categoryListDBHelper,"propertyDate").execute();
 
     }
 
     @Override
     public void setPropertySquareFootage(double squareFootage) {
-
+        reportPOJO.getPropertyDetailsPOJO().setSquareFootage(squareFootage);
+        new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, String.valueOf(squareFootage),reportPOJO.getId(),false,categoryListDBHelper,"squareFootage").execute();
     }
 
     @Override
     public void setPropertyRoofSystem(String roofSystem) {
-
+        reportPOJO.getPropertyDetailsPOJO().setRoofSystem(roofSystem);
+        new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, roofSystem, reportPOJO.getId(),false,categoryListDBHelper,"roofSystem").execute();
     }
 
     @Override
     public void setPropertySiding(String siding) {
-
+        reportPOJO.getPropertyDetailsPOJO().setSiding(siding);
+        new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, siding, reportPOJO.getId(),false,categoryListDBHelper,"siding").execute();
     }
 
     @Override
     public void setPropertyFoundation(String foundation) {
+        reportPOJO.getPropertyDetailsPOJO().setFoundation(foundation);
+        new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, foundation, reportPOJO.getId(),false,categoryListDBHelper,"foundation").execute();
 
     }
 
