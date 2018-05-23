@@ -23,7 +23,7 @@ public class ReportPOJO  implements Parcelable{
     private ArrayList<Label> labelArrayList;
 
     public ReportPOJO(){
-        id= "";
+        id = "";
         reportTitle = "";
         reportDescription = "";
         clientName = "";
@@ -51,6 +51,7 @@ public class ReportPOJO  implements Parcelable{
         filePath = in.readString();
         causeOfLoss = in.readString();
         googleMapSnapShotFilePath = in.readString();
+        in.readList(labelArrayList, null);
     }
 
     public static final Creator<ReportPOJO> CREATOR = new Creator<ReportPOJO>() {
@@ -175,11 +176,20 @@ public class ReportPOJO  implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeList(labelArrayList);
         dest.writeString(id);
         dest.writeString(reportTitle);
-        dest.writeString(reportTitle);
-        dest.writeString(reportTitle);
+        dest.writeString(reportDescription);
+        dest.writeString(clientName);
+        dest.writeString(claimNumber);
+        dest.writeString(locationLat);
+        dest.writeString(locationLong);
+        dest.writeString(addressLine);
+        dest.writeString(createdDate);
+        dest.writeString(filePath);
+        dest.writeString(causeOfLoss);
+        dest.writeString(filePath);
+        dest.writeString(googleMapSnapShotFilePath);
+        dest.writeList(labelArrayList);
     }
 
     public String getGoogleMapSnapShotFilePath() {

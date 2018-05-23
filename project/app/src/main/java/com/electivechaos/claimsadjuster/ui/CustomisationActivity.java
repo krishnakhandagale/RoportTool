@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import com.electivechaos.claimsadjuster.R;
 import com.electivechaos.claimsadjuster.pojo.Label;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class CustomisationActivity extends AppCompatActivity {
 
@@ -31,13 +33,35 @@ public class CustomisationActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        ArrayList<Label> labels = new ArrayList<>();
+        final ArrayList<Label> labels = new ArrayList<>();
         labels.add(new Label());
         labels.add(new Label());
         labels.add(new Label());
 
-        Adapter adapter = new Adapter(this,labels);
+        final Adapter adapter = new Adapter(this,labels);
         recyclerView.setAdapter(adapter);
+
+
+        ItemTouchHelper.Callback ithCallback = new ItemTouchHelper.Callback() {
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                Collections.swap(labels, viewHolder.getAdapterPosition(), target.getAdapterPosition());
+//                selectedImagesDataInterface.setSelectedImages(selectedImageList,labelPosition);
+                adapter.notifyItemMoved(viewHolder.getAdapterPosition(), target.getAdapterPosition());
+                return true;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+            }
+
+            @Override
+            public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+                return makeFlag(ItemTouchHelper.ACTION_STATE_DRAG,
+                        ItemTouchHelper.DOWN | ItemTouchHelper.UP | ItemTouchHelper.START | ItemTouchHelper.END);
+            }
+        };
+        ItemTouchHelper ith = new ItemTouchHelper(ithCallback);
+        ith.attachToRecyclerView(recyclerView);
 
 
     }
@@ -62,7 +86,8 @@ public class CustomisationActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            holder.label.setText(labelArrayList.get(position).getName());
+            holder.label.setText("Krishna" + position);
+
         }
 
         @Override
