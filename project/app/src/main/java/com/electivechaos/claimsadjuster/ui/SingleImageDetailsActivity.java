@@ -36,7 +36,7 @@ public class SingleImageDetailsActivity extends BaseActivity {
 
 
 
-        imageDetails = (ImageDetailsPOJO) getIntent().getExtras().getSerializable("image_details");
+        imageDetails = getIntent().getExtras().getParcelable("image_details");
         isEdit = getIntent().getExtras().getBoolean("isEdit", false);
         position = getIntent().getExtras().getInt("position", -1);
 

@@ -662,7 +662,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                 selectedImagesDataInterface.setSelectedImages(selectedImageList,labelPosition);
 
             } else if (requestCode == SET_CLICKED_IMAGE_DETAILS) {
-                ImageDetailsPOJO imageDetails = (ImageDetailsPOJO) data.getExtras().getSerializable("image_entered_details");
+                ImageDetailsPOJO imageDetails = data.getExtras().getParcelable("image_entered_details");
 
                 if (data.getExtras().getBoolean("isEdit")) {
                     int position = data.getExtras().getInt("position");

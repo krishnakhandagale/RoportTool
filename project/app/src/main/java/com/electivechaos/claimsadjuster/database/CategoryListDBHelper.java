@@ -24,7 +24,7 @@ import java.util.Iterator;
  */
 
 public class CategoryListDBHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 75;
+    private static final int DATABASE_VERSION = 79;
 
 
     // Database Name
@@ -184,6 +184,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 + KEY_ROOF_SYSTEM+ " TEXT,"
                 + KEY_SIDING+ " TEXT,"
                 + KEY_FOUNDATION+ " TEXT,"
+                + KEY_FK_PROPERTY_REPORT_ID+ " TEXT,"
                 + "FOREIGN KEY("+ KEY_FK_PROPERTY_REPORT_ID +") REFERENCES "+TABLE_REPORTS_LIST+"("+ KEY_REPORT_ID +")"+ " ON DELETE CASCADE)";
 
 
@@ -498,12 +499,12 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
 
         if (cProperty.moveToFirst()) {
             do {
-                propertyPOJO.setPropertyDate(c.getString(0));
-                propertyPOJO.setSquareFootage(c.getDouble(1));
-                propertyPOJO.setRoofSystem(c.getString(2));
-                propertyPOJO.setSiding(c.getString(3));
-                propertyPOJO.setFoundation(c.getString(4));
-                propertyPOJO.setReportId(c.getString(5));
+                propertyPOJO.setPropertyDate(cProperty.getString(0));
+                propertyPOJO.setSquareFootage(cProperty.getDouble(1));
+                propertyPOJO.setRoofSystem(cProperty.getString(2));
+                propertyPOJO.setSiding(cProperty.getString(3));
+                propertyPOJO.setFoundation(cProperty.getString(4));
+                propertyPOJO.setReportId(cProperty.getString(5));
 
             }while (cProperty.moveToNext());
         }

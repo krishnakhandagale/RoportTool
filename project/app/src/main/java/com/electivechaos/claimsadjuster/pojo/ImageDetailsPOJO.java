@@ -3,8 +3,6 @@ package com.electivechaos.claimsadjuster.pojo;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.io.Serializable;
-
 /**
  * Created by nafeea on 4/24/18.
  */
