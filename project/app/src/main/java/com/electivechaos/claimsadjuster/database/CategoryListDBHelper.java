@@ -11,6 +11,7 @@ import com.electivechaos.claimsadjuster.pojo.Category;
 import com.electivechaos.claimsadjuster.pojo.CauseOfLoss;
 import com.electivechaos.claimsadjuster.pojo.ImageDetailsPOJO;
 import com.electivechaos.claimsadjuster.pojo.Label;
+import com.electivechaos.claimsadjuster.pojo.PropertyDetailsPOJO;
 import com.electivechaos.claimsadjuster.pojo.ReportItemPOJO;
 import com.electivechaos.claimsadjuster.pojo.ReportPOJO;
 import com.electivechaos.claimsadjuster.utils.CommonUtils;
@@ -36,6 +37,8 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
     private static final String TABLE_CAUSE_OF_LOSS = "cause_of_loss";
     private static final String TABLE_REPORTS_IMAGE_DETAILS = "report_image_details";
     private static final String TABLE_REPORTS_ELEVATION_IMAGE_DETAILS = "report_elevation_image_details";
+    private static final String TABLE_PROPERTY_DETAILS = "property_details";
+
 
 
 
@@ -83,11 +86,20 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
 
 
     //Elevation image table columns name
-    private static final String KEY_ELEVATION_IMAGE_ID="elevation_image_id";
+    private static final String KEY_ELEVATION_IMAGE_ID = "elevation_image_id";
     private static final String KEY_CAUSE_OF_LOSS_ID = "_id";
     private static final String KEY_CAUSE_OF_LOSS_NAME = "name";
     private static final String KEY_CAUSE_OF_LOSS_DESCRIPTION = "description";
     private static final String KEY_FK_LABEL_ID = "label_id_fk";
+
+
+    //Property details table columns name
+    private static final String KEY_PROPERTY_DATE = "property_details";
+    private static final String KEY_SQUARE_FOOTAGE = "square_footage";
+    private static final String KEY_ROOF_SYSTEM = "roof_system";
+    private static final String KEY_SIDING = "siding";
+    private static final String KEY_FOUNDATION = "foundation";
+    private static final String KEY_FK_PROPERTY_REPORT_ID = "report_id_fk";
 
     private static CategoryListDBHelper categoryListDBHelperInstance;
 
@@ -164,7 +176,16 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 + KEY_IMAGE_URL+ " TEXT,"
                 + KEY_FK_LABEL_ID+ " TEXT,"
 
-                + "FOREIGN KEY("+ KEY_FK_LABEL_ID +") REFERENCES "+TABLE_CATEGORY_LABELS+"("+KEY_LABEL_ID+ ")"+ " ON DELETE CASCADE )";;
+                + "FOREIGN KEY("+ KEY_FK_LABEL_ID +") REFERENCES "+TABLE_CATEGORY_LABELS+"("+KEY_LABEL_ID+ ")"+ " ON DELETE CASCADE )";
+
+        String CREATE_PROPERTY_DETAILS_TABLE = "CREATE TABLE " + TABLE_PROPERTY_DETAILS + "("
+                + KEY_PROPERTY_DATE + " TEXT,"
+                + KEY_SQUARE_FOOTAGE+ " DOUBLE,"
+                + KEY_ROOF_SYSTEM+ " TEXT,"
+                + KEY_SIDING+ " TEXT,"
+                + KEY_FOUNDATION+ " TEXT,"
+                + "FOREIGN KEY("+ KEY_FK_PROPERTY_REPORT_ID +") REFERENCES "+TABLE_REPORTS_LIST+"("+ KEY_REPORT_ID +")"+ " ON DELETE CASCADE)";
+
 
 
         final String categories[] = {
@@ -197,7 +218,9 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_IMAGE_DETAILS_TABLE);
         db.execSQL(CREATE_ELEVATION_IMAGE_DETAILS_TABLE);
 
+        db.execSQL(CREATE_PROPERTY_DETAILS_TABLE);
         db.execSQL(CATEGORY_LABELS_TABLE);
+
 
 
 
@@ -219,6 +242,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CAUSE_OF_LOSS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_REPORTS_ELEVATION_IMAGE_DETAILS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_REPORTS_IMAGE_DETAILS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PROPERTY_DETAILS);
         onCreate(db);
     }
 
@@ -397,6 +421,17 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 }
             }
 
+            PropertyDetailsPOJO propertyDetailsPOJO = new PropertyDetailsPOJO();
+            ContentValues propertyEntry = new ContentValues();
+            propertyEntry.put(KEY_PROPERTY_DATE, propertyDetailsPOJO.getPropertyDate());
+            propertyEntry.put(KEY_SQUARE_FOOTAGE, propertyDetailsPOJO.getSquareFootage());
+            propertyEntry.put(KEY_ROOF_SYSTEM, propertyDetailsPOJO.getRoofSystem());
+            propertyEntry.put(KEY_SIDING, propertyDetailsPOJO.getSiding());
+            propertyEntry.put(KEY_FOUNDATION, propertyDetailsPOJO.getFoundation());
+            propertyEntry.put(KEY_FK_PROPERTY_REPORT_ID, reportId);
+            db.insert(TABLE_PROPERTY_DETAILS, null, propertyEntry);
+
+
         }
     }
 
@@ -457,6 +492,22 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 reportPOJO.setGoogleMapSnapShotFilePath(c.getString(11));
             }while (c.moveToNext());
         }
+
+        Cursor cProperty = db.rawQuery("SELECT * FROM property_details WHERE report_id_fk= '"+id+"'", null);
+        PropertyDetailsPOJO propertyPOJO = new PropertyDetailsPOJO();
+
+        if (cProperty.moveToFirst()) {
+            do {
+                propertyPOJO.setPropertyDate(c.getString(0));
+                propertyPOJO.setSquareFootage(c.getDouble(1));
+                propertyPOJO.setRoofSystem(c.getString(2));
+                propertyPOJO.setSiding(c.getString(3));
+                propertyPOJO.setFoundation(c.getString(4));
+                propertyPOJO.setReportId(c.getString(5));
+
+            }while (cProperty.moveToNext());
+        }
+
 
         Cursor cLabelList = db.rawQuery("SELECT * FROM category_label WHERE report_id_fk = '"+id+"'", null);
         ArrayList<Label> labelList=new ArrayList<>();

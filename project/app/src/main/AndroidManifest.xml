@@ -40,22 +40,19 @@
 
         </activity>
         <activity android:name=".ui.MainTabsActivity">
-
+            <intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
         </activity>
         <activity android:name=".ui.ImagePickerActivity" />
         <activity android:name=".ui.SingleImageDetailsActivity"   android:windowSoftInputMode="adjustPan" />
         <activity android:name=".ui.AddEditCategoryActivity"   android:windowSoftInputMode="adjustPan" />
         <activity android:name=".ui.ImageSliderActivity"   android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".ui.AddEditCauseOfLossActivity"   android:windowSoftInputMode="adjustPan"/>
-        <activity android:name=".ui.SplashScreenActivity">
-        </activity>
-        <activity android:name=".ui.CustomisationActivity">
-            <intent-filter>
-                <category android:name="android.intent.category.LAUNCHER" />
+        <activity android:name=".ui.SplashScreenActivity"/>
+        <activity android:name=".ui.CustomisationActivity"/>
 
-                <action android:name="android.intent.action.MAIN" />
-            </intent-filter>
-        </activity>
     </application>
 
 </manifest>
