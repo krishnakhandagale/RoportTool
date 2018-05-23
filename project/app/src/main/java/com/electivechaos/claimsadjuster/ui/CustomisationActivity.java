@@ -1,6 +1,7 @@
 package com.electivechaos.claimsadjuster.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -8,11 +9,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.electivechaos.claimsadjuster.R;
@@ -23,14 +26,31 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class CustomisationActivity extends AppCompatActivity {
-
+    ReportPOJO reportPOJO = null;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.customise_report_activity);
 
-        final ReportPOJO reportPOJO = getIntent().getParcelableExtra("reportDetails");
+        reportPOJO = getIntent().getParcelableExtra("reportDetails");
+
+        Toolbar toolbar =  findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
         RecyclerView recyclerView = findViewById(R.id.customLabelPositionView);
+        ImageButton button = findViewById(R.id.doneBtn);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.putExtra("modified_report", reportPOJO);
+                setResult(RESULT_OK,intent);
+                finish();
+            }
+        });
+
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -102,5 +122,15 @@ public class CustomisationActivity extends AppCompatActivity {
         }
     }
 
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Intent intent = new Intent();
+                setResult(RESULT_CANCELED,intent);
+                finish();
+                return true;
+        }
+        return  true;
+    }
 }

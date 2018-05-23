@@ -682,6 +682,10 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     public void onReportGenerateClicked() {
         boolean isValid = validateData();
         if(isValid){
+//            Intent i  = new Intent(AddEditReportActivity.this, CustomisationActivity.class);
+//            i.putExtra("reportDetails", reportPOJO);
+//            startActivityForResult(i, 555);
+
             showReportPreferenceDialog(this);
         }
     }
@@ -690,18 +694,16 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     public void onTwoImagesPerPage() {
         boolean result = PermissionUtilities.checkPermission(AddEditReportActivity.this,null,PermissionUtilities.MY_APP_GENERATE_REPORT_PERMISSIONS_TWO);
 
-        Intent i  = new Intent(AddEditReportActivity.this, CustomisationActivity.class);
-        i.putExtra("reportDetails", reportPOJO);
-        startActivity(i);
-//        if(result)
-//            new DBUpdateFilePath(AddEditReportActivity.this,findViewById(R.id.progressBarLayout), reportPOJO, true, categoryListDBHelper).execute(2);
+
+        if(result)
+            new DBUpdateFilePath(AddEditReportActivity.this,findViewById(R.id.progressBarLayout), reportPOJO, true, categoryListDBHelper).execute(2);
     }
 
     @Override
     public void onFourImagesPerPage() {
         boolean result = PermissionUtilities.checkPermission(AddEditReportActivity.this,null,PermissionUtilities.MY_APP_GENERATE_REPORT_PERMISSIONS_FOUR);
-//        if(result)
-//            new DBUpdateFilePath(AddEditReportActivity.this,findViewById(R.id.progressBarLayout), reportPOJO, true, categoryListDBHelper).execute(4);
+        if(result)
+            new DBUpdateFilePath(AddEditReportActivity.this,findViewById(R.id.progressBarLayout), reportPOJO, true, categoryListDBHelper).execute(4);
     }
 
     @Override
@@ -878,4 +880,16 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
             }
         }
     }
+
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//       if (resultCode == RESULT_OK){
+//           switch (requestCode){
+//               case 555:
+//                  ReportPOJO reportPOJO  =  data.getParcelableExtra("modified_report");
+//
+//                   break;
+//           }
+//       }
+//    }
 }

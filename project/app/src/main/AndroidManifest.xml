@@ -57,9 +57,7 @@
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.CustomisationActivity">
-
-        </activity>
+        <activity android:name=".ui.CustomisationActivity" android:windowSoftInputMode="adjustPan"/>
     </application>
 
 </manifest>
