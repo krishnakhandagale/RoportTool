@@ -529,7 +529,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                         if(path != null){
                             ImageHelper.revokeAppPermission(AddEditReportActivity.this, uri);
                             googleMapSnapshotBitmap.compress(Bitmap.CompressFormat.PNG, 90, fileOutputStream);
-                            reportPOJO.setgoogleMapSnapShotFilePath(path);
+                            reportPOJO.setGoogleMapSnapShotFilePath(path);
                             categoryListDBHelper.updateLocationSnapshot(path,reportPOJO.getId());
                         }
 

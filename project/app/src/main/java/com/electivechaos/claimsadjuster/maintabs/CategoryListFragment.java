@@ -48,6 +48,9 @@ public class CategoryListFragment  extends Fragment {
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
         mCategoryListDBHelper = CategoryListDBHelper.getInstance(getActivity());
         getCategoryList();
 
@@ -98,9 +101,6 @@ public class CategoryListFragment  extends Fragment {
     private  void getCategoryList(){
         categoryList = mCategoryListDBHelper.getCategoryList();
         mAdapter = new CategoriesAdapter(categoryList, getContext());
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
     }
 

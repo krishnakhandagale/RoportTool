@@ -182,11 +182,11 @@ public class ReportPOJO  implements Parcelable{
         dest.writeString(reportTitle);
     }
 
-    public String getgoogleMapSnapShotFilePath() {
+    public String getGoogleMapSnapShotFilePath() {
         return googleMapSnapShotFilePath;
     }
 
-    public void setgoogleMapSnapShotFilePath(String googleMapSnapShotFilePath) {
+    public void setGoogleMapSnapShotFilePath(String googleMapSnapShotFilePath) {
         this.googleMapSnapShotFilePath = googleMapSnapShotFilePath;
     }
 }
