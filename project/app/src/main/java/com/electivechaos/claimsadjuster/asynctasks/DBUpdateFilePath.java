@@ -16,7 +16,6 @@ import com.electivechaos.claimsadjuster.database.CategoryListDBHelper;
 import com.electivechaos.claimsadjuster.pojo.ImageDetailsPOJO;
 import com.electivechaos.claimsadjuster.pojo.Label;
 import com.electivechaos.claimsadjuster.pojo.ReportPOJO;
-import com.electivechaos.claimsadjuster.ui.AddEditReportActivity;
 import com.electivechaos.claimsadjuster.utils.CommonUtils;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
@@ -124,12 +123,12 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
             document.add(new Paragraph("Address", fontTitles));
             document.add(new Paragraph(reportPOJO.getAddressLine()));
 
-            if(!reportPOJO.getgoogleMapSnapShotFilePath().isEmpty()){
+            if(!reportPOJO.getGoogleMapSnapShotFilePath().isEmpty()){
 
-                File file = new File(reportPOJO.getgoogleMapSnapShotFilePath());
+                File file = new File(reportPOJO.getGoogleMapSnapShotFilePath());
                 if (file.exists()) {
                     double remainingHeight = Math.abs(document.bottom() -  pdfWriter.getVerticalPosition(true));
-                    byte[] imgResized = resizeImage(reportPOJO.getgoogleMapSnapShotFilePath(), (int) document.getPageSize().getWidth(), (int) remainingHeight);
+                    byte[] imgResized = resizeImage(reportPOJO.getGoogleMapSnapShotFilePath(), (int) document.getPageSize().getWidth(), (int) remainingHeight);
                     com.itextpdf.text.Image imgMap = com.itextpdf.text.Image.getInstance(imgResized);
                     document.add(imgMap);
 

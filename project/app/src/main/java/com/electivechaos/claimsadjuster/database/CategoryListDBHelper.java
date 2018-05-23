@@ -352,7 +352,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         values.put(KEY_LOCATION_LONG, reportItemPOJO.getLocationLong());
         values.put(KEY_ADDRESS_LINE, reportItemPOJO.getAddressLine());
         values.put(KEY_CAUSE_OF_LOSS, reportItemPOJO.getCauseOfLoss());
-        values.put(KEY_LOCATION_SNAPSHOT, reportItemPOJO.getgoogleMapSnapShotFilePath());
+        values.put(KEY_LOCATION_SNAPSHOT, reportItemPOJO.getGoogleMapSnapShotFilePath());
         long insertIntoReportList = db.insert(TABLE_REPORTS_LIST, null, values);
         if (insertIntoReportList != -1) {
             ArrayList<Label> labelArrayList = reportItemPOJO.getLabelArrayList();
@@ -454,7 +454,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 reportPOJO.setLocationLong(c.getString(8));
                 reportPOJO.setAddressLine(c.getString(9));
                 reportPOJO.setCauseOfLoss(c.getString(10));
-                reportPOJO.setgoogleMapSnapShotFilePath(c.getString(11));
+                reportPOJO.setGoogleMapSnapShotFilePath(c.getString(11));
             }while (c.moveToNext());
         }
 

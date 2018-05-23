@@ -48,6 +48,8 @@
         <activity android:name=".ui.ImageSliderActivity"   android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".ui.AddEditCauseOfLossActivity"   android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".ui.SplashScreenActivity">
+        </activity>
+        <activity android:name=".ui.CustomisationActivity">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
 
