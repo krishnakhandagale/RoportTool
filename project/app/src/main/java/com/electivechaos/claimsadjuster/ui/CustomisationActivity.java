@@ -28,6 +28,7 @@ public class CustomisationActivity extends AppCompatActivity {
         setContentView(R.layout.customise_report_activity);
 
 
+
         RecyclerView recyclerView = findViewById(R.id.customLabelPositionView);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLayoutManager);

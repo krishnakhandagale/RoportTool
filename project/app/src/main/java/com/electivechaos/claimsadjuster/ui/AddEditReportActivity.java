@@ -3,6 +3,7 @@ package com.electivechaos.claimsadjuster.ui;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -678,15 +679,19 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     @Override
     public void onTwoImagesPerPage() {
         boolean result = PermissionUtilities.checkPermission(AddEditReportActivity.this,null,PermissionUtilities.MY_APP_GENERATE_REPORT_PERMISSIONS_TWO);
-        if(result)
-            new DBUpdateFilePath(AddEditReportActivity.this,findViewById(R.id.progressBarLayout), reportPOJO, true, categoryListDBHelper).execute(2);
+
+        Intent i  = new Intent(AddEditReportActivity.this, CustomisationActivity.class);
+        i.putExtra("reportDetails", reportPOJO);
+        startActivity(i);
+//        if(result)
+//            new DBUpdateFilePath(AddEditReportActivity.this,findViewById(R.id.progressBarLayout), reportPOJO, true, categoryListDBHelper).execute(2);
     }
 
     @Override
     public void onFourImagesPerPage() {
         boolean result = PermissionUtilities.checkPermission(AddEditReportActivity.this,null,PermissionUtilities.MY_APP_GENERATE_REPORT_PERMISSIONS_FOUR);
-        if(result)
-            new DBUpdateFilePath(AddEditReportActivity.this,findViewById(R.id.progressBarLayout), reportPOJO, true, categoryListDBHelper).execute(4);
+//        if(result)
+//            new DBUpdateFilePath(AddEditReportActivity.this,findViewById(R.id.progressBarLayout), reportPOJO, true, categoryListDBHelper).execute(4);
     }
 
 

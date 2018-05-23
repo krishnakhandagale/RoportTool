@@ -51,7 +51,7 @@ public class ReportPOJO  implements Parcelable{
         filePath = in.readString();
         causeOfLoss = in.readString();
         googleMapSnapShotFilePath = in.readString();
-        in.readList(labelArrayList, null);
+        in.readList(labelArrayList, Label.class.getClassLoader());
     }
 
     public static final Creator<ReportPOJO> CREATOR = new Creator<ReportPOJO>() {
