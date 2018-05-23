@@ -66,7 +66,21 @@ public class DBUpdateTaskOnTextChanged extends AsyncTask<String,Void,Void> {
         else if(type.equalsIgnoreCase("longitude")){
             categoryListDBHelper.updateLocationLong(value, reportId);
         }
-
+        else if(type.equalsIgnoreCase("propertyDate")){
+            categoryListDBHelper.updatePropertyDate(value, reportId);
+        }
+        else if(type.equalsIgnoreCase("squareFootage")){
+            categoryListDBHelper.updateSquareFootage(value, reportId);
+        }
+        else if(type.equalsIgnoreCase("roofSystem")){
+            categoryListDBHelper.updateRoofSystem(value, reportId);
+        }
+        else if(type.equalsIgnoreCase("siding")){
+            categoryListDBHelper.updateSiding(value, reportId);
+        }
+        else if(type.equalsIgnoreCase("foundation")){
+            categoryListDBHelper.updateFoundation(value, reportId);
+        }
 
         return null;
     }

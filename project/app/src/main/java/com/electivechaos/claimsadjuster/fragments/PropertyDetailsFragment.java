@@ -8,7 +8,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +19,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +28,7 @@ import com.electivechaos.claimsadjuster.adapters.CustomMenuAdapter;
 import com.electivechaos.claimsadjuster.adapters.DrawerMenuListAdapter;
 import com.electivechaos.claimsadjuster.interfaces.NextButtonClickListener;
 import com.electivechaos.claimsadjuster.interfaces.OnGenerateReportClickListener;
+import com.electivechaos.claimsadjuster.interfaces.OnPropertyDetailsClickListener;
 import com.electivechaos.claimsadjuster.interfaces.OnSaveReportClickListener;
 
 import java.util.ArrayList;
@@ -37,16 +42,19 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
     private boolean isFabOpen = false;
     private FloatingActionButton showFabBtn, fabGoNextBtn, fabAddLabelBtn, fabGenerateReportBtn, fabSaveReportBtn;
     private Animation fab_open, fab_close;
-    private TextView txtDate, txtMenuOne, txtMenuTwo, txtMenuThree;
+    private TextView txtDate, menuRoofSystem, menuSiding, menuFoundation;
 
     private NextButtonClickListener nextButtonClickListener;
     private DrawerMenuListAdapter.OnLabelAddClickListener onLabelAddClickListener;
     private OnSaveReportClickListener onSaveReportClickListener;
     private OnGenerateReportClickListener onGenerateReportClickListener;
+    private OnPropertyDetailsClickListener onPropertyDetailsClickListener;
 
     private  int selectedPositionOne = -1;
     private  int selectedPositionTwo = -1;
     private  int selectedPositionThree = -1;
+
+    private EditText squareFootage;
 
     @Nullable
     @Override
@@ -61,11 +69,13 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
         fab_open = AnimationUtils.loadAnimation(getActivity(), R.anim.fab_open);
         fab_close = AnimationUtils.loadAnimation(getActivity(), R.anim.fab_close);
 
-        pickTime = view.findViewById(R.id.btnTime);
+        pickTime = view.findViewById(R.id.btnDate);
         txtDate = view.findViewById(R.id.txtDate);
-        txtMenuOne = view.findViewById(R.id.menuOne);
-        txtMenuTwo = view.findViewById(R.id.menuTwo);
-        txtMenuThree = view.findViewById(R.id.menuThree);
+        squareFootage = view.findViewById(R.id.squareFootage);
+        menuRoofSystem = view.findViewById(R.id.menuOne);
+        menuSiding = view.findViewById(R.id.menuTwo);
+        menuFoundation = view.findViewById(R.id.menuThree);
+
 
 
 
@@ -121,7 +131,7 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
             }
         });
 
-        txtMenuOne.setOnClickListener(new View.OnClickListener() {
+        menuRoofSystem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final ArrayList<String> roofSystemList = new ArrayList<>();
@@ -138,7 +148,8 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
                     @Override
                     public void onClick(DialogInterface dialogInterface, int position) {
                         selectedPositionOne =  position;
-                        txtMenuOne.setText(roofSystemList.get(position).toString());
+                        menuRoofSystem.setText(roofSystemList.get(position).toString());
+                        onPropertyDetailsClickListener.setPropertyRoofSystem(roofSystemList.get(position).toString());
                         dialogInterface.dismiss();
 
                     }
@@ -149,7 +160,7 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
             }
         });
 
-        txtMenuTwo.setOnClickListener(new View.OnClickListener() {
+        menuSiding.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final ArrayList<String> sidingList = new ArrayList<>();
@@ -166,7 +177,8 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
                     @Override
                     public void onClick(DialogInterface dialogInterface, int position) {
                         selectedPositionTwo =  position;
-                        txtMenuTwo.setText(sidingList.get(position).toString());
+                        menuSiding.setText(sidingList.get(position).toString());
+                        onPropertyDetailsClickListener.setPropertySiding(sidingList.get(position).toString());
                         dialogInterface.dismiss();
 
                     }
@@ -178,7 +190,7 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
 
         });
 
-        txtMenuThree.setOnClickListener(new View.OnClickListener() {
+        menuFoundation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final ArrayList<String> foundationList = new ArrayList<>();
@@ -195,13 +207,31 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
                     @Override
                     public void onClick(DialogInterface dialogInterface, int position) {
                         selectedPositionThree =  position;
-                        txtMenuThree.setText(foundationList.get(position).toString());
+                        menuFoundation.setText(foundationList.get(position).toString());
+                        onPropertyDetailsClickListener.setPropertyFoundation(foundationList.get(position).toString());
                         dialogInterface.dismiss();
 
                     }
                 });
 
                 ad.show();
+            }
+        });
+
+        squareFootage.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                onPropertyDetailsClickListener.setPropertySquareFootage(Double.parseDouble(s.toString().trim()));
             }
         });
 
@@ -244,6 +274,7 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
         monthFinal = i1 + 1;
         dayFinal = i2;
         txtDate.setText(dayFinal + "/" + monthFinal + "/" + yearFinal);
+        onPropertyDetailsClickListener.setPropertyDate(dayFinal + "/" + monthFinal + "/" + yearFinal);
 
     }
 
@@ -256,6 +287,7 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
             onLabelAddClickListener = (DrawerMenuListAdapter.OnLabelAddClickListener) getActivity();
             onSaveReportClickListener = (OnSaveReportClickListener) getActivity();
             onGenerateReportClickListener = (OnGenerateReportClickListener) getActivity();
+            onPropertyDetailsClickListener = (OnPropertyDetailsClickListener) getActivity();
         } catch (ClassCastException ex) {
             ex.printStackTrace();
         }

@@ -596,6 +596,31 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         db.execSQL("UPDATE generated_reports SET location_snapshot='"+value+"' WHERE report_id='"+reportId+"'");
     }
 
+    public void updatePropertyDate(String value, String reportId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("UPDATE property_details SET property_date='"+value+"' WHERE report_id_fk='"+reportId+"'");
+    }
+
+    public void updateSquareFootage(String value, String reportId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("UPDATE property_details SET square_footage='"+value+"' WHERE report_id_fk='"+reportId+"'");
+    }
+
+    public void updateRoofSystem(String value, String reportId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("UPDATE property_details SET roof_system='"+value+"' WHERE report_id_fk='"+reportId+"'");
+    }
+
+    public void updateSiding(String value, String reportId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("UPDATE property_details SET siding='"+value+"' WHERE report_id_fk='"+reportId+"'");
+    }
+
+    public void updateFoundation(String value, String reportId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("UPDATE property_details SET foundation='"+value+"' WHERE report_id_fk='"+reportId+"'");
+    }
+
 
     public void updateElevationImages(Label label) {
         SQLiteDatabase db = this.getWritableDatabase();

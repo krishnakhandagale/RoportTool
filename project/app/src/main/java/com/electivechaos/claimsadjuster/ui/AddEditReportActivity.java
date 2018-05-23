@@ -50,6 +50,7 @@ import com.electivechaos.claimsadjuster.interfaces.ClaimDetailsDataInterface;
 import com.electivechaos.claimsadjuster.interfaces.LossLocationDataInterface;
 import com.electivechaos.claimsadjuster.interfaces.NextButtonClickListener;
 import com.electivechaos.claimsadjuster.interfaces.OnGenerateReportClickListener;
+import com.electivechaos.claimsadjuster.interfaces.OnPropertyDetailsClickListener;
 import com.electivechaos.claimsadjuster.interfaces.OnSaveReportClickListener;
 import com.electivechaos.claimsadjuster.interfaces.PreferenceDialogCallback;
 import com.electivechaos.claimsadjuster.interfaces.SelectedImagesDataInterface;
@@ -71,7 +72,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-public class AddEditReportActivity extends AppCompatActivity implements DrawerMenuListAdapter.OnLabelAddClickListener, AddEditLabelInterface, ClaimDetailsDataInterface, LossLocationDataInterface,SelectedImagesDataInterface,NextButtonClickListener,OnSaveReportClickListener, OnGenerateReportClickListener, PreferenceDialogCallback {
+public class AddEditReportActivity extends AppCompatActivity implements DrawerMenuListAdapter.OnLabelAddClickListener, AddEditLabelInterface, ClaimDetailsDataInterface, LossLocationDataInterface,SelectedImagesDataInterface,NextButtonClickListener,OnSaveReportClickListener, OnGenerateReportClickListener, OnPropertyDetailsClickListener, PreferenceDialogCallback {
     private DrawerLayout mDrawerLayout;
     private DrawerMenuListAdapter drawerMenuListAdapter;
     private String tabName;
@@ -692,6 +693,32 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         boolean result = PermissionUtilities.checkPermission(AddEditReportActivity.this,null,PermissionUtilities.MY_APP_GENERATE_REPORT_PERMISSIONS_FOUR);
 //        if(result)
 //            new DBUpdateFilePath(AddEditReportActivity.this,findViewById(R.id.progressBarLayout), reportPOJO, true, categoryListDBHelper).execute(4);
+    }
+
+    @Override
+    public void setPropertyDate(String propertyDate) {
+        new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, propertyDate,reportPOJO.getId(),false,categoryListDBHelper,"propertyDate").execute();
+
+    }
+
+    @Override
+    public void setPropertySquareFootage(double squareFootage) {
+
+    }
+
+    @Override
+    public void setPropertyRoofSystem(String roofSystem) {
+
+    }
+
+    @Override
+    public void setPropertySiding(String siding) {
+
+    }
+
+    @Override
+    public void setPropertyFoundation(String foundation) {
+
     }
 
 
