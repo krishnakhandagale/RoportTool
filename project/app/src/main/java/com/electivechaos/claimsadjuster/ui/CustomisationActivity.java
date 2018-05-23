@@ -9,6 +9,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 
 import com.electivechaos.claimsadjuster.R;
 import com.electivechaos.claimsadjuster.pojo.Label;
+import com.electivechaos.claimsadjuster.pojo.ReportPOJO;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,43 +29,38 @@ public class CustomisationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.customise_report_activity);
 
-
-
+        final ReportPOJO reportPOJO = getIntent().getParcelableExtra("reportDetails");
         RecyclerView recyclerView = findViewById(R.id.customLabelPositionView);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+        ArrayList<Label> labels =  reportPOJO.getLabelArrayList();
 
-        final ArrayList<Label> labels = new ArrayList<>();
-        labels.add(new Label());
-        labels.add(new Label());
-        labels.add(new Label());
-
-        final Adapter adapter = new Adapter(this,labels);
-        recyclerView.setAdapter(adapter);
+        if(labels != null){
+            final Adapter adapter = new Adapter(this,labels);
+            recyclerView.setAdapter(adapter);
 
 
-        ItemTouchHelper.Callback ithCallback = new ItemTouchHelper.Callback() {
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                Collections.swap(labels, viewHolder.getAdapterPosition(), target.getAdapterPosition());
-//                selectedImagesDataInterface.setSelectedImages(selectedImageList,labelPosition);
-                adapter.notifyItemMoved(viewHolder.getAdapterPosition(), target.getAdapterPosition());
-                return true;
-            }
+            ItemTouchHelper.Callback ithCallback = new ItemTouchHelper.Callback() {
+                public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                    Collections.swap(reportPOJO.getLabelArrayList(), viewHolder.getAdapterPosition(), target.getAdapterPosition());
+                    adapter.notifyItemMoved(viewHolder.getAdapterPosition(), target.getAdapterPosition());
+                    return true;
+                }
 
-            @Override
-            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-            }
+                @Override
+                public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                }
 
-            @Override
-            public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
-                return makeFlag(ItemTouchHelper.ACTION_STATE_DRAG,
-                        ItemTouchHelper.DOWN | ItemTouchHelper.UP | ItemTouchHelper.START | ItemTouchHelper.END);
-            }
-        };
-        ItemTouchHelper ith = new ItemTouchHelper(ithCallback);
-        ith.attachToRecyclerView(recyclerView);
-
+                @Override
+                public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+                    return makeFlag(ItemTouchHelper.ACTION_STATE_DRAG,
+                            ItemTouchHelper.DOWN | ItemTouchHelper.UP | ItemTouchHelper.START | ItemTouchHelper.END);
+                }
+            };
+            ItemTouchHelper ith = new ItemTouchHelper(ithCallback);
+            ith.attachToRecyclerView(recyclerView);
+        }
 
     }
 
@@ -87,7 +84,7 @@ public class CustomisationActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            holder.label.setText("Krishna" + position);
+            holder.label.setText(labelArrayList.get(position).getName());
 
         }
 

@@ -1,12 +1,15 @@
 package com.electivechaos.claimsadjuster.pojo;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 
 /**
  * Created by barkhasikka on 26/04/18.
  */
 
-public class Label {
+public class Label implements Parcelable{
     private String id;
     private String name;
     private String description;
@@ -21,10 +24,33 @@ public class Label {
         name = "";
         description = "";
         categoryID = -1;
+        reportId = "";
         selectedImages = new ArrayList<>();
         selectedElevationImages = new ArrayList<>();
-        reportId = "";
+
     }
+
+    protected Label(Parcel in) {
+        id = in.readString();
+        name = in.readString();
+        description = in.readString();
+        categoryID = in.readInt();
+        reportId = in.readString();
+        selectedImages = in.createTypedArrayList(ImageDetailsPOJO.CREATOR);
+        selectedElevationImages = in.createTypedArrayList(ImageDetailsPOJO.CREATOR);
+    }
+
+    public static final Creator<Label> CREATOR = new Creator<Label>() {
+        @Override
+        public Label createFromParcel(Parcel in) {
+            return new Label(in);
+        }
+
+        @Override
+        public Label[] newArray(int size) {
+            return new Label[size];
+        }
+    };
 
     public String getReportId() {
         return reportId;
@@ -86,5 +112,21 @@ public class Label {
     @Override
     public String toString() {
         return this.getName();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(name);
+        dest.writeString(description);
+        dest.writeInt(categoryID);
+        dest.writeString(reportId);
+        dest.writeTypedList(selectedImages);
+        dest.writeTypedList(selectedElevationImages);
     }
 }
