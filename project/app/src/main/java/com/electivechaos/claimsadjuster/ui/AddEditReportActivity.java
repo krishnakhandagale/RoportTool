@@ -682,11 +682,11 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     public void onReportGenerateClicked() {
         boolean isValid = validateData();
         if(isValid){
-//            Intent i  = new Intent(AddEditReportActivity.this, CustomisationActivity.class);
-//            i.putExtra("reportDetails", reportPOJO);
-//            startActivityForResult(i, 555);
+            Intent i  = new Intent(AddEditReportActivity.this, CustomisationActivity.class);
+            i.putExtra("reportDetails", reportPOJO);
+            AddEditReportActivity.this.startActivity(i);
 
-            showReportPreferenceDialog(this);
+//            showReportPreferenceDialog(this);
         }
     }
 
@@ -881,15 +881,16 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         }
     }
 
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//       if (resultCode == RESULT_OK){
-//           switch (requestCode){
-//               case 555:
-//                  ReportPOJO reportPOJO  =  data.getParcelableExtra("modified_report");
-//
-//                   break;
-//           }
-//       }
-//    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK){
+            switch (requestCode){
+                case 555:
+                    ReportPOJO reportPOJO  =  data.getParcelableExtra("modified_report");
+
+                    break;
+            }
+        }
+    }
 }

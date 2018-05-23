@@ -495,7 +495,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
         Intent intent = new Intent(getActivity(), ImagePickerActivity.class);
         intent.putExtra("already_selected_images", selectedImageList.size());
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent, SELECT_FILE);
+        AddEditReportSelectedImagesFragment.this.startActivityForResult(intent, SELECT_FILE);
 
     }
 
@@ -520,7 +520,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
                 ImageHelper.grantAppPermission(getContext(), intent, fileUri);
-                startActivityForResult(intent, requestId);
+                AddEditReportSelectedImagesFragment.this.startActivityForResult(intent, requestId);
             }
         }
 
@@ -814,7 +814,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                     ImageHelper.revokeAppPermission(getContext(), fileUri);
                     Intent intent = new Intent(getContext(), SingleImageDetailsActivity.class);
                     intent.putExtra("image_details", imgObj);
-                    startActivityForResult(intent, SET_CLICKED_IMAGE_DETAILS);
+                    AddEditReportSelectedImagesFragment.this.startActivityForResult(intent, SET_CLICKED_IMAGE_DETAILS);
                 }
             }
         });
@@ -824,7 +824,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
         selectedImages = data.getParcelableArrayListExtra("ImageUrls");
         Intent intent = new Intent(getActivity(), ImageSliderActivity.class);
         intent.putExtra("ImageList", selectedImages);
-        startActivityForResult(intent, ADD_IMAGE_DETAILS);
+        AddEditReportSelectedImagesFragment.this.startActivityForResult(intent, ADD_IMAGE_DETAILS);
     }
 
 
@@ -956,7 +956,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                     intent.putExtra("image_details", imgDetails);
                     intent.putExtra("isEdit", true);
                     intent.putExtra("position", position);
-                    startActivityForResult(intent, SET_CLICKED_IMAGE_DETAILS);
+                    AddEditReportSelectedImagesFragment.this.startActivityForResult(intent, SET_CLICKED_IMAGE_DETAILS);
                 }
             });
 

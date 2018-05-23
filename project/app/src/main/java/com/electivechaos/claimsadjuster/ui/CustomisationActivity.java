@@ -36,7 +36,8 @@ public class CustomisationActivity extends AppCompatActivity {
 
         Toolbar toolbar =  findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        setDisplayHomeAsUpEnabled(true);
+
 
 
         RecyclerView recyclerView = findViewById(R.id.customLabelPositionView);
