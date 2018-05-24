@@ -98,7 +98,7 @@ public class CustomisationActivity extends AppCompatActivity {
         @NonNull
         @Override
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            LayoutInflater inflater =  LayoutInflater.from(context);
+            LayoutInflater inflater =  LayoutInflater.from(parent.getContext());
             View view = inflater.inflate(R.layout.label_rearragement_item, parent, false);
             return new ViewHolder(view);
         }
