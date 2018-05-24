@@ -240,7 +240,11 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
 
             @Override
             public void afterTextChanged(Editable s) {
-                onPropertyDetailsClickListener.setPropertySquareFootage(Double.parseDouble(s.toString().trim()));
+                if(s.toString().trim().isEmpty() || s.toString().trim()==null) {
+
+                }else {
+                    onPropertyDetailsClickListener.setPropertySquareFootage(Double.parseDouble(s.toString().trim()));
+                }
             }
         });
 
