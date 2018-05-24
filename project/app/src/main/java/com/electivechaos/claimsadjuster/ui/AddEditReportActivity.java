@@ -580,17 +580,11 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
         selectedFragmentPosition = selectedFragmentPosition + 1;
          if(selectedFragmentPosition == 1) {
-            mDrawerLayout.closeDrawer(Gravity.LEFT);
-            FragmentManager transactionManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
-            fragmentTransaction.replace(R.id.content_frame,new PropertyDetailsFragment());
-            fragmentTransaction.commit();
-            tabName="PropertyDetailsFragment";
+             mDrawerLayout.closeDrawer(Gravity.LEFT);
+             putPropertyDetails();
+             actionBarEditBtn.setVisible(false);
 
-            activityActionBar.setTitle("Property Details");
-            actionBarEditBtn.setVisible(false);
-
-        }
+         }
         else if(selectedFragmentPosition == 2) {
             mDrawerLayout.closeDrawer(Gravity.LEFT);
             FragmentManager transactionManager = getSupportFragmentManager();

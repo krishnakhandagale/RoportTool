@@ -19,11 +19,13 @@ public class CustomMenuAdapter extends BaseAdapter {
     private Context context;
     private ArrayList arrayList;
     private int selectedPosition;
+    private String value;
 
-    public CustomMenuAdapter(Context context, ArrayList arrayList, int selectedPosition){
+    public CustomMenuAdapter(Context context, ArrayList arrayList, int selectedPosition, String value){
         this.arrayList = arrayList;
         this.context = context;
         this.selectedPosition = selectedPosition;
+        this.value = value;
     }
     @Override
     public int getCount() {
@@ -53,10 +55,11 @@ public class CustomMenuAdapter extends BaseAdapter {
         } else{
           holder = (ViewHolder) convertView.getTag();
         }
-       if(selectedPosition == position) {
+       if(selectedPosition == position || arrayList.get(position).toString().equals(value)) {
            holder.checkedTextView.setChecked(true);
+       }else {
+           holder.checkedTextView.setChecked(false);
        }
-
         holder.checkedTextView.setText(arrayList.get(position).toString());
         return convertView;
     }
