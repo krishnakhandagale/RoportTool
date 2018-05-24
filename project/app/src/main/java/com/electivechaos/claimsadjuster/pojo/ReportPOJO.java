@@ -66,7 +66,7 @@ public class ReportPOJO  implements Parcelable{
         filePath = in.readString();
         googleMapSnapShotFilePath = in.readString();
         labelArrayList = in.createTypedArrayList(Label.CREATOR);
-        propertyDetailsPOJO = in.readParcelable(null);
+        propertyDetailsPOJO = in.readParcelable(PropertyDetailsPOJO.class.getClassLoader());
     }
 
 
