@@ -198,7 +198,7 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
             mGoogleMapMarker.setTitle("Location");
             mGoogleMapMarker.setSnippet(places.get(0).getAddress().toString());
 
-            CameraPosition cameraPosition = new CameraPosition.Builder().target(currentLocation).zoom(8).build();
+            CameraPosition cameraPosition = new CameraPosition.Builder().target(currentLocation).zoom(20).build();
             googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
             googleMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
@@ -268,7 +268,7 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
                                 mGoogleMapMarker.setTitle("Location");
                                 mGoogleMapMarker.setSnippet(likelyPlaces.get(0).getPlace().getAddress().toString());
 
-                                CameraPosition cameraPosition = new CameraPosition.Builder().target(currentLocation).zoom(8).build();
+                                CameraPosition cameraPosition = new CameraPosition.Builder().target(currentLocation).zoom(20).build();
                                 googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
                                 googleMap.getUiSettings().setMyLocationButtonEnabled(false);
                                 likelyPlaces.release();
@@ -301,7 +301,7 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
             mGoogleMapMarker.setTitle("Location");
             mGoogleMapMarker.setSnippet(addressLine);
 
-            CameraPosition cameraPosition = new CameraPosition.Builder().target(currentLocation).zoom(8).build();
+            CameraPosition cameraPosition = new CameraPosition.Builder().target(currentLocation).zoom(20).build();
             googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
             googleMap.getUiSettings().setMyLocationButtonEnabled(false);
 
