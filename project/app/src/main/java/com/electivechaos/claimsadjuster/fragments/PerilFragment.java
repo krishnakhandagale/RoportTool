@@ -1,11 +1,15 @@
 package com.electivechaos.claimsadjuster.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,14 +18,23 @@ import android.view.animation.AnimationUtils;
 
 import com.electivechaos.claimsadjuster.R;
 import com.electivechaos.claimsadjuster.adapters.DrawerMenuListAdapter;
+import com.electivechaos.claimsadjuster.database.CategoryListDBHelper;
 import com.electivechaos.claimsadjuster.interfaces.NextButtonClickListener;
 import com.electivechaos.claimsadjuster.interfaces.OnGenerateReportClickListener;
 import com.electivechaos.claimsadjuster.interfaces.OnSaveReportClickListener;
+import com.electivechaos.claimsadjuster.pojo.CauseOfLoss;
+import com.electivechaos.claimsadjuster.ui.AddEditCauseOfLossActivity;
+
+import java.util.ArrayList;
 
 public class PerilFragment extends Fragment {
 
+    public ArrayList<CauseOfLoss> causeOfLosses = new ArrayList<>();
+    private RecyclerView recyclerView;
+    static CategoryListDBHelper mCategoryListDBHelper;
+
     private Boolean isFabOpen = false;
-    private FloatingActionButton showFabBtn,fabGoNextBtn, fabAddLabelBtn, fabGenerateReportBtn, fabSaveReportBtn;
+    private FloatingActionButton showFabBtn,fabGoNextBtn, fabAddLabelBtn, fabGenerateReportBtn, fabSaveReportBtn, btnAddPril;
     private Animation fab_open, fab_close;
 
     private NextButtonClickListener nextButtonClickListener;
@@ -47,6 +60,15 @@ public class PerilFragment extends Fragment {
                 animateFAB();
             }
         });
+
+        btnAddPril = view.findViewById(R.id.btnAddPeril);
+        recyclerView = view.findViewById(R.id.recycler_view);
+
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        mCategoryListDBHelper = CategoryListDBHelper.getInstance(getActivity());
+
 
         fabGoNextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,6 +99,14 @@ public class PerilFragment extends Fragment {
             public void onClick(View v) {
                 onSaveReportClickListener.onReportSave(true);
                 animateFAB();
+            }
+        });
+
+        btnAddPril.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getContext(), AddEditCauseOfLossActivity.class);
+                startActivityForResult(intent,20);
             }
         });
 
@@ -116,6 +146,7 @@ public class PerilFragment extends Fragment {
         }
 
     }
+
 
     @Override
     public void onAttach(Context context) {

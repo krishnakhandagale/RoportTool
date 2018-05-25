@@ -11,8 +11,8 @@
     <uses-permission android:name="android.permission.CAMERA" />
 
     <application
-        android:fullBackupContent="false"
         android:allowBackup="true"
+        android:fullBackupContent="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher"
@@ -21,11 +21,10 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyC3rml-xbs9AJaa5nitYVRpC8dZc1KoAMI" />
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"
@@ -37,25 +36,33 @@
                 android:resource="@xml/file_provider_paths"
                 tools:replace="android:resource" />
         </provider>
-        <activity android:name=".ui.AddEditReportActivity" android:screenOrientation="portrait"   android:windowSoftInputMode="adjustPan">
 
-        </activity>
-        <activity android:name=".ui.MainTabsActivity">
-        </activity>
+        <activity
+            android:name=".ui.AddEditReportActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan"></activity>
+        <activity android:name=".ui.MainTabsActivity"></activity>
         <activity android:name=".ui.ImagePickerActivity" />
-        <activity android:name=".ui.SingleImageDetailsActivity"   android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".ui.AddEditCategoryActivity"   android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".ui.ImageSliderActivity"   android:windowSoftInputMode="adjustPan"/>
-        <activity android:name=".ui.AddEditCauseOfLossActivity"   android:windowSoftInputMode="adjustPan"/>
-
+        <activity
+            android:name=".ui.SingleImageDetailsActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".ui.AddEditCategoryActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".ui.ImageSliderActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".ui.AddEditCauseOfLossActivity"
+            android:windowSoftInputMode="adjustPan" />
         <activity android:name=".ui.SplashScreenActivity">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
+
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".ui.CustomisationActivity"/>
+        <activity android:name=".ui.CustomisationActivity" />
     </application>
 
 </manifest>
