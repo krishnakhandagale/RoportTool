@@ -128,7 +128,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
                 File file = new File(reportPOJO.getGoogleMapSnapShotFilePath());
                 if (file.exists()) {
                     double remainingHeight = Math.abs(document.bottom() -  pdfWriter.getVerticalPosition(true));
-                    byte[] imgResized = resizeImage(reportPOJO.getGoogleMapSnapShotFilePath(), (int) document.getPageSize().getWidth(), (int) remainingHeight);
+                    byte[] imgResized = resizeImage(reportPOJO.getGoogleMapSnapShotFilePath(), (int) document.getPageSize().getWidth()/2, (int) remainingHeight/2);
                     com.itextpdf.text.Image imgMap = com.itextpdf.text.Image.getInstance(imgResized);
                     document.add(imgMap);
 
