@@ -23,7 +23,7 @@ public class PointOfOriginFragment extends Fragment {
 
     private Boolean isFabOpen = false;
     private FloatingActionButton showFabBtn,fabGoNextBtn, fabAddLabelBtn, fabGenerateReportBtn, fabSaveReportBtn;
-    private Animation fab_open, fab_close, rotate_forward, rotate_backward;
+    private Animation fab_open, fab_close;
     private NextButtonClickListener nextButtonClickListener;
     private DrawerMenuListAdapter.OnLabelAddClickListener onLabelAddClickListener;
     private OnSaveReportClickListener onSaveReportClickListener;
@@ -41,8 +41,7 @@ public class PointOfOriginFragment extends Fragment {
 
         fab_open = AnimationUtils.loadAnimation(getActivity(), R.anim.fab_open);
         fab_close = AnimationUtils.loadAnimation(getActivity(), R.anim.fab_close);
-        rotate_forward = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate_forward);
-        rotate_backward = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate_backward);
+
 
         fabGoNextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
