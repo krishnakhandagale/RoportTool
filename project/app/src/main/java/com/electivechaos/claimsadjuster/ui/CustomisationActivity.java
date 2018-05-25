@@ -1,6 +1,7 @@
 package com.electivechaos.claimsadjuster.ui;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -20,6 +21,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.electivechaos.claimsadjuster.R;
+import com.electivechaos.claimsadjuster.interfaces.ItemTouchHelperViewHolder;
 import com.electivechaos.claimsadjuster.pojo.Label;
 import com.electivechaos.claimsadjuster.pojo.ReportPOJO;
 
@@ -123,6 +125,29 @@ public class CustomisationActivity extends AppCompatActivity {
                     return makeFlag(ItemTouchHelper.ACTION_STATE_DRAG,
                             ItemTouchHelper.DOWN | ItemTouchHelper.UP | ItemTouchHelper.START | ItemTouchHelper.END);
                 }
+
+                @Override
+                public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {
+                    if (actionState != ItemTouchHelper.ACTION_STATE_IDLE) {
+                        if (viewHolder instanceof ItemTouchHelperViewHolder) {
+                            ItemTouchHelperViewHolder itemViewHolder =
+                                    (ItemTouchHelperViewHolder) viewHolder;
+                            itemViewHolder.onItemSelected();
+                        }
+                    }
+                    super.onSelectedChanged(viewHolder, actionState);
+                }
+
+                @Override
+                public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+                    super.clearView(recyclerView, viewHolder);
+
+                    if (viewHolder instanceof ItemTouchHelperViewHolder) {
+                        ItemTouchHelperViewHolder itemViewHolder =
+                                (ItemTouchHelperViewHolder) viewHolder;
+                        itemViewHolder.onItemClear();
+                    }
+                }
             };
             ItemTouchHelper ith = new ItemTouchHelper(ithCallback);
             ith.attachToRecyclerView(recyclerView);
@@ -157,12 +182,22 @@ public class CustomisationActivity extends AppCompatActivity {
             return labelArrayList.size();
         }
 
-        public class ViewHolder extends RecyclerView.ViewHolder {
+        public class ViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder{
             TextView label;
 
             public ViewHolder(View itemView) {
                 super(itemView);
                 label = itemView.findViewById(R.id.label);
+            }
+
+            @Override
+            public void onItemSelected() {
+                itemView.setBackgroundColor(Color.LTGRAY);
+            }
+
+            @Override
+            public void onItemClear() {
+                itemView.setBackgroundColor(0);
             }
         }
     }
