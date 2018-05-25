@@ -1,6 +1,5 @@
 package com.electivechaos.claimsadjuster.ui;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -28,38 +27,38 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class CustomisationActivity extends AppCompatActivity {
-    ReportPOJO reportPOJO = null;
-    int noOfImagesPerPage;
+    private ReportPOJO reportPOJO = null;
+    private int noOfImagesPerPage;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.customise_report_activity);
 
-       final CheckedTextView twoPerPageTextView = findViewById(R.id.twoPerPage);
-       final CheckedTextView fourPerPageTextView = findViewById(R.id.fourPerPage);
+        final CheckedTextView twoPerPageTextView = findViewById(R.id.twoPerPage);
+        final CheckedTextView fourPerPageTextView = findViewById(R.id.fourPerPage);
 
         reportPOJO = getIntent().getParcelableExtra("reportDetails");
 
-        Toolbar toolbar =  findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-//        setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         twoPerPageTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 noOfImagesPerPage = 2;
-                if(fourPerPageTextView.isChecked()){
+                if (fourPerPageTextView.isChecked()) {
                     fourPerPageTextView.setChecked(false);
-                    fourPerPageTextView.setBackground(ContextCompat.getDrawable(CustomisationActivity.this,R.drawable.shape_chip_drawable_gray));
+                    fourPerPageTextView.setBackground(ContextCompat.getDrawable(CustomisationActivity.this, R.drawable.shape_chip_drawable_gray));
                 }
-                if(((CheckedTextView)v).isChecked()){
-                    ((CheckedTextView)v).setChecked(false);
-                    v.setBackground(ContextCompat.getDrawable(CustomisationActivity.this,R.drawable.shape_chip_drawable_gray));
-                }else{
-                    ((CheckedTextView)v).setChecked(true);
-                    v.setBackground(ContextCompat.getDrawable(CustomisationActivity.this,R.drawable.shape_chip_drawable_active));
+                if (((CheckedTextView) v).isChecked()) {
+                    ((CheckedTextView) v).setChecked(false);
+                    v.setBackground(ContextCompat.getDrawable(CustomisationActivity.this, R.drawable.shape_chip_drawable_gray));
+                } else {
+                    ((CheckedTextView) v).setChecked(true);
+                    v.setBackground(ContextCompat.getDrawable(CustomisationActivity.this, R.drawable.shape_chip_drawable_active));
                 }
             }
         });
@@ -69,17 +68,16 @@ public class CustomisationActivity extends AppCompatActivity {
             public void onClick(View v) {
                 noOfImagesPerPage = 4;
 
-                if(twoPerPageTextView.isChecked()){
+                if (twoPerPageTextView.isChecked()) {
                     twoPerPageTextView.setChecked(false);
-                    twoPerPageTextView.setBackground(ContextCompat.getDrawable(CustomisationActivity.this,R.drawable.shape_chip_drawable_gray));
+                    twoPerPageTextView.setBackground(ContextCompat.getDrawable(CustomisationActivity.this, R.drawable.shape_chip_drawable_gray));
                 }
-                if(((CheckedTextView)v).isChecked()){
-                    ((CheckedTextView)v).setChecked(false);
-                   // imageDetails.setOverview(false);
-                    v.setBackground(ContextCompat.getDrawable(CustomisationActivity.this,R.drawable.shape_chip_drawable_gray));
-                }else{
-                    ((CheckedTextView)v).setChecked(true);
-                    v.setBackground(ContextCompat.getDrawable(CustomisationActivity.this,R.drawable.shape_chip_drawable_active));
+                if (((CheckedTextView) v).isChecked()) {
+                    ((CheckedTextView) v).setChecked(false);
+                    v.setBackground(ContextCompat.getDrawable(CustomisationActivity.this, R.drawable.shape_chip_drawable_gray));
+                } else {
+                    ((CheckedTextView) v).setChecked(true);
+                    v.setBackground(ContextCompat.getDrawable(CustomisationActivity.this, R.drawable.shape_chip_drawable_active));
                 }
             }
         });
@@ -93,7 +91,7 @@ public class CustomisationActivity extends AppCompatActivity {
                 Intent intent = new Intent();
                 intent.putExtra("modified_report", reportPOJO);
                 intent.putExtra("per_page_images", noOfImagesPerPage);
-                setResult(RESULT_OK,intent);
+                setResult(RESULT_OK, intent);
                 finish();
             }
         });
@@ -103,8 +101,8 @@ public class CustomisationActivity extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         ArrayList<Label> labels = reportPOJO.getLabelArrayList();
 
-        if(labels != null){
-            final Adapter adapter = new Adapter(this,labels);
+        if (labels != null) {
+            final Adapter adapter = new Adapter(labels);
             recyclerView.setAdapter(adapter);
 
 
@@ -132,19 +130,17 @@ public class CustomisationActivity extends AppCompatActivity {
     }
 
 
-
-    private class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>{
-        Context context;
+    private class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         ArrayList<Label> labelArrayList;
-        Adapter(Context context, ArrayList<Label> labelArrayList){
-            this.context = context;
+
+        Adapter(ArrayList<Label> labelArrayList) {
             this.labelArrayList = labelArrayList;
         }
 
         @NonNull
         @Override
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            LayoutInflater inflater =  LayoutInflater.from(parent.getContext());
+            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
             View view = inflater.inflate(R.layout.label_rearragement_item, parent, false);
             return new ViewHolder(view);
         }
@@ -162,6 +158,7 @@ public class CustomisationActivity extends AppCompatActivity {
 
         public class ViewHolder extends RecyclerView.ViewHolder {
             TextView label;
+
             public ViewHolder(View itemView) {
                 super(itemView);
                 label = itemView.findViewById(R.id.label);
@@ -174,10 +171,10 @@ public class CustomisationActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 Intent intent = new Intent();
-                setResult(RESULT_CANCELED,intent);
+                setResult(RESULT_CANCELED, intent);
                 finish();
                 return true;
         }
-        return  true;
+        return true;
     }
 }

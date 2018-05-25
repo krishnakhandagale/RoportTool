@@ -88,6 +88,7 @@ public class SingleImageDetailsActivity extends BaseActivity {
 
                 if(isDamageTextView.isChecked()){
                     isDamageTextView.setChecked(false);
+                    isDamageTextView.setTextColor(ContextCompat.getColor(SingleImageDetailsActivity.this,R.color.colorPrimaryDark));
                     isDamageTextView.setBackground(ContextCompat.getDrawable(SingleImageDetailsActivity.this,R.drawable.shape_chip_drawable_gray));
                     imageDetails.setDamage(false);
                 }

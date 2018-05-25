@@ -6,10 +6,6 @@ package com.electivechaos.claimsadjuster.pojo;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-/**
- * Created by krishna on 11/15/17.
- */
-
 public class Image implements Parcelable {
 
     public static final Creator<Image> CREATOR = new Creator<Image>() {

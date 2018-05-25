@@ -4,17 +4,17 @@
     android:drawable="@drawable/ic_claims"
     tools:ignore="NewApi">
     <target
-        android:animation="@anim/left_animator"
+        android:animation="@animator/left_animator"
         android:name="left" />
     <target
-        android:animation="@anim/animator"
+        android:animation="@animator/animator"
         android:name="up" />
     <target
-        android:animation="@anim/animator_from_right"
+        android:animation="@animator/animator_from_right"
         android:name="down" />
 
     <target
-        android:animation="@anim/right_animator"
+        android:animation="@animator/right_animator"
         android:name="right" />
 
 </animated-vector>

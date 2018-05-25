@@ -72,7 +72,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-public class AddEditReportActivity extends AppCompatActivity implements DrawerMenuListAdapter.OnLabelAddClickListener, AddEditLabelInterface, ClaimDetailsDataInterface, LossLocationDataInterface,SelectedImagesDataInterface,NextButtonClickListener,OnSaveReportClickListener, OnGenerateReportClickListener, OnPropertyDetailsClickListener, PreferenceDialogCallback {
+public class AddEditReportActivity extends AppCompatActivity implements DrawerMenuListAdapter.OnLabelAddClickListener, AddEditLabelInterface, ClaimDetailsDataInterface, LossLocationDataInterface,SelectedImagesDataInterface,NextButtonClickListener,OnSaveReportClickListener, OnGenerateReportClickListener, OnPropertyDetailsClickListener {
     private DrawerLayout mDrawerLayout;
     private DrawerMenuListAdapter drawerMenuListAdapter;
     private String tabName;
@@ -95,6 +95,8 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
     private  Bitmap googleMapSnapshotBitmap;
 
+    private  ReportPOJO modifiedReportPojo;
+    private static final int SHOWPREFERENCEACTIVITY = 486;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -678,26 +680,22 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         if(isValid){
             Intent i  = new Intent(AddEditReportActivity.this, CustomisationActivity.class);
             i.putExtra("reportDetails", reportPOJO);
-            AddEditReportActivity.this.startActivityForResult(i,555);
-
-//            showReportPreferenceDialog(this);
+            AddEditReportActivity.this.startActivityForResult(i,SHOWPREFERENCEACTIVITY);
         }
     }
 
-    @Override
     public void onTwoImagesPerPage() {
         boolean result = PermissionUtilities.checkPermission(AddEditReportActivity.this,null,PermissionUtilities.MY_APP_GENERATE_REPORT_PERMISSIONS_TWO);
 
 
         if(result)
-            new DBUpdateFilePath(AddEditReportActivity.this,findViewById(R.id.progressBarLayout), reportPOJO, true, categoryListDBHelper).execute(2);
+            new DBUpdateFilePath(AddEditReportActivity.this,findViewById(R.id.progressBarLayout), modifiedReportPojo, true, categoryListDBHelper).execute(2);
     }
 
-    @Override
     public void onFourImagesPerPage() {
         boolean result = PermissionUtilities.checkPermission(AddEditReportActivity.this,null,PermissionUtilities.MY_APP_GENERATE_REPORT_PERMISSIONS_FOUR);
         if(result)
-            new DBUpdateFilePath(AddEditReportActivity.this,findViewById(R.id.progressBarLayout), reportPOJO, true, categoryListDBHelper).execute(4);
+            new DBUpdateFilePath(AddEditReportActivity.this,findViewById(R.id.progressBarLayout), modifiedReportPojo, true, categoryListDBHelper).execute(4);
     }
 
     @Override
@@ -879,10 +877,16 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) switch (requestCode) {
-            case 555:
-                ReportPOJO reportPOJO = data.getParcelableExtra("modified_report");
+            case SHOWPREFERENCEACTIVITY:
+
+                ReportPOJO reportPOJOModified = data.getParcelableExtra("modified_report");
                 int noOfImages = data.getIntExtra("no_of_images", 2);
-                break;
+                modifiedReportPojo =  reportPOJOModified;
+                if(noOfImages == 2){
+                    onTwoImagesPerPage();
+                }else{
+                    onFourImagesPerPage();
+                }
         }
     }
 }

@@ -27,7 +27,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_chip_drawable_gray"
                 android:text="@string/damage"
-                android:textColor="@android:color/white"
+                android:textColor="@color/black"
                 android:textStyle="bold" />
             <CheckedTextView
                 android:layout_marginLeft="5dp"
@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_chip_drawable_gray"
                 android:text="@string/overview"
-                android:textColor="@android:color/white"
+                android:textColor="@color/black"
                 android:textStyle="bold" />
         </LinearLayout>
 
