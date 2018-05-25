@@ -880,7 +880,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
             case SHOWPREFERENCEACTIVITY:
 
                 ReportPOJO reportPOJOModified = data.getParcelableExtra("modified_report");
-                int noOfImages = data.getIntExtra("no_of_images", 2);
+                int noOfImages = data.getIntExtra("per_page_images",2);
                 modifiedReportPojo =  reportPOJOModified;
                 if(noOfImages == 2){
                     onTwoImagesPerPage();
