@@ -192,7 +192,7 @@ public class CustomisationActivity extends AppCompatActivity {
 
             @Override
             public void onItemSelected() {
-                itemView.setBackgroundColor(Color.LTGRAY);
+                itemView.setBackgroundColor(ContextCompat.getColor(CustomisationActivity.this,R.color.colorPrimary));
             }
 
             @Override
