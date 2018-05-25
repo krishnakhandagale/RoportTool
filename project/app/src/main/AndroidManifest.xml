@@ -50,13 +50,14 @@
         <activity android:name=".ui.AddEditCategoryActivity"   android:windowSoftInputMode="adjustPan" />
         <activity android:name=".ui.ImageSliderActivity"   android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".ui.AddEditCauseOfLossActivity"   android:windowSoftInputMode="adjustPan"/>
+
         <activity android:name=".ui.SplashScreenActivity">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
-
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
+
         <activity android:name=".ui.CustomisationActivity"/>
     </application>
 
