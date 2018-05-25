@@ -1,0 +1,17 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.necistudio.vigerpdf.utils.ViewPagerZoomHorizontal
+        android:id="@+id/pdfViewer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    <ImageView
+        android:src="@drawable/ic_share_black"
+        android:id="@+id/shareBottomButton"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:padding="5dp"
+        android:layout_margin="5dp"
+        android:layout_gravity="end|bottom"
+        android:layout_marginBottom="10dp" />
+</FrameLayout>
