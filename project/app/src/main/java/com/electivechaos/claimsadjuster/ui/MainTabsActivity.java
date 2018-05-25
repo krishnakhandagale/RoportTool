@@ -73,7 +73,7 @@ public class MainTabsActivity extends BaseActivity {
             }else if(position == 1){
                 return  "Categories";
             }else {
-                return "Cause Of Loss";
+                return "Peril";
             }
         }
     }
