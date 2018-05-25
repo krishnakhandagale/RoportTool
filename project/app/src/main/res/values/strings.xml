@@ -113,4 +113,5 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="pick_time">Pick Time</string>
     <string name="enter_square_footage">Enter square footage</string>
+    <string name="please_select_images_per_page">Please select number of images per page. </string>
 </resources>

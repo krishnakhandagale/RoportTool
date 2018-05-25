@@ -24,6 +24,7 @@ import com.electivechaos.claimsadjuster.R;
 import com.electivechaos.claimsadjuster.interfaces.ItemTouchHelperViewHolder;
 import com.electivechaos.claimsadjuster.pojo.Label;
 import com.electivechaos.claimsadjuster.pojo.ReportPOJO;
+import com.electivechaos.claimsadjuster.utils.CommonUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,6 +33,8 @@ public class CustomisationActivity extends AppCompatActivity {
     private ReportPOJO reportPOJO = null;
     private int noOfImagesPerPage;
 
+    private View parentLayoutForMessages;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +42,7 @@ public class CustomisationActivity extends AppCompatActivity {
 
         final CheckedTextView twoPerPageTextView = findViewById(R.id.twoPerPage);
         final CheckedTextView fourPerPageTextView = findViewById(R.id.fourPerPage);
+        parentLayoutForMessages = findViewById(R.id.parentLayoutForMessages);
 
         reportPOJO = getIntent().getParcelableExtra("reportDetails");
 
@@ -91,11 +95,15 @@ public class CustomisationActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.putExtra("modified_report", reportPOJO);
-                intent.putExtra("per_page_images", noOfImagesPerPage);
-                setResult(RESULT_OK, intent);
-                finish();
+                if(!twoPerPageTextView.isChecked() && !fourPerPageTextView.isChecked()){
+                    CommonUtils.showSnackbarMessage(getString(R.string.please_select_images_per_page), true, true,parentLayoutForMessages, CustomisationActivity.this);
+                }else {
+                    Intent intent = new Intent();
+                    intent.putExtra("modified_report", reportPOJO);
+                    intent.putExtra("per_page_images", noOfImagesPerPage);
+                    setResult(RESULT_OK, intent);
+                    finish();
+                }
             }
         });
 

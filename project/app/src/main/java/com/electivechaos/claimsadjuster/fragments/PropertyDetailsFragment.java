@@ -100,7 +100,7 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
         }else {
             menuSiding.setText(propertyDetailsPOJO.getSiding().toString());
         }
-        if(propertyDetailsPOJO.getSiding().isEmpty() || propertyDetailsPOJO.getSiding()==null){
+        if(propertyDetailsPOJO.getFoundation().isEmpty() || propertyDetailsPOJO.getFoundation()==null){
 
         }else {
             menuFoundation.setText(propertyDetailsPOJO.getFoundation().toString());
