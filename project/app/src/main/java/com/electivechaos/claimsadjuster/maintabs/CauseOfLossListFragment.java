@@ -25,14 +25,14 @@ import android.widget.TextView;
 
 import com.electivechaos.claimsadjuster.R;
 import com.electivechaos.claimsadjuster.database.CategoryListDBHelper;
-import com.electivechaos.claimsadjuster.pojo.CauseOfLoss;
+import com.electivechaos.claimsadjuster.pojo.PerilPOJO;
 import com.electivechaos.claimsadjuster.ui.AddEditCauseOfLossActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CauseOfLossListFragment  extends Fragment {
-    public ArrayList<CauseOfLoss> causeOfLosses = new ArrayList<>();
+    public ArrayList<PerilPOJO> perilPOJOS = new ArrayList<>();
     private RecyclerView recyclerView;
     static CategoryListDBHelper mCategoryListDBHelper;
     private CauseOfLossListFragment.CauseOfLossListAdapter mAdapter;
@@ -67,7 +67,7 @@ public class CauseOfLossListFragment  extends Fragment {
                 Bundle dataFromActivity = data.getBundleExtra("causeOdLossDetails");
                 String categoryName = dataFromActivity.get("name").toString();
                 String categoryDescription = dataFromActivity.get("description").toString();
-                CauseOfLoss loss = new CauseOfLoss();
+                PerilPOJO loss = new PerilPOJO();
                 loss.setName(categoryName);
                 loss.setDescription(categoryDescription);
                 mCategoryListDBHelper.addCauseOfLoss(loss);
@@ -81,7 +81,7 @@ public class CauseOfLossListFragment  extends Fragment {
                 String name = dataFromActivity.get("name").toString();
                 String desc = dataFromActivity.get("description").toString();
                 int id = Integer.parseInt(dataFromActivity.get("id").toString());
-                CauseOfLoss loss = new CauseOfLoss();
+                PerilPOJO loss = new PerilPOJO();
                 loss.setName(name);
                 loss.setDescription(desc);
                 loss.setID(id);
@@ -92,17 +92,17 @@ public class CauseOfLossListFragment  extends Fragment {
     }
 
     private  void updateCauseOfLossList(){
-        causeOfLosses = mCategoryListDBHelper.getCauseOfLosses();
-        mAdapter = new CauseOfLossListFragment.CauseOfLossListAdapter(causeOfLosses, getContext());
+        perilPOJOS = mCategoryListDBHelper.getCauseOfLosses();
+        mAdapter = new CauseOfLossListFragment.CauseOfLossListAdapter(perilPOJOS, getContext());
         recyclerView.setAdapter(mAdapter);
     }
 
     public class CauseOfLossListAdapter extends RecyclerView.Adapter<CauseOfLossListFragment.CauseOfLossListAdapter.MyViewHolder> {
         private Context context;
-        public List<CauseOfLoss> causeOfLosses;
-        public CauseOfLossListAdapter(ArrayList<CauseOfLoss> causeOfLosses, Context context) {
+        public List<PerilPOJO> perilPOJOS;
+        public CauseOfLossListAdapter(ArrayList<PerilPOJO> perilPOJOS, Context context) {
             this.context = context;
-            this.causeOfLosses = causeOfLosses;
+            this.perilPOJOS = perilPOJOS;
         }
 
         @NonNull
@@ -115,7 +115,7 @@ public class CauseOfLossListFragment  extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull final CauseOfLossListAdapter.MyViewHolder holder, int position) {
-            final CauseOfLoss loss = causeOfLosses.get(position);
+            final PerilPOJO loss = perilPOJOS.get(position);
             holder.title.setText(loss.getName());
             holder.desc.setText(loss.getDescription());
 
@@ -172,7 +172,7 @@ public class CauseOfLossListFragment  extends Fragment {
 
         @Override
         public int getItemCount() {
-            return causeOfLosses.size();
+            return perilPOJOS.size();
         }
 
         public class MyViewHolder extends RecyclerView.ViewHolder {

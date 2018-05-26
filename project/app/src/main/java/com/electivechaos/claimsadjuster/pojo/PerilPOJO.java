@@ -4,7 +4,7 @@ package com.electivechaos.claimsadjuster.pojo;
  * Created by barkhasikka on 28/04/18.
  */
 
-public class CauseOfLoss {
+public class PerilPOJO {
     String name;
     String description;
     int id;

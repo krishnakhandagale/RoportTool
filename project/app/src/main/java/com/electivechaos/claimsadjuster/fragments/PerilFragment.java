@@ -22,14 +22,14 @@ import com.electivechaos.claimsadjuster.database.CategoryListDBHelper;
 import com.electivechaos.claimsadjuster.interfaces.NextButtonClickListener;
 import com.electivechaos.claimsadjuster.interfaces.OnGenerateReportClickListener;
 import com.electivechaos.claimsadjuster.interfaces.OnSaveReportClickListener;
-import com.electivechaos.claimsadjuster.pojo.CauseOfLoss;
+import com.electivechaos.claimsadjuster.pojo.PerilPOJO;
 import com.electivechaos.claimsadjuster.ui.AddEditCauseOfLossActivity;
 
 import java.util.ArrayList;
 
 public class PerilFragment extends Fragment {
 
-    public ArrayList<CauseOfLoss> causeOfLosses = new ArrayList<>();
+    public ArrayList<PerilPOJO> perilPOJOS = new ArrayList<>();
     private RecyclerView recyclerView;
     static CategoryListDBHelper mCategoryListDBHelper;
 

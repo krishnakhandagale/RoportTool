@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.electivechaos.claimsadjuster.pojo.Category;
-import com.electivechaos.claimsadjuster.pojo.CauseOfLoss;
+import com.electivechaos.claimsadjuster.pojo.PerilPOJO;
 import com.electivechaos.claimsadjuster.pojo.ImageDetailsPOJO;
 import com.electivechaos.claimsadjuster.pojo.Label;
 import com.electivechaos.claimsadjuster.pojo.PropertyDetailsPOJO;
@@ -321,35 +321,35 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         return  db.delete(TABLE_CAUSE_OF_LOSS,"_id=?",new String[]{id});
     }
 
-    public long addCauseOfLoss(CauseOfLoss causeOfLoss){
+    public long addCauseOfLoss(PerilPOJO perilPOJO){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(KEY_CAUSE_OF_LOSS_NAME, causeOfLoss.getName());
-        contentValues.put(KEY_CAUSE_OF_LOSS_DESCRIPTION, causeOfLoss.getDescription());
+        contentValues.put(KEY_CAUSE_OF_LOSS_NAME, perilPOJO.getName());
+        contentValues.put(KEY_CAUSE_OF_LOSS_DESCRIPTION, perilPOJO.getDescription());
         return  db.insert(TABLE_CAUSE_OF_LOSS,null,contentValues);
     }
 
-    public int updateCauseOfLoss(CauseOfLoss causeOfLoss){
+    public int updateCauseOfLoss(PerilPOJO perilPOJO){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(KEY_CAUSE_OF_LOSS_NAME, causeOfLoss.getName());
-        contentValues.put(KEY_CAUSE_OF_LOSS_DESCRIPTION, causeOfLoss.getDescription());
-        return  db.update(TABLE_CAUSE_OF_LOSS, contentValues,KEY_CAUSE_OF_LOSS_ID+"="+causeOfLoss.getID(),null);
+        contentValues.put(KEY_CAUSE_OF_LOSS_NAME, perilPOJO.getName());
+        contentValues.put(KEY_CAUSE_OF_LOSS_DESCRIPTION, perilPOJO.getDescription());
+        return  db.update(TABLE_CAUSE_OF_LOSS, contentValues,KEY_CAUSE_OF_LOSS_ID+"="+ perilPOJO.getID(),null);
     }
 
-    public ArrayList<CauseOfLoss> getCauseOfLosses(){
+    public ArrayList<PerilPOJO> getCauseOfLosses(){
 
-        ArrayList<CauseOfLoss> tempList = new ArrayList<>();
+        ArrayList<PerilPOJO> tempList = new ArrayList<>();
         String selectQueryReportTable = "SELECT  * FROM " + TABLE_CAUSE_OF_LOSS;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQueryReportTable, null);
         if (cursor.moveToFirst()) {
             do {
-                CauseOfLoss causeOfLoss = new CauseOfLoss();
-                causeOfLoss.setID(cursor.getInt(0));
-                causeOfLoss.setName(cursor.getString(1));
-                causeOfLoss.setDescription(cursor.getString(2));
-                tempList.add(causeOfLoss);
+                PerilPOJO perilPOJO = new PerilPOJO();
+                perilPOJO.setID(cursor.getInt(0));
+                perilPOJO.setName(cursor.getString(1));
+                perilPOJO.setDescription(cursor.getString(2));
+                tempList.add(perilPOJO);
             } while (cursor.moveToNext());
         }
         return  tempList;
