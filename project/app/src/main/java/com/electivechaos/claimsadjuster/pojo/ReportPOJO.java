@@ -17,11 +17,11 @@ public class ReportPOJO  implements Parcelable{
 
     private String createdDate;
     private String filePath;
-    private String causeOfLoss;
     private String googleMapSnapShotFilePath;
 
     public ArrayList labelArrayList;
     private PropertyDetailsPOJO propertyDetailsPOJO;
+    private PerilPOJO perilPOJO;
 
     public ReportPOJO(){
 
@@ -32,13 +32,13 @@ public class ReportPOJO  implements Parcelable{
         claimNumber = "";
         createdDate = "";
         filePath = "";
-        causeOfLoss = "";
         locationLat = "";
         locationLong = "";
         addressLine = "";
         googleMapSnapShotFilePath = "";
         labelArrayList = new ArrayList<>();
         propertyDetailsPOJO = new PropertyDetailsPOJO();
+        perilPOJO = new PerilPOJO();
     }
 
     public PropertyDetailsPOJO getPropertyDetailsPOJO() {
@@ -47,6 +47,14 @@ public class ReportPOJO  implements Parcelable{
 
     public void setPropertyDetailsPOJO(PropertyDetailsPOJO propertyDetailsPOJO) {
         this.propertyDetailsPOJO = propertyDetailsPOJO;
+    }
+
+    public PerilPOJO getPerilPOJO() {
+        return perilPOJO;
+    }
+
+    public void setPerilPOJO(PerilPOJO perilPOJO) {
+        this.perilPOJO = perilPOJO;
     }
 
     protected ReportPOJO(Parcel in) {
@@ -62,11 +70,11 @@ public class ReportPOJO  implements Parcelable{
         addressLine = in.readString();
         createdDate = in.readString();
         filePath = in.readString();
-        causeOfLoss = in.readString();
         filePath = in.readString();
         googleMapSnapShotFilePath = in.readString();
         labelArrayList = in.createTypedArrayList(Label.CREATOR);
         propertyDetailsPOJO = in.readParcelable(PropertyDetailsPOJO.class.getClassLoader());
+        perilPOJO = in.readParcelable(PerilPOJO.class.getClassLoader());
     }
 
 
@@ -88,10 +96,6 @@ public class ReportPOJO  implements Parcelable{
 
     public void setAddressLine(String addressLine) {
         this.addressLine = addressLine;
-    }
-
-    public void setCauseOfLoss(String causeOfLoss) {
-        this.causeOfLoss = causeOfLoss;
     }
 
 
@@ -168,10 +172,6 @@ public class ReportPOJO  implements Parcelable{
         this.filePath = filePath;
     }
 
-    public String getCauseOfLoss() {
-        return causeOfLoss;
-    }
-
     public ArrayList<Label> getLabelArrayList() {
         return labelArrayList == null ?  new ArrayList<Label>() :  labelArrayList;
     }
@@ -202,11 +202,11 @@ public class ReportPOJO  implements Parcelable{
         dest.writeString(addressLine);
         dest.writeString(createdDate);
         dest.writeString(filePath);
-        dest.writeString(causeOfLoss);
         dest.writeString(filePath);
         dest.writeString(googleMapSnapShotFilePath);
         dest.writeTypedList(labelArrayList);
         dest.writeParcelable(propertyDetailsPOJO , flags);
+        dest.writeParcelable(perilPOJO , flags);
     }
 
     public String getGoogleMapSnapShotFilePath() {

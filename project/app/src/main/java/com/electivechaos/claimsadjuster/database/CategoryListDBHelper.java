@@ -3,6 +3,7 @@ package com.electivechaos.claimsadjuster.database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -24,7 +25,7 @@ import java.util.Iterator;
  */
 
 public class CategoryListDBHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 84;
+    private static final int DATABASE_VERSION = 86;
 
 
     // Database Name
@@ -153,7 +154,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         String CREATE_PERIL_TABLE = "CREATE TABLE "
                 + TABLE_PERIL + "("
                 + KEY_PERIL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT DEFAULT 0,"
-                + KEY_PERIL_NAME + " TEXT,"
+                + KEY_PERIL_NAME + " TEXT UNIQUE,"
                 + KEY_PERIL_DESCRIPTION + " TEXT"+")";
 
 
@@ -322,11 +323,16 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
     }
 
     public long addPeril(PerilPOJO perilPOJO){
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(KEY_PERIL_NAME, perilPOJO.getName());
-        contentValues.put(KEY_PERIL_DESCRIPTION, perilPOJO.getDescription());
-        return  db.insert(TABLE_PERIL,null,contentValues);
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(KEY_PERIL_NAME, perilPOJO.getName());
+            contentValues.put(KEY_PERIL_DESCRIPTION, perilPOJO.getDescription());
+            return  db.insert(TABLE_PERIL,null,contentValues);
+        }catch (SQLiteConstraintException exception){
+            return -100;
+        }
+
     }
 
     public int updatePeril(PerilPOJO perilPOJO){
@@ -376,7 +382,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         values.put(KEY_LOCATION_LAT, reportItemPOJO.getLocationLat());
         values.put(KEY_LOCATION_LONG, reportItemPOJO.getLocationLong());
         values.put(KEY_ADDRESS_LINE, reportItemPOJO.getAddressLine());
-        values.put(KEY_PERIL, reportItemPOJO.getCauseOfLoss());
+        values.put(KEY_PERIL, reportItemPOJO.getPerilPOJO().getName());
         values.put(KEY_LOCATION_SNAPSHOT, reportItemPOJO.getGoogleMapSnapShotFilePath());
         long insertIntoReportList = db.insert(TABLE_REPORTS_LIST, null, values);
         if (insertIntoReportList != -1) {
@@ -489,7 +495,9 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 reportPOJO.setLocationLat(c.getString(7));
                 reportPOJO.setLocationLong(c.getString(8));
                 reportPOJO.setAddressLine(c.getString(9));
-                reportPOJO.setCauseOfLoss(c.getString(10));
+                PerilPOJO perilPOJO = new PerilPOJO();
+                perilPOJO.setName(c.getString(10));
+                reportPOJO.setPerilPOJO(perilPOJO);
                 reportPOJO.setGoogleMapSnapShotFilePath(c.getString(11));
             }while (c.moveToNext());
         }

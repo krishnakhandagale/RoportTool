@@ -22,22 +22,27 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.electivechaos.claimsadjuster.R;
 import com.electivechaos.claimsadjuster.adapters.DrawerMenuListAdapter;
 import com.electivechaos.claimsadjuster.database.CategoryListDBHelper;
 import com.electivechaos.claimsadjuster.interfaces.NextButtonClickListener;
 import com.electivechaos.claimsadjuster.interfaces.OnGenerateReportClickListener;
+import com.electivechaos.claimsadjuster.interfaces.OnPerilSelectionListener;
 import com.electivechaos.claimsadjuster.interfaces.OnSaveReportClickListener;
 import com.electivechaos.claimsadjuster.pojo.PerilPOJO;
 import com.electivechaos.claimsadjuster.ui.AddEditPerilActivity;
+import com.electivechaos.claimsadjuster.utils.CommonUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PerilListMenuFragment extends Fragment {
+public class PerilListMenuFragment extends Fragment{
 
     private Boolean isFabOpen = false;
     private FloatingActionButton showFabBtn,fabGoNextBtn, fabAddLabelBtn, fabGenerateReportBtn, fabSaveReportBtn;
@@ -46,12 +51,22 @@ public class PerilListMenuFragment extends Fragment {
     private DrawerMenuListAdapter.OnLabelAddClickListener onLabelAddClickListener;
     private OnSaveReportClickListener onSaveReportClickListener;
     private OnGenerateReportClickListener onGenerateReportClickListener;
+    private OnPerilSelectionListener onPerilSelectionListener;
 
 
     public ArrayList<PerilPOJO> perilPOJOS = new ArrayList<>();
     private RecyclerView recyclerView;
     static CategoryListDBHelper mCategoryListDBHelper;
     private PerilListMenuFragment.PerilListAdapter mAdapter;
+
+    private PerilPOJO perilPOJODetails;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        perilPOJODetails = getArguments() != null ? (PerilPOJO) getArguments().getParcelable("perilDetails") : new PerilPOJO();
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -165,8 +180,15 @@ public class PerilListMenuFragment extends Fragment {
                 PerilPOJO perilPOJO = new PerilPOJO();
                 perilPOJO.setName(categoryName);
                 perilPOJO.setDescription(categoryDescription);
-                mCategoryListDBHelper.addPeril(perilPOJO);
-                updatePerilDetails();
+                long result = mCategoryListDBHelper.addPeril(perilPOJO);
+
+                if(result == -100){
+                    Toast.makeText(getContext(), "Peril with same name already exists.", Toast.LENGTH_SHORT).show();
+                }else{
+                    updatePerilDetails();
+                }
+
+
             }
         }
 
@@ -188,32 +210,66 @@ public class PerilListMenuFragment extends Fragment {
 
     private  void updatePerilDetails(){
         perilPOJOS = mCategoryListDBHelper.getCauseOfLosses();
-        mAdapter = new PerilListMenuFragment.PerilListAdapter(perilPOJOS, getContext());
+        mAdapter = new PerilListMenuFragment.PerilListAdapter(perilPOJOS, getContext(),perilPOJODetails);
         recyclerView.setAdapter(mAdapter);
+
     }
 
     public class PerilListAdapter extends RecyclerView.Adapter<PerilListMenuFragment.PerilListAdapter.MyViewHolder> {
         private Context context;
         public List<PerilPOJO> perilPOJOS;
-        public PerilListAdapter(ArrayList<PerilPOJO> perilPOJOS, Context context) {
+
+        private int sSelected = -1;
+        private CheckBox lastSelectedCheckbox;
+        PerilPOJO perilPOJODetails;
+
+        public PerilListAdapter(ArrayList<PerilPOJO> perilPOJOS, Context context, PerilPOJO perilPOJODetails) {
             this.context = context;
             this.perilPOJOS = perilPOJOS;
+            this.perilPOJODetails = perilPOJODetails;
         }
+
 
         @NonNull
         @Override
         public PerilListAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View itemView = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.single_row_category, parent, false);
+                    .inflate(R.layout.single_row_peril_menu_layout, parent, false);
             return new PerilListMenuFragment.PerilListAdapter.MyViewHolder(itemView);
         }
 
         @Override
-        public void onBindViewHolder(@NonNull final PerilListAdapter.MyViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull final PerilListAdapter.MyViewHolder holder, final int position) {
             final PerilPOJO perilPOJO = perilPOJOS.get(position);
+
             holder.title.setText(perilPOJO.getName());
             holder.desc.setText(perilPOJO.getDescription());
+            holder.chkItem.setChecked(sSelected == position);
+            holder.chkItem.setTag(position);
 
+                if(perilPOJODetails !=null) {
+                    if (perilPOJODetails.getName().equals(perilPOJO.getName())) {
+                        lastSelectedCheckbox = holder.chkItem;
+                        holder.chkItem.setChecked(true);
+                    }
+                }
+
+            holder.chkItem.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                    sSelected = position;
+
+                    if(lastSelectedCheckbox == null){
+                        lastSelectedCheckbox = (CheckBox) buttonView;
+                    }else if(lastSelectedCheckbox != null && (int)lastSelectedCheckbox.getTag() != position){
+                        lastSelectedCheckbox.setChecked(false);
+                        lastSelectedCheckbox = (CheckBox) buttonView;
+                    }
+                    onPerilSelectionListener.setPeril(perilPOJO);
+
+                }
+            });
             holder.textViewOptions.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -270,19 +326,27 @@ public class PerilListMenuFragment extends Fragment {
             return perilPOJOS.size();
         }
 
-        public class MyViewHolder extends RecyclerView.ViewHolder {
+
+
+        public class MyViewHolder extends RecyclerView.ViewHolder{
             public TextView title, desc;
             public ImageView textViewOptions;
+            public CheckBox chkItem;
+
             public MyViewHolder(View itemView) {
                 super(itemView);
                 title = itemView.findViewById(R.id.category_name);
                 desc = itemView.findViewById(R.id.category_description);
                 textViewOptions = itemView.findViewById(R.id.textViewOptions);
+                chkItem = itemView.findViewById(R.id.perilSelect);
 
             }
 
         }
+
+
     }
+
 
     @Override
     public void onAttach(Context context) {
@@ -292,6 +356,7 @@ public class PerilListMenuFragment extends Fragment {
             onLabelAddClickListener = (DrawerMenuListAdapter.OnLabelAddClickListener)getActivity();
             onSaveReportClickListener = (OnSaveReportClickListener)getActivity();
             onGenerateReportClickListener = (OnGenerateReportClickListener)getActivity();
+            onPerilSelectionListener = (OnPerilSelectionListener) getActivity();
         }catch (ClassCastException ex) {
             ex.printStackTrace();
         }

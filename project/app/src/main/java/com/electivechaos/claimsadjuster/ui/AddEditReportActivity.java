@@ -50,6 +50,7 @@ import com.electivechaos.claimsadjuster.interfaces.ClaimDetailsDataInterface;
 import com.electivechaos.claimsadjuster.interfaces.LossLocationDataInterface;
 import com.electivechaos.claimsadjuster.interfaces.NextButtonClickListener;
 import com.electivechaos.claimsadjuster.interfaces.OnGenerateReportClickListener;
+import com.electivechaos.claimsadjuster.interfaces.OnPerilSelectionListener;
 import com.electivechaos.claimsadjuster.interfaces.OnPropertyDetailsClickListener;
 import com.electivechaos.claimsadjuster.interfaces.OnSaveReportClickListener;
 import com.electivechaos.claimsadjuster.interfaces.PreferenceDialogCallback;
@@ -58,6 +59,7 @@ import com.electivechaos.claimsadjuster.listeners.OnMediaScannerListener;
 import com.electivechaos.claimsadjuster.pojo.Category;
 import com.electivechaos.claimsadjuster.pojo.ImageDetailsPOJO;
 import com.electivechaos.claimsadjuster.pojo.Label;
+import com.electivechaos.claimsadjuster.pojo.PerilPOJO;
 import com.electivechaos.claimsadjuster.pojo.ReportPOJO;
 import com.electivechaos.claimsadjuster.utils.CommonUtils;
 
@@ -72,7 +74,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-public class AddEditReportActivity extends AppCompatActivity implements DrawerMenuListAdapter.OnLabelAddClickListener, AddEditLabelInterface, ClaimDetailsDataInterface, LossLocationDataInterface,SelectedImagesDataInterface,NextButtonClickListener,OnSaveReportClickListener, OnGenerateReportClickListener, OnPropertyDetailsClickListener {
+public class AddEditReportActivity extends AppCompatActivity implements DrawerMenuListAdapter.OnLabelAddClickListener, AddEditLabelInterface, ClaimDetailsDataInterface, LossLocationDataInterface,SelectedImagesDataInterface,NextButtonClickListener,OnSaveReportClickListener, OnGenerateReportClickListener, OnPropertyDetailsClickListener,OnPerilSelectionListener {
     private DrawerLayout mDrawerLayout;
     private DrawerMenuListAdapter drawerMenuListAdapter;
     private String tabName;
@@ -179,15 +181,9 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
                 }
                 else if (parentMenuItems.get(groupPosition).equals("Peril")) {
-                    mDrawerLayout.closeDrawer(Gravity.LEFT);
-                    FragmentManager transactionManager = getSupportFragmentManager();
-                    FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.content_frame, new PerilListMenuFragment());
-                    fragmentTransaction.commit();
-                    tabName = "PerilListMenuFragment";
 
-                    selectedFragmentPosition = 2;
-                    activityActionBar.setTitle("Peril");
+                    mDrawerLayout.closeDrawer(Gravity.LEFT);
+                    putPerilDetails();
                     actionBarEditBtn.setVisible(false);
 
                 } else if (parentMenuItems.get(groupPosition).equals("Point Of Origin")) {
@@ -272,6 +268,24 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
         selectedFragmentPosition = 1;
         activityActionBar.setTitle("Property Details");
+    }
+
+    private void putPerilDetails(){
+        FragmentManager transactionManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
+
+        PerilListMenuFragment perilListMenuFragment=new PerilListMenuFragment();
+        Bundle perilDetailsData = new Bundle();
+
+        perilDetailsData.putParcelable("perilDetails",reportPOJO.getPerilPOJO());
+        perilListMenuFragment.setArguments(perilDetailsData);
+
+        fragmentTransaction.replace(R.id.content_frame,perilListMenuFragment);
+        fragmentTransaction.commit();
+
+        selectedFragmentPosition = 2;
+        activityActionBar.setTitle("Peril");
+        tabName="PerilListMenuFragment";
     }
 
     @Override
@@ -589,12 +603,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
          }
         else if(selectedFragmentPosition == 2) {
             mDrawerLayout.closeDrawer(Gravity.LEFT);
-            FragmentManager transactionManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
-            fragmentTransaction.replace(R.id.content_frame,new PerilListMenuFragment());
-            fragmentTransaction.commit();
-            tabName="PerilListMenuFragment";
-
+            putPerilDetails();
             activityActionBar.setTitle("Peril");
             actionBarEditBtn.setVisible(false);
 
@@ -728,6 +737,11 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         reportPOJO.getPropertyDetailsPOJO().setFoundation(foundation);
         new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, foundation, reportPOJO.getId(),false,categoryListDBHelper,"foundation").execute();
 
+    }
+
+    @Override
+    public void setPeril(PerilPOJO perilPOJO) {
+        reportPOJO.setPerilPOJO(perilPOJO);
     }
 
 

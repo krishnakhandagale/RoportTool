@@ -88,7 +88,7 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
         menuFoundation = view.findViewById(R.id.menuThree);
 
         txtDate.setText(propertyDetailsPOJO.getPropertyDate().toString());
-        String squareFootageValue = String.format("%.4f",propertyDetailsPOJO.getSquareFootage());
+        String squareFootageValue = String.format("%.2f",propertyDetailsPOJO.getSquareFootage());
         squareFootage.setText(squareFootageValue);
         if(propertyDetailsPOJO.getRoofSystem().isEmpty() || propertyDetailsPOJO.getRoofSystem()==null){
 
