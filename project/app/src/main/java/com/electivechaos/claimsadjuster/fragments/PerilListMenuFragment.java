@@ -32,7 +32,7 @@ import com.electivechaos.claimsadjuster.interfaces.NextButtonClickListener;
 import com.electivechaos.claimsadjuster.interfaces.OnGenerateReportClickListener;
 import com.electivechaos.claimsadjuster.interfaces.OnSaveReportClickListener;
 import com.electivechaos.claimsadjuster.pojo.PerilPOJO;
-import com.electivechaos.claimsadjuster.ui.AddEditCauseOfLossActivity;
+import com.electivechaos.claimsadjuster.ui.AddEditPerilActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +56,7 @@ public class PerilListMenuFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.peril_list_fragment, container, false);
+        View view = inflater.inflate(R.layout.peril_list_menu_fragment, container, false);
         showFabBtn = view.findViewById(R.id.showFab);
         fabGoNextBtn = view.findViewById(R.id.fabGoNext);
         fabAddLabelBtn = view.findViewById(R.id.fabAddLabel);
@@ -118,7 +118,7 @@ public class PerilListMenuFragment extends Fragment {
         btnAddReport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent addCategoryActivity = new Intent(getActivity(), AddEditCauseOfLossActivity.class);
+                Intent addCategoryActivity = new Intent(getActivity(), AddEditPerilActivity.class);
                 startActivityForResult(addCategoryActivity, 1);
             }
         });
@@ -224,7 +224,7 @@ public class PerilListMenuFragment extends Fragment {
                         public boolean onMenuItemClick(MenuItem item) {
                             switch (item.getItemId()) {
                                 case R.id.edit:
-                                    Intent causeOfLossActivity = new Intent(context, AddEditCauseOfLossActivity.class);
+                                    Intent causeOfLossActivity = new Intent(context, AddEditPerilActivity.class);
                                     Bundle data = new Bundle();
                                     data.putString("name", loss.getName());
                                     data.putString("description", loss.getDescription());

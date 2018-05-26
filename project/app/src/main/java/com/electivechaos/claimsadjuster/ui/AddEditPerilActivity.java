@@ -11,7 +11,7 @@ import android.widget.EditText;
 import com.electivechaos.claimsadjuster.R;
 import com.electivechaos.claimsadjuster.utils.CommonUtils;
 
-public class AddEditCauseOfLossActivity extends AppCompatActivity {
+public class AddEditPerilActivity extends AppCompatActivity {
     private  String causeOfLossTitle = null;
     private  String causeOfLossDescription = null;
     private  int causeOfLossID = -1;
@@ -23,7 +23,7 @@ public class AddEditCauseOfLossActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_edit_cause_of_loss);
+        setContentView(R.layout.activity_add_edit_peril);
 
         name = findViewById(R.id.name);
         description = findViewById(R.id.description);
@@ -59,12 +59,12 @@ public class AddEditCauseOfLossActivity extends AppCompatActivity {
 
 
             if(nameString.isEmpty()){
-                CommonUtils.hideKeyboard(AddEditCauseOfLossActivity.this);
-                CommonUtils.showSnackbarMessage("Please enter name.", true,true, addEditCauseParentLayout, AddEditCauseOfLossActivity.this);
+                CommonUtils.hideKeyboard(AddEditPerilActivity.this);
+                CommonUtils.showSnackbarMessage("Please enter name.", true,true, addEditCauseParentLayout, AddEditPerilActivity.this);
                 return;
             }else if(descriptionString.isEmpty()){
-                CommonUtils.hideKeyboard(AddEditCauseOfLossActivity.this);
-                CommonUtils.showSnackbarMessage("Please enter description.", true,true, addEditCauseParentLayout, AddEditCauseOfLossActivity.this);
+                CommonUtils.hideKeyboard(AddEditPerilActivity.this);
+                CommonUtils.showSnackbarMessage("Please enter description.", true,true, addEditCauseParentLayout, AddEditPerilActivity.this);
                 return;
             }
 

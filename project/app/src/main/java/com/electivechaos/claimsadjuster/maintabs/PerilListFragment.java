@@ -26,7 +26,7 @@ import android.widget.TextView;
 import com.electivechaos.claimsadjuster.R;
 import com.electivechaos.claimsadjuster.database.CategoryListDBHelper;
 import com.electivechaos.claimsadjuster.pojo.PerilPOJO;
-import com.electivechaos.claimsadjuster.ui.AddEditCauseOfLossActivity;
+import com.electivechaos.claimsadjuster.ui.AddEditPerilActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +39,7 @@ public class PerilListFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.cause_of_loss_list_fragment, container, false);
+        View view = inflater.inflate(R.layout.peril_list_main_tab_fragment, container, false);
         recyclerView = view.findViewById(R.id.recycler_view);
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
@@ -52,7 +52,7 @@ public class PerilListFragment extends Fragment {
         btnAddReport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent addCategoryActivity = new Intent(getActivity(), AddEditCauseOfLossActivity.class);
+                Intent addCategoryActivity = new Intent(getActivity(), AddEditPerilActivity.class);
                 startActivityForResult(addCategoryActivity, 1);
             }
         });
@@ -129,7 +129,7 @@ public class PerilListFragment extends Fragment {
                         public boolean onMenuItemClick(MenuItem item) {
                             switch (item.getItemId()) {
                                 case R.id.edit:
-                                    Intent causeOfLossActivity = new Intent(context, AddEditCauseOfLossActivity.class);
+                                    Intent causeOfLossActivity = new Intent(context, AddEditPerilActivity.class);
                                     Bundle data = new Bundle();
                                     data.putString("name", loss.getName());
                                     data.putString("description", loss.getDescription());
