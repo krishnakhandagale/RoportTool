@@ -10,6 +10,10 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.electivechaos.claimsadjuster.R;
+import com.github.barteksc.pdfviewer.PDFView;
+import com.github.barteksc.pdfviewer.listener.OnLoadCompleteListener;
+import com.github.barteksc.pdfviewer.listener.OnPageChangeListener;
+import com.github.barteksc.pdfviewer.listener.OnPageScrollListener;
 
 import java.io.File;
 
@@ -24,7 +28,9 @@ public class PdfViewerActivity extends AppCompatActivity {
 
 
 
-        String filePath = getIntent().getExtras().getString("filePath");
+//        getSupportActionBar().hide();
+        final PDFView pdfView = findViewById(R.id.pdfView);
+        String filePath = getIntent().getExtras().getString("report_path");
         final File file = new File(filePath);
 
         shareBottomButton.setOnClickListener(new View.OnClickListener() {
@@ -40,5 +46,27 @@ public class PdfViewerActivity extends AppCompatActivity {
                 startActivity(share);
             }
         });
+        pdfView.fromFile(file).spacing(5).onLoad(new OnLoadCompleteListener() {
+            @Override
+            public void loadComplete(int nbPages) {
+//                numberOfPagesInPdf = nbPages;
+                pdfView.setBackgroundColor(getResources().getColor(R.color.imagepicker_grey));
+            }
+        }).onPageChange(new OnPageChangeListener() {
+
+            @Override
+            public void onPageChanged(int page, int pageCount) {
+//                Toast toast = Toast.makeText(PdfViewerActivity.this,(page+1)+"/"+numberOfPagesInPdf,Toast.LENGTH_SHORT);
+//                toast.setGravity(Gravity.TOP| Gravity.RIGHT, 20, 100);
+//                toast.show();
+            }
+        }).onPageScroll(new OnPageScrollListener() {
+            @Override
+            public void onPageScrolled(int page, float positionOffset) {
+//                positionYOffset = (int) positionOffset;
+
+            }
+        })
+                .load();
     }
 }

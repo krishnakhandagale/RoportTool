@@ -26,6 +26,7 @@ import com.electivechaos.claimsadjuster.R;
 import com.electivechaos.claimsadjuster.database.CategoryListDBHelper;
 import com.electivechaos.claimsadjuster.pojo.ReportItemPOJO;
 import com.electivechaos.claimsadjuster.ui.AddEditReportActivity;
+import com.electivechaos.claimsadjuster.ui.PdfViewerActivity;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -130,7 +131,7 @@ public class ReportListFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     PopupMenu popup = new PopupMenu(context, holder.textViewOptions);
-                    popup.inflate(R.menu.action_menu);
+                    popup.inflate(R.menu.report_action_menu);
                     popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
@@ -173,6 +174,12 @@ public class ReportListFragment extends Fragment {
                                     negativeButton.setTextColor(ContextCompat.getColor(context,R.color.colorPrimaryDark));
                                     Button positiveButton = alert.getButton(DialogInterface.BUTTON_POSITIVE);
                                     positiveButton.setTextColor(ContextCompat.getColor(context,R.color.colorPrimaryDark));
+                                    break;
+                                case R.id.view:
+
+                                    Intent pdfViewerIntent = new Intent(getContext(), PdfViewerActivity.class);
+                                    pdfViewerIntent.putExtra("report_path", reportItemPOJO.getFilePath());
+                                    startActivity(pdfViewerIntent);
                                     break;
                             }
                             return false;
