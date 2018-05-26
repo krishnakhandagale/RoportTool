@@ -19,7 +19,7 @@ public class AddEditPerilActivity extends AppCompatActivity {
     private  EditText name;
     private  EditText description;
     private Button updateCategoryButton;
-    private  View addEditCauseParentLayout;
+    private  View addEditPerilParentLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,13 +27,13 @@ public class AddEditPerilActivity extends AppCompatActivity {
 
         name = findViewById(R.id.name);
         description = findViewById(R.id.description);
-        updateCategoryButton = findViewById(R.id.updateCauseOfLoss);
+        updateCategoryButton = findViewById(R.id.updatePeril);
 
-        addEditCauseParentLayout = findViewById(R.id.addEditCauseParentLayout);
+        addEditPerilParentLayout = findViewById(R.id.addEditPerilParentLayout);
 
 
         if(getIntent().getExtras()!= null){
-            Bundle dataFromActivity = getIntent().getBundleExtra("causeOdLossDetails");
+            Bundle dataFromActivity = getIntent().getBundleExtra("perilDetails");
             perilTitle = dataFromActivity.get("name").toString();
             perilDescription = dataFromActivity.get("description").toString();
             perilID = Integer.parseInt(dataFromActivity.get("id").toString());
@@ -60,11 +60,11 @@ public class AddEditPerilActivity extends AppCompatActivity {
 
             if(nameString.isEmpty()){
                 CommonUtils.hideKeyboard(AddEditPerilActivity.this);
-                CommonUtils.showSnackbarMessage("Please enter name.", true,true, addEditCauseParentLayout, AddEditPerilActivity.this);
+                CommonUtils.showSnackbarMessage("Please enter name.", true,true, addEditPerilParentLayout, AddEditPerilActivity.this);
                 return;
             }else if(descriptionString.isEmpty()){
                 CommonUtils.hideKeyboard(AddEditPerilActivity.this);
-                CommonUtils.showSnackbarMessage("Please enter description.", true,true, addEditCauseParentLayout, AddEditPerilActivity.this);
+                CommonUtils.showSnackbarMessage("Please enter description.", true,true, addEditPerilParentLayout, AddEditPerilActivity.this);
                 return;
             }
 
@@ -73,7 +73,7 @@ public class AddEditPerilActivity extends AppCompatActivity {
                 data.putString("name", nameString);
                 data.putString("description", descriptionString);
                 Intent intent = new Intent();
-                intent.putExtra("causeOdLossDetails", data);
+                intent.putExtra("perilDetails", data);
                 setResult(Activity.RESULT_OK, intent);
                 finish();
             }else {
@@ -81,7 +81,7 @@ public class AddEditPerilActivity extends AppCompatActivity {
                 data.putString("name", nameString);
                 data.putString("description", descriptionString);
                 data.putInt("id", perilID);
-                intent.putExtra("causeOdLossDetails", data);
+                intent.putExtra("perilDetails", data);
                 setResult(2, intent);
                 finish();
             }

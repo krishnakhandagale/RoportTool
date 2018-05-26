@@ -64,7 +64,7 @@ public class PerilListFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
             if (resultCode == Activity.RESULT_OK) {
-                Bundle dataFromActivity = data.getBundleExtra("causeOdLossDetails");
+                Bundle dataFromActivity = data.getBundleExtra("perilDetails");
                 String categoryName = dataFromActivity.get("name").toString();
                 String categoryDescription = dataFromActivity.get("description").toString();
                 PerilPOJO perilPOJO = new PerilPOJO();
@@ -77,7 +77,7 @@ public class PerilListFragment extends Fragment {
 
         if (requestCode == 2) {
             if (resultCode == 2) {
-                Bundle dataFromActivity = data.getBundleExtra("causeOdLossDetails");
+                Bundle dataFromActivity = data.getBundleExtra("perilDetails");
                 String name = dataFromActivity.get("name").toString();
                 String desc = dataFromActivity.get("description").toString();
                 int id = Integer.parseInt(dataFromActivity.get("id").toString());
@@ -115,9 +115,9 @@ public class PerilListFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull final PerilListAdapter.MyViewHolder holder, int position) {
-            final PerilPOJO loss = perilPOJOS.get(position);
-            holder.title.setText(loss.getName());
-            holder.desc.setText(loss.getDescription());
+            final PerilPOJO perilPOJO = perilPOJOS.get(position);
+            holder.title.setText(perilPOJO.getName());
+            holder.desc.setText(perilPOJO.getDescription());
 
             holder.textViewOptions.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -129,13 +129,13 @@ public class PerilListFragment extends Fragment {
                         public boolean onMenuItemClick(MenuItem item) {
                             switch (item.getItemId()) {
                                 case R.id.edit:
-                                    Intent causeOfLossActivity = new Intent(context, AddEditPerilActivity.class);
+                                    Intent perilActivity = new Intent(context, AddEditPerilActivity.class);
                                     Bundle data = new Bundle();
-                                    data.putString("name", loss.getName());
-                                    data.putString("description", loss.getDescription());
-                                    data.putInt("id", loss.getID());
-                                    causeOfLossActivity.putExtra("causeOdLossDetails", data);
-                                    startActivityForResult(causeOfLossActivity, 2);
+                                    data.putString("name", perilPOJO.getName());
+                                    data.putString("description", perilPOJO.getDescription());
+                                    data.putInt("id", perilPOJO.getID());
+                                    perilActivity.putExtra("perilDetails", data);
+                                    startActivityForResult(perilActivity, 2);
                                     break;
                                 case R.id.delete:
                                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -143,7 +143,7 @@ public class PerilListFragment extends Fragment {
                                             .setMessage("Are you sure you want to delete this cause of loss ?")
                                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                                 public void onClick(DialogInterface dialog, int which) {
-                                                    mCategoryListDBHelper.deletePeril(String.valueOf(loss.getID()));
+                                                    mCategoryListDBHelper.deletePeril(String.valueOf(perilPOJO.getID()));
                                                     updatePerilDetails();
                                                 }
                                             })
