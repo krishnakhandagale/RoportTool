@@ -35,7 +35,7 @@ public class PerilListFragment extends Fragment {
     public ArrayList<PerilPOJO> perilPOJOS = new ArrayList<>();
     private RecyclerView recyclerView;
     static CategoryListDBHelper mCategoryListDBHelper;
-    private PerilListFragment.CauseOfLossListAdapter mAdapter;
+    private PerilListFragment.PerilListAdapter mAdapter;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -46,7 +46,7 @@ public class PerilListFragment extends Fragment {
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         mCategoryListDBHelper = CategoryListDBHelper.getInstance(getActivity());
-        updateCauseOfLossList();
+        updatePerilDetails();
 
         FloatingActionButton btnAddReport = view.findViewById(R.id.btnAddPeril);
         btnAddReport.setOnClickListener(new View.OnClickListener() {
@@ -67,11 +67,11 @@ public class PerilListFragment extends Fragment {
                 Bundle dataFromActivity = data.getBundleExtra("causeOdLossDetails");
                 String categoryName = dataFromActivity.get("name").toString();
                 String categoryDescription = dataFromActivity.get("description").toString();
-                PerilPOJO loss = new PerilPOJO();
-                loss.setName(categoryName);
-                loss.setDescription(categoryDescription);
-                mCategoryListDBHelper.addCauseOfLoss(loss);
-                updateCauseOfLossList();
+                PerilPOJO perilPOJO = new PerilPOJO();
+                perilPOJO.setName(categoryName);
+                perilPOJO.setDescription(categoryDescription);
+                mCategoryListDBHelper.addPeril(perilPOJO);
+                updatePerilDetails();
             }
         }
 
@@ -85,36 +85,36 @@ public class PerilListFragment extends Fragment {
                 loss.setName(name);
                 loss.setDescription(desc);
                 loss.setID(id);
-                mCategoryListDBHelper.updateCauseOfLoss(loss);
-                updateCauseOfLossList();
+                mCategoryListDBHelper.updatePeril(loss);
+                updatePerilDetails();
             }
         }
     }
 
-    private  void updateCauseOfLossList(){
+    private  void updatePerilDetails(){
         perilPOJOS = mCategoryListDBHelper.getCauseOfLosses();
-        mAdapter = new PerilListFragment.CauseOfLossListAdapter(perilPOJOS, getContext());
+        mAdapter = new PerilListFragment.PerilListAdapter(perilPOJOS, getContext());
         recyclerView.setAdapter(mAdapter);
     }
 
-    public class CauseOfLossListAdapter extends RecyclerView.Adapter<PerilListFragment.CauseOfLossListAdapter.MyViewHolder> {
+    public class PerilListAdapter extends RecyclerView.Adapter<PerilListFragment.PerilListAdapter.MyViewHolder> {
         private Context context;
         public List<PerilPOJO> perilPOJOS;
-        public CauseOfLossListAdapter(ArrayList<PerilPOJO> perilPOJOS, Context context) {
+        public PerilListAdapter(ArrayList<PerilPOJO> perilPOJOS, Context context) {
             this.context = context;
             this.perilPOJOS = perilPOJOS;
         }
 
         @NonNull
         @Override
-        public CauseOfLossListAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        public PerilListAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View itemView = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.single_row_category, parent, false);
-            return new PerilListFragment.CauseOfLossListAdapter.MyViewHolder(itemView);
+            return new PerilListFragment.PerilListAdapter.MyViewHolder(itemView);
         }
 
         @Override
-        public void onBindViewHolder(@NonNull final CauseOfLossListAdapter.MyViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull final PerilListAdapter.MyViewHolder holder, int position) {
             final PerilPOJO loss = perilPOJOS.get(position);
             holder.title.setText(loss.getName());
             holder.desc.setText(loss.getDescription());
@@ -143,8 +143,8 @@ public class PerilListFragment extends Fragment {
                                             .setMessage("Are you sure you want to delete this cause of loss ?")
                                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                                 public void onClick(DialogInterface dialog, int which) {
-                                                    mCategoryListDBHelper.deleteCauseOfLoss(String.valueOf(loss.getID()));
-                                                    updateCauseOfLossList();
+                                                    mCategoryListDBHelper.deletePeril(String.valueOf(loss.getID()));
+                                                    updatePerilDetails();
                                                 }
                                             })
                                             .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {

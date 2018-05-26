@@ -24,7 +24,7 @@ import java.util.Iterator;
  */
 
 public class CategoryListDBHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 83;
+    private static final int DATABASE_VERSION = 84;
 
 
     // Database Name
@@ -34,7 +34,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
     private static final String TABLE_REPORTS_LIST = "generated_reports";
     private static final String TABLE_MASTER_CATEGORY = "master_category";
     private static final String TABLE_CATEGORY_LABELS = "category_label";
-    private static final String TABLE_CAUSE_OF_LOSS = "cause_of_loss";
+    private static final String TABLE_PERIL = "peril";
     private static final String TABLE_REPORTS_IMAGE_DETAILS = "report_image_details";
     private static final String TABLE_REPORTS_ELEVATION_IMAGE_DETAILS = "report_elevation_image_details";
     private static final String TABLE_PROPERTY_DETAILS = "property_details";
@@ -54,7 +54,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
     private static final String KEY_LOCATION_LAT = "location_lat";
     private static final String KEY_LOCATION_LONG = "location_lang";
     private static final String KEY_ADDRESS_LINE = "address_line";
-    private static final String KEY_CAUSE_OF_LOSS="cause_of_loss";
+    private static final String KEY_PERIL="peril";
     private static final String KEY_LOCATION_SNAPSHOT ="location_snapshot";
 
 
@@ -87,9 +87,9 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
 
     //Elevation image table columns name
     private static final String KEY_ELEVATION_IMAGE_ID = "elevation_image_id";
-    private static final String KEY_CAUSE_OF_LOSS_ID = "_id";
-    private static final String KEY_CAUSE_OF_LOSS_NAME = "name";
-    private static final String KEY_CAUSE_OF_LOSS_DESCRIPTION = "description";
+    private static final String KEY_PERIL_ID = "_id";
+    private static final String KEY_PERIL_NAME = "name";
+    private static final String KEY_PERIL_DESCRIPTION = "description";
     private static final String KEY_FK_LABEL_ID = "label_id_fk";
 
 
@@ -132,7 +132,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 + KEY_LOCATION_LAT + " TEXT,"
                 + KEY_LOCATION_LONG + " TEXT,"
                 + KEY_ADDRESS_LINE + " TEXT,"
-                + KEY_CAUSE_OF_LOSS + " TEXT,"
+                + KEY_PERIL + " TEXT,"
                 + KEY_LOCATION_SNAPSHOT + " TEXT"+")";
 
 
@@ -150,11 +150,11 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
 
                 + "FOREIGN KEY("+ KEY_FK_LABEL_REPORT_ID +") REFERENCES "+TABLE_REPORTS_LIST+"("+ KEY_REPORT_ID +")"+ " ON DELETE CASCADE)";
 
-        String CREATE_CAUSE_OF_LOSS_TABLE = "CREATE TABLE "
-                + TABLE_CAUSE_OF_LOSS + "("
-                + KEY_CAUSE_OF_LOSS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT DEFAULT 0,"
-                + KEY_CAUSE_OF_LOSS_NAME + " TEXT,"
-                + KEY_CAUSE_OF_LOSS_DESCRIPTION + " TEXT"+")";
+        String CREATE_PERIL_TABLE = "CREATE TABLE "
+                + TABLE_PERIL + "("
+                + KEY_PERIL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT DEFAULT 0,"
+                + KEY_PERIL_NAME + " TEXT,"
+                + KEY_PERIL_DESCRIPTION + " TEXT"+")";
 
 
         String CREATE_IMAGE_DETAILS_TABLE = "CREATE TABLE " + TABLE_REPORTS_IMAGE_DETAILS + "("
@@ -212,7 +212,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 "Detached Garage",
                 "Underwriting Risk"
         };
-        db.execSQL(CREATE_CAUSE_OF_LOSS_TABLE);
+        db.execSQL(CREATE_PERIL_TABLE);
         db.execSQL(CREATE_REPORTS_LIST_TABLE);
 
         db.execSQL(CREATE_CATEGORY_DETAILS_TABLE);
@@ -240,7 +240,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_REPORTS_LIST);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_MASTER_CATEGORY);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CATEGORY_LABELS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_CAUSE_OF_LOSS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PERIL);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_REPORTS_ELEVATION_IMAGE_DETAILS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_REPORTS_IMAGE_DETAILS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PROPERTY_DETAILS);
@@ -316,31 +316,31 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         return  db.update(TABLE_CATEGORY_LABELS, contentValues,KEY_LABEL_ID+"="+label.getId(),null);
     }
 
-    public int deleteCauseOfLoss(String id){
+    public int deletePeril(String id){
         SQLiteDatabase db = this.getWritableDatabase();
-        return  db.delete(TABLE_CAUSE_OF_LOSS,"_id=?",new String[]{id});
+        return  db.delete(TABLE_PERIL,"_id=?",new String[]{id});
     }
 
-    public long addCauseOfLoss(PerilPOJO perilPOJO){
+    public long addPeril(PerilPOJO perilPOJO){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(KEY_CAUSE_OF_LOSS_NAME, perilPOJO.getName());
-        contentValues.put(KEY_CAUSE_OF_LOSS_DESCRIPTION, perilPOJO.getDescription());
-        return  db.insert(TABLE_CAUSE_OF_LOSS,null,contentValues);
+        contentValues.put(KEY_PERIL_NAME, perilPOJO.getName());
+        contentValues.put(KEY_PERIL_DESCRIPTION, perilPOJO.getDescription());
+        return  db.insert(TABLE_PERIL,null,contentValues);
     }
 
-    public int updateCauseOfLoss(PerilPOJO perilPOJO){
+    public int updatePeril(PerilPOJO perilPOJO){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(KEY_CAUSE_OF_LOSS_NAME, perilPOJO.getName());
-        contentValues.put(KEY_CAUSE_OF_LOSS_DESCRIPTION, perilPOJO.getDescription());
-        return  db.update(TABLE_CAUSE_OF_LOSS, contentValues,KEY_CAUSE_OF_LOSS_ID+"="+ perilPOJO.getID(),null);
+        contentValues.put(KEY_PERIL_NAME, perilPOJO.getName());
+        contentValues.put(KEY_PERIL_DESCRIPTION, perilPOJO.getDescription());
+        return  db.update(TABLE_PERIL, contentValues,KEY_PERIL_ID+"="+ perilPOJO.getID(),null);
     }
 
     public ArrayList<PerilPOJO> getCauseOfLosses(){
 
         ArrayList<PerilPOJO> tempList = new ArrayList<>();
-        String selectQueryReportTable = "SELECT  * FROM " + TABLE_CAUSE_OF_LOSS;
+        String selectQueryReportTable = "SELECT  * FROM " + TABLE_PERIL;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQueryReportTable, null);
         if (cursor.moveToFirst()) {
@@ -376,7 +376,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         values.put(KEY_LOCATION_LAT, reportItemPOJO.getLocationLat());
         values.put(KEY_LOCATION_LONG, reportItemPOJO.getLocationLong());
         values.put(KEY_ADDRESS_LINE, reportItemPOJO.getAddressLine());
-        values.put(KEY_CAUSE_OF_LOSS, reportItemPOJO.getCauseOfLoss());
+        values.put(KEY_PERIL, reportItemPOJO.getCauseOfLoss());
         values.put(KEY_LOCATION_SNAPSHOT, reportItemPOJO.getGoogleMapSnapShotFilePath());
         long insertIntoReportList = db.insert(TABLE_REPORTS_LIST, null, values);
         if (insertIntoReportList != -1) {

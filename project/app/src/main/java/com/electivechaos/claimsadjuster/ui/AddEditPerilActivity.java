@@ -12,9 +12,9 @@ import com.electivechaos.claimsadjuster.R;
 import com.electivechaos.claimsadjuster.utils.CommonUtils;
 
 public class AddEditPerilActivity extends AppCompatActivity {
-    private  String causeOfLossTitle = null;
-    private  String causeOfLossDescription = null;
-    private  int causeOfLossID = -1;
+    private  String perilTitle = null;
+    private  String perilDescription = null;
+    private  int perilID = -1;
 
     private  EditText name;
     private  EditText description;
@@ -34,17 +34,17 @@ public class AddEditPerilActivity extends AppCompatActivity {
 
         if(getIntent().getExtras()!= null){
             Bundle dataFromActivity = getIntent().getBundleExtra("causeOdLossDetails");
-            causeOfLossTitle = dataFromActivity.get("name").toString();
-            causeOfLossDescription = dataFromActivity.get("description").toString();
-            causeOfLossID = Integer.parseInt(dataFromActivity.get("id").toString());
+            perilTitle = dataFromActivity.get("name").toString();
+            perilDescription = dataFromActivity.get("description").toString();
+            perilID = Integer.parseInt(dataFromActivity.get("id").toString());
 
 
-            updateCategoryButton.setText("Update Cause Of Loss");
+            updateCategoryButton.setText("Update Peril");
 
 
-            name.setText(causeOfLossTitle.toString());
+            name.setText(perilTitle.toString());
 
-            description.setText(causeOfLossDescription.toString());
+            description.setText(perilDescription.toString());
         }
 
         updateCategoryButton.setOnClickListener(new View.OnClickListener() {
@@ -69,7 +69,7 @@ public class AddEditPerilActivity extends AppCompatActivity {
             }
 
             Bundle data = new Bundle();
-            if(causeOfLossID == -1) {
+            if(perilID == -1) {
                 data.putString("name", nameString);
                 data.putString("description", descriptionString);
                 Intent intent = new Intent();
@@ -80,7 +80,7 @@ public class AddEditPerilActivity extends AppCompatActivity {
                 Intent intent = new Intent();
                 data.putString("name", nameString);
                 data.putString("description", descriptionString);
-                data.putInt("id", causeOfLossID);
+                data.putInt("id", perilID);
                 intent.putExtra("causeOdLossDetails", data);
                 setResult(2, intent);
                 finish();
