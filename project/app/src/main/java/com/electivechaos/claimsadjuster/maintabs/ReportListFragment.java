@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.electivechaos.claimsadjuster.R;
 import com.electivechaos.claimsadjuster.database.CategoryListDBHelper;
@@ -177,9 +178,15 @@ public class ReportListFragment extends Fragment {
                                     break;
                                 case R.id.view:
 
-                                    Intent pdfViewerIntent = new Intent(getContext(), PdfViewerActivity.class);
-                                    pdfViewerIntent.putExtra("report_path", reportItemPOJO.getFilePath());
-                                    startActivity(pdfViewerIntent);
+                                    if(reportItemPOJO.getFilePath() != null && reportItemPOJO.getFilePath().isEmpty() == false){
+                                        Intent pdfViewerIntent = new Intent(getContext(), PdfViewerActivity.class);
+                                        pdfViewerIntent.putExtra("report_path", reportItemPOJO.getFilePath());
+                                        startActivity(pdfViewerIntent);
+                                    }else{
+                                        Toast.makeText(getContext(),"Seems no pdf report was generated, please generate report and view again.",Toast.LENGTH_LONG).show();
+                                    }
+
+
                                     break;
                             }
                             return false;

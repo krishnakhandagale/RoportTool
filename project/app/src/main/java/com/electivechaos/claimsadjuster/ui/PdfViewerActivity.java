@@ -26,9 +26,6 @@ public class PdfViewerActivity extends AppCompatActivity {
 
         ImageView shareBottomButton = findViewById(R.id.shareBottomButton);
 
-
-
-//        getSupportActionBar().hide();
         final PDFView pdfView = findViewById(R.id.pdfView);
         String filePath = getIntent().getExtras().getString("report_path");
         final File file = new File(filePath);
@@ -49,24 +46,18 @@ public class PdfViewerActivity extends AppCompatActivity {
         pdfView.fromFile(file).spacing(5).onLoad(new OnLoadCompleteListener() {
             @Override
             public void loadComplete(int nbPages) {
-//                numberOfPagesInPdf = nbPages;
                 pdfView.setBackgroundColor(getResources().getColor(R.color.imagepicker_grey));
             }
         }).onPageChange(new OnPageChangeListener() {
 
             @Override
             public void onPageChanged(int page, int pageCount) {
-//                Toast toast = Toast.makeText(PdfViewerActivity.this,(page+1)+"/"+numberOfPagesInPdf,Toast.LENGTH_SHORT);
-//                toast.setGravity(Gravity.TOP| Gravity.RIGHT, 20, 100);
-//                toast.show();
             }
         }).onPageScroll(new OnPageScrollListener() {
             @Override
             public void onPageScrolled(int page, float positionOffset) {
-//                positionYOffset = (int) positionOffset;
 
             }
-        })
-                .load();
+        }).load();
     }
 }
