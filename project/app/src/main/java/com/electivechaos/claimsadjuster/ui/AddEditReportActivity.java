@@ -41,8 +41,8 @@ import com.electivechaos.claimsadjuster.asynctasks.DBUpdateTaskOnTextChanged;
 import com.electivechaos.claimsadjuster.asynctasks.DatabaseSaveReportTask;
 import com.electivechaos.claimsadjuster.database.CategoryListDBHelper;
 import com.electivechaos.claimsadjuster.fragments.AddEditReportSelectedImagesFragment;
-import com.electivechaos.claimsadjuster.fragments.PerilFragment;
 import com.electivechaos.claimsadjuster.fragments.ClaimDetailsFragment;
+import com.electivechaos.claimsadjuster.fragments.PerilListMenuFragment;
 import com.electivechaos.claimsadjuster.fragments.PointOfOriginFragment;
 import com.electivechaos.claimsadjuster.fragments.PropertyDetailsFragment;
 import com.electivechaos.claimsadjuster.interfaces.AddEditLabelInterface;
@@ -182,9 +182,9 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                     mDrawerLayout.closeDrawer(Gravity.LEFT);
                     FragmentManager transactionManager = getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.content_frame, new PerilFragment());
+                    fragmentTransaction.replace(R.id.content_frame, new PerilListMenuFragment());
                     fragmentTransaction.commit();
-                    tabName = "PerilFragment";
+                    tabName = "PerilListMenuFragment";
 
                     selectedFragmentPosition = 2;
                     activityActionBar.setTitle("Peril");
@@ -591,9 +591,9 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
             mDrawerLayout.closeDrawer(Gravity.LEFT);
             FragmentManager transactionManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
-            fragmentTransaction.replace(R.id.content_frame,new PerilFragment());
+            fragmentTransaction.replace(R.id.content_frame,new PerilListMenuFragment());
             fragmentTransaction.commit();
-            tabName="PerilFragment";
+            tabName="PerilListMenuFragment";
 
             activityActionBar.setTitle("Peril");
             actionBarEditBtn.setVisible(false);

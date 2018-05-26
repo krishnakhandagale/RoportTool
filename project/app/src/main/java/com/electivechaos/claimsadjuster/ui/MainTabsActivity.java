@@ -12,7 +12,7 @@ import android.support.v7.widget.Toolbar;
 import com.electivechaos.claimsadjuster.BaseActivity;
 import com.electivechaos.claimsadjuster.R;
 import com.electivechaos.claimsadjuster.maintabs.CategoryListFragment;
-import com.electivechaos.claimsadjuster.maintabs.CauseOfLossListFragment;
+import com.electivechaos.claimsadjuster.maintabs.PerilListFragment;
 import com.electivechaos.claimsadjuster.maintabs.ReportListFragment;
 
 public class MainTabsActivity extends BaseActivity {
@@ -56,7 +56,7 @@ public class MainTabsActivity extends BaseActivity {
                 Fragment fragment = new CategoryListFragment();
                 return fragment;
             }else {
-                Fragment fragment = new CauseOfLossListFragment();
+                Fragment fragment = new PerilListFragment();
                 return fragment;
             }
 

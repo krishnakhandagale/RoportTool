@@ -31,11 +31,11 @@ import com.electivechaos.claimsadjuster.ui.AddEditCauseOfLossActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CauseOfLossListFragment  extends Fragment {
+public class PerilListFragment extends Fragment {
     public ArrayList<PerilPOJO> perilPOJOS = new ArrayList<>();
     private RecyclerView recyclerView;
     static CategoryListDBHelper mCategoryListDBHelper;
-    private CauseOfLossListFragment.CauseOfLossListAdapter mAdapter;
+    private PerilListFragment.CauseOfLossListAdapter mAdapter;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -48,7 +48,7 @@ public class CauseOfLossListFragment  extends Fragment {
         mCategoryListDBHelper = CategoryListDBHelper.getInstance(getActivity());
         updateCauseOfLossList();
 
-        FloatingActionButton btnAddReport = view.findViewById(R.id.btnAddCauseOfLoss);
+        FloatingActionButton btnAddReport = view.findViewById(R.id.btnAddPeril);
         btnAddReport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,11 +93,11 @@ public class CauseOfLossListFragment  extends Fragment {
 
     private  void updateCauseOfLossList(){
         perilPOJOS = mCategoryListDBHelper.getCauseOfLosses();
-        mAdapter = new CauseOfLossListFragment.CauseOfLossListAdapter(perilPOJOS, getContext());
+        mAdapter = new PerilListFragment.CauseOfLossListAdapter(perilPOJOS, getContext());
         recyclerView.setAdapter(mAdapter);
     }
 
-    public class CauseOfLossListAdapter extends RecyclerView.Adapter<CauseOfLossListFragment.CauseOfLossListAdapter.MyViewHolder> {
+    public class CauseOfLossListAdapter extends RecyclerView.Adapter<PerilListFragment.CauseOfLossListAdapter.MyViewHolder> {
         private Context context;
         public List<PerilPOJO> perilPOJOS;
         public CauseOfLossListAdapter(ArrayList<PerilPOJO> perilPOJOS, Context context) {
@@ -110,7 +110,7 @@ public class CauseOfLossListFragment  extends Fragment {
         public CauseOfLossListAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View itemView = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.single_row_category, parent, false);
-            return new CauseOfLossListFragment.CauseOfLossListAdapter.MyViewHolder(itemView);
+            return new PerilListFragment.CauseOfLossListAdapter.MyViewHolder(itemView);
         }
 
         @Override
