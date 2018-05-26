@@ -46,7 +46,6 @@ public class PdfViewerActivity extends AppCompatActivity {
         pdfView.fromFile(file).spacing(5).onLoad(new OnLoadCompleteListener() {
             @Override
             public void loadComplete(int nbPages) {
-                pdfView.setBackgroundColor(getResources().getColor(R.color.imagepicker_grey));
             }
         }).onPageChange(new OnPageChangeListener() {
 

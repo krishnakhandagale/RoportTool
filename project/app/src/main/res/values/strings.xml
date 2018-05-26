@@ -116,4 +116,5 @@
     <string name="please_select_images_per_page">Please select number of images per page. </string>
     <string name="peril_details">Peril Details</string>
     <string name="add_peril">Add Peril</string>
+    <string name="share_report_button">Share report button</string>
 </resources>
