@@ -790,7 +790,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
         });
     }
 
-    private void onCaptureImageResult(Intent data) throws IOException {
+    private void onCaptureImageResult(Intent data) {
         new SingleMediaScanner(getContext(), photoFile, new OnMediaScannerListener() {
             @Override
             public void onMediaScanComplete(String path, Uri uri) {

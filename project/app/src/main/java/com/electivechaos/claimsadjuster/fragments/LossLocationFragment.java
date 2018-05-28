@@ -316,7 +316,7 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
 
     @Override
     public void onDetach() {
-        super.onDetach();;
+        super.onDetach();
         if(mGoogleApiClient != null){
             mGoogleApiClient.disconnect();
         }
