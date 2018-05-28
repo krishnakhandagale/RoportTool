@@ -567,7 +567,6 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
             }
         }
 
-
     }
 
 
@@ -575,8 +574,6 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     public void setSelectedElevationImages(ArrayList<ImageDetailsPOJO> elevationImagesList,int labelPosition) {
 
         reportPOJO.getLabelArrayList().get(labelPosition).setSelectedElevationImages(elevationImagesList);
-
-
         new DBSelectedImagesTask(AddEditReportActivity.this, progressBarLayout, reportPOJO.getLabelArrayList().get(labelPosition),false,categoryListDBHelper,"elevationImages").execute();
 
     }
@@ -693,8 +690,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
     public void onTwoImagesPerPage() {
         boolean result = PermissionUtilities.checkPermission(AddEditReportActivity.this,null,PermissionUtilities.MY_APP_GENERATE_REPORT_PERMISSIONS_TWO);
-
-
+        
         if(result)
             new DBUpdateFilePath(AddEditReportActivity.this,findViewById(R.id.progressBarLayout), modifiedReportPojo, true, categoryListDBHelper).execute(2);
     }
