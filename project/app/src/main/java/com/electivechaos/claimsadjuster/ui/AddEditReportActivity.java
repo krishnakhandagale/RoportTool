@@ -483,8 +483,6 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
             actionBarEditBtn.setVisible(false);
 
         }
-
-
     }
 
 
@@ -642,7 +640,6 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     public  boolean validateData(){
         if(reportPOJO.getReportTitle().trim().isEmpty()){
             CommonUtils.showSnackbarMessage(getString(R.string.please_enter_title), true, true,parentLayoutForMessages, AddEditReportActivity.this);
-
             return false;
         }else if(reportPOJO.getReportDescription().trim().isEmpty()){
             CommonUtils.showSnackbarMessage(getString(R.string.enter_description_message), true, true, parentLayoutForMessages, AddEditReportActivity.this);
@@ -690,7 +687,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
     public void onTwoImagesPerPage() {
         boolean result = PermissionUtilities.checkPermission(AddEditReportActivity.this,null,PermissionUtilities.MY_APP_GENERATE_REPORT_PERMISSIONS_TWO);
-        
+
         if(result)
             new DBUpdateFilePath(AddEditReportActivity.this,findViewById(R.id.progressBarLayout), modifiedReportPojo, true, categoryListDBHelper).execute(2);
     }
