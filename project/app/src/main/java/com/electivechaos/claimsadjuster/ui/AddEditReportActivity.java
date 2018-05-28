@@ -585,8 +585,6 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     public void setSelectedImages(ArrayList<ImageDetailsPOJO> imagesList , int labelPosition) {
 
         reportPOJO.getLabelArrayList().get(labelPosition).setSelectedImages(imagesList);
-
-
         new DBSelectedImagesTask(AddEditReportActivity.this, progressBarLayout, reportPOJO.getLabelArrayList().get(labelPosition),false,categoryListDBHelper,"selectedImages").execute();
 
     }
@@ -742,6 +740,8 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     @Override
     public void setPeril(PerilPOJO perilPOJO) {
         reportPOJO.setPerilPOJO(perilPOJO);
+        new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, perilPOJO.getName(),reportPOJO.getId(),false,categoryListDBHelper,"peril").execute();
+
     }
 
 

@@ -55,7 +55,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
     private static final String KEY_LOCATION_LAT = "location_lat";
     private static final String KEY_LOCATION_LONG = "location_lang";
     private static final String KEY_ADDRESS_LINE = "address_line";
-    private static final String KEY_PERIL="peril";
+    private static final String KEY_PERIL = "peril";
     private static final String KEY_LOCATION_SNAPSHOT ="location_snapshot";
 
 
@@ -628,6 +628,11 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
     public void updateFoundation(String value, String reportId) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("UPDATE property_details SET foundation='"+value+"' WHERE report_id_fk='"+reportId+"'");
+    }
+
+    public void updatePerilName(String value, String reportId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("UPDATE generated_reports SET peril='"+value+"' WHERE report_id='"+reportId+"'");
     }
 
 
