@@ -20,6 +20,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -728,6 +729,12 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         reportPOJO.getPropertyDetailsPOJO().setFoundation(foundation);
         new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, foundation, reportPOJO.getId(),false,categoryListDBHelper,"foundation").execute();
 
+    }
+
+    @Override
+    public void setPropertyBuildingType(String buildingType) {
+        reportPOJO.getPropertyDetailsPOJO().setBuildingType(buildingType);
+        new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, buildingType, reportPOJO.getId(),false,categoryListDBHelper,"building_type").execute();
     }
 
     @Override

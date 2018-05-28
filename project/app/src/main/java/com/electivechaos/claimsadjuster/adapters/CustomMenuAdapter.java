@@ -8,6 +8,10 @@ import android.widget.BaseAdapter;
 import android.widget.CheckedTextView;
 
 import com.electivechaos.claimsadjuster.R;
+import com.electivechaos.claimsadjuster.pojo.BuildingTypePOJO;
+import com.electivechaos.claimsadjuster.pojo.FoundationPOJO;
+import com.electivechaos.claimsadjuster.pojo.RoofSystemPOJO;
+import com.electivechaos.claimsadjuster.pojo.SidingPOJO;
 
 import java.util.ArrayList;
 
@@ -20,12 +24,14 @@ public class CustomMenuAdapter extends BaseAdapter {
     private ArrayList arrayList;
     private int selectedPosition;
     private String value;
+    private String type;
 
-    public CustomMenuAdapter(Context context, ArrayList arrayList, int selectedPosition, String value){
+    public CustomMenuAdapter(Context context, ArrayList arrayList, int selectedPosition, String value, String type){
         this.arrayList = arrayList;
         this.context = context;
         this.selectedPosition = selectedPosition;
         this.value = value;
+        this.type = type;
     }
     @Override
     public int getCount() {
@@ -55,12 +61,51 @@ public class CustomMenuAdapter extends BaseAdapter {
         } else{
           holder = (ViewHolder) convertView.getTag();
         }
-       if(selectedPosition == position || arrayList.get(position).toString().equals(value)) {
-           holder.checkedTextView.setChecked(true);
-       }else {
-           holder.checkedTextView.setChecked(false);
+
+       if(type.equalsIgnoreCase("roof_system")) {
+
+           RoofSystemPOJO roofSystemPOJO=(RoofSystemPOJO)arrayList.get(position);
+           if(selectedPosition == position || roofSystemPOJO.getName().toString().equals(value)) {
+               holder.checkedTextView.setChecked(true);
+           }else {
+               holder.checkedTextView.setChecked(false);
+           }
+           holder.checkedTextView.setText(roofSystemPOJO.getName());
        }
-        holder.checkedTextView.setText(arrayList.get(position).toString());
+       else if(type.equalsIgnoreCase("siding")){
+
+           SidingPOJO sidingPOJO=(SidingPOJO) arrayList.get(position);
+           if(selectedPosition == position || sidingPOJO.getName().toString().equals(value)) {
+               holder.checkedTextView.setChecked(true);
+           }else {
+               holder.checkedTextView.setChecked(false);
+           }
+
+           holder.checkedTextView.setText(sidingPOJO.getName());
+       }
+       else if(type.equalsIgnoreCase("foundation")){
+           FoundationPOJO foundationPOJO=(FoundationPOJO) arrayList.get(position);
+
+           if(selectedPosition == position || foundationPOJO.getName().toString().equals(value)) {
+               holder.checkedTextView.setChecked(true);
+           }else {
+               holder.checkedTextView.setChecked(false);
+           }
+
+           holder.checkedTextView.setText(foundationPOJO.getName());
+       }
+       else if(type.equalsIgnoreCase("building_type")){
+           BuildingTypePOJO buildingTypePOJO=(BuildingTypePOJO) arrayList.get(position);
+
+           if(selectedPosition == position || buildingTypePOJO.getName().toString().equals(value)) {
+               holder.checkedTextView.setChecked(true);
+           }else {
+               holder.checkedTextView.setChecked(false);
+           }
+
+           holder.checkedTextView.setText(buildingTypePOJO.getName());
+       }
+
         return convertView;
     }
     public static  class ViewHolder{

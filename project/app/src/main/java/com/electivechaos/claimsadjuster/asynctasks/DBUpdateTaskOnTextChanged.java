@@ -81,6 +81,9 @@ public class DBUpdateTaskOnTextChanged extends AsyncTask<String,Void,Void> {
         else if(type.equalsIgnoreCase("foundation")){
             categoryListDBHelper.updateFoundation(value, reportId);
         }
+        else if(type.equalsIgnoreCase("building_type")){
+            categoryListDBHelper.updateBuildingType(value, reportId);
+        }
         else if(type.equalsIgnoreCase("peril")){
             categoryListDBHelper.updatePerilName(value, reportId);
         }

@@ -14,11 +14,13 @@ public class PropertyDetailsPOJO implements Parcelable {
     private String roofSystem;
     private String siding;
     private String foundation;
+    private String buildingType;
     private String reportId;
 
     public String getPropertyDate() {
         return propertyDate;
     }
+
 
     public void setPropertyDate(String propertyDate) {
         this.propertyDate = propertyDate;
@@ -56,6 +58,14 @@ public class PropertyDetailsPOJO implements Parcelable {
     public void setFoundation(String foundation) {
         this.foundation = foundation;
     }
+    public String getBuildingType() {
+        return buildingType;
+    }
+
+    public void setBuildingType(String buildingType) {
+        this.buildingType = buildingType;
+    }
+
 
     public String getReportId() {
         return reportId;
@@ -69,10 +79,11 @@ public class PropertyDetailsPOJO implements Parcelable {
     public PropertyDetailsPOJO()
     {
         propertyDate = "";
-        squareFootage = 0.0;
+        squareFootage = 0;
         roofSystem = "";
         siding = "";
         foundation = "";
+        buildingType = "";
         reportId = "";
     }
 
@@ -82,6 +93,7 @@ public class PropertyDetailsPOJO implements Parcelable {
         roofSystem = in.readString();
         siding = in.readString();
         foundation = in.readString();
+        buildingType = in.readString();
         reportId = in.readString();
     }
 
@@ -109,6 +121,7 @@ public class PropertyDetailsPOJO implements Parcelable {
         dest.writeString(roofSystem);
         dest.writeString(siding);
         dest.writeString(foundation);
+        dest.writeString(buildingType);
         dest.writeString(reportId);
     }
 }

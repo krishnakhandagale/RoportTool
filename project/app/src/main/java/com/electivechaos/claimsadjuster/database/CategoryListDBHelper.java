@@ -8,13 +8,17 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.electivechaos.claimsadjuster.pojo.BuildingTypePOJO;
 import com.electivechaos.claimsadjuster.pojo.Category;
+import com.electivechaos.claimsadjuster.pojo.FoundationPOJO;
 import com.electivechaos.claimsadjuster.pojo.PerilPOJO;
 import com.electivechaos.claimsadjuster.pojo.ImageDetailsPOJO;
 import com.electivechaos.claimsadjuster.pojo.Label;
 import com.electivechaos.claimsadjuster.pojo.PropertyDetailsPOJO;
 import com.electivechaos.claimsadjuster.pojo.ReportItemPOJO;
 import com.electivechaos.claimsadjuster.pojo.ReportPOJO;
+import com.electivechaos.claimsadjuster.pojo.RoofSystemPOJO;
+import com.electivechaos.claimsadjuster.pojo.SidingPOJO;
 import com.electivechaos.claimsadjuster.utils.CommonUtils;
 
 import java.util.ArrayList;
@@ -25,7 +29,7 @@ import java.util.Iterator;
  */
 
 public class CategoryListDBHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 86;
+    private static final int DATABASE_VERSION = 90;
 
 
     // Database Name
@@ -39,9 +43,28 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
     private static final String TABLE_REPORTS_IMAGE_DETAILS = "report_image_details";
     private static final String TABLE_REPORTS_ELEVATION_IMAGE_DETAILS = "report_elevation_image_details";
     private static final String TABLE_PROPERTY_DETAILS = "property_details";
+    private static final String TABLE_ROOF_SYSTEM = "roof_system_details";
+    private static final String TABLE_SIDING = "siding_details";
+    private static final String TABLE_FOUNDATION = "foundation_details";
+    private static final String TABLE_BUILDING_TYPE = "building_type_details";
 
 
 
+    //Roof system columns names
+    private static final String KEY_ROOF_SYSTEM_ID = "roof_system_id";
+    private static final String KEY_ROOF_SYSTEM_NAME= "name";
+
+    //Siding columns names
+    private static final String KEY_SIDING_ID = "siding_id";
+    private static final String KEY_SIDING_NAME= "name";
+
+    //Foundation columns names
+    private static final String KEY_FOUNDATION_ID = "foundation_id";
+    private static final String KEY_FOUNDATION_NAME= "name";
+
+    //Building type columns names
+    private static final String KEY_BUILDING_TYPE_ID = "building_type_id";
+    private static final String KEY_BUILDING_NAME= "name";
 
 
     // Reports list Table Columns names
@@ -100,6 +123,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
     private static final String KEY_ROOF_SYSTEM = "roof_system";
     private static final String KEY_SIDING = "siding";
     private static final String KEY_FOUNDATION = "foundation";
+    private static final String KEY_BUILDING_TYPE = "building_type";
     private static final String KEY_FK_PROPERTY_REPORT_ID = "report_id_fk";
 
     private static CategoryListDBHelper categoryListDBHelperInstance;
@@ -185,9 +209,30 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 + KEY_ROOF_SYSTEM+ " TEXT,"
                 + KEY_SIDING+ " TEXT,"
                 + KEY_FOUNDATION+ " TEXT,"
+                + KEY_BUILDING_TYPE+ " TEXT,"
                 + KEY_FK_PROPERTY_REPORT_ID+ " TEXT,"
                 + "FOREIGN KEY("+ KEY_FK_PROPERTY_REPORT_ID +") REFERENCES "+TABLE_REPORTS_LIST+"("+ KEY_REPORT_ID +")"+ " ON DELETE CASCADE)";
 
+
+        String CREATE_ROOF_SYSTEM_TABLE = "CREATE TABLE "
+                + TABLE_ROOF_SYSTEM + "("
+                + KEY_ROOF_SYSTEM_ID + " INTEGER PRIMARY KEY AUTOINCREMENT DEFAULT 0,"
+                + KEY_ROOF_SYSTEM_NAME + " TEXT UNIQUE"+")";
+
+        String CREATE_SIDING_TABLE = "CREATE TABLE "
+                + TABLE_SIDING + "("
+                + KEY_SIDING_ID + " INTEGER PRIMARY KEY AUTOINCREMENT DEFAULT 0,"
+                + KEY_SIDING_NAME + " TEXT UNIQUE"+")";
+
+        String CREATE_FOUNDATION_TABLE = "CREATE TABLE "
+                + TABLE_FOUNDATION + "("
+                + KEY_FOUNDATION_ID + " INTEGER PRIMARY KEY AUTOINCREMENT DEFAULT 0,"
+                + KEY_FOUNDATION_NAME + " TEXT UNIQUE"+")";
+
+        String CREATE_BUILDING_TYPE_TABLE = "CREATE TABLE "
+                + TABLE_BUILDING_TYPE + "("
+                + KEY_BUILDING_TYPE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT DEFAULT 0,"
+                + KEY_BUILDING_NAME+ " TEXT UNIQUE"+")";
 
 
         final String categories[] = {
@@ -213,6 +258,51 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 "Detached Garage",
                 "Underwriting Risk"
         };
+
+        final String roofSystem[] = {
+                "Composition Shingle 20yr",
+                "25 yr",
+                "40 yr",
+                "50 yr",
+                "Metal- Steel",
+                "Metal- Aluminum",
+                "Wood Shake",
+                "Slate",
+                "Concrete Tile",
+                "Clay Tile",
+                "Ceramic Tile",
+                "Lucky Bastard Solar Tile"
+        };
+
+        final String siding[] = {
+                "Vinyl",
+                "Brick Veneer",
+                "Wood",
+                "Stucco",
+                "Block",
+                "Stone Veneer",
+                "Aluminum",
+                "Fiber Cement",
+                "T-111",
+                "Plywood"
+        };
+
+        final String foundation[] = {
+                "Concrete Slab",
+                "Pier",
+                "Beam"
+        };
+
+        final String  buildingType[] = {
+                "Detached S.F",
+                "Atached S.F",
+                "Single-Wide",
+                "Double-Wide",
+                "Modular",
+                "Stick Built",
+                "Commercial"
+        };
+
         db.execSQL(CREATE_PERIL_TABLE);
         db.execSQL(CREATE_REPORTS_LIST_TABLE);
 
@@ -223,6 +313,11 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_PROPERTY_DETAILS_TABLE);
         db.execSQL(CATEGORY_LABELS_TABLE);
 
+        db.execSQL(CREATE_ROOF_SYSTEM_TABLE);
+        db.execSQL(CREATE_SIDING_TABLE);
+        db.execSQL(CREATE_FOUNDATION_TABLE);
+        db.execSQL(CREATE_BUILDING_TYPE_TABLE);
+
 
 
 
@@ -232,6 +327,31 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
             contentValues.put(KEY_CATEGORY_DESCRIPTION, categories[i]);
             db.insert(TABLE_MASTER_CATEGORY,null,contentValues);
         }
+
+        for(int i=0;i<roofSystem.length;i++){
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(KEY_ROOF_SYSTEM_NAME, roofSystem[i]);
+            db.insert(TABLE_ROOF_SYSTEM,null,contentValues);
+        }
+
+        for(int i=0;i<siding.length;i++){
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(KEY_SIDING_NAME, siding[i]);
+            db.insert(TABLE_SIDING,null,contentValues);
+        }
+
+        for(int i=0;i<foundation.length;i++){
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(KEY_FOUNDATION_NAME, foundation[i]);
+            db.insert(TABLE_FOUNDATION,null,contentValues);
+        }
+
+        for(int i=0;i<buildingType.length;i++){
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(KEY_BUILDING_NAME, buildingType[i]);
+            db.insert(TABLE_BUILDING_TYPE,null,contentValues);
+        }
+
     }
 
 
@@ -245,6 +365,10 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_REPORTS_ELEVATION_IMAGE_DETAILS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_REPORTS_IMAGE_DETAILS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PROPERTY_DETAILS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ROOF_SYSTEM);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SIDING);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_FOUNDATION);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_BUILDING_TYPE);
         onCreate(db);
     }
 
@@ -290,6 +414,83 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         }
         return  tempList;
     }
+
+    public ArrayList<RoofSystemPOJO> getRoofSystemList(){
+
+        ArrayList<RoofSystemPOJO> tempList = new ArrayList<>();
+        String selectQueryReportTable = "SELECT  * FROM " + TABLE_ROOF_SYSTEM;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQueryReportTable, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+
+                RoofSystemPOJO roofSystemPOJO = new RoofSystemPOJO();
+                roofSystemPOJO.setId(cursor.getInt(0));
+                roofSystemPOJO.setName(cursor.getString(1));
+                tempList.add(roofSystemPOJO);
+            } while (cursor.moveToNext());
+        }
+        return  tempList;
+    }
+
+    public ArrayList<SidingPOJO> getSidingList(){
+
+        ArrayList<SidingPOJO> tempList = new ArrayList<>();
+        String selectQueryReportTable = "SELECT  * FROM " + TABLE_SIDING;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQueryReportTable, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+
+                SidingPOJO sidingPOJO = new SidingPOJO();
+                sidingPOJO.setId(cursor.getInt(0));
+                sidingPOJO.setName(cursor.getString(1));
+                tempList.add(sidingPOJO);
+            } while (cursor.moveToNext());
+        }
+        return  tempList;
+    }
+
+    public ArrayList<FoundationPOJO> getFoundationList(){
+
+        ArrayList<FoundationPOJO> tempList = new ArrayList<>();
+        String selectQueryReportTable = "SELECT  * FROM " + TABLE_FOUNDATION;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQueryReportTable, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+
+                FoundationPOJO foundationPOJO = new FoundationPOJO();
+                foundationPOJO.setId(cursor.getInt(0));
+                foundationPOJO.setName(cursor.getString(1));
+                tempList.add(foundationPOJO);
+            } while (cursor.moveToNext());
+        }
+        return  tempList;
+    }
+
+    public ArrayList<BuildingTypePOJO> getBuildingTypeList(){
+
+        ArrayList<BuildingTypePOJO> tempList = new ArrayList<>();
+        String selectQueryReportTable = "SELECT  * FROM " + TABLE_BUILDING_TYPE;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQueryReportTable, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+
+                BuildingTypePOJO buildingTypePOJO = new BuildingTypePOJO();
+                buildingTypePOJO.setId(cursor.getInt(0));
+                buildingTypePOJO.setName(cursor.getString(1));
+                tempList.add(buildingTypePOJO);
+            } while (cursor.moveToNext());
+        }
+        return  tempList;
+    }
+
 
     public int deleteLabel(String labelID){
         SQLiteDatabase db = this.getWritableDatabase();
@@ -435,6 +636,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
             propertyEntry.put(KEY_ROOF_SYSTEM, propertyDetailsPOJO.getRoofSystem());
             propertyEntry.put(KEY_SIDING, propertyDetailsPOJO.getSiding());
             propertyEntry.put(KEY_FOUNDATION, propertyDetailsPOJO.getFoundation());
+            propertyEntry.put(KEY_BUILDING_TYPE, propertyDetailsPOJO.getBuildingType());
             propertyEntry.put(KEY_FK_PROPERTY_REPORT_ID, reportId);
             db.insert(TABLE_PROPERTY_DETAILS, null, propertyEntry);
 
@@ -512,7 +714,8 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 propertyPOJO.setRoofSystem(cProperty.getString(2));
                 propertyPOJO.setSiding(cProperty.getString(3));
                 propertyPOJO.setFoundation(cProperty.getString(4));
-                propertyPOJO.setReportId(cProperty.getString(5));
+                propertyPOJO.setBuildingType(cProperty.getString(5));
+                propertyPOJO.setReportId(cProperty.getString(6));
 
             }while (cProperty.moveToNext());
         }
@@ -628,6 +831,11 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
     public void updateFoundation(String value, String reportId) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("UPDATE property_details SET foundation='"+value+"' WHERE report_id_fk='"+reportId+"'");
+    }
+
+    public void updateBuildingType(String value, String reportId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("UPDATE property_details SET building_type='"+value+"' WHERE report_id_fk='"+reportId+"'");
     }
 
     public void updatePerilName(String value, String reportId) {

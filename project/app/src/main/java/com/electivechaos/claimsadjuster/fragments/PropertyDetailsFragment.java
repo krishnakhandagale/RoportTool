@@ -24,11 +24,19 @@ import android.widget.TextView;
 import com.electivechaos.claimsadjuster.R;
 import com.electivechaos.claimsadjuster.adapters.CustomMenuAdapter;
 import com.electivechaos.claimsadjuster.adapters.DrawerMenuListAdapter;
+import com.electivechaos.claimsadjuster.asynctasks.DBPropertyDetailsListTsk;
+import com.electivechaos.claimsadjuster.database.CategoryListDBHelper;
+import com.electivechaos.claimsadjuster.interfaces.AsyncTaskStatusCallback;
 import com.electivechaos.claimsadjuster.interfaces.NextButtonClickListener;
 import com.electivechaos.claimsadjuster.interfaces.OnGenerateReportClickListener;
 import com.electivechaos.claimsadjuster.interfaces.OnPropertyDetailsClickListener;
 import com.electivechaos.claimsadjuster.interfaces.OnSaveReportClickListener;
+import com.electivechaos.claimsadjuster.pojo.BuildingTypePOJO;
+import com.electivechaos.claimsadjuster.pojo.FoundationPOJO;
 import com.electivechaos.claimsadjuster.pojo.PropertyDetailsPOJO;
+import com.electivechaos.claimsadjuster.pojo.RoofSystemPOJO;
+import com.electivechaos.claimsadjuster.pojo.SidingPOJO;
+import com.electivechaos.claimsadjuster.utils.CommonUtils;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -45,7 +53,7 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
     private boolean isFabOpen = false;
     private FloatingActionButton showFabBtn, fabGoNextBtn, fabAddLabelBtn, fabGenerateReportBtn, fabSaveReportBtn;
     private Animation fab_open, fab_close;
-    private TextView txtDate, menuRoofSystem, menuSiding, menuFoundation;
+    private TextView txtDate, menuRoofSystem, menuSiding, menuFoundation, menuBuildingType;
 
     private NextButtonClickListener nextButtonClickListener;
     private DrawerMenuListAdapter.OnLabelAddClickListener onLabelAddClickListener;
@@ -56,10 +64,20 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
     private  int selectedPositionOne = -1;
     private  int selectedPositionTwo = -1;
     private  int selectedPositionThree = -1;
+    private  int selectedPositionFour = -1;
 
     private EditText squareFootage;
 
     private PropertyDetailsPOJO propertyDetailsPOJO;
+
+    private View progressBarLayout;
+    private CategoryListDBHelper categoryListDBHelper;
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        categoryListDBHelper =  CategoryListDBHelper.getInstance(getActivity());
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -86,26 +104,37 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
         menuRoofSystem = view.findViewById(R.id.menuOne);
         menuSiding = view.findViewById(R.id.menuTwo);
         menuFoundation = view.findViewById(R.id.menuThree);
+        menuBuildingType = view.findViewById(R.id.menuFour);
+        progressBarLayout = view.findViewById(R.id.progressBarLayout);
+
 
         txtDate.setText(propertyDetailsPOJO.getPropertyDate().toString());
         String squareFootageValue = String.format("%.2f",propertyDetailsPOJO.getSquareFootage());
         squareFootage.setText(squareFootageValue);
-        if(propertyDetailsPOJO.getRoofSystem().isEmpty() || propertyDetailsPOJO.getRoofSystem()==null){
 
-        }else {
-            menuRoofSystem.setText(propertyDetailsPOJO.getRoofSystem().toString());
+        if(propertyDetailsPOJO!=null) {
+            if (propertyDetailsPOJO.getRoofSystem().isEmpty()) {
+
+            } else {
+                menuRoofSystem.setText(propertyDetailsPOJO.getRoofSystem().toString());
+            }
+            if (propertyDetailsPOJO.getSiding().isEmpty()) {
+
+            } else {
+                menuSiding.setText(propertyDetailsPOJO.getSiding().toString());
+            }
+            if (propertyDetailsPOJO.getFoundation().isEmpty()) {
+
+            } else {
+                menuFoundation.setText(propertyDetailsPOJO.getFoundation().toString());
+            }
+
+            if (propertyDetailsPOJO.getBuildingType().isEmpty()) {
+
+            } else {
+                menuBuildingType.setText(propertyDetailsPOJO.getBuildingType().toString());
+            }
         }
-        if(propertyDetailsPOJO.getSiding().isEmpty() || propertyDetailsPOJO.getSiding()==null) {
-
-        }else {
-            menuSiding.setText(propertyDetailsPOJO.getSiding().toString());
-        }
-        if(propertyDetailsPOJO.getFoundation().isEmpty() || propertyDetailsPOJO.getFoundation()==null){
-
-        }else {
-            menuFoundation.setText(propertyDetailsPOJO.getFoundation().toString());
-        }
-
         fabGoNextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -174,87 +203,192 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
         menuRoofSystem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final ArrayList<String> roofSystemList = new ArrayList<>();
-                roofSystemList.add("item1");
-                roofSystemList.add("item2");
 
-                final AlertDialog.Builder ad = new AlertDialog.Builder(getContext());
-                ad.setCancelable(true);
-                ad.setTitle("Roof System");
-                CustomMenuAdapter adapter=new CustomMenuAdapter(getContext(),roofSystemList,selectedPositionOne,propertyDetailsPOJO.getRoofSystem().toString());
+            new DBPropertyDetailsListTsk(categoryListDBHelper, "roof_system", new AsyncTaskStatusCallback() {
+                @Override
+                public void onPostExecute(Object object, String type) {
 
-                ad.setSingleChoiceItems(adapter, selectedPositionOne,  new DialogInterface.OnClickListener() {
+                    final ArrayList<RoofSystemPOJO> roofSystemList = (ArrayList<RoofSystemPOJO>) object;
 
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int position) {
-                        selectedPositionOne =  position;
-                        menuRoofSystem.setText(roofSystemList.get(position).toString());
-                        onPropertyDetailsClickListener.setPropertyRoofSystem(roofSystemList.get(position).toString());
-                        dialogInterface.dismiss();
+                    final AlertDialog.Builder ad = new AlertDialog.Builder(getContext());
+                    ad.setCancelable(true);
+                    ad.setTitle("Roof System");
+                    CustomMenuAdapter adapter=new CustomMenuAdapter(getContext(),roofSystemList,selectedPositionOne,propertyDetailsPOJO.getRoofSystem().toString(), "roof_system");
 
-                    }
-                });
+                    ad.setSingleChoiceItems(adapter, selectedPositionOne,  new DialogInterface.OnClickListener() {
 
-                ad.show();
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int position) {
+                            selectedPositionOne =  position;
+                            menuRoofSystem.setText(roofSystemList.get(position).getName().toString());
+                            onPropertyDetailsClickListener.setPropertyRoofSystem(roofSystemList.get(position).getName().toString());
+                            dialogInterface.dismiss();
+
+                        }
+                    });
+
+                    ad.show();
+                    CommonUtils.unlockOrientation(getActivity());
+                    progressBarLayout.setVisibility(View.GONE);
+                }
+
+                @Override
+                public void onPreExecute() {
+                    CommonUtils.lockOrientation(getActivity());
+                    progressBarLayout.setVisibility(View.VISIBLE);
+                }
+
+                @Override
+                public void onProgress(int progress) {
+
+                }
+            }).execute();
+
+
 
             }
         });
 
         menuSiding.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final ArrayList<String> sidingList = new ArrayList<>();
-                sidingList.add("item1");
-                sidingList.add("item2");
+                                          @Override
+                                          public void onClick(View v) {
+                                              new DBPropertyDetailsListTsk(categoryListDBHelper, "siding", new AsyncTaskStatusCallback() {
 
-                final AlertDialog.Builder ad = new AlertDialog.Builder(getContext());
-                ad.setCancelable(true);
-                ad.setTitle("Siding");
-                CustomMenuAdapter adapter=new CustomMenuAdapter(getContext(),sidingList,selectedPositionTwo,propertyDetailsPOJO.getSiding().toString());
+                                                  @Override
+                                                  public void onPostExecute(Object object, String type) {
+                                                      final ArrayList<SidingPOJO> sidingList = (ArrayList<SidingPOJO>) object;
 
-                ad.setSingleChoiceItems(adapter, selectedPositionTwo,  new DialogInterface.OnClickListener() {
+                                                      final AlertDialog.Builder ad = new AlertDialog.Builder(getContext());
+                                                      ad.setCancelable(true);
+                                                      ad.setTitle("Siding");
+                                                      CustomMenuAdapter adapter = new CustomMenuAdapter(getContext(), sidingList, selectedPositionTwo, propertyDetailsPOJO.getSiding().toString(), "siding");
 
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int position) {
-                        selectedPositionTwo =  position;
-                        menuSiding.setText(sidingList.get(position).toString());
-                        onPropertyDetailsClickListener.setPropertySiding(sidingList.get(position).toString());
-                        dialogInterface.dismiss();
+                                                      ad.setSingleChoiceItems(adapter, selectedPositionTwo, new DialogInterface.OnClickListener() {
 
-                    }
-                });
+                                                          @Override
+                                                          public void onClick(DialogInterface dialogInterface, int position) {
+                                                              selectedPositionTwo = position;
+                                                              menuSiding.setText(sidingList.get(position).getName().toString());
+                                                              onPropertyDetailsClickListener.setPropertySiding(sidingList.get(position).getName().toString());
+                                                              dialogInterface.dismiss();
 
-                ad.show();
+                                                          }
+                                                      });
 
-            }
+                                                      ad.show();
+                                                      CommonUtils.unlockOrientation(getActivity());
+                                                      progressBarLayout.setVisibility(View.GONE);
 
-        });
+                                                  }
+
+                                                  @Override
+                                                  public void onPreExecute() {
+
+                                                      CommonUtils.lockOrientation(getActivity());
+                                                      progressBarLayout.setVisibility(View.VISIBLE);
+                                                  }
+
+                                                  @Override
+                                                  public void onProgress(int progress) {
+
+                                                  }
+                                              }).execute();
+                                          }
+                                      });
+
+
 
         menuFoundation.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
-                final ArrayList<String> foundationList = new ArrayList<>();
-                foundationList.add("123");
-                foundationList.add("29");
 
-                final AlertDialog.Builder ad = new AlertDialog.Builder(getContext());
-                ad.setCancelable(true);
-                ad.setTitle("Foundation");
-                CustomMenuAdapter adapter=new CustomMenuAdapter(getContext(),foundationList,selectedPositionThree, propertyDetailsPOJO.getFoundation().toString());
+                new DBPropertyDetailsListTsk(categoryListDBHelper, "foundation", new AsyncTaskStatusCallback() {
+                    @Override
+                    public void onPostExecute(Object object, String type) {
 
-                ad.setSingleChoiceItems(adapter, selectedPositionThree,  new DialogInterface.OnClickListener() {
+                        final ArrayList<FoundationPOJO> foundationList = (ArrayList<FoundationPOJO>) object;
+
+                        final AlertDialog.Builder ad = new AlertDialog.Builder(getContext());
+                        ad.setCancelable(true);
+                        ad.setTitle("Foundation");
+                        CustomMenuAdapter adapter=new CustomMenuAdapter(getContext(),foundationList,selectedPositionThree, propertyDetailsPOJO.getFoundation().toString(),"foundation");
+
+                        ad.setSingleChoiceItems(adapter, selectedPositionThree,  new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int position) {
+                                selectedPositionThree =  position;
+                                menuFoundation.setText(foundationList.get(position).getName().toString());
+                                onPropertyDetailsClickListener.setPropertyFoundation(foundationList.get(position).getName().toString());
+                                dialogInterface.dismiss();
+
+                            }
+                        });
+
+                        ad.show();
+                        CommonUtils.unlockOrientation(getActivity());
+                        progressBarLayout.setVisibility(View.GONE);
+                    }
 
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int position) {
-                        selectedPositionThree =  position;
-                        menuFoundation.setText(foundationList.get(position).toString());
-                        onPropertyDetailsClickListener.setPropertyFoundation(foundationList.get(position).toString());
-                        dialogInterface.dismiss();
+                    public void onPreExecute() {
+                        CommonUtils.lockOrientation(getActivity());
+                        progressBarLayout.setVisibility(View.VISIBLE);
+                    }
+
+                    @Override
+                    public void onProgress(int progress) {
 
                     }
-                });
+                }).execute();
+            }
+        });
 
-                ad.show();
+        menuBuildingType.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                new DBPropertyDetailsListTsk(categoryListDBHelper, "building_type", new AsyncTaskStatusCallback() {
+                    @Override
+                    public void onPostExecute(Object object, String type) {
+
+                        final ArrayList<BuildingTypePOJO> buildingTypeList = (ArrayList<BuildingTypePOJO>) object;
+
+                        final AlertDialog.Builder ad = new AlertDialog.Builder(getContext());
+                        ad.setCancelable(true);
+                        ad.setTitle("Building Type");
+                        CustomMenuAdapter adapter=new CustomMenuAdapter(getContext(),buildingTypeList,selectedPositionFour, propertyDetailsPOJO.getBuildingType().toString(),"building_type");
+
+                        ad.setSingleChoiceItems(adapter, selectedPositionFour,  new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int position) {
+                                selectedPositionFour =  position;
+                                menuBuildingType.setText(buildingTypeList.get(position).getName().toString());
+                                onPropertyDetailsClickListener.setPropertyBuildingType(buildingTypeList.get(position).getName().toString());
+                                dialogInterface.dismiss();
+
+                            }
+                        });
+
+                        ad.show();
+                        CommonUtils.unlockOrientation(getActivity());
+                        progressBarLayout.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onPreExecute() {
+                        CommonUtils.lockOrientation(getActivity());
+                        progressBarLayout.setVisibility(View.VISIBLE);
+                    }
+
+                    @Override
+                    public void onProgress(int progress) {
+
+                    }
+                }).execute();
             }
         });
 
@@ -271,10 +405,11 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(s.toString().trim().isEmpty() || s.toString().trim() == null) {
-
-                }else {
-                        onPropertyDetailsClickListener.setPropertySquareFootage(Double.parseDouble(s.toString().trim()));
+                String tempString = s.toString().trim();
+                if(!tempString.isEmpty()) {
+                    onPropertyDetailsClickListener.setPropertySquareFootage(Double.parseDouble(tempString));
+                }else{
+                    onPropertyDetailsClickListener.setPropertySquareFootage(0.0);
                 }
             }
         });

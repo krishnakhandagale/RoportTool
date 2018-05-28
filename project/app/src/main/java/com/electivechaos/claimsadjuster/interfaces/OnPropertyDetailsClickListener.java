@@ -6,4 +6,5 @@ public  interface OnPropertyDetailsClickListener {
      void setPropertyRoofSystem(String roofSystem);
      void setPropertySiding(String siding);
      void setPropertyFoundation(String foundation);
+     void setPropertyBuildingType(String buildingType);
 }
