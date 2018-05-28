@@ -15,6 +15,7 @@ import com.electivechaos.claimsadjuster.R;
 import com.electivechaos.claimsadjuster.database.CategoryListDBHelper;
 import com.electivechaos.claimsadjuster.pojo.ImageDetailsPOJO;
 import com.electivechaos.claimsadjuster.pojo.Label;
+import com.electivechaos.claimsadjuster.pojo.PropertyDetailsPOJO;
 import com.electivechaos.claimsadjuster.pojo.ReportPOJO;
 import com.electivechaos.claimsadjuster.utils.CommonUtils;
 import com.itextpdf.text.BaseColor;
@@ -135,6 +136,39 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
                 }
 
             }
+
+            PropertyDetailsPOJO propertyDetailsPOJO = reportPOJO.getPropertyDetailsPOJO();
+
+            //TODO: add check to see if any of the field is filled by user
+            document.newPage();
+
+            // Now read property details
+            
+            event.setHeader("Property Details");
+            document.add(new Paragraph("Property Date", fontTitles));
+            document.add(new Paragraph(propertyDetailsPOJO.getPropertyDate()));
+            document.add(new Paragraph(""));
+
+            document.add(new Paragraph("Square footage", fontTitles));
+            document.add(new Paragraph(String.valueOf(propertyDetailsPOJO.getSquareFootage())));
+            document.add(new Paragraph(""));
+
+            document.add(new Paragraph("Roof System", fontTitles));
+            document.add(new Paragraph(propertyDetailsPOJO.getRoofSystem()));
+            document.add(new Paragraph(""));
+
+            document.add(new Paragraph("Siding", fontTitles));
+            document.add(new Paragraph(propertyDetailsPOJO.getSiding()));
+            document.add(new Paragraph(""));
+
+            document.add(new Paragraph("Foundation", fontTitles));
+            document.add(new Paragraph(propertyDetailsPOJO.getFoundation()));
+            document.add(new Paragraph(""));
+
+            document.add(new Paragraph("Building Type", fontTitles));
+            document.add(new Paragraph(propertyDetailsPOJO.getBuildingType()));
+            document.add(new Paragraph(""));
+
 
             document.newPage();
 
