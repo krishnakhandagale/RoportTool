@@ -47,8 +47,9 @@ import java.util.Date;
 
 public class PropertyDetailsFragment extends Fragment implements DatePickerDialog.OnDateSetListener {
 
-    private Button pickTime;
-    private int day, month, year, dayFinal, monthFinal, yearFinal;
+    private int day;
+    private int month;
+    private int year;
 
     private boolean isFabOpen = false;
     private FloatingActionButton showFabBtn, fabGoNextBtn, fabAddLabelBtn, fabGenerateReportBtn, fabSaveReportBtn;
@@ -61,12 +62,10 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
     private OnGenerateReportClickListener onGenerateReportClickListener;
     private OnPropertyDetailsClickListener onPropertyDetailsClickListener;
 
-    private  int selectedPositionOne = -1;
-    private  int selectedPositionTwo = -1;
-    private  int selectedPositionThree = -1;
-    private  int selectedPositionFour = -1;
-
-    private EditText squareFootage;
+    private int selectedPositionOne = -1;
+    private int selectedPositionTwo = -1;
+    private int selectedPositionThree = -1;
+    private int selectedPositionFour = -1;
 
     private PropertyDetailsPOJO propertyDetailsPOJO;
 
@@ -76,7 +75,7 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
     @Override
     public void onStart() {
         super.onStart();
-        categoryListDBHelper =  CategoryListDBHelper.getInstance(getActivity());
+        categoryListDBHelper = CategoryListDBHelper.getInstance(getActivity());
     }
 
     @Override
@@ -98,9 +97,9 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
         fab_open = AnimationUtils.loadAnimation(getActivity(), R.anim.fab_open);
         fab_close = AnimationUtils.loadAnimation(getActivity(), R.anim.fab_close);
 
-        pickTime = view.findViewById(R.id.btnDate);
+        Button pickTime = view.findViewById(R.id.btnDate);
         txtDate = view.findViewById(R.id.txtDate);
-        squareFootage = view.findViewById(R.id.squareFootage);
+        EditText squareFootage = view.findViewById(R.id.squareFootage);
         menuRoofSystem = view.findViewById(R.id.menuOne);
         menuSiding = view.findViewById(R.id.menuTwo);
         menuFoundation = view.findViewById(R.id.menuThree);
@@ -108,31 +107,31 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
         progressBarLayout = view.findViewById(R.id.progressBarLayout);
 
 
-        txtDate.setText(propertyDetailsPOJO.getPropertyDate().toString());
-        String squareFootageValue = String.format("%.2f",propertyDetailsPOJO.getSquareFootage());
+        txtDate.setText(propertyDetailsPOJO.getPropertyDate());
+        String squareFootageValue = String.format("%.2f", propertyDetailsPOJO.getSquareFootage());
         squareFootage.setText(squareFootageValue);
 
-        if(propertyDetailsPOJO!=null) {
+        if (propertyDetailsPOJO != null) {
             if (propertyDetailsPOJO.getRoofSystem().isEmpty()) {
 
             } else {
-                menuRoofSystem.setText(propertyDetailsPOJO.getRoofSystem().toString());
+                menuRoofSystem.setText(propertyDetailsPOJO.getRoofSystem());
             }
             if (propertyDetailsPOJO.getSiding().isEmpty()) {
 
             } else {
-                menuSiding.setText(propertyDetailsPOJO.getSiding().toString());
+                menuSiding.setText(propertyDetailsPOJO.getSiding());
             }
             if (propertyDetailsPOJO.getFoundation().isEmpty()) {
 
             } else {
-                menuFoundation.setText(propertyDetailsPOJO.getFoundation().toString());
+                menuFoundation.setText(propertyDetailsPOJO.getFoundation());
             }
 
             if (propertyDetailsPOJO.getBuildingType().isEmpty()) {
 
             } else {
-                menuBuildingType.setText(propertyDetailsPOJO.getBuildingType().toString());
+                menuBuildingType.setText(propertyDetailsPOJO.getBuildingType());
             }
         }
         fabGoNextBtn.setOnClickListener(new View.OnClickListener() {
@@ -178,9 +177,9 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
             public void onClick(View view) {
                 Calendar c = Calendar.getInstance();
                 String enteredDate = txtDate.getText().toString().trim();
-                if(enteredDate.isEmpty() || enteredDate==null) {
+                if (enteredDate.isEmpty() || enteredDate == null) {
 
-                }else {
+                } else {
                     DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
                     Date startDate = null;
                     try {
@@ -190,9 +189,9 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
                     }
                     c.setTime(startDate);
                 }
-                month= c.get(Calendar.MONTH);
+                month = c.get(Calendar.MONTH);
                 year = c.get(Calendar.YEAR);
-                day= c.get(Calendar.DAY_OF_MONTH);
+                day = c.get(Calendar.DAY_OF_MONTH);
 
                 DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), PropertyDetailsFragment.this, year, month, day);
                 datePickerDialog.show();
@@ -204,98 +203,96 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
             @Override
             public void onClick(View v) {
 
-            new DBPropertyDetailsListTsk(categoryListDBHelper, "roof_system", new AsyncTaskStatusCallback() {
-                @Override
-                public void onPostExecute(Object object, String type) {
+                new DBPropertyDetailsListTsk(categoryListDBHelper, "roof_system", new AsyncTaskStatusCallback() {
+                    @Override
+                    public void onPostExecute(Object object, String type) {
 
-                    final ArrayList<RoofSystemPOJO> roofSystemList = (ArrayList<RoofSystemPOJO>) object;
+                        final ArrayList<RoofSystemPOJO> roofSystemList = (ArrayList<RoofSystemPOJO>) object;
 
-                    final AlertDialog.Builder ad = new AlertDialog.Builder(getContext());
-                    ad.setCancelable(true);
-                    ad.setTitle("Roof System");
-                    CustomMenuAdapter adapter=new CustomMenuAdapter(getContext(),roofSystemList,selectedPositionOne,propertyDetailsPOJO.getRoofSystem().toString(), "roof_system");
+                        final AlertDialog.Builder ad = new AlertDialog.Builder(getContext());
+                        ad.setCancelable(true);
+                        ad.setTitle("Roof System");
+                        CustomMenuAdapter adapter = new CustomMenuAdapter(getContext(), roofSystemList, selectedPositionOne, propertyDetailsPOJO.getRoofSystem().toString(), "roof_system");
 
-                    ad.setSingleChoiceItems(adapter, selectedPositionOne,  new DialogInterface.OnClickListener() {
+                        ad.setSingleChoiceItems(adapter, selectedPositionOne, new DialogInterface.OnClickListener() {
 
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int position) {
-                            selectedPositionOne =  position;
-                            menuRoofSystem.setText(roofSystemList.get(position).getName().toString());
-                            onPropertyDetailsClickListener.setPropertyRoofSystem(roofSystemList.get(position).getName().toString());
-                            dialogInterface.dismiss();
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int position) {
+                                selectedPositionOne = position;
+                                menuRoofSystem.setText(roofSystemList.get(position).getName().toString());
+                                onPropertyDetailsClickListener.setPropertyRoofSystem(roofSystemList.get(position).getName().toString());
+                                dialogInterface.dismiss();
 
-                        }
-                    });
+                            }
+                        });
 
-                    ad.show();
-                    CommonUtils.unlockOrientation(getActivity());
-                    progressBarLayout.setVisibility(View.GONE);
-                }
+                        ad.show();
+                        CommonUtils.unlockOrientation(getActivity());
+                        progressBarLayout.setVisibility(View.GONE);
+                    }
 
-                @Override
-                public void onPreExecute() {
-                    CommonUtils.lockOrientation(getActivity());
-                    progressBarLayout.setVisibility(View.VISIBLE);
-                }
+                    @Override
+                    public void onPreExecute() {
+                        CommonUtils.lockOrientation(getActivity());
+                        progressBarLayout.setVisibility(View.VISIBLE);
+                    }
 
-                @Override
-                public void onProgress(int progress) {
+                    @Override
+                    public void onProgress(int progress) {
 
-                }
-            }).execute();
-
+                    }
+                }).execute();
 
 
             }
         });
 
         menuSiding.setOnClickListener(new View.OnClickListener() {
-                                          @Override
-                                          public void onClick(View v) {
-                                              new DBPropertyDetailsListTsk(categoryListDBHelper, "siding", new AsyncTaskStatusCallback() {
+            @Override
+            public void onClick(View v) {
+                new DBPropertyDetailsListTsk(categoryListDBHelper, "siding", new AsyncTaskStatusCallback() {
 
-                                                  @Override
-                                                  public void onPostExecute(Object object, String type) {
-                                                      final ArrayList<SidingPOJO> sidingList = (ArrayList<SidingPOJO>) object;
+                    @Override
+                    public void onPostExecute(Object object, String type) {
+                        final ArrayList<SidingPOJO> sidingList = (ArrayList<SidingPOJO>) object;
 
-                                                      final AlertDialog.Builder ad = new AlertDialog.Builder(getContext());
-                                                      ad.setCancelable(true);
-                                                      ad.setTitle("Siding");
-                                                      CustomMenuAdapter adapter = new CustomMenuAdapter(getContext(), sidingList, selectedPositionTwo, propertyDetailsPOJO.getSiding().toString(), "siding");
+                        final AlertDialog.Builder ad = new AlertDialog.Builder(getContext());
+                        ad.setCancelable(true);
+                        ad.setTitle("Siding");
+                        CustomMenuAdapter adapter = new CustomMenuAdapter(getContext(), sidingList, selectedPositionTwo, propertyDetailsPOJO.getSiding().toString(), "siding");
 
-                                                      ad.setSingleChoiceItems(adapter, selectedPositionTwo, new DialogInterface.OnClickListener() {
+                        ad.setSingleChoiceItems(adapter, selectedPositionTwo, new DialogInterface.OnClickListener() {
 
-                                                          @Override
-                                                          public void onClick(DialogInterface dialogInterface, int position) {
-                                                              selectedPositionTwo = position;
-                                                              menuSiding.setText(sidingList.get(position).getName().toString());
-                                                              onPropertyDetailsClickListener.setPropertySiding(sidingList.get(position).getName().toString());
-                                                              dialogInterface.dismiss();
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int position) {
+                                selectedPositionTwo = position;
+                                menuSiding.setText(sidingList.get(position).getName().toString());
+                                onPropertyDetailsClickListener.setPropertySiding(sidingList.get(position).getName().toString());
+                                dialogInterface.dismiss();
 
-                                                          }
-                                                      });
+                            }
+                        });
 
-                                                      ad.show();
-                                                      CommonUtils.unlockOrientation(getActivity());
-                                                      progressBarLayout.setVisibility(View.GONE);
+                        ad.show();
+                        CommonUtils.unlockOrientation(getActivity());
+                        progressBarLayout.setVisibility(View.GONE);
 
-                                                  }
+                    }
 
-                                                  @Override
-                                                  public void onPreExecute() {
+                    @Override
+                    public void onPreExecute() {
 
-                                                      CommonUtils.lockOrientation(getActivity());
-                                                      progressBarLayout.setVisibility(View.VISIBLE);
-                                                  }
+                        CommonUtils.lockOrientation(getActivity());
+                        progressBarLayout.setVisibility(View.VISIBLE);
+                    }
 
-                                                  @Override
-                                                  public void onProgress(int progress) {
+                    @Override
+                    public void onProgress(int progress) {
 
-                                                  }
-                                              }).execute();
-                                          }
-                                      });
-
+                    }
+                }).execute();
+            }
+        });
 
 
         menuFoundation.setOnClickListener(new View.OnClickListener() {
@@ -312,13 +309,13 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
                         final AlertDialog.Builder ad = new AlertDialog.Builder(getContext());
                         ad.setCancelable(true);
                         ad.setTitle("Foundation");
-                        CustomMenuAdapter adapter=new CustomMenuAdapter(getContext(),foundationList,selectedPositionThree, propertyDetailsPOJO.getFoundation().toString(),"foundation");
+                        CustomMenuAdapter adapter = new CustomMenuAdapter(getContext(), foundationList, selectedPositionThree, propertyDetailsPOJO.getFoundation().toString(), "foundation");
 
-                        ad.setSingleChoiceItems(adapter, selectedPositionThree,  new DialogInterface.OnClickListener() {
+                        ad.setSingleChoiceItems(adapter, selectedPositionThree, new DialogInterface.OnClickListener() {
 
                             @Override
                             public void onClick(DialogInterface dialogInterface, int position) {
-                                selectedPositionThree =  position;
+                                selectedPositionThree = position;
                                 menuFoundation.setText(foundationList.get(position).getName().toString());
                                 onPropertyDetailsClickListener.setPropertyFoundation(foundationList.get(position).getName().toString());
                                 dialogInterface.dismiss();
@@ -359,13 +356,13 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
                         final AlertDialog.Builder ad = new AlertDialog.Builder(getContext());
                         ad.setCancelable(true);
                         ad.setTitle("Building Type");
-                        CustomMenuAdapter adapter=new CustomMenuAdapter(getContext(),buildingTypeList,selectedPositionFour, propertyDetailsPOJO.getBuildingType().toString(),"building_type");
+                        CustomMenuAdapter adapter = new CustomMenuAdapter(getContext(), buildingTypeList, selectedPositionFour, propertyDetailsPOJO.getBuildingType().toString(), "building_type");
 
-                        ad.setSingleChoiceItems(adapter, selectedPositionFour,  new DialogInterface.OnClickListener() {
+                        ad.setSingleChoiceItems(adapter, selectedPositionFour, new DialogInterface.OnClickListener() {
 
                             @Override
                             public void onClick(DialogInterface dialogInterface, int position) {
-                                selectedPositionFour =  position;
+                                selectedPositionFour = position;
                                 menuBuildingType.setText(buildingTypeList.get(position).getName().toString());
                                 onPropertyDetailsClickListener.setPropertyBuildingType(buildingTypeList.get(position).getName().toString());
                                 dialogInterface.dismiss();
@@ -406,9 +403,9 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
             @Override
             public void afterTextChanged(Editable s) {
                 String tempString = s.toString().trim();
-                if(!tempString.isEmpty()) {
+                if (!tempString.isEmpty()) {
                     onPropertyDetailsClickListener.setPropertySquareFootage(Double.parseDouble(tempString));
-                }else{
+                } else {
                     onPropertyDetailsClickListener.setPropertySquareFootage(0.0);
                 }
             }
@@ -448,9 +445,9 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
 
     @Override
     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-        yearFinal = i;
-        monthFinal = i1 + 1;
-        dayFinal = i2;
+        int yearFinal = i;
+        int monthFinal = i1 + 1;
+        int dayFinal = i2;
         txtDate.setText(dayFinal + "/" + monthFinal + "/" + yearFinal);
         onPropertyDetailsClickListener.setPropertyDate(dayFinal + "/" + monthFinal + "/" + yearFinal);
 

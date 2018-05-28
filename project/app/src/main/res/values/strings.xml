@@ -13,7 +13,7 @@
     <string name="claimant">Claimant</string>
     <string name="claim_number">Claim Number</string>
     <string name="policy_number">Policy Number</string>
-    <string name="select_date">Select Date</string>
+    <string name="select_date">--Select Date--</string>
     <string name="location_icon">Location icon</string>
     <string name="claim_details">Claim Details</string>
     <string name="cause_of_loss">Cause Of Loss</string>
@@ -117,4 +117,8 @@
     <string name="peril_details">Peril Details</string>
     <string name="add_peril">Add Peril</string>
     <string name="share_report_button">Share report button</string>
+    <string name="select_roof_system">--Select Roof System--</string>
+    <string name="select_siding">--Select Siding--</string>
+    <string name="select_foundation">--Select Foundation--</string>
+    <string name="select_building_type">--Select Building Type--</string>
 </resources>
