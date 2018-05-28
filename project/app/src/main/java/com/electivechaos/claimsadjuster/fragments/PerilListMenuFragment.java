@@ -37,7 +37,6 @@ import com.electivechaos.claimsadjuster.interfaces.OnPerilSelectionListener;
 import com.electivechaos.claimsadjuster.interfaces.OnSaveReportClickListener;
 import com.electivechaos.claimsadjuster.pojo.PerilPOJO;
 import com.electivechaos.claimsadjuster.ui.AddEditPerilActivity;
-import com.electivechaos.claimsadjuster.utils.CommonUtils;
 
 import java.util.ArrayList;
 import java.util.List;
