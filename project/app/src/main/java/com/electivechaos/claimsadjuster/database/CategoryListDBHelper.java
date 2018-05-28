@@ -29,7 +29,7 @@ import java.util.Iterator;
  */
 
 public class CategoryListDBHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 90;
+    private static final int DATABASE_VERSION = 91;
 
 
     // Database Name
@@ -260,10 +260,10 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         };
 
         final String roofSystem[] = {
-                "Composition Shingle 20yr",
-                "25 yr",
-                "40 yr",
-                "50 yr",
+                "Composition Shingle 20 year",
+                "Composition Shingle 25 year",
+                "Composition Shingle 40 year",
+                "Composition Shingle 50 year",
                 "Metal- Steel",
                 "Metal- Aluminum",
                 "Wood Shake",
@@ -271,7 +271,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 "Concrete Tile",
                 "Clay Tile",
                 "Ceramic Tile",
-                "Lucky Bastard Solar Tile"
+                "Solar Tile"
         };
 
         final String siding[] = {
@@ -295,7 +295,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
 
         final String  buildingType[] = {
                 "Detached S.F",
-                "Atached S.F",
+                "Attached S.F",
                 "Single-Wide",
                 "Double-Wide",
                 "Modular",
