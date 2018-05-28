@@ -31,6 +31,8 @@ import com.electivechaos.claimsadjuster.ui.AddEditPerilActivity;
 import java.util.ArrayList;
 import java.util.List;
 
+//TO DO :::: REMOVE THIS FILE
+
 public class PerilListFragment extends Fragment {
     public ArrayList<PerilPOJO> perilPOJOS = new ArrayList<>();
     private RecyclerView recyclerView;
