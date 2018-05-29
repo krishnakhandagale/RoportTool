@@ -512,9 +512,7 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
                 roofSystemPOJO.setName(roofName);
 
                 categoryListDBHelper.addRoofSystem(roofSystemPOJO);
-                if(!roofName.equals("")){
-                    menuRoofSystem.setText(roofName);
-                }
+                menuRoofSystem.setText(roofName);
 
                 onPropertyDetailsClickListener.setPropertyRoofSystem(roofName);
 
@@ -528,9 +526,7 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
                 sidingPOJO.setName(sidingName);
 
                 categoryListDBHelper.addSiding(sidingPOJO);
-              if(!sidingName.equals("")){
-                    menuSiding.setText(sidingName);
-                }
+                menuSiding.setText(sidingName);
                 onPropertyDetailsClickListener.setPropertySiding(sidingName);
             }
         }
@@ -542,9 +538,7 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
                 foundationPOJO.setName(foundationName);
 
                 categoryListDBHelper.addFoundation(foundationPOJO);
-                if(!foundationName.equals("")){
-                    menuFoundation.setText(foundationName);
-                }
+                menuFoundation.setText(foundationName);
                 onPropertyDetailsClickListener.setPropertyFoundation(foundationName);
 
             }
@@ -557,9 +551,7 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
                 buildingTypePOJO.setName(buildingName);
 
                 categoryListDBHelper.addBuildingType(buildingTypePOJO);
-                if(!buildingName.equals("")){
-                    menuBuildingType.setText(buildingName);
-                }
+                menuBuildingType.setText(buildingName);
                 onPropertyDetailsClickListener.setPropertyBuildingType(buildingName);
 
             }
