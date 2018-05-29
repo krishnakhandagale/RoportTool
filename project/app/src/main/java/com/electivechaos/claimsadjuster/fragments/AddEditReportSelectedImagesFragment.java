@@ -796,6 +796,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                     imgObj.setDescription("");
                     imgObj.setTitle("");
                     imgObj.setIsDamage(false);
+                    imgObj.setOverview(false);
                     imgObj.setImageUrl(path);
                     ImageHelper.revokeAppPermission(getContext(), fileUri);
                     Intent intent = new Intent(getContext(), SingleImageDetailsActivity.class);
