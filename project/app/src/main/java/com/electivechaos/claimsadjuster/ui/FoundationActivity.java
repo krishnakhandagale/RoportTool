@@ -21,6 +21,7 @@ public class FoundationActivity extends AppCompatActivity {
         final EditText foundationName = findViewById(R.id.foundationName);
         final View parentLayoutForMessages = findViewById(R.id.parentLayout);
 
+
         addFoundationBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

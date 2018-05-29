@@ -21,11 +21,11 @@ public class SidingActivity extends AppCompatActivity {
         final EditText sidingName = findViewById(R.id.sidingName);
         final View parentLayoutForMessages = findViewById(R.id.parentLayout);
 
+
         addSidingBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(sidingName.getText().toString().isEmpty())
-                {
+                if(sidingName.getText().toString().isEmpty()) {
                     CommonUtils.showSnackbarMessage(getString(R.string.please_enter_name), true, true, parentLayoutForMessages, SidingActivity.this);
                 }else {
                     Bundle data = new Bundle();
