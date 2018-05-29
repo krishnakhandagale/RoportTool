@@ -121,4 +121,13 @@
     <string name="select_siding">--Select Siding--</string>
     <string name="select_foundation">--Select Foundation--</string>
     <string name="select_building_type">--Select Building Type--</string>
+    <string name="add_roof_system">Add Roof System</string>
+    <string name="roof_system_details">Roof System Details</string>
+    <string name="add_siding">Add Siding</string>
+    <string name="siding_details">Siding Details</string>
+    <string name="foundation_details">Foundation Details</string>
+    <string name="add_foundation">Add Foundation</string>
+    <string name="add_building_type">Add Building Type</string>
+    <string name="building_details">Building Details</string>
+    <string name="please_enter_name">Please enter name.</string>
 </resources>

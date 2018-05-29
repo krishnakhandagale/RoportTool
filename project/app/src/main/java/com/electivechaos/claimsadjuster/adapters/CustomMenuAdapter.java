@@ -22,16 +22,16 @@ import java.util.ArrayList;
 public class CustomMenuAdapter extends BaseAdapter {
     private Context context;
     private ArrayList arrayList;
-    private int selectedPosition;
+    private int selectedPosition = -1;
     private String value;
     private String type;
 
-    public CustomMenuAdapter(Context context, ArrayList arrayList, int selectedPosition, String value, String type){
+    public CustomMenuAdapter(Context context, ArrayList arrayList, String value, String type){
         this.arrayList = arrayList;
         this.context = context;
-        this.selectedPosition = selectedPosition;
         this.value = value;
         this.type = type;
+        this.selectedPosition =  findSelectedPosition();;
     }
     @Override
     public int getCount() {
@@ -48,9 +48,37 @@ public class CustomMenuAdapter extends BaseAdapter {
         return 0;
     }
 
+    public int findSelectedPosition(){
+
+        for(int i=0;i<arrayList.size();i++){
+            if(type.equalsIgnoreCase("roof_system")) {
+                if (((RoofSystemPOJO)arrayList.get(i)).getName().equals(value)){
+                    return  i;
+                }
+                else if(type.equalsIgnoreCase("siding")) {
+                    if (((SidingPOJO)arrayList.get(i)).getName().equals(value)){
+                        return  i;
+                    }
+                }
+                else if(type.equalsIgnoreCase("foundation")) {
+                    if (((FoundationPOJO)arrayList.get(i)).getName().equals(value)){
+                        return  i;
+                    }
+                }
+                else if(type.equalsIgnoreCase("building_type")) {
+                    if (((BuildingTypePOJO)arrayList.get(i)).getName().equals(value)){
+                        return  i;
+                    }
+                }
+          }
+        }
+        return  -1;
+    }
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder = null;
+
+
         if(convertView == null){
             holder = new ViewHolder();
             LayoutInflater inflater =  LayoutInflater.from(context);

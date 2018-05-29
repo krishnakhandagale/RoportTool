@@ -29,7 +29,7 @@ import java.util.Iterator;
  */
 
 public class CategoryListDBHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 91;
+    private static final int DATABASE_VERSION = 107;
 
 
     // Database Name
@@ -217,22 +217,22 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         String CREATE_ROOF_SYSTEM_TABLE = "CREATE TABLE "
                 + TABLE_ROOF_SYSTEM + "("
                 + KEY_ROOF_SYSTEM_ID + " INTEGER PRIMARY KEY AUTOINCREMENT DEFAULT 0,"
-                + KEY_ROOF_SYSTEM_NAME + " TEXT UNIQUE"+")";
+                + KEY_ROOF_SYSTEM_NAME + " TEXT UNIQUE, CHECK("+KEY_ROOF_SYSTEM_NAME+"<> '')"+")";
 
         String CREATE_SIDING_TABLE = "CREATE TABLE "
                 + TABLE_SIDING + "("
                 + KEY_SIDING_ID + " INTEGER PRIMARY KEY AUTOINCREMENT DEFAULT 0,"
-                + KEY_SIDING_NAME + " TEXT UNIQUE"+")";
+                + KEY_SIDING_NAME + " TEXT UNIQUE, CHECK("+KEY_SIDING_NAME+"<> '')"+")";
 
         String CREATE_FOUNDATION_TABLE = "CREATE TABLE "
                 + TABLE_FOUNDATION + "("
                 + KEY_FOUNDATION_ID + " INTEGER PRIMARY KEY AUTOINCREMENT DEFAULT 0,"
-                + KEY_FOUNDATION_NAME + " TEXT UNIQUE"+")";
+                + KEY_FOUNDATION_NAME + " TEXT UNIQUE, CHECK("+KEY_FOUNDATION_NAME+"<> '')"+")";
 
         String CREATE_BUILDING_TYPE_TABLE = "CREATE TABLE "
                 + TABLE_BUILDING_TYPE + "("
                 + KEY_BUILDING_TYPE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT DEFAULT 0,"
-                + KEY_BUILDING_NAME+ " TEXT UNIQUE"+")";
+                + KEY_BUILDING_NAME+ " TEXT UNIQUE, CHECK("+KEY_BUILDING_NAME+"<> '')"+")";
 
 
         final String categories[] = {
@@ -271,8 +271,9 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 "Concrete Tile",
                 "Clay Tile",
                 "Ceramic Tile",
-                "Solar Tile"
+                "Solar Tile",
         };
+
 
         final String siding[] = {
                 "Vinyl",
@@ -351,7 +352,6 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
             contentValues.put(KEY_BUILDING_NAME, buildingType[i]);
             db.insert(TABLE_BUILDING_TYPE,null,contentValues);
         }
-
     }
 
 
@@ -415,6 +415,13 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         return  tempList;
     }
 
+    public long addRoofSystem(RoofSystemPOJO roofSystemPOJO){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(KEY_ROOF_SYSTEM_NAME, roofSystemPOJO.getName());
+        return  db.insert(TABLE_ROOF_SYSTEM,null,contentValues);
+    }
+
     public ArrayList<RoofSystemPOJO> getRoofSystemList(){
 
         ArrayList<RoofSystemPOJO> tempList = new ArrayList<>();
@@ -432,6 +439,13 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
         return  tempList;
+    }
+
+    public long addSiding(SidingPOJO sidingPOJO){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(KEY_SIDING_NAME, sidingPOJO.getName());
+        return  db.insert(TABLE_SIDING,null,contentValues);
     }
 
     public ArrayList<SidingPOJO> getSidingList(){
@@ -453,6 +467,14 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         return  tempList;
     }
 
+
+    public long addFoundation(FoundationPOJO foundationPOJO){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(KEY_FOUNDATION_NAME, foundationPOJO.getName());
+        return  db.insert(TABLE_FOUNDATION,null,contentValues);
+    }
+
     public ArrayList<FoundationPOJO> getFoundationList(){
 
         ArrayList<FoundationPOJO> tempList = new ArrayList<>();
@@ -470,6 +492,13 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
         return  tempList;
+    }
+
+    public long addBuildingType(BuildingTypePOJO buildingTypePOJO){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(KEY_BUILDING_NAME, buildingTypePOJO.getName());
+        return  db.insert(TABLE_BUILDING_TYPE,null,contentValues);
     }
 
     public ArrayList<BuildingTypePOJO> getBuildingTypeList(){

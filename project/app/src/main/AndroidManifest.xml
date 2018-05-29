@@ -40,9 +40,8 @@
         <activity
             android:name=".ui.AddEditReportActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan">
-        </activity>
-        <activity android:name=".ui.MainTabsActivity"/>
+            android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".ui.MainTabsActivity" />
         <activity android:name=".ui.ImagePickerActivity" />
         <activity
             android:name=".ui.SingleImageDetailsActivity"
@@ -60,7 +59,6 @@
             android:name=".ui.PdfViewerActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
             android:windowSoftInputMode="adjustPan" />
-
         <activity android:name=".ui.SplashScreenActivity">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -69,6 +67,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.CustomisationActivity" />
+        <activity android:name=".ui.RoofSystemActivity" />
+        <activity android:name=".ui.SidingActivity" />
+        <activity android:name=".ui.FoundationActivity" />
+        <activity android:name=".ui.BuildingTypeActivity"></activity>
     </application>
 
 </manifest>

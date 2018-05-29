@@ -543,7 +543,11 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                 }
             } else if (requestCode == REQUEST_CAMERA) {
                 if (fileUri != null) {
-                    onCaptureImageResult(data);
+                   // try {
+                        onCaptureImageResult(data);
+                 //   } catch (IOException e) {
+                  //      e.printStackTrace();
+                  //  }
                 } else {
                     Snackbar snackbar = Snackbar
                             .make(parentLayout, "Something went wrong.Please retry with system camera app.", Snackbar.LENGTH_INDEFINITE);

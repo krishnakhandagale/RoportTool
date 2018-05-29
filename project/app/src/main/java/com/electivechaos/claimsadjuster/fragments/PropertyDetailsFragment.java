@@ -1,9 +1,11 @@
 package com.electivechaos.claimsadjuster.fragments;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -36,6 +38,10 @@ import com.electivechaos.claimsadjuster.pojo.FoundationPOJO;
 import com.electivechaos.claimsadjuster.pojo.PropertyDetailsPOJO;
 import com.electivechaos.claimsadjuster.pojo.RoofSystemPOJO;
 import com.electivechaos.claimsadjuster.pojo.SidingPOJO;
+import com.electivechaos.claimsadjuster.ui.BuildingTypeActivity;
+import com.electivechaos.claimsadjuster.ui.FoundationActivity;
+import com.electivechaos.claimsadjuster.ui.RoofSystemActivity;
+import com.electivechaos.claimsadjuster.ui.SidingActivity;
 import com.electivechaos.claimsadjuster.utils.CommonUtils;
 
 import java.text.DateFormat;
@@ -62,10 +68,8 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
     private OnGenerateReportClickListener onGenerateReportClickListener;
     private OnPropertyDetailsClickListener onPropertyDetailsClickListener;
 
-    private int selectedPositionOne = -1;
-    private int selectedPositionTwo = -1;
-    private int selectedPositionThree = -1;
-    private int selectedPositionFour = -1;
+
+    private int buildingResult =-1;
 
     private PropertyDetailsPOJO propertyDetailsPOJO;
 
@@ -208,19 +212,27 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
                     public void onPostExecute(Object object, String type) {
 
                         final ArrayList<RoofSystemPOJO> roofSystemList = (ArrayList<RoofSystemPOJO>) object;
+                        RoofSystemPOJO addNew = new RoofSystemPOJO();
+                        addNew.setName("Add New");
+                        roofSystemList.add(addNew);
 
                         final AlertDialog.Builder ad = new AlertDialog.Builder(getContext());
                         ad.setCancelable(true);
                         ad.setTitle("Roof System");
-                        CustomMenuAdapter adapter = new CustomMenuAdapter(getContext(), roofSystemList, selectedPositionOne, propertyDetailsPOJO.getRoofSystem().toString(), "roof_system");
+                        CustomMenuAdapter adapter = new CustomMenuAdapter(getContext(), roofSystemList, propertyDetailsPOJO.getRoofSystem().toString(), "roof_system");
 
-                        ad.setSingleChoiceItems(adapter, selectedPositionOne, new DialogInterface.OnClickListener() {
+                        ad.setSingleChoiceItems(adapter, -1, new DialogInterface.OnClickListener() {
 
                             @Override
                             public void onClick(DialogInterface dialogInterface, int position) {
-                                selectedPositionOne = position;
-                                menuRoofSystem.setText(roofSystemList.get(position).getName().toString());
-                                onPropertyDetailsClickListener.setPropertyRoofSystem(roofSystemList.get(position).getName().toString());
+                                if(roofSystemList.get(position).getName().toString().equalsIgnoreCase("Add New")) {
+                                    Intent intent = new Intent(getContext(), RoofSystemActivity.class);
+                                    startActivityForResult(intent, 30);
+
+                                }else {
+                                    menuRoofSystem.setText(roofSystemList.get(position).getName().toString());
+                                    onPropertyDetailsClickListener.setPropertyRoofSystem(roofSystemList.get(position).getName().toString());
+                                }
                                 dialogInterface.dismiss();
 
                             }
@@ -255,19 +267,26 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
                     @Override
                     public void onPostExecute(Object object, String type) {
                         final ArrayList<SidingPOJO> sidingList = (ArrayList<SidingPOJO>) object;
+                        SidingPOJO addNew = new SidingPOJO();
+                        addNew.setName("Add New");
+                        sidingList.add(addNew);
 
                         final AlertDialog.Builder ad = new AlertDialog.Builder(getContext());
                         ad.setCancelable(true);
                         ad.setTitle("Siding");
-                        CustomMenuAdapter adapter = new CustomMenuAdapter(getContext(), sidingList, selectedPositionTwo, propertyDetailsPOJO.getSiding().toString(), "siding");
+                        CustomMenuAdapter adapter = new CustomMenuAdapter(getContext(), sidingList, propertyDetailsPOJO.getSiding().toString(), "siding");
 
-                        ad.setSingleChoiceItems(adapter, selectedPositionTwo, new DialogInterface.OnClickListener() {
+                        ad.setSingleChoiceItems(adapter, -1, new DialogInterface.OnClickListener() {
 
                             @Override
                             public void onClick(DialogInterface dialogInterface, int position) {
-                                selectedPositionTwo = position;
-                                menuSiding.setText(sidingList.get(position).getName().toString());
-                                onPropertyDetailsClickListener.setPropertySiding(sidingList.get(position).getName().toString());
+                                if(sidingList.get(position).getName().toString().equalsIgnoreCase("Add New")) {
+                                    Intent intent = new Intent(getContext(), SidingActivity.class);
+                                    startActivityForResult(intent,31);
+                                }else {
+                                    menuSiding.setText(sidingList.get(position).getName().toString());
+                                    onPropertyDetailsClickListener.setPropertySiding(sidingList.get(position).getName().toString());
+                                }
                                 dialogInterface.dismiss();
 
                             }
@@ -305,19 +324,26 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
                     public void onPostExecute(Object object, String type) {
 
                         final ArrayList<FoundationPOJO> foundationList = (ArrayList<FoundationPOJO>) object;
+                        FoundationPOJO addNew = new FoundationPOJO();
+                        addNew.setName("Add New");
+                        foundationList.add(addNew);
 
                         final AlertDialog.Builder ad = new AlertDialog.Builder(getContext());
                         ad.setCancelable(true);
                         ad.setTitle("Foundation");
-                        CustomMenuAdapter adapter = new CustomMenuAdapter(getContext(), foundationList, selectedPositionThree, propertyDetailsPOJO.getFoundation().toString(), "foundation");
+                        CustomMenuAdapter adapter = new CustomMenuAdapter(getContext(), foundationList, propertyDetailsPOJO.getFoundation().toString(), "foundation");
 
-                        ad.setSingleChoiceItems(adapter, selectedPositionThree, new DialogInterface.OnClickListener() {
+                        ad.setSingleChoiceItems(adapter, -1, new DialogInterface.OnClickListener() {
 
                             @Override
                             public void onClick(DialogInterface dialogInterface, int position) {
-                                selectedPositionThree = position;
-                                menuFoundation.setText(foundationList.get(position).getName().toString());
-                                onPropertyDetailsClickListener.setPropertyFoundation(foundationList.get(position).getName().toString());
+                                if(foundationList.get(position).getName().toString().equalsIgnoreCase("Add New")) {
+                                    Intent intent = new Intent(getContext(), FoundationActivity.class);
+                                    startActivityForResult(intent,32);
+                                }else {
+                                    menuFoundation.setText(foundationList.get(position).getName().toString());
+                                    onPropertyDetailsClickListener.setPropertyFoundation(foundationList.get(position).getName().toString());
+                                }
                                 dialogInterface.dismiss();
 
                             }
@@ -352,19 +378,27 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
                     public void onPostExecute(Object object, String type) {
 
                         final ArrayList<BuildingTypePOJO> buildingTypeList = (ArrayList<BuildingTypePOJO>) object;
+                        BuildingTypePOJO addNew = new BuildingTypePOJO();
+                        addNew.setName("Add New");
+                        buildingTypeList.add(addNew);
 
                         final AlertDialog.Builder ad = new AlertDialog.Builder(getContext());
                         ad.setCancelable(true);
                         ad.setTitle("Building Type");
-                        CustomMenuAdapter adapter = new CustomMenuAdapter(getContext(), buildingTypeList, selectedPositionFour, propertyDetailsPOJO.getBuildingType().toString(), "building_type");
+                        CustomMenuAdapter adapter = new CustomMenuAdapter(getContext(), buildingTypeList, propertyDetailsPOJO.getBuildingType().toString(), "building_type");
 
-                        ad.setSingleChoiceItems(adapter, selectedPositionFour, new DialogInterface.OnClickListener() {
+                        ad.setSingleChoiceItems(adapter, -1, new DialogInterface.OnClickListener() {
 
                             @Override
                             public void onClick(DialogInterface dialogInterface, int position) {
-                                selectedPositionFour = position;
-                                menuBuildingType.setText(buildingTypeList.get(position).getName().toString());
-                                onPropertyDetailsClickListener.setPropertyBuildingType(buildingTypeList.get(position).getName().toString());
+                                if(buildingTypeList.get(position).getName().toString().equalsIgnoreCase("Add New")) {
+                                    Intent intent = new Intent(getContext(), BuildingTypeActivity.class);
+                                    startActivityForResult(intent,33);
+                                }else {
+                                    menuBuildingType.setText(buildingTypeList.get(position).getName().toString());
+                                    onPropertyDetailsClickListener.setPropertyBuildingType(buildingTypeList.get(position).getName().toString());
+                                }
+
                                 dialogInterface.dismiss();
 
                             }
@@ -465,6 +499,70 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
             onPropertyDetailsClickListener = (OnPropertyDetailsClickListener) getActivity();
         } catch (ClassCastException ex) {
             ex.printStackTrace();
+        }
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 30) {
+            if (resultCode == Activity.RESULT_OK) {
+                Bundle dataFromActivity = data.getExtras().getBundle("roofSystemDetails");
+                String roofName = dataFromActivity.get("roofSystemName").toString();
+                RoofSystemPOJO roofSystemPOJO = new RoofSystemPOJO();
+                roofSystemPOJO.setName(roofName);
+
+                categoryListDBHelper.addRoofSystem(roofSystemPOJO);
+                if(!roofName.equals("")){
+                    menuRoofSystem.setText(roofName);
+                }
+
+                onPropertyDetailsClickListener.setPropertyRoofSystem(roofName);
+
+            }
+        }
+        else if(requestCode == 31){
+            if (resultCode == Activity.RESULT_OK) {
+                Bundle dataFromActivity = data.getExtras().getBundle("sidingDetails");
+                String sidingName = dataFromActivity.get("sidingName").toString();
+                SidingPOJO sidingPOJO = new SidingPOJO();
+                sidingPOJO.setName(sidingName);
+
+                categoryListDBHelper.addSiding(sidingPOJO);
+              if(!sidingName.equals("")){
+                    menuSiding.setText(sidingName);
+                }
+                onPropertyDetailsClickListener.setPropertySiding(sidingName);
+            }
+        }
+        else if(requestCode == 32){
+            if (resultCode == Activity.RESULT_OK) {
+                Bundle dataFromActivity = data.getExtras().getBundle("foundationDetails");
+                String foundationName = dataFromActivity.get("foundationName").toString();
+                FoundationPOJO foundationPOJO = new FoundationPOJO();
+                foundationPOJO.setName(foundationName);
+
+                categoryListDBHelper.addFoundation(foundationPOJO);
+                if(!foundationName.equals("")){
+                    menuFoundation.setText(foundationName);
+                }
+                onPropertyDetailsClickListener.setPropertyFoundation(foundationName);
+
+            }
+        }
+        else if(requestCode == 33){
+            if (resultCode == Activity.RESULT_OK) {
+                Bundle dataFromActivity = data.getExtras().getBundle("buildingDetails");
+                String buildingName = dataFromActivity.get("buildingName").toString();
+                BuildingTypePOJO buildingTypePOJO = new BuildingTypePOJO();
+                buildingTypePOJO.setName(buildingName);
+
+                categoryListDBHelper.addBuildingType(buildingTypePOJO);
+                if(!buildingName.equals("")){
+                    menuBuildingType.setText(buildingName);
+                }
+                onPropertyDetailsClickListener.setPropertyBuildingType(buildingName);
+
+            }
         }
     }
 }
