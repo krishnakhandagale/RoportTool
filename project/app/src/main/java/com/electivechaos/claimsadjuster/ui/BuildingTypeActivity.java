@@ -20,7 +20,7 @@ public class BuildingTypeActivity extends AppCompatActivity {
         Button addBuildingBtn = findViewById(R.id.addBuilding);
         final EditText buildingName = findViewById(R.id.buildingName);
         final View parentLayoutForMessages = findViewById(R.id.parentLayout);
-        
+
 
         addBuildingBtn.setOnClickListener(new View.OnClickListener() {
             @Override

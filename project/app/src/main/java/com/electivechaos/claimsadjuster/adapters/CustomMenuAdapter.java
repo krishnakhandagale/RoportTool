@@ -1,6 +1,7 @@
 package com.electivechaos.claimsadjuster.adapters;
 
 import android.content.Context;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -98,6 +99,9 @@ public class CustomMenuAdapter extends BaseAdapter {
            }else {
                holder.checkedTextView.setChecked(false);
            }
+           if(roofSystemPOJO.getName().equals("Add New")) {
+               holder.checkedTextView.setCheckMarkDrawable(null);
+           }
            holder.checkedTextView.setText(roofSystemPOJO.getName());
        }
        else if(type.equalsIgnoreCase("siding")){
@@ -107,6 +111,9 @@ public class CustomMenuAdapter extends BaseAdapter {
                holder.checkedTextView.setChecked(true);
            }else {
                holder.checkedTextView.setChecked(false);
+           }
+           if(sidingPOJO.getName().equals("Add New")) {
+               holder.checkedTextView.setCheckMarkDrawable(null);
            }
 
            holder.checkedTextView.setText(sidingPOJO.getName());
@@ -119,6 +126,9 @@ public class CustomMenuAdapter extends BaseAdapter {
            }else {
                holder.checkedTextView.setChecked(false);
            }
+           if(foundationPOJO.getName().equals("Add New")) {
+               holder.checkedTextView.setCheckMarkDrawable(null);
+           }
 
            holder.checkedTextView.setText(foundationPOJO.getName());
        }
@@ -129,6 +139,9 @@ public class CustomMenuAdapter extends BaseAdapter {
                holder.checkedTextView.setChecked(true);
            }else {
                holder.checkedTextView.setChecked(false);
+           }
+           if(buildingTypePOJO.getName().equals("Add New")) {
+               holder.checkedTextView.setCheckMarkDrawable(null);
            }
 
            holder.checkedTextView.setText(buildingTypePOJO.getName());
