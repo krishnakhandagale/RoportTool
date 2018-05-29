@@ -116,25 +116,16 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
         squareFootage.setText(squareFootageValue);
 
         if (propertyDetailsPOJO != null) {
-            if (propertyDetailsPOJO.getRoofSystem().isEmpty()) {
-
-            } else {
+            if (!propertyDetailsPOJO.getRoofSystem().isEmpty()) {
                 menuRoofSystem.setText(propertyDetailsPOJO.getRoofSystem());
             }
-            if (propertyDetailsPOJO.getSiding().isEmpty()) {
-
-            } else {
+            if (!propertyDetailsPOJO.getSiding().isEmpty()) {
                 menuSiding.setText(propertyDetailsPOJO.getSiding());
             }
-            if (propertyDetailsPOJO.getFoundation().isEmpty()) {
-
-            } else {
+            if (!propertyDetailsPOJO.getFoundation().isEmpty()) {
                 menuFoundation.setText(propertyDetailsPOJO.getFoundation());
             }
-
-            if (propertyDetailsPOJO.getBuildingType().isEmpty()) {
-
-            } else {
+            if (!propertyDetailsPOJO.getBuildingType().isEmpty()) {
                 menuBuildingType.setText(propertyDetailsPOJO.getBuildingType());
             }
         }
