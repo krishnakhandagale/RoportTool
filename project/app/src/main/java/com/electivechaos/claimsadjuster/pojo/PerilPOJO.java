@@ -8,12 +8,12 @@ import android.os.Parcelable;
  */
 
 public class PerilPOJO implements Parcelable {
-    String name;
-    String description;
-    int id;
+    private String name;
+    private String description;
+    private int id;
 
     public PerilPOJO() {
-        id=0;
+        id = -1;
         name = "";
         description = "";
     }

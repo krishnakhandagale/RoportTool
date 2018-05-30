@@ -15,6 +15,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -181,6 +182,9 @@ public class PerilListMenuFragment extends Fragment{
                 perilPOJO.setDescription(categoryDescription);
                 long result = mCategoryListDBHelper.addPeril(perilPOJO);
 
+                onPerilSelectionListener.setPeril(perilPOJO);
+                perilPOJODetails =  perilPOJO;
+
                 if(result == -100){
                     Toast.makeText(getContext(), "Peril with same name already exists.", Toast.LENGTH_SHORT).show();
                 }else{
@@ -202,13 +206,14 @@ public class PerilListMenuFragment extends Fragment{
                 perilPOJO.setDescription(desc);
                 perilPOJO.setID(id);
                 mCategoryListDBHelper.updatePeril(perilPOJO);
+
                 updatePerilDetails();
             }
         }
     }
 
     private  void updatePerilDetails(){
-        perilPOJOS = mCategoryListDBHelper.getCauseOfLosses();
+        perilPOJOS = mCategoryListDBHelper.getPeril();
         mAdapter = new PerilListMenuFragment.PerilListAdapter(perilPOJOS, getContext(),perilPOJODetails);
         recyclerView.setAdapter(mAdapter);
 
@@ -226,9 +231,17 @@ public class PerilListMenuFragment extends Fragment{
             this.context = context;
             this.perilPOJOS = perilPOJOS;
             this.perilPOJODetails = perilPOJODetails;
+            this.sSelected = getSelectedPosition();
         }
 
-
+        public int getSelectedPosition(){
+            for(int i=0;i<perilPOJOS.size();i++){
+                if(perilPOJOS.get(i).getName().equals(perilPOJODetails.getName())){
+                    return i;
+                }
+            }
+            return  -1;
+        }
         @NonNull
         @Override
         public PerilListAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -239,33 +252,33 @@ public class PerilListMenuFragment extends Fragment{
 
         @Override
         public void onBindViewHolder(@NonNull final PerilListAdapter.MyViewHolder holder, final int position) {
-            final PerilPOJO perilPOJO = perilPOJOS.get(position);
+            final PerilPOJO perilPOJO = perilPOJOS.get(holder.getAdapterPosition());
 
+            Log.d("Krishna",holder.getAdapterPosition()+"");
             holder.title.setText(perilPOJO.getName());
             holder.desc.setText(perilPOJO.getDescription());
-            holder.chkItem.setChecked(sSelected == position);
-            holder.chkItem.setTag(position);
-
-                if(perilPOJODetails !=null) {
-                    if (perilPOJODetails.getName().equals(perilPOJO.getName())) {
-                        lastSelectedCheckbox = holder.chkItem;
-                        holder.chkItem.setChecked(true);
-                    }
-                }
+            holder.chkItem.setChecked(sSelected == holder.getAdapterPosition());
+            holder.chkItem.setTag(holder.getAdapterPosition());
 
             holder.chkItem.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-                    sSelected = position;
+                    sSelected = holder.getAdapterPosition();
 
                     if(lastSelectedCheckbox == null){
                         lastSelectedCheckbox = (CheckBox) buttonView;
-                    }else if(lastSelectedCheckbox != null && (int)lastSelectedCheckbox.getTag() != position){
+                    }else if(lastSelectedCheckbox != null && (int)lastSelectedCheckbox.getTag() != holder.getAdapterPosition()){
                         lastSelectedCheckbox.setChecked(false);
                         lastSelectedCheckbox = (CheckBox) buttonView;
                     }
-                    onPerilSelectionListener.setPeril(perilPOJO);
+                    if(isChecked){
+                         onPerilSelectionListener.setPeril(perilPOJO);
+
+                    }
+                    else {
+                        onPerilSelectionListener.setPeril(new PerilPOJO());
+                    }
 
                 }
             });
