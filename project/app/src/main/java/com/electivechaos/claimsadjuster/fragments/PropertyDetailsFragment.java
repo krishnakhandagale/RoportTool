@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.electivechaos.claimsadjuster.R;
 import com.electivechaos.claimsadjuster.adapters.CustomMenuAdapter;
@@ -68,8 +69,6 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
     private OnGenerateReportClickListener onGenerateReportClickListener;
     private OnPropertyDetailsClickListener onPropertyDetailsClickListener;
 
-
-    private int buildingResult =-1;
 
     private PropertyDetailsPOJO propertyDetailsPOJO;
 
@@ -493,6 +492,7 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
         }
     }
 
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 30) {
@@ -502,9 +502,11 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
                 RoofSystemPOJO roofSystemPOJO = new RoofSystemPOJO();
                 roofSystemPOJO.setName(roofName);
 
-                categoryListDBHelper.addRoofSystem(roofSystemPOJO);
+                long i = categoryListDBHelper.addRoofSystem(roofSystemPOJO);
+                if(i == -111){
+                    Toast.makeText(getContext(),"Roof System with same name already exists.",Toast.LENGTH_LONG).show();
+                }
                 menuRoofSystem.setText(roofName);
-
                 onPropertyDetailsClickListener.setPropertyRoofSystem(roofName);
 
             }
@@ -516,7 +518,10 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
                 SidingPOJO sidingPOJO = new SidingPOJO();
                 sidingPOJO.setName(sidingName);
 
-                categoryListDBHelper.addSiding(sidingPOJO);
+                long i = categoryListDBHelper.addSiding(sidingPOJO);
+                if(i == -111){
+                    Toast.makeText(getContext(),"Siding with same name already exists.",Toast.LENGTH_LONG).show();
+                }
                 menuSiding.setText(sidingName);
                 onPropertyDetailsClickListener.setPropertySiding(sidingName);
             }
@@ -528,7 +533,10 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
                 FoundationPOJO foundationPOJO = new FoundationPOJO();
                 foundationPOJO.setName(foundationName);
 
-                categoryListDBHelper.addFoundation(foundationPOJO);
+               long i = categoryListDBHelper.addFoundation(foundationPOJO);
+                if(i == -111){
+                    Toast.makeText(getContext(),"Foundation with same name already exists.",Toast.LENGTH_LONG).show();
+                }
                 menuFoundation.setText(foundationName);
                 onPropertyDetailsClickListener.setPropertyFoundation(foundationName);
 
@@ -541,7 +549,10 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
                 BuildingTypePOJO buildingTypePOJO = new BuildingTypePOJO();
                 buildingTypePOJO.setName(buildingName);
 
-                categoryListDBHelper.addBuildingType(buildingTypePOJO);
+                long i = categoryListDBHelper.addBuildingType(buildingTypePOJO);
+                if(i == -111){
+                    Toast.makeText(getContext(),"Building type with same name already exists.",Toast.LENGTH_LONG).show();
+                }
                 menuBuildingType.setText(buildingName);
                 onPropertyDetailsClickListener.setPropertyBuildingType(buildingName);
 

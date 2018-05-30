@@ -29,7 +29,7 @@ import java.util.Iterator;
  */
 
 public class CategoryListDBHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 107;
+    private static final int DATABASE_VERSION = 116;
 
 
     // Database Name
@@ -416,10 +416,14 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
     }
 
     public long addRoofSystem(RoofSystemPOJO roofSystemPOJO){
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(KEY_ROOF_SYSTEM_NAME, roofSystemPOJO.getName());
-        return  db.insert(TABLE_ROOF_SYSTEM,null,contentValues);
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(KEY_ROOF_SYSTEM_NAME, roofSystemPOJO.getName());
+            return db.insertOrThrow(TABLE_ROOF_SYSTEM,null,contentValues);
+        }catch (SQLiteConstraintException e) {
+            return -111;
+        }
     }
 
     public ArrayList<RoofSystemPOJO> getRoofSystemList(){
@@ -442,10 +446,16 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
     }
 
     public long addSiding(SidingPOJO sidingPOJO){
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(KEY_SIDING_NAME, sidingPOJO.getName());
-        return  db.insert(TABLE_SIDING,null,contentValues);
+
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(KEY_SIDING_NAME, sidingPOJO.getName());
+            return db.insertOrThrow(TABLE_SIDING,null,contentValues);
+        }
+       catch (SQLiteConstraintException e){
+            return -111;
+       }
     }
 
     public ArrayList<SidingPOJO> getSidingList(){
@@ -469,10 +479,16 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
 
 
     public long addFoundation(FoundationPOJO foundationPOJO){
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(KEY_FOUNDATION_NAME, foundationPOJO.getName());
-        return  db.insert(TABLE_FOUNDATION,null,contentValues);
+
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(KEY_FOUNDATION_NAME, foundationPOJO.getName());
+            return db.insertOrThrow(TABLE_FOUNDATION,null,contentValues);
+        }
+        catch (SQLiteConstraintException e) {
+            return -111;
+        }
     }
 
     public ArrayList<FoundationPOJO> getFoundationList(){
@@ -495,10 +511,15 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
     }
 
     public long addBuildingType(BuildingTypePOJO buildingTypePOJO){
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(KEY_BUILDING_NAME, buildingTypePOJO.getName());
-        return  db.insert(TABLE_BUILDING_TYPE,null,contentValues);
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(KEY_BUILDING_NAME, buildingTypePOJO.getName());
+            return db.insertOrThrow(TABLE_BUILDING_TYPE,null,contentValues);
+        }
+        catch (SQLiteConstraintException e) {
+            return -111;
+        }
     }
 
     public ArrayList<BuildingTypePOJO> getBuildingTypeList(){
@@ -558,7 +579,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
             ContentValues contentValues = new ContentValues();
             contentValues.put(KEY_PERIL_NAME, perilPOJO.getName());
             contentValues.put(KEY_PERIL_DESCRIPTION, perilPOJO.getDescription());
-            return  db.insert(TABLE_PERIL,null,contentValues);
+            return  db.insertOrThrow(TABLE_PERIL,null,contentValues);
         }catch (SQLiteConstraintException exception){
             return -100;
         }
