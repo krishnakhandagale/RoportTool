@@ -209,7 +209,7 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
                         final AlertDialog.Builder ad = new AlertDialog.Builder(getContext());
                         ad.setCancelable(true);
                         ad.setTitle("Roof System");
-                        CustomMenuAdapter adapter = new CustomMenuAdapter(getContext(), roofSystemList, propertyDetailsPOJO.getRoofSystem().toString(), "roof_system");
+                        CustomMenuAdapter adapter = new CustomMenuAdapter(roofSystemList, propertyDetailsPOJO.getRoofSystem().toString(), "roof_system");
 
                         ad.setSingleChoiceItems(adapter, -1, new DialogInterface.OnClickListener() {
 
@@ -264,7 +264,7 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
                         final AlertDialog.Builder ad = new AlertDialog.Builder(getContext());
                         ad.setCancelable(true);
                         ad.setTitle("Siding");
-                        CustomMenuAdapter adapter = new CustomMenuAdapter(getContext(), sidingList, propertyDetailsPOJO.getSiding().toString(), "siding");
+                        CustomMenuAdapter adapter = new CustomMenuAdapter(sidingList, propertyDetailsPOJO.getSiding().toString(), "siding");
 
                         ad.setSingleChoiceItems(adapter, -1, new DialogInterface.OnClickListener() {
 
@@ -321,7 +321,7 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
                         final AlertDialog.Builder ad = new AlertDialog.Builder(getContext());
                         ad.setCancelable(true);
                         ad.setTitle("Foundation");
-                        CustomMenuAdapter adapter = new CustomMenuAdapter(getContext(), foundationList, propertyDetailsPOJO.getFoundation().toString(), "foundation");
+                        CustomMenuAdapter adapter = new CustomMenuAdapter(foundationList, propertyDetailsPOJO.getFoundation().toString(), "foundation");
 
                         ad.setSingleChoiceItems(adapter, -1, new DialogInterface.OnClickListener() {
 
@@ -375,7 +375,7 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
                         final AlertDialog.Builder ad = new AlertDialog.Builder(getContext());
                         ad.setCancelable(true);
                         ad.setTitle("Building Type");
-                        CustomMenuAdapter adapter = new CustomMenuAdapter(getContext(), buildingTypeList, propertyDetailsPOJO.getBuildingType().toString(), "building_type");
+                        CustomMenuAdapter adapter = new CustomMenuAdapter(buildingTypeList, propertyDetailsPOJO.getBuildingType().toString(), "building_type");
 
                         ad.setSingleChoiceItems(adapter, -1, new DialogInterface.OnClickListener() {
 

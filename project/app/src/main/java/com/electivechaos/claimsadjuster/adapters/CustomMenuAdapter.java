@@ -3,7 +3,6 @@ package com.electivechaos.claimsadjuster.adapters;
 import android.content.Context;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,15 +22,13 @@ import java.util.ArrayList;
  */
 
 public class CustomMenuAdapter extends BaseAdapter {
-    private Context context;
     private ArrayList arrayList;
     private int selectedPosition = -1;
     private String value;
     private String type;
 
-    public CustomMenuAdapter(Context context, ArrayList arrayList, String value, String type){
+    public CustomMenuAdapter(ArrayList arrayList, String value, String type){
         this.arrayList = arrayList;
-        this.context = context;
         this.value = value;
         this.type = type;
         this.selectedPosition =  findSelectedPosition();;
@@ -54,21 +51,21 @@ public class CustomMenuAdapter extends BaseAdapter {
     public int findSelectedPosition(){
 
         for(int i=0;i<arrayList.size();i++){
-            if(type.equalsIgnoreCase("roof_system")) {
+            if(type.equals("roof_system")) {
                 if (((RoofSystemPOJO)arrayList.get(i)).getName().equals(value)){
                     return  i;
                 }
-                else if(type.equalsIgnoreCase("siding")) {
+                else if(type.equals("siding")) {
                     if (((SidingPOJO)arrayList.get(i)).getName().equals(value)){
                         return  i;
                     }
                 }
-                else if(type.equalsIgnoreCase("foundation")) {
+                else if(type.equals("foundation")) {
                     if (((FoundationPOJO)arrayList.get(i)).getName().equals(value)){
                         return  i;
                     }
                 }
-                else if(type.equalsIgnoreCase("building_type")) {
+                else if(type.equals("building_type")) {
                     if (((BuildingTypePOJO)arrayList.get(i)).getName().equals(value)){
                         return  i;
                     }
@@ -98,7 +95,7 @@ public class CustomMenuAdapter extends BaseAdapter {
         }
 
 
-       if(type.equalsIgnoreCase("roof_system")) {
+       if(type.equals("roof_system")) {
 
            RoofSystemPOJO roofSystemPOJO=(RoofSystemPOJO)arrayList.get(position);
            holder.checkedTextView.setText(roofSystemPOJO.getName());
@@ -111,7 +108,7 @@ public class CustomMenuAdapter extends BaseAdapter {
                holder.checkedTextView.setCheckMarkDrawable(null);
            }
        }
-       else if(type.equalsIgnoreCase("siding")){
+       else if(type.equals("siding")){
 
            SidingPOJO sidingPOJO=(SidingPOJO) arrayList.get(position);
            holder.checkedTextView.setText(sidingPOJO.getName());
@@ -127,7 +124,7 @@ public class CustomMenuAdapter extends BaseAdapter {
            Log.d("SIDING ::",""+holder.checkedTextView.getText().toString());
 
        }
-       else if(type.equalsIgnoreCase("foundation")){
+       else if(type.equals("foundation")){
            FoundationPOJO foundationPOJO=(FoundationPOJO) arrayList.get(position);
 
            holder.checkedTextView.setText(foundationPOJO.getName());
@@ -142,7 +139,7 @@ public class CustomMenuAdapter extends BaseAdapter {
            }
 
        }
-       else if(type.equalsIgnoreCase("building_type")){
+       else if(type.equals("building_type")){
            BuildingTypePOJO buildingTypePOJO=(BuildingTypePOJO) arrayList.get(position);
 
            holder.checkedTextView.setText(buildingTypePOJO.getName());
