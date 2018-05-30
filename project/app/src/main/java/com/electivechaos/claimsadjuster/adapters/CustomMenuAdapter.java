@@ -1,6 +1,8 @@
 package com.electivechaos.claimsadjuster.adapters;
 
 import android.content.Context;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -79,73 +81,82 @@ public class CustomMenuAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder = null;
 
-
         if(convertView == null){
             holder = new ViewHolder();
-            LayoutInflater inflater =  LayoutInflater.from(context);
+            LayoutInflater inflater =  LayoutInflater.from(parent.getContext());
             convertView = inflater.inflate(R.layout.custom_menu_popup_adapter_layout,parent,false);
             holder.checkedTextView = convertView.findViewById(R.id.checked_text_name);
             convertView.setTag(holder);
-
         } else{
-          holder = (ViewHolder) convertView.getTag();
+            holder = (ViewHolder) convertView.getTag();
+            if( holder.checkedTextView.getCheckMarkDrawable() == null){
+                TypedValue value = new TypedValue();
+                parent.getContext().getTheme().resolveAttribute(android.R.attr.listChoiceIndicatorSingle, value, true);
+                int checkMarkDrawableResId = value.resourceId;
+                holder.checkedTextView.setCheckMarkDrawable(checkMarkDrawableResId);
+            }
         }
+
 
        if(type.equalsIgnoreCase("roof_system")) {
 
            RoofSystemPOJO roofSystemPOJO=(RoofSystemPOJO)arrayList.get(position);
-           if(selectedPosition == position || roofSystemPOJO.getName().toString().equals(value)) {
+           holder.checkedTextView.setText(roofSystemPOJO.getName());
+           if(selectedPosition == position || roofSystemPOJO.getName().equals(value)) {
                holder.checkedTextView.setChecked(true);
            }else {
                holder.checkedTextView.setChecked(false);
            }
-           if(roofSystemPOJO.getName().equals("Add New")) {
+           if(holder.checkedTextView.getText().toString().equals("Add New")) {
                holder.checkedTextView.setCheckMarkDrawable(null);
            }
-           holder.checkedTextView.setText(roofSystemPOJO.getName());
        }
        else if(type.equalsIgnoreCase("siding")){
 
            SidingPOJO sidingPOJO=(SidingPOJO) arrayList.get(position);
-           if(selectedPosition == position || sidingPOJO.getName().toString().equals(value)) {
+           holder.checkedTextView.setText(sidingPOJO.getName());
+
+           if(selectedPosition == position || sidingPOJO.getName().equals(value)) {
                holder.checkedTextView.setChecked(true);
            }else {
                holder.checkedTextView.setChecked(false);
            }
-           if(sidingPOJO.getName().equals("Add New")) {
+           if(holder.checkedTextView.getText().toString().equals("Add New")) {
                holder.checkedTextView.setCheckMarkDrawable(null);
            }
+           Log.d("SIDING ::",""+holder.checkedTextView.getText().toString());
 
-           holder.checkedTextView.setText(sidingPOJO.getName());
        }
        else if(type.equalsIgnoreCase("foundation")){
            FoundationPOJO foundationPOJO=(FoundationPOJO) arrayList.get(position);
 
-           if(selectedPosition == position || foundationPOJO.getName().toString().equals(value)) {
+           holder.checkedTextView.setText(foundationPOJO.getName());
+
+           if(selectedPosition == position || foundationPOJO.getName().equals(value)) {
                holder.checkedTextView.setChecked(true);
            }else {
                holder.checkedTextView.setChecked(false);
            }
-           if(foundationPOJO.getName().equals("Add New")) {
+           if(holder.checkedTextView.getText().toString().equals("Add New")) {
                holder.checkedTextView.setCheckMarkDrawable(null);
            }
 
-           holder.checkedTextView.setText(foundationPOJO.getName());
        }
        else if(type.equalsIgnoreCase("building_type")){
            BuildingTypePOJO buildingTypePOJO=(BuildingTypePOJO) arrayList.get(position);
 
-           if(selectedPosition == position || buildingTypePOJO.getName().toString().equals(value)) {
+           holder.checkedTextView.setText(buildingTypePOJO.getName());
+
+           if(selectedPosition == position || buildingTypePOJO.getName().equals(value)) {
                holder.checkedTextView.setChecked(true);
            }else {
                holder.checkedTextView.setChecked(false);
            }
-           if(buildingTypePOJO.getName().equals("Add New")) {
+           if(holder.checkedTextView.getText().toString().equals("Add New")) {
                holder.checkedTextView.setCheckMarkDrawable(null);
            }
-
-           holder.checkedTextView.setText(buildingTypePOJO.getName());
        }
+
 
         return convertView;
     }
