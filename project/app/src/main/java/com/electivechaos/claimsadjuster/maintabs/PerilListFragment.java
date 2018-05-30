@@ -94,7 +94,7 @@ public class PerilListFragment extends Fragment {
     }
 
     private  void updatePerilDetails(){
-        perilPOJOS = mCategoryListDBHelper.getCauseOfLosses();
+        perilPOJOS = mCategoryListDBHelper.getPeril();
         mAdapter = new PerilListFragment.PerilListAdapter(perilPOJOS, getContext());
         recyclerView.setAdapter(mAdapter);
     }

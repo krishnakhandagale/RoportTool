@@ -223,7 +223,7 @@ public class PerilListMenuFragment extends Fragment{
         private Context context;
         public List<PerilPOJO> perilPOJOS;
 
-        private int sSelected = -1;
+        private int sSelected;
         private CheckBox lastSelectedCheckbox;
         PerilPOJO perilPOJODetails;
 
@@ -254,32 +254,34 @@ public class PerilListMenuFragment extends Fragment{
         public void onBindViewHolder(@NonNull final PerilListAdapter.MyViewHolder holder, final int position) {
             final PerilPOJO perilPOJO = perilPOJOS.get(holder.getAdapterPosition());
 
-            Log.d("Krishna",holder.getAdapterPosition()+"");
             holder.title.setText(perilPOJO.getName());
             holder.desc.setText(perilPOJO.getDescription());
             holder.chkItem.setChecked(sSelected == holder.getAdapterPosition());
             holder.chkItem.setTag(holder.getAdapterPosition());
 
-            holder.chkItem.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            if(sSelected == holder.getAdapterPosition()){
+                lastSelectedCheckbox = holder.chkItem;
+
+            }
+            holder.chkItem.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                public void onClick(View v) {
+                    if(((CheckBox) v).isChecked()){
+                        sSelected = holder.getAdapterPosition();
+                        onPerilSelectionListener.setPeril(perilPOJO);
 
-                    sSelected = holder.getAdapterPosition();
+                         if(lastSelectedCheckbox != null && (int) lastSelectedCheckbox.getTag() != holder.getAdapterPosition()){
+                            lastSelectedCheckbox.setChecked(false);
+                            lastSelectedCheckbox = (CheckBox) v;
+                        }else{
+                             lastSelectedCheckbox = (CheckBox) v;
+                         }
 
-                    if(lastSelectedCheckbox == null){
-                        lastSelectedCheckbox = (CheckBox) buttonView;
-                    }else if(lastSelectedCheckbox != null && (int)lastSelectedCheckbox.getTag() != holder.getAdapterPosition()){
-                        lastSelectedCheckbox.setChecked(false);
-                        lastSelectedCheckbox = (CheckBox) buttonView;
-                    }
-                    if(isChecked){
-                         onPerilSelectionListener.setPeril(perilPOJO);
-
-                    }
-                    else {
+                    }else{
+                        lastSelectedCheckbox = null;
+                        sSelected = -1;
                         onPerilSelectionListener.setPeril(new PerilPOJO());
                     }
-
                 }
             });
             holder.textViewOptions.setOnClickListener(new View.OnClickListener() {
