@@ -288,7 +288,7 @@ public class PerilListMenuFragment extends Fragment{
                 @Override
                 public void onClick(View v) {
                     PopupMenu popup = new PopupMenu(context, holder.textViewOptions);
-                    popup.inflate(R.menu.action_menu);
+                    popup.inflate(R.menu.peril_menu);
                     popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {

@@ -54,24 +54,21 @@ import java.util.Date;
 
 public class PropertyDetailsFragment extends Fragment implements DatePickerDialog.OnDateSetListener {
 
+    private static final int UNIQUE_CONSTRAINT_FAIL_ERROR_CODE = -111;
+
     private int day;
     private int month;
     private int year;
-
     private boolean isFabOpen = false;
     private FloatingActionButton showFabBtn, fabGoNextBtn, fabAddLabelBtn, fabGenerateReportBtn, fabSaveReportBtn;
     private Animation fab_open, fab_close;
     private TextView txtDate, menuRoofSystem, menuSiding, menuFoundation, menuBuildingType;
-
     private NextButtonClickListener nextButtonClickListener;
     private DrawerMenuListAdapter.OnLabelAddClickListener onLabelAddClickListener;
     private OnSaveReportClickListener onSaveReportClickListener;
     private OnGenerateReportClickListener onGenerateReportClickListener;
     private OnPropertyDetailsClickListener onPropertyDetailsClickListener;
-
-
     private PropertyDetailsPOJO propertyDetailsPOJO;
-
     private View progressBarLayout;
     private CategoryListDBHelper categoryListDBHelper;
 
@@ -215,11 +212,11 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
 
                             @Override
                             public void onClick(DialogInterface dialogInterface, int position) {
-                                if(roofSystemList.get(position).getName().toString().equalsIgnoreCase("Add New")) {
+                                if (roofSystemList.get(position).getName().toString().equalsIgnoreCase("Add New")) {
                                     Intent intent = new Intent(getContext(), RoofSystemActivity.class);
                                     startActivityForResult(intent, 30);
 
-                                }else {
+                                } else {
                                     menuRoofSystem.setText(roofSystemList.get(position).getName().toString());
                                     onPropertyDetailsClickListener.setPropertyRoofSystem(roofSystemList.get(position).getName().toString());
                                 }
@@ -270,10 +267,10 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
 
                             @Override
                             public void onClick(DialogInterface dialogInterface, int position) {
-                                if(sidingList.get(position).getName().toString().equalsIgnoreCase("Add New")) {
+                                if (sidingList.get(position).getName().toString().equalsIgnoreCase("Add New")) {
                                     Intent intent = new Intent(getContext(), SidingActivity.class);
-                                    startActivityForResult(intent,31);
-                                }else {
+                                    startActivityForResult(intent, 31);
+                                } else {
                                     menuSiding.setText(sidingList.get(position).getName().toString());
                                     onPropertyDetailsClickListener.setPropertySiding(sidingList.get(position).getName().toString());
                                 }
@@ -327,10 +324,10 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
 
                             @Override
                             public void onClick(DialogInterface dialogInterface, int position) {
-                                if(foundationList.get(position).getName().toString().equalsIgnoreCase("Add New")) {
+                                if (foundationList.get(position).getName().toString().equalsIgnoreCase("Add New")) {
                                     Intent intent = new Intent(getContext(), FoundationActivity.class);
-                                    startActivityForResult(intent,32);
-                                }else {
+                                    startActivityForResult(intent, 32);
+                                } else {
                                     menuFoundation.setText(foundationList.get(position).getName().toString());
                                     onPropertyDetailsClickListener.setPropertyFoundation(foundationList.get(position).getName().toString());
                                 }
@@ -381,10 +378,10 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
 
                             @Override
                             public void onClick(DialogInterface dialogInterface, int position) {
-                                if(buildingTypeList.get(position).getName().toString().equalsIgnoreCase("Add New")) {
+                                if (buildingTypeList.get(position).getName().toString().equalsIgnoreCase("Add New")) {
                                     Intent intent = new Intent(getContext(), BuildingTypeActivity.class);
-                                    startActivityForResult(intent,33);
-                                }else {
+                                    startActivityForResult(intent, 33);
+                                } else {
                                     menuBuildingType.setText(buildingTypeList.get(position).getName().toString());
                                     onPropertyDetailsClickListener.setPropertyBuildingType(buildingTypeList.get(position).getName().toString());
                                 }
@@ -502,59 +499,64 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
                 RoofSystemPOJO roofSystemPOJO = new RoofSystemPOJO();
                 roofSystemPOJO.setName(roofName);
 
-                long i = categoryListDBHelper.addRoofSystem(roofSystemPOJO);
-                if(i == -111){
-                    Toast.makeText(getContext(),"Roof System with same name already exists.",Toast.LENGTH_LONG).show();
+                long addResultCode = categoryListDBHelper.addRoofSystem(roofSystemPOJO);
+                if (addResultCode == UNIQUE_CONSTRAINT_FAIL_ERROR_CODE) {
+                    Toast.makeText(getContext(), "Roof System with same name already exists.", Toast.LENGTH_LONG).show();
+                } else {
+                    menuRoofSystem.setText(roofName);
+                    onPropertyDetailsClickListener.setPropertyRoofSystem(roofName);
                 }
-                menuRoofSystem.setText(roofName);
-                onPropertyDetailsClickListener.setPropertyRoofSystem(roofName);
+
 
             }
-        }
-        else if(requestCode == 31){
+        } else if (requestCode == 31) {
             if (resultCode == Activity.RESULT_OK) {
                 Bundle dataFromActivity = data.getExtras().getBundle("sidingDetails");
                 String sidingName = dataFromActivity.get("sidingName").toString();
                 SidingPOJO sidingPOJO = new SidingPOJO();
                 sidingPOJO.setName(sidingName);
 
-                long i = categoryListDBHelper.addSiding(sidingPOJO);
-                if(i == -111){
-                    Toast.makeText(getContext(),"Siding with same name already exists.",Toast.LENGTH_LONG).show();
+                long addResultCode = categoryListDBHelper.addSiding(sidingPOJO);
+                if (addResultCode == UNIQUE_CONSTRAINT_FAIL_ERROR_CODE) {
+                    Toast.makeText(getContext(), "Siding with same name already exists.", Toast.LENGTH_LONG).show();
+                } else {
+                    menuSiding.setText(sidingName);
+                    onPropertyDetailsClickListener.setPropertySiding(sidingName);
                 }
-                menuSiding.setText(sidingName);
-                onPropertyDetailsClickListener.setPropertySiding(sidingName);
+
             }
-        }
-        else if(requestCode == 32){
+        } else if (requestCode == 32) {
             if (resultCode == Activity.RESULT_OK) {
                 Bundle dataFromActivity = data.getExtras().getBundle("foundationDetails");
                 String foundationName = dataFromActivity.get("foundationName").toString();
                 FoundationPOJO foundationPOJO = new FoundationPOJO();
                 foundationPOJO.setName(foundationName);
 
-               long i = categoryListDBHelper.addFoundation(foundationPOJO);
-                if(i == -111){
-                    Toast.makeText(getContext(),"Foundation with same name already exists.",Toast.LENGTH_LONG).show();
+                long addResultCode = categoryListDBHelper.addFoundation(foundationPOJO);
+                if (addResultCode == UNIQUE_CONSTRAINT_FAIL_ERROR_CODE) {
+                    Toast.makeText(getContext(), "Foundation with same name already exists.", Toast.LENGTH_LONG).show();
+                } else {
+                    menuFoundation.setText(foundationName);
+                    onPropertyDetailsClickListener.setPropertyFoundation(foundationName);
                 }
-                menuFoundation.setText(foundationName);
-                onPropertyDetailsClickListener.setPropertyFoundation(foundationName);
+
 
             }
-        }
-        else if(requestCode == 33){
+        } else if (requestCode == 33) {
             if (resultCode == Activity.RESULT_OK) {
                 Bundle dataFromActivity = data.getExtras().getBundle("buildingDetails");
                 String buildingName = dataFromActivity.get("buildingName").toString();
                 BuildingTypePOJO buildingTypePOJO = new BuildingTypePOJO();
                 buildingTypePOJO.setName(buildingName);
 
-                long i = categoryListDBHelper.addBuildingType(buildingTypePOJO);
-                if(i == -111){
-                    Toast.makeText(getContext(),"Building type with same name already exists.",Toast.LENGTH_LONG).show();
+                long addResultCode = categoryListDBHelper.addBuildingType(buildingTypePOJO);
+                if (addResultCode == UNIQUE_CONSTRAINT_FAIL_ERROR_CODE) {
+                    Toast.makeText(getContext(), "Building type with same name already exists.", Toast.LENGTH_LONG).show();
+                } else {
+                    menuBuildingType.setText(buildingName);
+                    onPropertyDetailsClickListener.setPropertyBuildingType(buildingName);
                 }
-                menuBuildingType.setText(buildingName);
-                onPropertyDetailsClickListener.setPropertyBuildingType(buildingName);
+
 
             }
         }

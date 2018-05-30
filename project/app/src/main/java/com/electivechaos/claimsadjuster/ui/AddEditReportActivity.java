@@ -28,6 +28,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
+import android.widget.Switch;
 
 import com.electivechaos.claimsadjuster.ImageHelper;
 import com.electivechaos.claimsadjuster.PermissionUtilities;
@@ -77,7 +78,6 @@ import java.util.concurrent.ExecutionException;
 public class AddEditReportActivity extends AppCompatActivity implements DrawerMenuListAdapter.OnLabelAddClickListener, AddEditLabelInterface, ClaimDetailsDataInterface, LossLocationDataInterface,SelectedImagesDataInterface,NextButtonClickListener,OnSaveReportClickListener, OnGenerateReportClickListener, OnPropertyDetailsClickListener,OnPerilSelectionListener {
     private DrawerLayout mDrawerLayout;
     private DrawerMenuListAdapter drawerMenuListAdapter;
-    private String tabName;
 
     private HashMap<String, List<Label>> childMenuItems = new HashMap<>();
     private ArrayList<String> parentMenuItems;
@@ -108,39 +108,57 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         parentLayoutForMessages = findViewById(R.id.parentLayoutForMessages);
         progressBarLayout = findViewById(R.id.progressBarLayout);
         categoryListDBHelper = CategoryListDBHelper.getInstance(this);
-
-        if(getIntent().getExtras() != null){
-            reportPOJO = categoryListDBHelper.getReportItem(getIntent().getExtras().getString("reportId"));
-
+        if(savedInstanceState != null && savedInstanceState.getParcelable("reportPojo") !=null){
+            reportPOJO = savedInstanceState.getParcelable("reportPojo");
         }else{
-            reportPOJO = new ReportPOJO();
-            Date currentDate = new Date();
-            reportPOJO.setId(String.valueOf(currentDate.getTime()));
+            if(getIntent().getExtras() != null){
+                reportPOJO = categoryListDBHelper.getReportItem(getIntent().getExtras().getString("reportId"));
 
-            DateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss a");
-            String reportSavedDate = dateFormat.format(currentDate.getTime());
-            setCreatedDate(reportSavedDate);
-            onReportSave(false);
+            }else{
+                reportPOJO = new ReportPOJO();
+                Date currentDate = new Date();
+                reportPOJO.setId(String.valueOf(currentDate.getTime()));
+
+                DateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss a");
+                String reportSavedDate = dateFormat.format(currentDate.getTime());
+                setCreatedDate(reportSavedDate);
+                onReportSave(false);
+            }
         }
-
-        selectedFragmentPosition = 0;
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
         activityActionBar = getSupportActionBar();
-        activityActionBar.setTitle("Claim Details");
+
 
 
         activityActionBar.setDisplayHomeAsUpEnabled(true);
         activityActionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
 
 
+        if(savedInstanceState != null && savedInstanceState.getInt("selectedFragmentPosition") != -1 ){
+            selectedFragmentPosition = savedInstanceState.getInt("selectedFragmentPosition");
+
+            if(selectedFragmentPosition == 0){
+                putClaimDetailsFragment();
+            }else if(selectedFragmentPosition == 1){
+                putPropertyDetails();
+            }else if(selectedFragmentPosition == 2){
+                putPerilDetails();
+            }else if(selectedFragmentPosition == 3){
+                putPointOfOriginFragment();
+            }else if(selectedFragmentPosition  > 3){
+                putLabelFragment();
+            }
+        }else{
+            putClaimDetailsFragment();
+        }
+
         ExpandableListView mExpandableListView = findViewById(R.id.slider_menu);
 
 
-        putClaimDetailsFragment();
+
         parentMenuItems = new ArrayList<>();
 
         parentMenuItems.add("Claim Details");
@@ -192,7 +210,6 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                     FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
                     fragmentTransaction.replace(R.id.content_frame, new PointOfOriginFragment());
                     fragmentTransaction.commit();
-                    tabName = "PointOfOriginFragment";
 
                     selectedFragmentPosition = 3;
 
@@ -215,7 +232,6 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                 fragmentTransaction.replace(R.id.content_frame, addEditReportSelectedImagesFragment);
                 fragmentTransaction.commit();
                 selectedFragmentPosition = childPosition + 4;
-                tabName = "AddEditReportSelectedImagesFragment";
                 activityActionBar.setTitle(reportPOJO.getLabelArrayList().get(childPosition).getName());
                 actionBarEditBtn.setVisible(true);
                 toolbar.setTag(reportPOJO.getLabelArrayList().get(childPosition));
@@ -245,7 +261,6 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         claimDetailsFragment.setArguments(claimDetailsData);
         fragmentTransaction.replace(R.id.content_frame, claimDetailsFragment);
         fragmentTransaction.commit();
-        tabName = "ClaimDetailsFragment";
 
 
         selectedFragmentPosition = 0;
@@ -264,10 +279,27 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
         fragmentTransaction.replace(R.id.content_frame, propertyDetailsFragment);
         fragmentTransaction.commit();
-        tabName = "PropertyDetailsFragment";
 
         selectedFragmentPosition = 1;
         activityActionBar.setTitle("Property Details");
+    }
+    private void putLabelFragment(){
+        ArrayList<Label> labelArrayList =  reportPOJO.getLabelArrayList();
+        if( labelArrayList!= null && labelArrayList.size() > selectedFragmentPosition - 4 && labelArrayList.get(selectedFragmentPosition - 4) != null){
+            FragmentManager transactionManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
+            AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment = AddEditReportSelectedImagesFragment.initFragment(labelArrayList.get(selectedFragmentPosition - 4).getSelectedImages(),labelArrayList.get(selectedFragmentPosition - 4).getSelectedElevationImages(), selectedFragmentPosition - 4);
+            fragmentTransaction.replace(R.id.content_frame, addEditReportSelectedImagesFragment);
+            fragmentTransaction.commit();
+
+            activityActionBar.setTitle(labelArrayList.get(selectedFragmentPosition - 4).getName());
+            actionBarEditBtn.setVisible(true);
+            toolbar.setTag(labelArrayList.get(selectedFragmentPosition - 4));
+        }else{
+            mDrawerLayout.closeDrawer(Gravity.LEFT);
+            putClaimDetailsFragment();
+            actionBarEditBtn.setVisible(false);
+        }
     }
 
     private void putPerilDetails(){
@@ -285,8 +317,16 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
         selectedFragmentPosition = 2;
         activityActionBar.setTitle("Peril");
-        tabName="PerilListMenuFragment";
     }
+     private void putPointOfOriginFragment(){
+         FragmentManager transactionManager = getSupportFragmentManager();
+         FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
+         fragmentTransaction.replace(R.id.content_frame,new PointOfOriginFragment());
+         fragmentTransaction.commit();
+
+         activityActionBar.setTitle("Point Of Origin");
+         actionBarEditBtn.setVisible(false);
+        }
 
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
@@ -350,7 +390,8 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     public void onSaveInstanceState(Bundle outState) {
 
         super.onSaveInstanceState(outState);
-        outState.putString("tabName",tabName);
+        outState.putInt("selectedFragmentPosition",selectedFragmentPosition);
+        outState.putParcelable("reportPojo", reportPOJO);
 
 
     }
@@ -471,7 +512,6 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                 AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment = AddEditReportSelectedImagesFragment.initFragment(labelArrayList.get(selectedFragmentPosition - 4).getSelectedImages(), labelArrayList.get(selectedFragmentPosition - 4).getSelectedElevationImages(), selectedFragmentPosition - 4);
                 fragmentTransaction.replace(R.id.content_frame, addEditReportSelectedImagesFragment);
                 fragmentTransaction.commit();
-                tabName = "AddEditReportSelectedImagesFragment";
 
                 activityActionBar.setTitle(labelArrayList.get(selectedFragmentPosition - 4).getName());
                 actionBarEditBtn.setVisible(true);
@@ -603,39 +643,17 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         }
         else if(selectedFragmentPosition == 3) {
             mDrawerLayout.closeDrawer(Gravity.LEFT);
-            FragmentManager transactionManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
-            fragmentTransaction.replace(R.id.content_frame,new PointOfOriginFragment());
-            fragmentTransaction.commit();
-            tabName="PointOfOriginFragment";
-
-            activityActionBar.setTitle("Point Of Origin");
-            actionBarEditBtn.setVisible(false);
+            putPointOfOriginFragment();
 
         }else if(selectedFragmentPosition > 3){
 
-            ArrayList<Label> labelArrayList =  reportPOJO.getLabelArrayList();
-            if( labelArrayList!= null && labelArrayList.size() > selectedFragmentPosition - 4 && labelArrayList.get(selectedFragmentPosition - 4) != null){
-                FragmentManager transactionManager = getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
-                AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment = AddEditReportSelectedImagesFragment.initFragment(labelArrayList.get(selectedFragmentPosition - 4).getSelectedImages(),labelArrayList.get(selectedFragmentPosition - 4).getSelectedElevationImages(), selectedFragmentPosition - 4);
-                fragmentTransaction.replace(R.id.content_frame, addEditReportSelectedImagesFragment);
-                fragmentTransaction.commit();
-                tabName = "AddEditReportSelectedImagesFragment";
-
-                activityActionBar.setTitle(labelArrayList.get(selectedFragmentPosition - 4).getName());
-                actionBarEditBtn.setVisible(true);
-                toolbar.setTag(labelArrayList.get(selectedFragmentPosition - 4));
-            }else{
-                mDrawerLayout.closeDrawer(Gravity.LEFT);
-                putClaimDetailsFragment();
-                actionBarEditBtn.setVisible(false);
-            }
+            putLabelFragment();
 
 
         }
 
     }
+
 
     public  boolean validateData(){
         if(reportPOJO.getReportTitle().trim().isEmpty()){
@@ -823,7 +841,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.actionbar_action_menu, menu);
-        actionBarEditBtn= menu.findItem(R.id.edit);
+        actionBarEditBtn = menu.findItem(R.id.edit);
         actionBarEditBtn.setVisible(false);
 
         return true;
