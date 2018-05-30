@@ -29,7 +29,7 @@ import java.util.Iterator;
  */
 
 public class CategoryListDBHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 116;
+    private static final int DATABASE_VERSION = 121;
 
 
     // Database Name
@@ -178,8 +178,8 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         String CREATE_PERIL_TABLE = "CREATE TABLE "
                 + TABLE_PERIL + "("
                 + KEY_PERIL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT DEFAULT 0,"
-                + KEY_PERIL_NAME + " TEXT UNIQUE,"
-                + KEY_PERIL_DESCRIPTION + " TEXT"+")";
+                + KEY_PERIL_NAME + " TEXT,"
+                + KEY_PERIL_DESCRIPTION + " TEXT,"+ " CONSTRAINT uc_peril UNIQUE ("+KEY_PERIL_NAME+" COLLATE NOCASE), CHECK("+KEY_PERIL_NAME+"<> '')"+")";
 
 
         String CREATE_IMAGE_DETAILS_TABLE = "CREATE TABLE " + TABLE_REPORTS_IMAGE_DETAILS + "("
@@ -217,22 +217,22 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         String CREATE_ROOF_SYSTEM_TABLE = "CREATE TABLE "
                 + TABLE_ROOF_SYSTEM + "("
                 + KEY_ROOF_SYSTEM_ID + " INTEGER PRIMARY KEY AUTOINCREMENT DEFAULT 0,"
-                + KEY_ROOF_SYSTEM_NAME + " TEXT UNIQUE, CHECK("+KEY_ROOF_SYSTEM_NAME+"<> '')"+")";
+                + KEY_ROOF_SYSTEM_NAME + " TEXT, CONSTRAINT uc_roof UNIQUE ("+KEY_ROOF_SYSTEM_NAME+" COLLATE NOCASE), CHECK("+KEY_ROOF_SYSTEM_NAME+"<> '')"+")";
 
         String CREATE_SIDING_TABLE = "CREATE TABLE "
                 + TABLE_SIDING + "("
                 + KEY_SIDING_ID + " INTEGER PRIMARY KEY AUTOINCREMENT DEFAULT 0,"
-                + KEY_SIDING_NAME + " TEXT UNIQUE, CHECK("+KEY_SIDING_NAME+"<> '')"+")";
+                + KEY_SIDING_NAME + " TEXT, CONSTRAINT uc_siding UNIQUE ("+KEY_SIDING_NAME+" COLLATE NOCASE), CHECK("+KEY_SIDING_NAME+"<> '')"+")";
 
         String CREATE_FOUNDATION_TABLE = "CREATE TABLE "
                 + TABLE_FOUNDATION + "("
                 + KEY_FOUNDATION_ID + " INTEGER PRIMARY KEY AUTOINCREMENT DEFAULT 0,"
-                + KEY_FOUNDATION_NAME + " TEXT UNIQUE, CHECK("+KEY_FOUNDATION_NAME+"<> '')"+")";
+                + KEY_FOUNDATION_NAME + " TEXT, CONSTRAINT uc_foundation UNIQUE ("+KEY_FOUNDATION_NAME+" COLLATE NOCASE), CHECK("+KEY_FOUNDATION_NAME+"<> '')"+")";
 
         String CREATE_BUILDING_TYPE_TABLE = "CREATE TABLE "
                 + TABLE_BUILDING_TYPE + "("
                 + KEY_BUILDING_TYPE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT DEFAULT 0,"
-                + KEY_BUILDING_NAME+ " TEXT UNIQUE, CHECK("+KEY_BUILDING_NAME+"<> '')"+")";
+                + KEY_BUILDING_NAME+ " TEXT, CONSTRAINT uc_building UNIQUE ("+KEY_BUILDING_NAME+" COLLATE NOCASE), CHECK("+KEY_BUILDING_NAME+"<> '')"+")";
 
 
         final String categories[] = {
@@ -594,7 +594,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         return  db.update(TABLE_PERIL, contentValues,KEY_PERIL_ID+"="+ perilPOJO.getID(),null);
     }
 
-    public ArrayList<PerilPOJO> getCauseOfLosses(){
+    public ArrayList<PerilPOJO> getPeril(){
 
         ArrayList<PerilPOJO> tempList = new ArrayList<>();
         String selectQueryReportTable = "SELECT  * FROM " + TABLE_PERIL;
