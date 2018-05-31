@@ -45,46 +45,46 @@ public class DBUpdateTaskOnTextChanged extends AsyncTask<String,Void,Void> {
 
     @Override
     protected Void doInBackground(String... strings) {
-        if(type.equalsIgnoreCase("title")) {
+        if(type.equals("title")) {
             categoryListDBHelper.updateReportTitle(value,reportId);
         }
-        else if(type.equalsIgnoreCase("description")){
+        else if(type.equals("description")){
             categoryListDBHelper.updateReportDescription(value, reportId);
         }
-        else if(type.equalsIgnoreCase("clientName")){
+        else if(type.equals("client_name")){
             categoryListDBHelper.updateClientName(value, reportId);
         }
-        else if(type.equalsIgnoreCase("claimNumber")){
+        else if(type.equals("claim_number")){
             categoryListDBHelper.updateClaimNumber(value, reportId);
         }
-        else if(type.equalsIgnoreCase("addressLine")){
+        else if(type.equals("address_line")){
             categoryListDBHelper.updateAddressLine(value, reportId);
         }
-        else if(type.equalsIgnoreCase("latitude")){
+        else if(type.equals("latitude")){
             categoryListDBHelper.updateLocationLat(value, reportId);
         }
-        else if(type.equalsIgnoreCase("longitude")){
+        else if(type.equals("longitude")){
             categoryListDBHelper.updateLocationLong(value, reportId);
         }
-        else if(type.equalsIgnoreCase("propertyDate")){
+        else if(type.equals("property_date")){
             categoryListDBHelper.updatePropertyDate(value, reportId);
         }
-        else if(type.equalsIgnoreCase("squareFootage")){
+        else if(type.equals("square_footage")){
             categoryListDBHelper.updateSquareFootage(Double.parseDouble(value), reportId);
         }
-        else if(type.equalsIgnoreCase("roofSystem")){
+        else if(type.equals("roof_system")){
             categoryListDBHelper.updateRoofSystem(value, reportId);
         }
-        else if(type.equalsIgnoreCase("siding")){
+        else if(type.equals("siding")){
             categoryListDBHelper.updateSiding(value, reportId);
         }
-        else if(type.equalsIgnoreCase("foundation")){
+        else if(type.equals("foundation")){
             categoryListDBHelper.updateFoundation(value, reportId);
         }
-        else if(type.equalsIgnoreCase("building_type")){
+        else if(type.equals("building_type")){
             categoryListDBHelper.updateBuildingType(value, reportId);
         }
-        else if(type.equalsIgnoreCase("peril")){
+        else if(type.equals("peril")){
             categoryListDBHelper.updatePerilName(value, reportId);
         }
         return null;

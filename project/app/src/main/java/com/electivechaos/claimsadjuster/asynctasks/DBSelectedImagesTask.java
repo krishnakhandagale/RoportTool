@@ -45,10 +45,10 @@ public class DBSelectedImagesTask  extends AsyncTask<String,Void,Void> {
 
     @Override
     protected Void doInBackground(String... strings) {
-        if(type.equalsIgnoreCase("selectedImages")) {
+        if(type.equals("selected_images")) {
             categoryListDBHelper.updateSelectedImages(label);
         }
-        else if(type.equalsIgnoreCase("elevationImages")){
+        else if(type.equals("elevation_images")){
             categoryListDBHelper.updateElevationImages(label);
         }
 

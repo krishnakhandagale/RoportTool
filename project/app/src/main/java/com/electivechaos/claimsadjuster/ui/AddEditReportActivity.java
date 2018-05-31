@@ -540,13 +540,13 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
     @Override
     public void setReportClientName(String reportClientName) {
-        new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout,reportClientName,reportPOJO.getId(),false,categoryListDBHelper,"clientName").execute();
+        new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout,reportClientName,reportPOJO.getId(),false,categoryListDBHelper,"client_name").execute();
         reportPOJO.setClientName(reportClientName);
     }
 
     @Override
     public void setReportClaimNumber(String reportClaimNumber) {
-        new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, reportClaimNumber,reportPOJO.getId(),false,categoryListDBHelper,"claimNumber").execute();
+        new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, reportClaimNumber,reportPOJO.getId(),false,categoryListDBHelper,"claim_number").execute();
         reportPOJO.setClaimNumber(reportClaimNumber);
     }
 
@@ -572,7 +572,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     @Override
     public void setAddressLine(String addressLine) {
         reportPOJO.setAddressLine(addressLine);
-        new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, addressLine,reportPOJO.getId(),false,categoryListDBHelper,"addressLine").execute();
+        new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, addressLine,reportPOJO.getId(),false,categoryListDBHelper,"address_line").execute();
 
     }
 
@@ -612,7 +612,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     public void setSelectedElevationImages(ArrayList<ImageDetailsPOJO> elevationImagesList,int labelPosition) {
 
         reportPOJO.getLabelArrayList().get(labelPosition).setSelectedElevationImages(elevationImagesList);
-        new DBSelectedImagesTask(AddEditReportActivity.this, progressBarLayout, reportPOJO.getLabelArrayList().get(labelPosition),false,categoryListDBHelper,"elevationImages").execute();
+        new DBSelectedImagesTask(AddEditReportActivity.this, progressBarLayout, reportPOJO.getLabelArrayList().get(labelPosition),false,categoryListDBHelper,"elevation_images").execute();
 
     }
 
@@ -620,7 +620,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     public void setSelectedImages(ArrayList<ImageDetailsPOJO> imagesList , int labelPosition) {
 
         reportPOJO.getLabelArrayList().get(labelPosition).setSelectedImages(imagesList);
-        new DBSelectedImagesTask(AddEditReportActivity.this, progressBarLayout, reportPOJO.getLabelArrayList().get(labelPosition),false,categoryListDBHelper,"selectedImages").execute();
+        new DBSelectedImagesTask(AddEditReportActivity.this, progressBarLayout, reportPOJO.getLabelArrayList().get(labelPosition),false,categoryListDBHelper,"selected_images").execute();
 
     }
 
@@ -719,20 +719,20 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     @Override
     public void setPropertyDate(String propertyDate) {
         reportPOJO.getPropertyDetailsPOJO().setPropertyDate(propertyDate);
-        new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, propertyDate,reportPOJO.getId(),false,categoryListDBHelper,"propertyDate").execute();
+        new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, propertyDate,reportPOJO.getId(),false,categoryListDBHelper,"property_date").execute();
 
     }
 
     @Override
     public void setPropertySquareFootage(double squareFootage) {
         reportPOJO.getPropertyDetailsPOJO().setSquareFootage(squareFootage);
-        new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, String.valueOf(squareFootage),reportPOJO.getId(),false,categoryListDBHelper,"squareFootage").execute();
+        new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, String.valueOf(squareFootage),reportPOJO.getId(),false,categoryListDBHelper,"square_footage").execute();
     }
 
     @Override
     public void setPropertyRoofSystem(String roofSystem) {
         reportPOJO.getPropertyDetailsPOJO().setRoofSystem(roofSystem);
-        new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, roofSystem, reportPOJO.getId(),false,categoryListDBHelper,"roofSystem").execute();
+        new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, roofSystem, reportPOJO.getId(),false,categoryListDBHelper,"roof_system").execute();
     }
 
     @Override
