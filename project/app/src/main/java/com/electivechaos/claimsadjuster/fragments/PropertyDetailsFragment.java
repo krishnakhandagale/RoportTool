@@ -55,6 +55,10 @@ import java.util.Date;
 public class PropertyDetailsFragment extends Fragment implements DatePickerDialog.OnDateSetListener {
 
     private static final int UNIQUE_CONSTRAINT_FAIL_ERROR_CODE = -111;
+    private static final int ROOF_SYSTEM_REQUEST_CODE = 30;
+    private static final int SIDING_REQUEST_CODE = 31;
+    private static final int FOUNDATION_REQUEST_CODE = 32;
+    private static final int BUILDING_TYPE_REQUEST_CODE = 33;
 
     private int day;
     private int month;
@@ -492,7 +496,7 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 30) {
+        if (requestCode == ROOF_SYSTEM_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
                 Bundle dataFromActivity = data.getExtras().getBundle("roofSystemDetails");
                 String roofName = dataFromActivity.get("roofSystemName").toString();
@@ -509,7 +513,7 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
 
 
             }
-        } else if (requestCode == 31) {
+        } else if (requestCode == SIDING_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
                 Bundle dataFromActivity = data.getExtras().getBundle("sidingDetails");
                 String sidingName = dataFromActivity.get("sidingName").toString();
@@ -525,7 +529,7 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
                 }
 
             }
-        } else if (requestCode == 32) {
+        } else if (requestCode == FOUNDATION_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
                 Bundle dataFromActivity = data.getExtras().getBundle("foundationDetails");
                 String foundationName = dataFromActivity.get("foundationName").toString();
@@ -542,7 +546,7 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
 
 
             }
-        } else if (requestCode == 33) {
+        } else if (requestCode == BUILDING_TYPE_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
                 Bundle dataFromActivity = data.getExtras().getBundle("buildingDetails");
                 String buildingName = dataFromActivity.get("buildingName").toString();
