@@ -173,11 +173,11 @@ public class PerilListMenuFragment extends Fragment{
         if (requestCode == 1) {
             if (resultCode == Activity.RESULT_OK) {
                 Bundle dataFromActivity = data.getBundleExtra("perilDetails");
-                String categoryName = dataFromActivity.get("name").toString();
-                String categoryDescription = dataFromActivity.get("description").toString();
+                String perilName = dataFromActivity.get("name").toString();
+                String perilDescription = dataFromActivity.get("description").toString();
                 PerilPOJO perilPOJO = new PerilPOJO();
-                perilPOJO.setName(categoryName);
-                perilPOJO.setDescription(categoryDescription);
+                perilPOJO.setName(perilName);
+                perilPOJO.setDescription(perilDescription);
                 long result = mCategoryListDBHelper.addPeril(perilPOJO);
 
                 onPerilSelectionListener.setPeril(perilPOJO);
@@ -196,12 +196,12 @@ public class PerilListMenuFragment extends Fragment{
         if (requestCode == 2) {
             if (resultCode == 2) {
                 Bundle dataFromActivity = data.getBundleExtra("perilDetails");
-                String name = dataFromActivity.get("name").toString();
-                String desc = dataFromActivity.get("description").toString();
+                String perilName = dataFromActivity.get("name").toString();
+                String perilDescription = dataFromActivity.get("description").toString();
                 int id = Integer.parseInt(dataFromActivity.get("id").toString());
                 PerilPOJO perilPOJO = new PerilPOJO();
-                perilPOJO.setName(name);
-                perilPOJO.setDescription(desc);
+                perilPOJO.setName(perilName);
+                perilPOJO.setDescription(perilDescription);
                 perilPOJO.setID(id);
                 mCategoryListDBHelper.updatePeril(perilPOJO);
 
