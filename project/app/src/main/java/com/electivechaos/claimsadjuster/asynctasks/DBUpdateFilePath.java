@@ -303,13 +303,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
         cell.addElement(new Phrase(description,font));
         cell.setPadding(0);
         cell.setBorder(Rectangle.NO_BORDER);
-
-        if (perPage == 2) {
-            cell.setFixedHeight(document.getPageSize().getHeight() / perPage - 100);
-
-        } else {
-            cell.setFixedHeight(document.getPageSize().getHeight() / perPage - 100);
-        }
+        cell.setFixedHeight(document.getPageSize().getHeight() / perPage - 100);
         return cell;
 
     }
@@ -320,12 +314,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
         cell.setPadding(0);
         cell.setHorizontalAlignment(alignment);
         cell.setBorder(Rectangle.NO_BORDER);
-        if (perPage == 2) {
-            cell.setFixedHeight(document.getPageSize().getHeight() / perPage - 100);
-
-        } else {
-            cell.setFixedHeight(document.getPageSize().getHeight() / perPage - 100);
-        }
+        cell.setFixedHeight(document.getPageSize().getHeight() / perPage - 100);
         return cell;
     }
 
