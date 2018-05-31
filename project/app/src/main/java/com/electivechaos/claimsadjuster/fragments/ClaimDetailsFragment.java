@@ -182,7 +182,7 @@ public class ClaimDetailsFragment  extends Fragment{
                 claimDetailsArgs.putString("address", address);
                 fragment.setArguments(claimDetailsArgs);
                 return fragment;
-            }else if(i==1){
+            }else{
                 Fragment fragment = new LossLocationFragment();
 
                 Bundle claimDetailsLocationArgs = new Bundle();
@@ -193,26 +193,20 @@ public class ClaimDetailsFragment  extends Fragment{
                 fragment.setArguments(claimDetailsLocationArgs);
                 return fragment;
             }
-            else {
-                Fragment fragment = new LossTypeFragment();
-                return fragment;
-            }
 
         }
         @Override
         public int getCount() {
 
-            return 3;
+            return 2;
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
-            if(position == 0){
-                return  "Claim Details";
-            }else if(position==1){
-                return  "Loss Location";
-            }else {
-                return "Loss Type";
+            if (position == 0) {
+                return "Claim Details";
+            } else{
+                return "Loss Location";
             }
         }
     }
