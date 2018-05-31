@@ -35,26 +35,26 @@
                 android:layout_weight="1"
                 android:layout_height="match_parent">
                 <ImageView
-                    android:id="@+id/frontImagePreview"
+                    android:id="@+id/imageOnePreview"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
                 <TextView
                     android:background="@color/cardview_dark_background"
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
-                    android:text="Front"
+                    android:text="Image 1"
                     android:textColor="@color/white_color"
                     android:gravity="center"
                     android:layout_gravity="bottom"/>
 
                 <ImageView
-                    android:id="@+id/imgViewFront"
+                    android:id="@+id/imageViewOne"
                     android:src="@drawable/image_picker_ic_camera"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
                 <ImageButton
-                    android:id="@+id/imgBtnRemoveFront"
+                    android:id="@+id/imgBtnRemoveOne"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
@@ -70,24 +70,24 @@
                 android:layout_weight="1"
                 android:layout_height="match_parent">
                 <ImageView
-                    android:id="@+id/backImagePreview"
+                    android:id="@+id/imageTwoPreview"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
-                    android:text="Back"
+                    android:text="Image 2"
                     android:background="@color/cardview_dark_background"
                     android:textColor="@color/white_color"
                     android:gravity="center"
                     android:layout_gravity="bottom"/>
                 <ImageView
-                    android:id="@+id/imgViewBack"
+                    android:id="@+id/imageViewTwo"
                     android:src="@drawable/image_picker_ic_camera"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <ImageButton
-                    android:id="@+id/imgBtnRemoveBack"
+                    android:id="@+id/imgBtnRemoveTwo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
@@ -102,24 +102,24 @@
                 android:layout_weight="1"
                 android:layout_height="match_parent">
                 <ImageView
-                    android:id="@+id/leftImagePreview"
+                    android:id="@+id/imageThreePreview"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
-                    android:text="Left"
+                    android:text="Image 3"
                     android:background="@color/cardview_dark_background"
                     android:textColor="@color/white_color"
                     android:gravity="center"
                     android:layout_gravity="bottom"/>
                 <ImageView
-                    android:id="@+id/imgViewLeft"
+                    android:id="@+id/imageViewThree"
                     android:src="@drawable/image_picker_ic_camera"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <ImageButton
-                    android:id="@+id/imgBtnRemoveLeft"
+                    android:id="@+id/imgBtnRemoveThree"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
@@ -134,24 +134,24 @@
                 android:layout_weight="1"
                 android:layout_height="match_parent">
                 <ImageView
-                    android:id="@+id/rightImagePreview"
+                    android:id="@+id/imageFourPreview"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
-                    android:text="Right"
+                    android:text="Image 4"
                     android:background="@color/cardview_dark_background"
                     android:textColor="@color/white_color"
                     android:gravity="center"
                     android:layout_gravity="bottom"/>
                 <ImageView
-                    android:id="@+id/imgViewRight"
+                    android:id="@+id/imageViewFour"
                     android:src="@drawable/image_picker_ic_camera"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <ImageButton
-                    android:id="@+id/imgBtnRemoveRight"
+                    android:id="@+id/imgBtnRemoveFour"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
