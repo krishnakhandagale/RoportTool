@@ -112,8 +112,7 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
 
 
         txtDate.setText(propertyDetailsPOJO.getPropertyDate());
-        String squareFootageValue = String.format("%.2f", propertyDetailsPOJO.getSquareFootage());
-        squareFootage.setText(squareFootageValue);
+        squareFootage.setText(propertyDetailsPOJO.getSquareFootage());
 
         if (propertyDetailsPOJO != null) {
             if (!propertyDetailsPOJO.getRoofSystem().isEmpty()) {
@@ -429,9 +428,9 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
             public void afterTextChanged(Editable s) {
                 String tempString = s.toString().trim();
                 if (!tempString.isEmpty()) {
-                    onPropertyDetailsClickListener.setPropertySquareFootage(Double.parseDouble(tempString));
+                    onPropertyDetailsClickListener.setPropertySquareFootage(tempString);
                 } else {
-                    onPropertyDetailsClickListener.setPropertySquareFootage(0.0);
+                    onPropertyDetailsClickListener.setPropertySquareFootage("");
                 }
             }
         });

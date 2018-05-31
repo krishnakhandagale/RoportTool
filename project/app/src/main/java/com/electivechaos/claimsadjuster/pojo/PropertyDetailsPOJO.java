@@ -10,7 +10,7 @@ import android.os.Parcelable;
 public class PropertyDetailsPOJO implements Parcelable {
 
     private String propertyDate;
-    private double squareFootage;
+    private String squareFootage;
     private String roofSystem;
     private String siding;
     private String foundation;
@@ -26,12 +26,12 @@ public class PropertyDetailsPOJO implements Parcelable {
         this.propertyDate = propertyDate;
     }
 
-    public double getSquareFootage() {
+    public String getSquareFootage() {
         return squareFootage;
     }
 
 
-    public void setSquareFootage(double squareFootage) {
+    public void setSquareFootage(String squareFootage) {
         this.squareFootage = squareFootage;
     }
 
@@ -79,7 +79,7 @@ public class PropertyDetailsPOJO implements Parcelable {
     public PropertyDetailsPOJO()
     {
         propertyDate = "";
-        squareFootage = 0;
+        squareFootage = "";
         roofSystem = "";
         siding = "";
         foundation = "";
@@ -89,7 +89,7 @@ public class PropertyDetailsPOJO implements Parcelable {
 
     protected PropertyDetailsPOJO(Parcel in) {
         propertyDate = in.readString();
-        squareFootage = in.readDouble();
+        squareFootage = in.readString();
         roofSystem = in.readString();
         siding = in.readString();
         foundation = in.readString();
@@ -117,7 +117,7 @@ public class PropertyDetailsPOJO implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(propertyDate);
-        dest.writeDouble(squareFootage);
+        dest.writeString(squareFootage);
         dest.writeString(roofSystem);
         dest.writeString(siding);
         dest.writeString(foundation);

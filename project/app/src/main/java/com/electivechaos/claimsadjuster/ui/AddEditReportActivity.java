@@ -724,7 +724,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     }
 
     @Override
-    public void setPropertySquareFootage(double squareFootage) {
+    public void setPropertySquareFootage(String squareFootage) {
         reportPOJO.getPropertyDetailsPOJO().setSquareFootage(squareFootage);
         new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, String.valueOf(squareFootage),reportPOJO.getId(),false,categoryListDBHelper,"square_footage").execute();
     }

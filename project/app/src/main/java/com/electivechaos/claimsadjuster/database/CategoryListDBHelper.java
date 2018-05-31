@@ -29,7 +29,7 @@ import java.util.Iterator;
  */
 
 public class CategoryListDBHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 121;
+    private static final int DATABASE_VERSION = 123;
 
 
     // Database Name
@@ -205,7 +205,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
 
         String CREATE_PROPERTY_DETAILS_TABLE = "CREATE TABLE " + TABLE_PROPERTY_DETAILS + "("
                 + KEY_PROPERTY_DATE + " TEXT,"
-                + KEY_SQUARE_FOOTAGE+ " DOUBLE,"
+                + KEY_SQUARE_FOOTAGE+ " TEXT,"
                 + KEY_ROOF_SYSTEM+ " TEXT,"
                 + KEY_SIDING+ " TEXT,"
                 + KEY_FOUNDATION+ " TEXT,"
@@ -760,7 +760,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         if (cProperty.moveToFirst()) {
             do {
                 propertyPOJO.setPropertyDate(cProperty.getString(0));
-                propertyPOJO.setSquareFootage(cProperty.getDouble(1));
+                propertyPOJO.setSquareFootage(cProperty.getString(1));
                 propertyPOJO.setRoofSystem(cProperty.getString(2));
                 propertyPOJO.setSiding(cProperty.getString(3));
                 propertyPOJO.setFoundation(cProperty.getString(4));
@@ -863,7 +863,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         db.execSQL("UPDATE property_details SET property_date='"+value+"' WHERE report_id_fk='"+reportId+"'");
     }
 
-    public void updateSquareFootage(double value, String reportId) {
+    public void updateSquareFootage(String value, String reportId) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("UPDATE property_details SET square_footage='"+value+"' WHERE report_id_fk='"+reportId+"'");
     }
