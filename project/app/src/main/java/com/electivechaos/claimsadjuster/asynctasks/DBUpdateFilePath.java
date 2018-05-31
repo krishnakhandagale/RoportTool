@@ -88,7 +88,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-mm-yyyy-hh:mm:ss");
         String dateString = simpleDateFormat.format(new Date());
-        File destination = new File(Environment.getExternalStorageDirectory(), dateString + ".pdf");
+        File destination = new File(context.getFilesDir(), dateString + ".pdf");
         FileOutputStream fo;
         Font fontTitles = new Font(Font.FontFamily.TIMES_ROMAN, 16, Font.BOLD);
 

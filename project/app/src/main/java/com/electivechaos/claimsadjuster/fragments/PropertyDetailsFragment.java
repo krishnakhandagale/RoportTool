@@ -76,6 +76,7 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
     private View progressBarLayout;
     private CategoryListDBHelper categoryListDBHelper;
 
+
     @Override
     public void onStart() {
         super.onStart();
@@ -109,7 +110,6 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
         menuFoundation = view.findViewById(R.id.menuThree);
         menuBuildingType = view.findViewById(R.id.menuFour);
         progressBarLayout = view.findViewById(R.id.progressBarLayout);
-
 
         txtDate.setText(propertyDetailsPOJO.getPropertyDate());
         squareFootage.setText(propertyDetailsPOJO.getSquareFootage());
@@ -428,7 +428,7 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
             public void afterTextChanged(Editable s) {
                 String tempString = s.toString().trim();
                 if (!tempString.isEmpty()) {
-                    onPropertyDetailsClickListener.setPropertySquareFootage(tempString);
+                        onPropertyDetailsClickListener.setPropertySquareFootage(tempString);
                 } else {
                     onPropertyDetailsClickListener.setPropertySquareFootage("");
                 }

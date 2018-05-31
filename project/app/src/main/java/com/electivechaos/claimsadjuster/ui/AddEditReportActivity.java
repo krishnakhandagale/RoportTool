@@ -74,6 +74,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.regex.Pattern;
 
 public class AddEditReportActivity extends AppCompatActivity implements DrawerMenuListAdapter.OnLabelAddClickListener, AddEditLabelInterface, ClaimDetailsDataInterface, LossLocationDataInterface,SelectedImagesDataInterface,NextButtonClickListener,OnSaveReportClickListener, OnGenerateReportClickListener, OnPropertyDetailsClickListener,OnPerilSelectionListener {
     private DrawerLayout mDrawerLayout;
@@ -656,6 +657,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
 
     public  boolean validateData(){
+        boolean b2= Pattern.compile("^[1-9]\\d*(\\.\\d+)?$").matcher(reportPOJO.getPropertyDetailsPOJO().getSquareFootage().trim()).matches();
         if(reportPOJO.getReportTitle().trim().isEmpty()){
             CommonUtils.showSnackbarMessage(getString(R.string.please_enter_title), true, true,parentLayoutForMessages, AddEditReportActivity.this);
             return false;
@@ -670,6 +672,10 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
             return false;
         }else if(reportPOJO.getAddressLine().trim().isEmpty()){
             CommonUtils.showSnackbarMessage(getString(R.string.please_add_address_message), true, true, parentLayoutForMessages, AddEditReportActivity.this);
+            return false;
+        }
+        else if(!b2){
+            CommonUtils.showSnackbarMessage(getString(R.string.please_add_valid_square_footage_message), true, true, parentLayoutForMessages, AddEditReportActivity.this);
             return false;
         }
         return true;
