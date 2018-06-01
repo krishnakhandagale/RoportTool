@@ -25,7 +25,6 @@ public class AddEditCategoryActivity extends AppCompatActivity{
     private  EditText categoryName;
     private EditText categoryDescription;
     private View addEditCategoryParentLayout;
-    private ActionBar activityActionBar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

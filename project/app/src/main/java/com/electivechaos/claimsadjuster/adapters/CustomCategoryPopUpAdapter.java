@@ -57,7 +57,6 @@ public class CustomCategoryPopUpAdapter extends BaseAdapter {
         }
         holder.textView.setText(categoryArrayList.get(position).getCategoryName());
 
-
         return convertView;
     }
 
