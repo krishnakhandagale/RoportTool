@@ -102,7 +102,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     private  ReportPOJO modifiedReportPojo;
     private static final int SHOWPREFERENCEACTIVITY = 486;
     private static final int CATEGORY_REQUEST_CODE = 10 ;
-    
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -672,7 +672,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
 
     public  boolean validateData(){
-        boolean b2= Pattern.compile("^[1-9]\\d*(\\.\\d+)?$").matcher(reportPOJO.getPropertyDetailsPOJO().getSquareFootage().trim()).matches();
+        boolean validate= Pattern.compile("^[1-9]\\d*(\\.\\d+)?$").matcher(reportPOJO.getPropertyDetailsPOJO().getSquareFootage().trim()).matches();
         if(reportPOJO.getReportTitle().trim().isEmpty()){
             CommonUtils.showSnackbarMessage(getString(R.string.please_enter_title), true, true,parentLayoutForMessages, AddEditReportActivity.this);
             return false;
@@ -689,9 +689,11 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
             CommonUtils.showSnackbarMessage(getString(R.string.please_add_address_message), true, true, parentLayoutForMessages, AddEditReportActivity.this);
             return false;
         }
-        else if(!b2){
-            CommonUtils.showSnackbarMessage(getString(R.string.please_add_valid_square_footage_message), true, true, parentLayoutForMessages, AddEditReportActivity.this);
-            return false;
+        else if(!reportPOJO.getPropertyDetailsPOJO().getSquareFootage().trim().isEmpty()){
+            if(!validate) {
+                CommonUtils.showSnackbarMessage(getString(R.string.please_add_valid_square_footage_message), true, true, parentLayoutForMessages, AddEditReportActivity.this);
+                return false;
+            }
         }
         return true;
     }
