@@ -1,6 +1,8 @@
 package com.electivechaos.claimsadjuster.adapters;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,7 +58,13 @@ public class CustomCategoryPopUpAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
         holder.textView.setText(categoryArrayList.get(position).getCategoryName());
-
+        if(holder.textView.getText().toString().equals("Add New")){
+            holder.textView.setGravity(Gravity.CENTER);
+            holder.textView.setBackgroundColor(ContextCompat.getColor(context,R.color.colorPrimary));
+        }else {
+            holder.textView.setGravity(Gravity.LEFT);
+            holder.textView.setBackgroundColor(0);
+        }
         return convertView;
     }
 

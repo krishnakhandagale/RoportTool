@@ -1,8 +1,10 @@
 package com.electivechaos.claimsadjuster.adapters;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -104,9 +106,6 @@ public class CustomMenuAdapter extends BaseAdapter {
            }else {
                holder.checkedTextView.setChecked(false);
            }
-           if(holder.checkedTextView.getText().toString().equals("Add New")) {
-               holder.checkedTextView.setCheckMarkDrawable(null);
-           }
        }
        else if(type.equals("siding")){
 
@@ -118,10 +117,7 @@ public class CustomMenuAdapter extends BaseAdapter {
            }else {
                holder.checkedTextView.setChecked(false);
            }
-           if(holder.checkedTextView.getText().toString().equals("Add New")) {
-               holder.checkedTextView.setCheckMarkDrawable(null);
-           }
-           Log.d("SIDING ::",""+holder.checkedTextView.getText().toString());
+
 
        }
        else if(type.equals("foundation")){
@@ -134,9 +130,7 @@ public class CustomMenuAdapter extends BaseAdapter {
            }else {
                holder.checkedTextView.setChecked(false);
            }
-           if(holder.checkedTextView.getText().toString().equals("Add New")) {
-               holder.checkedTextView.setCheckMarkDrawable(null);
-           }
+
 
        }
        else if(type.equals("building_type")){
@@ -149,10 +143,16 @@ public class CustomMenuAdapter extends BaseAdapter {
            }else {
                holder.checkedTextView.setChecked(false);
            }
-           if(holder.checkedTextView.getText().toString().equals("Add New")) {
-               holder.checkedTextView.setCheckMarkDrawable(null);
-           }
+
        }
+        if(holder.checkedTextView.getText().toString().equals("Add New")) {
+            holder.checkedTextView.setGravity(Gravity.CENTER);
+            holder.checkedTextView.setBackgroundColor(ContextCompat.getColor(parent.getContext(),R.color.colorPrimary));
+            holder.checkedTextView.setCheckMarkDrawable(null);
+        }else{
+            holder.checkedTextView.setGravity(Gravity.LEFT);
+            holder.checkedTextView.setBackgroundColor(0);
+        }
 
 
         return convertView;
