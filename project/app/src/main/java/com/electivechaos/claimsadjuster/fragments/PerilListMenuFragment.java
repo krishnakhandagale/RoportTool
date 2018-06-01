@@ -126,15 +126,6 @@ public class PerilListMenuFragment extends Fragment{
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         mCategoryListDBHelper = CategoryListDBHelper.getInstance(getActivity());
         updatePerilDetails();
-
-        FloatingActionButton btnAddReport = view.findViewById(R.id.btnAddPeril);
-        btnAddReport.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent addCategoryActivity = new Intent(getActivity(), AddEditPerilActivity.class);
-                startActivityForResult(addCategoryActivity, 1);
-            }
-        });
         return view;
     }
 
@@ -282,54 +273,6 @@ public class PerilListMenuFragment extends Fragment{
                     }
                 }
             });
-            holder.textViewOptions.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    PopupMenu popup = new PopupMenu(context, holder.textViewOptions);
-                    popup.inflate(R.menu.peril_menu);
-                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                        @Override
-                        public boolean onMenuItemClick(MenuItem item) {
-                            switch (item.getItemId()) {
-                                case R.id.edit:
-                                    Intent perilActivity = new Intent(context, AddEditPerilActivity.class);
-                                    Bundle data = new Bundle();
-                                    data.putString("name", perilPOJO.getName());
-                                    data.putString("description", perilPOJO.getDescription());
-                                    data.putInt("id", perilPOJO.getID());
-                                    perilActivity.putExtra("perilDetails", data);
-                                    startActivityForResult(perilActivity, 2);
-                                    break;
-                                case R.id.delete:
-                                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                                    builder.setTitle("Delete Cause")
-                                            .setMessage("Are you sure you want to delete this cause of loss ?")
-                                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                                public void onClick(DialogInterface dialog, int which) {
-                                                    mCategoryListDBHelper.deletePeril(String.valueOf(perilPOJO.getID()));
-                                                    updatePerilDetails();
-                                                }
-                                            })
-                                            .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                                                public void onClick(DialogInterface dialog, int which) {
-
-                                                    dialog.cancel();
-                                                }
-                                            });
-                                    AlertDialog alert = builder.create();
-                                    alert.show();
-                                    Button negativeButton = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
-                                    negativeButton.setTextColor(ContextCompat.getColor(context,R.color.colorPrimaryDark));
-                                    Button positiveButton = alert.getButton(DialogInterface.BUTTON_POSITIVE);
-                                    positiveButton.setTextColor(ContextCompat.getColor(context,R.color.colorPrimaryDark));
-                                    break;
-                            }
-                            return false;
-                        }
-                    });
-                    popup.show();
-                }
-            });
 
         }
 
@@ -342,14 +285,12 @@ public class PerilListMenuFragment extends Fragment{
 
         public class MyViewHolder extends RecyclerView.ViewHolder{
             public TextView title, desc;
-            public ImageView textViewOptions;
             public CheckBox chkItem;
 
             public MyViewHolder(View itemView) {
                 super(itemView);
                 title = itemView.findViewById(R.id.category_name);
                 desc = itemView.findViewById(R.id.category_description);
-                textViewOptions = itemView.findViewById(R.id.textViewOptions);
                 chkItem = itemView.findViewById(R.id.perilSelect);
 
             }
