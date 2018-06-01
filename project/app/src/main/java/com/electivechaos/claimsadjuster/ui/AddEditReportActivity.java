@@ -87,6 +87,8 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     private ArrayList<Category> categories = null;
     static CategoryListDBHelper categoryListDBHelper;
 
+    private int categoryPosition;
+
     private ReportPOJO reportPOJO ;
     private View progressBarLayout;
 
@@ -99,6 +101,9 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
     private  ReportPOJO modifiedReportPojo;
     private static final int SHOWPREFERENCEACTIVITY = 486;
+    private static final int CATEGORY_REQUEST_CODE = 10 ;
+    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -431,6 +436,10 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
         try {
             categories = new DatabaseTaskCategoryList(AddEditReportActivity.this).execute().get();
+            Category category = new Category();
+            category.setCategoryName("Add New");
+            categories.add(category);
+
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -439,6 +448,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
 
         final CustomCategoryPopUpAdapter adapter = new CustomCategoryPopUpAdapter(this, categories);
+
                 final android.app.AlertDialog.Builder ad = new android.app.AlertDialog.Builder(AddEditReportActivity.this);
                 ad.setCancelable(true);
                 ad.setTitle("Select Category");
@@ -446,23 +456,29 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                 ad.setSingleChoiceItems(adapter, -1,  new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(final DialogInterface dialogInterface, int pos) {
+                                if (categories.get(pos).getCategoryName().toString().equalsIgnoreCase("Add New")) {
+                                    Intent intent = new Intent(AddEditReportActivity.this, AddEditCategoryActivity.class);
+                                    startActivityForResult(intent,CATEGORY_REQUEST_CODE);
+                                    categoryPosition = pos;
+                                } else {
 
-                                final Label label = new Label();
-                                label.setCategoryID(categories.get(pos).getCategoryId());
-                                label.setName(categories.get(pos).getCategoryName());
-                                label.setReportId(reportPOJO.getId());
-                                String id = "";
-                                try {
-                                    id = new DatabaseTaskHelper(AddEditReportActivity.this,label).execute().get();
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                } catch (ExecutionException e) {
-                                    e.printStackTrace();
+                                    final Label label = new Label();
+                                    label.setCategoryID(categories.get(pos).getCategoryId());
+                                    label.setName(categories.get(pos).getCategoryName());
+                                    label.setReportId(reportPOJO.getId());
+                                    String id = "";
+                                    try {
+                                        id = new DatabaseTaskHelper(AddEditReportActivity.this, label).execute().get();
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    } catch (ExecutionException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                    label.setId(id);
+
+                                    onLabelAdded(label);
                                 }
-
-                                label.setId(id);
-
-                                onLabelAdded(label);
                                 dialogInterface.dismiss();
                             }
                         });
@@ -924,6 +940,37 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                 }else{
                     onFourImagesPerPage();
                 }
+            case CATEGORY_REQUEST_CODE:
+                Bundle dataFromActivity = data.getExtras().getBundle("categoryDetails");
+                if(dataFromActivity!= null) {
+                    String categoryName = dataFromActivity.get("categoryName").toString();
+                    String categoryDescription = dataFromActivity.get("categoryDescription").toString();
+                    Category categoryPOJO = new Category();
+                    categoryPOJO.setCategoryName(categoryName);
+                    categoryPOJO.setCategoryDescription(categoryDescription);
+
+                    categoryListDBHelper.addCategory(categoryPOJO);
+                    categories = categoryListDBHelper.getCategoryList();
+
+                    final Label label = new Label();
+                    label.setCategoryID(categories.get(categoryPosition).getCategoryId());
+                    label.setName(categories.get(categoryPosition).getCategoryName());
+                    label.setReportId(reportPOJO.getId());
+                    String id = "";
+                    try {
+                        id = new DatabaseTaskHelper(AddEditReportActivity.this, label).execute().get();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    }
+
+                    label.setId(id);
+
+                    onLabelAdded(label);
+                }
+
         }
     }
+
 }
