@@ -3,6 +3,7 @@ package com.electivechaos.claimsadjuster.ui;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -10,6 +11,7 @@ import android.widget.EditText;
 
 import com.electivechaos.claimsadjuster.R;
 import com.electivechaos.claimsadjuster.utils.CommonUtils;
+import android.support.v7.widget.Toolbar;
 
 /**
  * Created by barkhasikka on 25/04/18.
@@ -23,10 +25,13 @@ public class AddEditCategoryActivity extends AppCompatActivity{
     private  EditText categoryName;
     private EditText categoryDescription;
     private View addEditCategoryParentLayout;
+    private ActionBar activityActionBar;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_edit_category);
+
         categoryName = findViewById(R.id.editTextCategoryName);
         categoryDescription = findViewById(R.id.editTextCategoryDescription);
         addEditCategoryParentLayout = findViewById(R.id.addEditCategoryParentLayout);
