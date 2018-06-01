@@ -16,8 +16,6 @@ import com.electivechaos.claimsadjuster.BaseActivity;
 import com.electivechaos.claimsadjuster.R;
 import com.electivechaos.claimsadjuster.maintabs.AlertFragment;
 import com.electivechaos.claimsadjuster.maintabs.CalenderFragment;
-import com.electivechaos.claimsadjuster.maintabs.CategoryListFragment;
-import com.electivechaos.claimsadjuster.maintabs.PerilListFragment;
 import com.electivechaos.claimsadjuster.maintabs.ReportListFragment;
 
 public class MainTabsActivity extends BaseActivity {
