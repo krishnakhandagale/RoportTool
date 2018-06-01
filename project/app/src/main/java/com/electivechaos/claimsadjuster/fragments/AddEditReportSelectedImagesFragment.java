@@ -67,15 +67,15 @@ import java.util.List;
 
 public class AddEditReportSelectedImagesFragment extends Fragment {
 
-    private int REQUEST_CAMERA = 0;
-    private int IMAGE_ONE_REQUEST = 100;
-    private int IMAGE_TWO_REQUEST = 200;
-    private int IMAGE_THREE_REQUEST = 300;
-    private int IMAGE_FOUR_REQUEST = 400;
+    private  static final int REQUEST_CAMERA = 0;
+    private  static final int IMAGE_ONE_REQUEST = 100;
+    private  static final int IMAGE_TWO_REQUEST = 200;
+    private  static final int IMAGE_THREE_REQUEST = 300;
+    private  static final int IMAGE_FOUR_REQUEST = 400;
 
-    private int SELECT_FILE = 1;
-    private int ADD_IMAGE_DETAILS = 2;
-    private static int SET_CLICKED_IMAGE_DETAILS = 3;
+    private  static final int SELECT_FILE = 1;
+    private  static final int ADD_IMAGE_DETAILS = 2;
+    private  static final int SET_CLICKED_IMAGE_DETAILS = 3;
 
 
     private LinearLayout parentLayout;

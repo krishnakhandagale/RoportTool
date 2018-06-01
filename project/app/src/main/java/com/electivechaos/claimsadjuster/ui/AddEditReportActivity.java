@@ -101,7 +101,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
     private  ReportPOJO modifiedReportPojo;
     private static final int SHOWPREFERENCEACTIVITY = 486;
-    private static final int CATEGORY_REQUEST_CODE = 10 ;
+    private static final int ADD_CATEGORY_REQUEST = 10 ;
 
 
     @Override
@@ -294,12 +294,16 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
             fragmentTransaction.commit();
 
             activityActionBar.setTitle(labelArrayList.get(selectedFragmentPosition - 4).getName());
-            actionBarEditBtn.setVisible(true);
+            if(actionBarEditBtn != null){
+                actionBarEditBtn.setVisible(true);
+            }
             toolbar.setTag(labelArrayList.get(selectedFragmentPosition - 4));
         }else{
             mDrawerLayout.closeDrawer(Gravity.LEFT);
             putClaimDetailsFragment();
-            actionBarEditBtn.setVisible(false);
+            if(actionBarEditBtn != null){
+                actionBarEditBtn.setVisible(false);
+            }
         }
     }
 
@@ -458,7 +462,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                             public void onClick(final DialogInterface dialogInterface, int pos) {
                                 if (categories.get(pos).getCategoryName().toString().equalsIgnoreCase("Add New")) {
                                     Intent intent = new Intent(AddEditReportActivity.this, AddEditCategoryActivity.class);
-                                    startActivityForResult(intent,CATEGORY_REQUEST_CODE);
+                                    startActivityForResult(intent,ADD_CATEGORY_REQUEST);
                                     categoryPosition = pos;
                                 } else {
 
@@ -865,10 +869,12 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.actionbar_action_menu, menu);
         actionBarEditBtn = menu.findItem(R.id.edit);
-        actionBarEditBtn.setVisible(false);
-
+        if(selectedFragmentPosition > 3){
+            actionBarEditBtn.setVisible(true);
+        }else{
+            actionBarEditBtn.setVisible(false);
+        }
         return true;
-
     }
 
 
@@ -942,7 +948,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                 }else{
                     onFourImagesPerPage();
                 }
-            case CATEGORY_REQUEST_CODE:
+            case ADD_CATEGORY_REQUEST:
                 Bundle dataFromActivity = data.getExtras().getBundle("categoryDetails");
                 if(dataFromActivity!= null) {
                     String categoryName = dataFromActivity.get("categoryName").toString();
@@ -951,23 +957,24 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                     categoryPOJO.setCategoryName(categoryName);
                     categoryPOJO.setCategoryDescription(categoryDescription);
 
-                    categoryListDBHelper.addCategory(categoryPOJO);
-                    categories = categoryListDBHelper.getCategoryList();
+                    long catId = categoryListDBHelper.addCategory(categoryPOJO);
+                    categoryPOJO.setCategoryId((int) catId);
 
                     final Label label = new Label();
-                    label.setCategoryID(categories.get(categoryPosition).getCategoryId());
-                    label.setName(categories.get(categoryPosition).getCategoryName());
+                    label.setCategoryID(categoryPOJO.getCategoryId());
+                    label.setName(categoryPOJO.getCategoryName());
                     label.setReportId(reportPOJO.getId());
-                    String id = "";
+
+                    String labelId = "";
                     try {
-                        id = new DatabaseTaskHelper(AddEditReportActivity.this, label).execute().get();
+                        labelId = new DatabaseTaskHelper(AddEditReportActivity.this, label).execute().get();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     } catch (ExecutionException e) {
                         e.printStackTrace();
                     }
 
-                    label.setId(id);
+                    label.setId(labelId);
 
                     onLabelAdded(label);
                 }
