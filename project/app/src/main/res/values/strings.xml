@@ -88,8 +88,6 @@
     <string name="category_description">Category Description</string>
     <string name="enter_description">Enter Description</string>
     <string name="enter_name">Enter Name</string>
-    <string name="add_cause_of_loss">ADD CAUSE OF LOSS</string>
-    <string name="cause_of_loss_details">Cause Of Loss Details</string>
     <string name="update_category">Update Category</string>
     <string name="folder">Folder</string>
     <string name="edit">EDIT</string>
