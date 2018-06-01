@@ -69,7 +69,9 @@
         <activity android:name=".ui.RoofSystemActivity" />
         <activity android:name=".ui.SidingActivity" />
         <activity android:name=".ui.FoundationActivity" />
-        <activity android:name=".ui.BuildingTypeActivity"></activity>
+        <activity android:name=".ui.BuildingTypeActivity" />
+        <activity android:name=".ui.CategoryDetailsActivity" />
+        <activity android:name=".ui.PerilDetailsActivity"></activity>
     </application>
 
 </manifest>

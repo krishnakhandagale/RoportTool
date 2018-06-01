@@ -1,5 +1,6 @@
 package com.electivechaos.claimsadjuster.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -8,10 +9,13 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.electivechaos.claimsadjuster.BaseActivity;
 import com.electivechaos.claimsadjuster.R;
 import com.electivechaos.claimsadjuster.maintabs.AlertFragment;
+import com.electivechaos.claimsadjuster.maintabs.CalenderFragment;
 import com.electivechaos.claimsadjuster.maintabs.CategoryListFragment;
 import com.electivechaos.claimsadjuster.maintabs.PerilListFragment;
 import com.electivechaos.claimsadjuster.maintabs.ReportListFragment;
@@ -38,7 +42,29 @@ public class MainTabsActivity extends BaseActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.category_peril_main_menu, menu);
+        return true;
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()){
+            case R.id.Category:
+                Intent catIntent = new Intent(this,CategoryDetailsActivity.class);
+                startActivity(catIntent);
+                break;
+
+            case R.id.Peril:
+                Intent perilIntent = new Intent(this,PerilDetailsActivity.class);
+                startActivity(perilIntent);
+                break;
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     //View pager  for showing two tabs in the welcome activity
 
@@ -54,7 +80,7 @@ public class MainTabsActivity extends BaseActivity {
                 Fragment fragment = new ReportListFragment();
                 return fragment;
             }else if(i == 1){
-                Fragment fragment = new CategoryListFragment();
+                Fragment fragment = new CalenderFragment();
                 return fragment;
             }else {
                 Fragment fragment = new AlertFragment();
@@ -72,7 +98,7 @@ public class MainTabsActivity extends BaseActivity {
             if(position == 0){
                 return  "Report List";
             }else if(position == 1){
-                return  "Categories";
+                return  "Calender";
             }else {
                 return "Alert";
             }
