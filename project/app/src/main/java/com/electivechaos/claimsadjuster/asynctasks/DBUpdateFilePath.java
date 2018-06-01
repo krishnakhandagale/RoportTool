@@ -138,12 +138,8 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
             }
 
             PropertyDetailsPOJO propertyDetailsPOJO = reportPOJO.getPropertyDetailsPOJO();
-
-            //TODO: add check to see if any of the field is filled by user
             document.newPage();
-
             // Now read property details
-
             event.setHeader("Property Details");
             document.add(new Paragraph("Property Date", fontTitles));
             document.add(new Paragraph(propertyDetailsPOJO.getPropertyDate()));
