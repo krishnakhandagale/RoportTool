@@ -31,6 +31,8 @@ import com.electivechaos.claimsadjuster.ui.AddEditCategoryActivity;
 import java.util.ArrayList;
 import java.util.List;
 
+//TO DO :::: TO BE REMOVED
+
 public class CategoryListFragment  extends Fragment {
     public ArrayList<Category> categoryList = new ArrayList<>();
     private RecyclerView recyclerView;
