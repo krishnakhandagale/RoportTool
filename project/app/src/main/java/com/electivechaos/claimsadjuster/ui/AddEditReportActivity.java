@@ -28,7 +28,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
-import android.widget.Switch;
 
 import com.electivechaos.claimsadjuster.ImageHelper;
 import com.electivechaos.claimsadjuster.PermissionUtilities;
@@ -139,6 +138,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
 
         if(savedInstanceState != null && savedInstanceState.getInt("selectedFragmentPosition") != -1 ){
+
             selectedFragmentPosition = savedInstanceState.getInt("selectedFragmentPosition");
 
             if(selectedFragmentPosition == 0){
@@ -153,8 +153,9 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                 putLabelFragment();
             }
         }else{
-            putClaimDetailsFragment();
+           putClaimDetailsFragment();
         }
+
 
         ExpandableListView mExpandableListView = findViewById(R.id.slider_menu);
 
@@ -206,15 +207,9 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                     actionBarEditBtn.setVisible(false);
 
                 } else if (parentMenuItems.get(groupPosition).equals("Point Of Origin")) {
+
                     mDrawerLayout.closeDrawer(Gravity.LEFT);
-                    FragmentManager transactionManager = getSupportFragmentManager();
-                    FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.content_frame, new PointOfOriginFragment());
-                    fragmentTransaction.commit();
-
-                    selectedFragmentPosition = 3;
-
-                    activityActionBar.setTitle("Point Of Origin");
+                    putPointOfOriginFragment();
                     actionBarEditBtn.setVisible(false);
                 }
                 return false;
@@ -319,14 +314,16 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         selectedFragmentPosition = 2;
         activityActionBar.setTitle("Peril");
     }
+
      private void putPointOfOriginFragment(){
          FragmentManager transactionManager = getSupportFragmentManager();
          FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
+
          fragmentTransaction.replace(R.id.content_frame,new PointOfOriginFragment());
          fragmentTransaction.commit();
 
+         selectedFragmentPosition = 3;
          activityActionBar.setTitle("Point Of Origin");
-         actionBarEditBtn.setVisible(false);
         }
 
     @Override
@@ -645,6 +642,8 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         else if(selectedFragmentPosition == 3) {
             mDrawerLayout.closeDrawer(Gravity.LEFT);
             putPointOfOriginFragment();
+            activityActionBar.setTitle("Point Of Origin");
+            actionBarEditBtn.setVisible(false);
 
         }else if(selectedFragmentPosition > 3){
 
@@ -853,6 +852,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         return true;
 
     }
+
 
     @Override
     protected void onDestroy() {
