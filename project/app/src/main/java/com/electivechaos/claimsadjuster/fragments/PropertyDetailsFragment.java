@@ -54,7 +54,6 @@ import java.util.Date;
 
 public class PropertyDetailsFragment extends Fragment implements DatePickerDialog.OnDateSetListener {
 
-    private static final int UNIQUE_CONSTRAINT_FAIL_ERROR_CODE = -111;
     private static final int ROOF_SYSTEM_REQUEST_CODE = 30;
     private static final int SIDING_REQUEST_CODE = 31;
     private static final int FOUNDATION_REQUEST_CODE = 32;
@@ -499,9 +498,6 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
                 Bundle dataFromActivity = data.getExtras().getBundle("roofSystemDetails");
                 String roofName = dataFromActivity.get("roofSystemName").toString();
 
-                RoofSystemPOJO roofSystemPOJO = new RoofSystemPOJO();
-                roofSystemPOJO.setName(roofName);
-
                 menuRoofSystem.setText(roofName);
                 onPropertyDetailsClickListener.setPropertyRoofSystem(roofName);
 
@@ -511,32 +507,18 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
             if (resultCode == Activity.RESULT_OK) {
                 Bundle dataFromActivity = data.getExtras().getBundle("sidingDetails");
                 String sidingName = dataFromActivity.get("sidingName").toString();
-                SidingPOJO sidingPOJO = new SidingPOJO();
-                sidingPOJO.setName(sidingName);
 
-                long addResultCode = categoryListDBHelper.addSiding(sidingPOJO);
-                if (addResultCode == UNIQUE_CONSTRAINT_FAIL_ERROR_CODE) {
-                    Toast.makeText(getContext(), "Siding with same name already exists.", Toast.LENGTH_LONG).show();
-                } else {
-                    menuSiding.setText(sidingName);
-                    onPropertyDetailsClickListener.setPropertySiding(sidingName);
-                }
+                menuSiding.setText(sidingName);
+                onPropertyDetailsClickListener.setPropertySiding(sidingName);
 
             }
         } else if (requestCode == FOUNDATION_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
                 Bundle dataFromActivity = data.getExtras().getBundle("foundationDetails");
                 String foundationName = dataFromActivity.get("foundationName").toString();
-                FoundationPOJO foundationPOJO = new FoundationPOJO();
-                foundationPOJO.setName(foundationName);
 
-                long addResultCode = categoryListDBHelper.addFoundation(foundationPOJO);
-                if (addResultCode == UNIQUE_CONSTRAINT_FAIL_ERROR_CODE) {
-                    Toast.makeText(getContext(), "Foundation with same name already exists.", Toast.LENGTH_LONG).show();
-                } else {
-                    menuFoundation.setText(foundationName);
-                    onPropertyDetailsClickListener.setPropertyFoundation(foundationName);
-                }
+                menuFoundation.setText(foundationName);
+                onPropertyDetailsClickListener.setPropertyFoundation(foundationName);
 
 
             }
@@ -544,16 +526,9 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
             if (resultCode == Activity.RESULT_OK) {
                 Bundle dataFromActivity = data.getExtras().getBundle("buildingDetails");
                 String buildingName = dataFromActivity.get("buildingName").toString();
-                BuildingTypePOJO buildingTypePOJO = new BuildingTypePOJO();
-                buildingTypePOJO.setName(buildingName);
 
-                long addResultCode = categoryListDBHelper.addBuildingType(buildingTypePOJO);
-                if (addResultCode == UNIQUE_CONSTRAINT_FAIL_ERROR_CODE) {
-                    Toast.makeText(getContext(), "Building type with same name already exists.", Toast.LENGTH_LONG).show();
-                } else {
-                    menuBuildingType.setText(buildingName);
-                    onPropertyDetailsClickListener.setPropertyBuildingType(buildingName);
-                }
+                menuBuildingType.setText(buildingName);
+                onPropertyDetailsClickListener.setPropertyBuildingType(buildingName);
 
 
             }
