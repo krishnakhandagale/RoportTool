@@ -161,6 +161,9 @@ public class PerilListMenuFragment extends Fragment{
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        //// TO DO ::::::::::::Code to be removed
+        
         if (requestCode == 1) {
             if (resultCode == Activity.RESULT_OK) {
                 Bundle dataFromActivity = data.getBundleExtra("perilDetails");
