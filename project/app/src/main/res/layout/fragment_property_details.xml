@@ -20,39 +20,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="4"
-        android:layout_marginLeft="2dp"
-        android:layout_marginStart="2dp">
         <TextView
+            android:drawableRight="@drawable/ic_date"
+            android:layout_toLeftOf="@+id/btnDate"
             android:textSize="16sp"
-            android:layout_gravity="center_vertical"
+            android:ellipsize="end"
+            android:lines="1"
             android:id="@+id/txtDate"
-            android:layout_width="0dp"
-            android:layout_weight="3.5"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/select_date"
             android:gravity="center_vertical"
-            android:width="0dp" />
-        <LinearLayout
-            android:gravity="end"
-            android:layout_gravity="center_vertical"
-            android:orientation="horizontal"
-            android:layout_width="0dip"
-            android:layout_weight="0.5"
-            android:layout_height="wrap_content">
-            <Button
-                android:id="@+id/btnDate"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:background="@drawable/ic_select_date"
-                />
-        </LinearLayout>
-
-    </LinearLayout>
+            android:drawableEnd="@drawable/ic_date" />
 
 
     <android.support.design.widget.TextInputLayout
@@ -72,6 +51,8 @@
     </android.support.design.widget.TextInputLayout>
 
     <TextView
+        android:ellipsize="end"
+        android:lines="1"
         android:id="@+id/menuOne"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -83,6 +64,8 @@
         android:layout_marginTop="110dp"/>
 
     <TextView
+        android:ellipsize="end"
+        android:lines="1"
         android:id="@+id/menuTwo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -94,6 +77,8 @@
         android:layout_marginTop="160dp"/>
 
     <TextView
+        android:ellipsize="end"
+        android:lines="1"
         android:id="@+id/menuThree"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -105,6 +90,8 @@
         android:layout_marginTop="210dp"/>
 
     <TextView
+        android:ellipsize="end"
+        android:lines="1"
         android:id="@+id/menuFour"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
