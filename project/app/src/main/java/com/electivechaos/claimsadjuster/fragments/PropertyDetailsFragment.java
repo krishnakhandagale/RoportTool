@@ -102,7 +102,6 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
         fab_open = AnimationUtils.loadAnimation(getActivity(), R.anim.fab_open);
         fab_close = AnimationUtils.loadAnimation(getActivity(), R.anim.fab_close);
 
-        Button pickTime = view.findViewById(R.id.btnDate);
         txtDate = view.findViewById(R.id.txtDate);
         EditText squareFootage = view.findViewById(R.id.squareFootage);
         menuRoofSystem = view.findViewById(R.id.menuOne);
@@ -166,7 +165,7 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
             }
         });
 
-        pickTime.setOnClickListener(new View.OnClickListener() {
+        txtDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Calendar c = Calendar.getInstance();
