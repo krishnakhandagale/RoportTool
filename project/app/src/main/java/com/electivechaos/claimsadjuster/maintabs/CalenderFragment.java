@@ -1,7 +1,5 @@
 package com.electivechaos.claimsadjuster.maintabs;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,8 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.electivechaos.claimsadjuster.R;
-
-import java.util.zip.Inflater;
 
 
 public class CalenderFragment extends Fragment {
