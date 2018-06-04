@@ -29,7 +29,7 @@ import java.util.Iterator;
  */
 
 public class CategoryListDBHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 135;
+    private static final int DATABASE_VERSION = 137;
 
 
     // Database Name
@@ -587,11 +587,16 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
     }
 
     public int updatePeril(PerilPOJO perilPOJO){
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(KEY_PERIL_NAME, perilPOJO.getName());
-        contentValues.put(KEY_PERIL_DESCRIPTION, perilPOJO.getDescription());
-        return  db.update(TABLE_PERIL, contentValues,KEY_PERIL_ID+"="+ perilPOJO.getID(),null);
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(KEY_PERIL_NAME, perilPOJO.getName());
+            contentValues.put(KEY_PERIL_DESCRIPTION, perilPOJO.getDescription());
+            return  db.update(TABLE_PERIL, contentValues,KEY_PERIL_ID+"="+ perilPOJO.getID(),null);
+
+        }catch (SQLiteConstraintException ex){
+          return -100;
+        }
     }
 
     public ArrayList<PerilPOJO> getPeril(){
