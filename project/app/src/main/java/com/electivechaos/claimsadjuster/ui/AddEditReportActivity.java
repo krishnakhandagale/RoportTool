@@ -87,7 +87,6 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     private ArrayList<Category> categories = null;
     static CategoryListDBHelper categoryListDBHelper;
 
-    private int categoryPosition;
 
     private ReportPOJO reportPOJO ;
     private View progressBarLayout;
@@ -463,7 +462,6 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                                 if (categories.get(pos).getCategoryName().toString().equalsIgnoreCase("Add New")) {
                                     Intent intent = new Intent(AddEditReportActivity.this, AddEditCategoryActivity.class);
                                     startActivityForResult(intent,ADD_CATEGORY_REQUEST);
-                                    categoryPosition = pos;
                                 } else {
 
                                     final Label label = new Label();
