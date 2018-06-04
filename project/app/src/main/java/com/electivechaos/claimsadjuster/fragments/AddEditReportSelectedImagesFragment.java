@@ -54,7 +54,6 @@ import com.electivechaos.claimsadjuster.ui.SingleImageDetailsActivity;
 import com.electivechaos.claimsadjuster.utils.CommonUtils;
 
 import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;

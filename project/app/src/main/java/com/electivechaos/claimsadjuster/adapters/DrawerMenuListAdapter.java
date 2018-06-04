@@ -121,7 +121,6 @@ public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
         }else if(parentMenuString.equals("Point Of Origin")){
             holder.imageView.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_point_of_origin));
         }else{
-
             holder.imageView.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_damage));
             holder.addInspectionView.setVisibility(View.VISIBLE);
         }

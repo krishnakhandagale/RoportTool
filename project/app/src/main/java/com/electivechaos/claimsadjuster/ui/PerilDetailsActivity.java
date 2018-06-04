@@ -70,31 +70,13 @@ public class PerilDetailsActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
             if (resultCode == Activity.RESULT_OK) {
-                Bundle dataFromActivity = data.getBundleExtra("perilDetails");
-                String perilName = dataFromActivity.get("name").toString();
-                String perilDescription = dataFromActivity.get("description").toString();
-                PerilPOJO perilPOJO = new PerilPOJO();
-                perilPOJO.setName(perilName);
-                perilPOJO.setDescription(perilDescription);
-                mCategoryListDBHelper.addPeril(perilPOJO);
                 updatePerilDetails();
             }
+        }
+        else if(requestCode == 2) {
+                updatePerilDetails();
         }
 
-        if (requestCode == 2) {
-            if (resultCode == 2) {
-                Bundle dataFromActivity = data.getBundleExtra("perilDetails");
-                String name = dataFromActivity.get("name").toString();
-                String desc = dataFromActivity.get("description").toString();
-                int id = Integer.parseInt(dataFromActivity.get("id").toString());
-                PerilPOJO perilPOJO = new PerilPOJO();
-                perilPOJO.setName(name);
-                perilPOJO.setDescription(desc);
-                perilPOJO.setID(id);
-                mCategoryListDBHelper.updatePeril(perilPOJO);
-                updatePerilDetails();
-            }
-        }
     }
 
     private  void updatePerilDetails(){
