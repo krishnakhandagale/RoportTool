@@ -498,16 +498,12 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
             if (resultCode == Activity.RESULT_OK) {
                 Bundle dataFromActivity = data.getExtras().getBundle("roofSystemDetails");
                 String roofName = dataFromActivity.get("roofSystemName").toString();
+
                 RoofSystemPOJO roofSystemPOJO = new RoofSystemPOJO();
                 roofSystemPOJO.setName(roofName);
 
-                long addResultCode = categoryListDBHelper.addRoofSystem(roofSystemPOJO);
-                if (addResultCode == UNIQUE_CONSTRAINT_FAIL_ERROR_CODE) {
-                    Toast.makeText(getContext(), "Roof System with same name already exists.", Toast.LENGTH_LONG).show();
-                } else {
-                    menuRoofSystem.setText(roofName);
-                    onPropertyDetailsClickListener.setPropertyRoofSystem(roofName);
-                }
+                menuRoofSystem.setText(roofName);
+                onPropertyDetailsClickListener.setPropertyRoofSystem(roofName);
 
 
             }
