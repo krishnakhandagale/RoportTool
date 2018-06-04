@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.electivechaos.claimsadjuster.R;
+import com.electivechaos.claimsadjuster.database.CategoryListDBHelper;
+import com.electivechaos.claimsadjuster.pojo.Category;
 import com.electivechaos.claimsadjuster.utils.CommonUtils;
 
 /**
@@ -23,15 +25,19 @@ public class AddEditCategoryActivity extends AppCompatActivity{
     private  EditText categoryName;
     private EditText categoryDescription;
     private View addEditCategoryParentLayout;
+    private CategoryListDBHelper categoryListDBHelper;
+    private int catId;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_edit_category);
 
+        categoryListDBHelper = CategoryListDBHelper.getInstance(this);
         categoryName = findViewById(R.id.editTextCategoryName);
         categoryDescription = findViewById(R.id.editTextCategoryDescription);
         addEditCategoryParentLayout = findViewById(R.id.addEditCategoryParentLayout);
+
         if(getIntent().getExtras()!= null){
             Bundle dataFromActivity = getIntent().getExtras().getBundle("categoryDetails");
             intentCategoryTitle = dataFromActivity.get("categoryName").toString();
@@ -47,7 +53,7 @@ public class AddEditCategoryActivity extends AppCompatActivity{
             categoryDescription.setText(intentCategoryDescription.toString());
         }
 
-        Button updateCategoryButton = findViewById(R.id.updateCategory);
+        final Button updateCategoryButton = findViewById(R.id.updateCategory);
         updateCategoryButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 String categoryNameString = categoryName.getText().toString().trim();
@@ -63,10 +69,27 @@ public class AddEditCategoryActivity extends AppCompatActivity{
                     CommonUtils.hideKeyboard(AddEditCategoryActivity.this);
                     CommonUtils.showSnackbarMessage("Please enter category description.", true, true,addEditCategoryParentLayout,AddEditCategoryActivity.this);
                     return;
+                }else {
+                    if (categoryID == -1) {
+                        Category categoryPOJO = new Category();
+                        categoryPOJO.setCategoryName(categoryNameString);
+                        categoryPOJO.setCategoryDescription(categoryDescriptionString);
+                        catId = Integer.parseInt(String.valueOf(categoryListDBHelper.addCategory(categoryPOJO)));
+                        categoryPOJO.setCategoryId((int) catId);
+
+                    } else {
+                        Category categoryPOJO = new Category();
+                        categoryPOJO.setCategoryName(categoryNameString);
+                        categoryPOJO.setCategoryDescription(categoryDescriptionString);
+                        categoryPOJO.setCategoryId(categoryID);
+                        categoryListDBHelper.updateCategory(categoryPOJO);
+
+                    }
                 }
 
                 Bundle data = new Bundle();
                 if(categoryID == -1) {
+                    data.putInt("categoryId",catId);
                     data.putString("categoryName", categoryNameString);
                     data.putString("categoryDescription", categoryDescriptionString);
                     Intent intent = new Intent();
@@ -82,8 +105,6 @@ public class AddEditCategoryActivity extends AppCompatActivity{
                     setResult(Activity.RESULT_OK, intent);
                     finish();
                 }
-
-
 
             }
         });

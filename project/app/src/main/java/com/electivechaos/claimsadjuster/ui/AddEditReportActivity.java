@@ -951,18 +951,14 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
             case ADD_CATEGORY_REQUEST:
                 Bundle dataFromActivity = data.getExtras().getBundle("categoryDetails");
                 if(dataFromActivity!= null) {
+                    int categoryId = dataFromActivity.getInt("categoryId");
                     String categoryName = dataFromActivity.get("categoryName").toString();
                     String categoryDescription = dataFromActivity.get("categoryDescription").toString();
-                    Category categoryPOJO = new Category();
-                    categoryPOJO.setCategoryName(categoryName);
-                    categoryPOJO.setCategoryDescription(categoryDescription);
-
-                    long catId = categoryListDBHelper.addCategory(categoryPOJO);
-                    categoryPOJO.setCategoryId((int) catId);
 
                     final Label label = new Label();
-                    label.setCategoryID(categoryPOJO.getCategoryId());
-                    label.setName(categoryPOJO.getCategoryName());
+                    label.setCategoryID(categoryId);
+                    label.setName(categoryName);
+                    label.setDescription(categoryDescription);
                     label.setReportId(reportPOJO.getId());
 
                     String labelId = "";

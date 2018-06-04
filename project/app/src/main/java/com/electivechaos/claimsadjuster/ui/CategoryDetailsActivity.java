@@ -62,6 +62,7 @@ public class CategoryDetailsActivity extends AppCompatActivity {
         btnAddReport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent addCategoryActivity = new Intent(CategoryDetailsActivity.this, AddEditCategoryActivity.class);
                 startActivityForResult(addCategoryActivity, 1);
             }
@@ -72,28 +73,12 @@ public class CategoryDetailsActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
             if (resultCode == Activity.RESULT_OK) {
-                Bundle dataFromActivity =  data.getExtras().getBundle("categoryDetails");
-                String categoryName = dataFromActivity.get("categoryName").toString();
-                String categoryDescription = dataFromActivity.get("categoryDescription").toString();
-                Category category = new Category();
-                category.setCategoryName(categoryName);
-                category.setCategoryDescription(categoryDescription);
-                mCategoryListDBHelper.addCategory(category);
                 getCategoryList();
             }
         }
 
         if (requestCode == 2) {
             if (resultCode == Activity.RESULT_OK) {
-                Bundle dataFromActivity = data.getExtras().getBundle("categoryDetails");
-                String categoryName = dataFromActivity.get("categoryName").toString();
-                String categoryDescription = dataFromActivity.get("categoryDescription").toString();
-                int categoryID = Integer.parseInt(dataFromActivity.get("categoryID").toString());
-                Category category = new Category();
-                category.setCategoryName(categoryName);
-                category.setCategoryDescription(categoryDescription);
-                category.setCategoryId(categoryID);
-                mCategoryListDBHelper.updateCategory(category);
                 getCategoryList();
             }
         }
