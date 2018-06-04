@@ -201,12 +201,17 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
                     public void onPostExecute(Object object, String type) {
 
                         final ArrayList<RoofSystemPOJO> roofSystemList = (ArrayList<RoofSystemPOJO>) object;
-                        RoofSystemPOJO addNew = new RoofSystemPOJO();
-                        addNew.setName("Add New");
-                        roofSystemList.add(addNew);
 
                         final AlertDialog.Builder ad = new AlertDialog.Builder(getContext());
+
                         ad.setCancelable(true);
+                        ad.setPositiveButton("Add New", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent = new Intent(getContext(), RoofSystemActivity.class);
+                                startActivityForResult(intent, ROOF_SYSTEM_REQUEST_CODE);
+                            }
+                        });
                         ad.setTitle("Roof System");
                         CustomMenuAdapter adapter = new CustomMenuAdapter(roofSystemList, propertyDetailsPOJO.getRoofSystem().toString(), "roof_system");
 
@@ -214,15 +219,10 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
 
                             @Override
                             public void onClick(DialogInterface dialogInterface, int position) {
-                                if (roofSystemList.get(position).getName().equalsIgnoreCase("Add New")) {
-                                    Intent intent = new Intent(getContext(), RoofSystemActivity.class);
-                                    startActivityForResult(intent, ROOF_SYSTEM_REQUEST_CODE);
 
-                                } else {
                                     menuRoofSystem.setText(roofSystemList.get(position).getName());
                                     onPropertyDetailsClickListener.setPropertyRoofSystem(roofSystemList.get(position).getName());
-                                }
-                                dialogInterface.dismiss();
+                                    dialogInterface.dismiss();
 
                             }
                         });
@@ -256,12 +256,16 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
                     @Override
                     public void onPostExecute(Object object, String type) {
                         final ArrayList<SidingPOJO> sidingList = (ArrayList<SidingPOJO>) object;
-                        SidingPOJO addNew = new SidingPOJO();
-                        addNew.setName("Add New");
-                        sidingList.add(addNew);
 
                         final AlertDialog.Builder ad = new AlertDialog.Builder(getContext());
                         ad.setCancelable(true);
+                        ad.setPositiveButton("Add New", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent = new Intent(getContext(), SidingActivity.class);
+                                startActivityForResult(intent, SIDING_REQUEST_CODE);
+                            }
+                        });
                         ad.setTitle("Siding");
                         CustomMenuAdapter adapter = new CustomMenuAdapter(sidingList, propertyDetailsPOJO.getSiding().toString(), "siding");
 
@@ -269,13 +273,9 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
 
                             @Override
                             public void onClick(DialogInterface dialogInterface, int position) {
-                                if (sidingList.get(position).getName().toString().equalsIgnoreCase("Add New")) {
-                                    Intent intent = new Intent(getContext(), SidingActivity.class);
-                                    startActivityForResult(intent, SIDING_REQUEST_CODE);
-                                } else {
+
                                     menuSiding.setText(sidingList.get(position).getName().toString());
                                     onPropertyDetailsClickListener.setPropertySiding(sidingList.get(position).getName().toString());
-                                }
                                 dialogInterface.dismiss();
 
                             }
@@ -313,12 +313,16 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
                     public void onPostExecute(Object object, String type) {
 
                         final ArrayList<FoundationPOJO> foundationList = (ArrayList<FoundationPOJO>) object;
-                        FoundationPOJO addNew = new FoundationPOJO();
-                        addNew.setName("Add New");
-                        foundationList.add(addNew);
 
                         final AlertDialog.Builder ad = new AlertDialog.Builder(getContext());
                         ad.setCancelable(true);
+                        ad.setPositiveButton("Add New", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent = new Intent(getContext(), FoundationActivity.class);
+                                startActivityForResult(intent, FOUNDATION_REQUEST_CODE);
+                            }
+                        });
                         ad.setTitle("Foundation");
                         CustomMenuAdapter adapter = new CustomMenuAdapter(foundationList, propertyDetailsPOJO.getFoundation().toString(), "foundation");
 
@@ -326,13 +330,9 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
 
                             @Override
                             public void onClick(DialogInterface dialogInterface, int position) {
-                                if (foundationList.get(position).getName().toString().equalsIgnoreCase("Add New")) {
-                                    Intent intent = new Intent(getContext(), FoundationActivity.class);
-                                    startActivityForResult(intent, FOUNDATION_REQUEST_CODE);
-                                } else {
+
                                     menuFoundation.setText(foundationList.get(position).getName().toString());
                                     onPropertyDetailsClickListener.setPropertyFoundation(foundationList.get(position).getName().toString());
-                                }
                                 dialogInterface.dismiss();
 
                             }
@@ -367,12 +367,17 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
                     public void onPostExecute(Object object, String type) {
 
                         final ArrayList<BuildingTypePOJO> buildingTypeList = (ArrayList<BuildingTypePOJO>) object;
-                        BuildingTypePOJO addNew = new BuildingTypePOJO();
-                        addNew.setName("Add New");
-                        buildingTypeList.add(addNew);
+
 
                         final AlertDialog.Builder ad = new AlertDialog.Builder(getContext());
                         ad.setCancelable(true);
+                        ad.setPositiveButton("Add New", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent = new Intent(getContext(), BuildingTypeActivity.class);
+                                startActivityForResult(intent, BUILDING_TYPE_REQUEST_CODE);
+                            }
+                        });
                         ad.setTitle("Building Type");
                         CustomMenuAdapter adapter = new CustomMenuAdapter(buildingTypeList, propertyDetailsPOJO.getBuildingType().toString(), "building_type");
 
@@ -380,13 +385,8 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
 
                             @Override
                             public void onClick(DialogInterface dialogInterface, int position) {
-                                if (buildingTypeList.get(position).getName().toString().equalsIgnoreCase("Add New")) {
-                                    Intent intent = new Intent(getContext(), BuildingTypeActivity.class);
-                                    startActivityForResult(intent, BUILDING_TYPE_REQUEST_CODE);
-                                } else {
                                     menuBuildingType.setText(buildingTypeList.get(position).getName().toString());
                                     onPropertyDetailsClickListener.setPropertyBuildingType(buildingTypeList.get(position).getName().toString());
-                                }
 
                                 dialogInterface.dismiss();
 
