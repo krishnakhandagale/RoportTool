@@ -3,6 +3,7 @@ package com.electivechaos.claimsadjuster.fragments;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -204,7 +205,7 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
                         addNew.setName("Add New");
                         roofSystemList.add(addNew);
 
-                        final AlertDialog.Builder ad = new AlertDialog.Builder(getContext());
+                        final AlertDialog.Builder ad = new AlertDialog.Builder(getContext(),R.style.MyDialogTheme);
                         ad.setCancelable(true);
                         ad.setTitle("Roof System");
                         CustomMenuAdapter adapter = new CustomMenuAdapter(roofSystemList, propertyDetailsPOJO.getRoofSystem().toString(), "roof_system");
@@ -259,7 +260,7 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
                         addNew.setName("Add New");
                         sidingList.add(addNew);
 
-                        final AlertDialog.Builder ad = new AlertDialog.Builder(getContext());
+                        final AlertDialog.Builder ad = new AlertDialog.Builder(getContext(),R.style.MyDialogTheme);
                         ad.setCancelable(true);
                         ad.setTitle("Siding");
                         CustomMenuAdapter adapter = new CustomMenuAdapter(sidingList, propertyDetailsPOJO.getSiding().toString(), "siding");
@@ -316,7 +317,7 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
                         addNew.setName("Add New");
                         foundationList.add(addNew);
 
-                        final AlertDialog.Builder ad = new AlertDialog.Builder(getContext());
+                        final AlertDialog.Builder ad = new AlertDialog.Builder(getContext(),R.style.MyDialogTheme);
                         ad.setCancelable(true);
                         ad.setTitle("Foundation");
                         CustomMenuAdapter adapter = new CustomMenuAdapter(foundationList, propertyDetailsPOJO.getFoundation().toString(), "foundation");
@@ -370,7 +371,7 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
                         addNew.setName("Add New");
                         buildingTypeList.add(addNew);
 
-                        final AlertDialog.Builder ad = new AlertDialog.Builder(getContext());
+                        final AlertDialog.Builder ad = new AlertDialog.Builder(getContext(),R.style.MyDialogTheme);
                         ad.setCancelable(true);
                         ad.setTitle("Building Type");
                         CustomMenuAdapter adapter = new CustomMenuAdapter(buildingTypeList, propertyDetailsPOJO.getBuildingType().toString(), "building_type");
