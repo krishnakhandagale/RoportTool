@@ -41,13 +41,12 @@ public class RoofSystemActivity extends AppCompatActivity {
                     RoofSystemPOJO roofSystemPOJO = new RoofSystemPOJO();
                     roofSystemPOJO.setName(roofName.getText().toString());
 
-                    int roofId =Integer.parseInt(String.valueOf(categoryListDBHelper.addRoofSystem(roofSystemPOJO)));
+                    long roofId = categoryListDBHelper.addRoofSystem(roofSystemPOJO);
                     if (roofId == UNIQUE_CONSTRAINT_FAIL_ERROR_CODE) {
-                        Toast.makeText(RoofSystemActivity.this, "Roof System with same name already exists.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(RoofSystemActivity.this, "Roof System with same name already exists.", Toast.LENGTH_SHORT).show();
                     } else {
                         Bundle data = new Bundle();
                         data.putString("roofSystemName", roofName.getText().toString());
-                        data.putInt("roofSystemId",roofId);
                         Intent intent = new Intent();
                         intent.putExtra("roofSystemDetails", data);
                         setResult(Activity.RESULT_OK, intent);
