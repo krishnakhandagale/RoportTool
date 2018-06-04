@@ -40,7 +40,13 @@
         <activity
             android:name=".ui.AddEditReportActivity"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".ui.MainTabsActivity" />
+        <activity android:name=".ui.MainTabsActivity">
+            <intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
         <activity android:name=".ui.ImagePickerActivity" />
         <activity
             android:name=".ui.SingleImageDetailsActivity"
@@ -59,11 +65,6 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".ui.SplashScreenActivity">
-            <intent-filter>
-                <category android:name="android.intent.category.LAUNCHER" />
-
-                <action android:name="android.intent.action.MAIN" />
-            </intent-filter>
         </activity>
         <activity android:name=".ui.CustomisationActivity" />
         <activity android:name=".ui.RoofSystemActivity" />
