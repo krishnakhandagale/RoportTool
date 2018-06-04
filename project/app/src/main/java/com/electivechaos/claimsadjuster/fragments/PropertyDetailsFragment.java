@@ -214,13 +214,13 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
 
                             @Override
                             public void onClick(DialogInterface dialogInterface, int position) {
-                                if (roofSystemList.get(position).getName().toString().equalsIgnoreCase("Add New")) {
+                                if (roofSystemList.get(position).getName().equalsIgnoreCase("Add New")) {
                                     Intent intent = new Intent(getContext(), RoofSystemActivity.class);
                                     startActivityForResult(intent, ROOF_SYSTEM_REQUEST_CODE);
 
                                 } else {
-                                    menuRoofSystem.setText(roofSystemList.get(position).getName().toString());
-                                    onPropertyDetailsClickListener.setPropertyRoofSystem(roofSystemList.get(position).getName().toString());
+                                    menuRoofSystem.setText(roofSystemList.get(position).getName());
+                                    onPropertyDetailsClickListener.setPropertyRoofSystem(roofSystemList.get(position).getName());
                                 }
                                 dialogInterface.dismiss();
 
