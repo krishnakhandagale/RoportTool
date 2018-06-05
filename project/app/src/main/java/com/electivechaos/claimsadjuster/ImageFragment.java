@@ -29,8 +29,11 @@ public class ImageFragment extends Fragment {
     String imageUrl;
     String imgTitle;
     String imgDescription;
-    Boolean imgIsDamage;
-    Boolean imgIsOverview;
+    boolean imgIsDamage;
+    boolean imgIsOverview;
+
+    boolean isDamage;
+    boolean isOverview;
 
     int position;
     MonitorImageDetailsChange monitorImageDetailsChange;
@@ -61,8 +64,13 @@ public class ImageFragment extends Fragment {
         position = getArguments() != null ? getArguments().getInt("position") : 0;
         imgTitle = getArguments() != null ? getArguments().getString("title") : "";
         imgDescription =getArguments() != null ? getArguments().getString("description") : "";
-        imgIsDamage = getArguments() != null && getArguments().getBoolean("imgIsDamage");
+        imgIsDamage =getArguments() != null  && getArguments().getBoolean("imgIsDamage");
         imgIsOverview = getArguments() != null && getArguments().getBoolean("imgIsOverview");
+
+        if(savedInstanceState != null){
+            imgIsDamage = savedInstanceState.getBoolean("isDamage");
+            imgIsOverview = savedInstanceState.getBoolean("isOverview");
+        }
   }
 
 
@@ -83,8 +91,11 @@ public class ImageFragment extends Fragment {
         damageTextView.setChecked(imgIsDamage);
 
         if(imgIsDamage) {
+            isDamage = true;
+            isOverview = false;
             damageTextView.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.shape_chip_drawable_active));
         }else {
+            isDamage = false;
             damageTextView.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.shape_chip_drawable_gray));
         }
 
@@ -92,8 +103,11 @@ public class ImageFragment extends Fragment {
         overviewTextView.setChecked(imgIsOverview);
 
         if(imgIsOverview) {
+            isOverview = true;
+            isDamage = false;
             overviewTextView.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.shape_chip_drawable_active));
         }else {
+            isOverview = false;
             overviewTextView.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.shape_chip_drawable_gray));
         }
 
@@ -142,16 +156,18 @@ public class ImageFragment extends Fragment {
                 if(overviewTextView.isChecked()){
                     overviewTextView.setChecked(false);
                     overviewTextView.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.shape_chip_drawable_gray));
-                    overviewTextView.setChecked(false);
+                    isOverview = false;
                     monitorImageDetailsChange.setUnsetOverview(false,position);
                 }
 
                 if(((CheckedTextView)v).isChecked()){
                     ((CheckedTextView)v).setChecked(false);
+                    isDamage = false;
                     v.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.shape_chip_drawable_gray));
                     monitorImageDetailsChange.setUnsetDamage(false,position);
                 }else{
                     ((CheckedTextView)v).setChecked(true);
+                    isDamage = true;
                     v.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.shape_chip_drawable_active));
                     monitorImageDetailsChange.setUnsetDamage(true,position);
                 }
@@ -165,16 +181,19 @@ public class ImageFragment extends Fragment {
 
                 if(damageTextView.isChecked()){
                     damageTextView.setChecked(false);
+                    isDamage = false;
                     damageTextView.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.shape_chip_drawable_gray));
                     monitorImageDetailsChange.setUnsetDamage(false,position);
                 }
                 if(((CheckedTextView)v).isChecked()){
                     ((CheckedTextView)v).setChecked(false);
+                    isOverview = false;
                     v.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.shape_chip_drawable_gray));
                     monitorImageDetailsChange.setUnsetOverview(false,position);
                 }else{
 
                     ((CheckedTextView)v).setChecked(true);
+                    isOverview = true;
                     v.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.shape_chip_drawable_active));
                     monitorImageDetailsChange.setUnsetOverview(true,position);
                 }
@@ -221,5 +240,7 @@ public class ImageFragment extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
+        outState.putBoolean("isDamage",isDamage);
+        outState.putBoolean("isOverview",isOverview);
     }
 }
