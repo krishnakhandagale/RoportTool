@@ -26,16 +26,16 @@ import com.bumptech.glide.Glide;
 import com.electivechaos.claimsadjuster.pojo.ImageDetailsPOJO;
 
 public class ImageFragment extends Fragment {
-    String imageUrl;
-    String imgTitle;
-    String imgDescription;
-    boolean imgIsDamage;
-    boolean imgIsOverview;
+    private String imageUrl;
+    private String imgTitle;
+    private String imgDescription;
+    private boolean imgIsDamage;
+    private boolean imgIsOverview;
 
-    boolean isDamage;
-    boolean isOverview;
+    private boolean isDamage;
+    private boolean isOverview;
 
-    int position;
+    private int position;
     MonitorImageDetailsChange monitorImageDetailsChange;
     static ViewPager mPagerInstance;
 

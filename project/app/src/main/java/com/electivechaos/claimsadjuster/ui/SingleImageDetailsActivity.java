@@ -24,8 +24,8 @@ public class SingleImageDetailsActivity extends BaseActivity {
     private int position;
     private boolean isEdit = false;
 
-    boolean isDamage;
-    boolean isOverview;
+    private boolean isDamage;
+    private boolean isOverview;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
