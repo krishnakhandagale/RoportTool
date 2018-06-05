@@ -24,6 +24,9 @@ public class SingleImageDetailsActivity extends BaseActivity {
     private int position;
     private boolean isEdit = false;
 
+    boolean isDamage;
+    boolean isOverview;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,10 +38,32 @@ public class SingleImageDetailsActivity extends BaseActivity {
         final CheckedTextView isOverviewTextView = findViewById(R.id.isOverviewTextView);
 
 
-
         imageDetails = getIntent().getExtras().getParcelable("image_details");
         isEdit = getIntent().getExtras().getBoolean("isEdit", false);
         position = getIntent().getExtras().getInt("position", -1);
+
+
+        if(savedInstanceState != null) {
+            isDamage = savedInstanceState.getBoolean("isDamage");
+            imageDetails.setIsDamage(isDamage);
+            isDamageTextView.setChecked(imageDetails.isDamage());
+            if(imageDetails.isDamage()) {
+                isDamageTextView.setBackground(ContextCompat.getDrawable(this,R.drawable.shape_chip_drawable_active));
+            }else {
+                isDamageTextView.setBackground(ContextCompat.getDrawable(this,R.drawable.shape_chip_drawable_gray));
+            }
+
+
+
+            isOverview = savedInstanceState.getBoolean("isOverview");
+            imageDetails.setOverview(isOverview);
+            isOverviewTextView.setChecked(imageDetails.isOverview());
+            if(imageDetails.isOverview()) {
+                isOverviewTextView.setBackground(ContextCompat.getDrawable(this,R.drawable.shape_chip_drawable_active));
+            }else {
+                isOverviewTextView.setBackground(ContextCompat.getDrawable(this,R.drawable.shape_chip_drawable_gray));
+            }
+        }
 
 
         if(imageDetails != null && isEdit == true ){
@@ -48,17 +73,22 @@ public class SingleImageDetailsActivity extends BaseActivity {
             isDamageTextView.setChecked(imageDetails.isDamage());
             if(imageDetails.isDamage()) {
                 isDamageTextView.setBackground(ContextCompat.getDrawable(this,R.drawable.shape_chip_drawable_active));
+                isDamage = true;
             }else {
                 isDamageTextView.setBackground(ContextCompat.getDrawable(this,R.drawable.shape_chip_drawable_gray));
+                isDamage = false;
             }
 
 
             isOverviewTextView.setChecked(imageDetails.isOverview());
             if(imageDetails.isOverview()) {
                 isOverviewTextView.setBackground(ContextCompat.getDrawable(this,R.drawable.shape_chip_drawable_active));
+                isOverview = true;
             }else {
                 isOverviewTextView.setBackground(ContextCompat.getDrawable(this,R.drawable.shape_chip_drawable_gray));
+                isOverview = false;
             }
+
         }
 
         isDamageTextView.setOnClickListener(new View.OnClickListener() {
@@ -67,16 +97,19 @@ public class SingleImageDetailsActivity extends BaseActivity {
 
                 if(isOverviewTextView.isChecked()){
                     isOverviewTextView.setChecked(false);
+                    isOverview = false;
                     isOverviewTextView.setBackground(ContextCompat.getDrawable(SingleImageDetailsActivity.this,R.drawable.shape_chip_drawable_gray));
                     imageDetails.setOverview(false);
                 }
                 if(((CheckedTextView)v).isChecked()){
                     ((CheckedTextView)v).setChecked(false);
+                    isDamage = false;
                     imageDetails.setIsDamage(false);
                     v.setBackground(ContextCompat.getDrawable(SingleImageDetailsActivity.this,R.drawable.shape_chip_drawable_gray));
                 }else{
                     ((CheckedTextView)v).setChecked(true);
                     imageDetails.setIsDamage(true);
+                    isDamage = true;
                     v.setBackground(ContextCompat.getDrawable(SingleImageDetailsActivity.this,R.drawable.shape_chip_drawable_active));
                 }
             }
@@ -88,15 +121,18 @@ public class SingleImageDetailsActivity extends BaseActivity {
 
                 if(isDamageTextView.isChecked()){
                     isDamageTextView.setChecked(false);
+                    isDamage = false;
                     isDamageTextView.setBackground(ContextCompat.getDrawable(SingleImageDetailsActivity.this,R.drawable.shape_chip_drawable_gray));
                     imageDetails.setDamage(false);
                 }
                 if(((CheckedTextView)v).isChecked()){
                     ((CheckedTextView)v).setChecked(false);
+                    isOverview = false;
                     imageDetails.setOverview(false);
                     v.setBackground(ContextCompat.getDrawable(SingleImageDetailsActivity.this,R.drawable.shape_chip_drawable_gray));
                 }else{
                     ((CheckedTextView)v).setChecked(true);
+                    isOverview = true;
                     imageDetails.setOverview(true);
                     v.setBackground(ContextCompat.getDrawable(SingleImageDetailsActivity.this,R.drawable.shape_chip_drawable_active));
                 }
@@ -129,6 +165,8 @@ public class SingleImageDetailsActivity extends BaseActivity {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        outState.putBoolean("isDamage",isDamage);
+        outState.putBoolean("isOverview",isOverview);
 
     }
 }
