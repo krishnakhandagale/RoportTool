@@ -266,13 +266,13 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
                         ad.setTitle("Siding");
                         CustomMenuAdapter adapter = new CustomMenuAdapter(sidingList, propertyDetailsPOJO.getSiding().toString(), "siding");
 
+
                         ad.setSingleChoiceItems(adapter, -1, new DialogInterface.OnClickListener() {
 
                             @Override
                             public void onClick(DialogInterface dialogInterface, int position) {
-
-                                    menuSiding.setText(sidingList.get(position).getName().toString());
-                                    onPropertyDetailsClickListener.setPropertySiding(sidingList.get(position).getName().toString());
+                                menuSiding.setText(sidingList.get(position).getName().toString());
+                                onPropertyDetailsClickListener.setPropertySiding(sidingList.get(position).getName().toString());
                                 dialogInterface.dismiss();
 
                             }
