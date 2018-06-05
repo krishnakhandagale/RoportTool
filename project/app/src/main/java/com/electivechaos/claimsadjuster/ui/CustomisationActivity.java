@@ -2,6 +2,7 @@ package com.electivechaos.claimsadjuster.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -33,15 +34,44 @@ public class CustomisationActivity extends AppCompatActivity {
     private int noOfImagesPerPage;
 
     private View parentLayoutForMessages;
+    boolean selectionForTwo, selectionForFour;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.customise_report_activity);
 
+
+
         final CheckedTextView twoPerPageTextView = findViewById(R.id.twoPerPage);
         final CheckedTextView fourPerPageTextView = findViewById(R.id.fourPerPage);
         parentLayoutForMessages = findViewById(R.id.parentLayoutForMessages);
+
+        if(savedInstanceState != null ){
+            boolean selectedOptionTwo = savedInstanceState.getBoolean("checkedOptionTwo");
+            if(selectedOptionTwo) {
+                twoPerPageTextView.setBackground(ContextCompat.getDrawable(CustomisationActivity.this, R.drawable.shape_chip_drawable_active));
+                selectionForTwo = true;
+                selectionForFour = false;
+                noOfImagesPerPage = 2;
+            }else {
+                twoPerPageTextView.setBackground(ContextCompat.getDrawable(CustomisationActivity.this, R.drawable.shape_chip_drawable_gray));
+            }
+            twoPerPageTextView.setChecked(selectedOptionTwo);
+
+
+
+            boolean selectedOptionFour = savedInstanceState.getBoolean("checkedOptionFour");
+            if(selectedOptionFour){
+                fourPerPageTextView.setBackground(ContextCompat.getDrawable(CustomisationActivity.this, R.drawable.shape_chip_drawable_active));
+                selectionForFour = true;
+                selectionForTwo = false;
+                noOfImagesPerPage = 4;
+            }else {
+                fourPerPageTextView.setBackground(ContextCompat.getDrawable(CustomisationActivity.this, R.drawable.shape_chip_drawable_gray));
+            }
+            fourPerPageTextView.setChecked(selectedOptionFour);
+        }
 
         reportPOJO = getIntent().getParcelableExtra("reportDetails");
 
@@ -57,14 +87,18 @@ public class CustomisationActivity extends AppCompatActivity {
                 noOfImagesPerPage = 2;
                 if (fourPerPageTextView.isChecked()) {
                     fourPerPageTextView.setChecked(false);
+                    selectionForFour = false;
                     fourPerPageTextView.setBackground(ContextCompat.getDrawable(CustomisationActivity.this, R.drawable.shape_chip_drawable_gray));
                 }
                 if (((CheckedTextView) v).isChecked()) {
                     ((CheckedTextView) v).setChecked(false);
+                    selectionForTwo = false;
                     v.setBackground(ContextCompat.getDrawable(CustomisationActivity.this, R.drawable.shape_chip_drawable_gray));
                 } else {
                     ((CheckedTextView) v).setChecked(true);
+                    selectionForTwo = true;
                     v.setBackground(ContextCompat.getDrawable(CustomisationActivity.this, R.drawable.shape_chip_drawable_active));
+
                 }
             }
         });
@@ -76,14 +110,19 @@ public class CustomisationActivity extends AppCompatActivity {
 
                 if (twoPerPageTextView.isChecked()) {
                     twoPerPageTextView.setChecked(false);
+                    selectionForTwo = false;
                     twoPerPageTextView.setBackground(ContextCompat.getDrawable(CustomisationActivity.this, R.drawable.shape_chip_drawable_gray));
+
                 }
                 if (((CheckedTextView) v).isChecked()) {
                     ((CheckedTextView) v).setChecked(false);
+                    selectionForFour = false;
                     v.setBackground(ContextCompat.getDrawable(CustomisationActivity.this, R.drawable.shape_chip_drawable_gray));
                 } else {
                     ((CheckedTextView) v).setChecked(true);
+                    selectionForFour = true;
                     v.setBackground(ContextCompat.getDrawable(CustomisationActivity.this, R.drawable.shape_chip_drawable_active));
+
                 }
             }
         });
@@ -219,5 +258,17 @@ public class CustomisationActivity extends AppCompatActivity {
                 return true;
         }
         return true;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean("checkedOptionTwo", selectionForTwo);
+        outState.putBoolean("checkedOptionFour",selectionForFour);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
     }
 }
