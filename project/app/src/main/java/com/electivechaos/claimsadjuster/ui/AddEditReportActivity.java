@@ -439,9 +439,6 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
         try {
             categories = new DatabaseTaskCategoryList(AddEditReportActivity.this).execute().get();
-            Category category = new Category();
-            category.setCategoryName("Add New");
-            categories.add(category);
 
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -454,16 +451,18 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
                 final android.app.AlertDialog.Builder ad = new android.app.AlertDialog.Builder(AddEditReportActivity.this);
                 ad.setCancelable(true);
+                ad.setPositiveButton("Add New", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(AddEditReportActivity.this, AddEditCategoryActivity.class);
+                        startActivityForResult(intent, ADD_CATEGORY_REQUEST);
+                    }
+                });
                 ad.setTitle("Select Category");
 
                 ad.setSingleChoiceItems(adapter, -1,  new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(final DialogInterface dialogInterface, int pos) {
-                                if (categories.get(pos).getCategoryName().toString().equalsIgnoreCase("Add New")) {
-                                    Intent intent = new Intent(AddEditReportActivity.this, AddEditCategoryActivity.class);
-                                    startActivityForResult(intent,ADD_CATEGORY_REQUEST);
-                                } else {
-
                                     final Label label = new Label();
                                     label.setCategoryID(categories.get(pos).getCategoryId());
                                     label.setName(categories.get(pos).getCategoryName());
@@ -480,7 +479,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                                     label.setId(id);
 
                                     onLabelAdded(label);
-                                }
+
                                 dialogInterface.dismiss();
                             }
                         });
