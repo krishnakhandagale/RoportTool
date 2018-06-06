@@ -29,7 +29,7 @@ import java.util.Iterator;
  */
 
 public class CategoryListDBHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 138;
+    private static final int DATABASE_VERSION = 143;
 
 
     // Database Name
@@ -111,6 +111,8 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
 
     //Elevation image table columns name
     private static final String KEY_ELEVATION_IMAGE_ID = "elevation_image_id";
+
+    //Peril table columns
     private static final String KEY_PERIL_ID = "_id";
     private static final String KEY_PERIL_NAME = "name";
     private static final String KEY_PERIL_DESCRIPTION = "description";
@@ -674,12 +676,13 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                         ImageDetailsPOJO imageItem = reportsElevationImageList.get(index);
                         ContentValues imageEntry = new ContentValues();
                         String id = CommonUtils.generateId();
-                        imageEntry.put(KEY_IMAGE_ID, id);
+                        imageEntry.put(KEY_ELEVATION_IMAGE_ID, id);
                         imageEntry.put(KEY_IMAGE_TITLE, imageItem.getTitle());
                         imageEntry.put(KEY_IMAGE_DESCRIPTION, imageItem.getDescription());
                         imageEntry.put(KEY_IMAGE_URL, imageItem.getImageUrl());
                         imageEntry.put(KEY_FK_LABEL_ID, labelId);
-                        db.insert(TABLE_REPORTS_ELEVATION_IMAGE_DETAILS, null, imageEntry);
+                    long count = db.insertOrThrow(TABLE_REPORTS_ELEVATION_IMAGE_DETAILS, null, imageEntry);
+                        Log.d("Error in insertion", String.valueOf(count));
                     }
                 }
             }
