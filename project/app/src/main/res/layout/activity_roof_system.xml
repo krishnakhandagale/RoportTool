@@ -17,7 +17,7 @@
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimaryDark"
             app:layout_scrollFlags=""
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+            app:popupTheme="@style/ThemeOverlay.AppCompat.ActionBar">
             <TextView
                 android:id="@+id/appBarTitle"
                 android:layout_width="wrap_content"
@@ -28,7 +28,6 @@
                 android:layout_toEndOf="@+id/btn_back"
                 android:layout_toRightOf="@+id/btn_back"
                 android:text="@string/roof_system_details"
-                android:textColor="@android:color/white"
                 android:textSize="20sp" />
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>

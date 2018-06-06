@@ -31,7 +31,7 @@
 
         android:id="@+id/doneBtn"
         android:background="@null"
-        android:src="@drawable/ic_done_black_24dp"
+        android:src="@drawable/ic_done"
         android:layout_weight="1"
         android:layout_width="0dip"
         android:layout_height="wrap_content" />

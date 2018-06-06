@@ -8,8 +8,7 @@
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        android:layout_height="wrap_content">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
@@ -17,7 +16,7 @@
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
             app:layout_scrollFlags=""
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
     </android.support.design.widget.AppBarLayout>
 
     <LinearLayout
@@ -83,7 +82,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_done_black_24dp" />
+                    android:src="@drawable/ic_done" />
             </LinearLayout>
 
         </LinearLayout>
