@@ -42,7 +42,7 @@
                     android:background="@color/cardview_dark_background"
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
-                    android:text="Image 1"
+                    android:text="Overview 1"
                     android:textColor="@color/white_color"
                     android:gravity="center"
                     android:layout_gravity="bottom"/>
@@ -76,7 +76,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
-                    android:text="Image 2"
+                    android:text="Overview 2"
                     android:background="@color/cardview_dark_background"
                     android:textColor="@color/white_color"
                     android:gravity="center"
@@ -108,7 +108,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
-                    android:text="Image 3"
+                    android:text="Overview 3"
                     android:background="@color/cardview_dark_background"
                     android:textColor="@color/white_color"
                     android:gravity="center"
@@ -140,7 +140,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
-                    android:text="Image 4"
+                    android:text="Overview 4"
                     android:background="@color/cardview_dark_background"
                     android:textColor="@color/white_color"
                     android:gravity="center"
