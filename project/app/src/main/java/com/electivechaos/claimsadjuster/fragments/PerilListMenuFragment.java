@@ -145,7 +145,7 @@ public class PerilListMenuFragment extends Fragment{
         }
 
     }
-    
+
 
     private  void updatePerilDetails(){
         perilPOJOS = mCategoryListDBHelper.getPeril();
