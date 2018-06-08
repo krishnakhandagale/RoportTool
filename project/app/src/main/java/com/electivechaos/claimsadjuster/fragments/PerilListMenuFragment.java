@@ -1,8 +1,6 @@
 package com.electivechaos.claimsadjuster.fragments;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,7 +16,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.CheckBox;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.electivechaos.claimsadjuster.R;
 import com.electivechaos.claimsadjuster.adapters.DrawerMenuListAdapter;
@@ -148,53 +145,7 @@ public class PerilListMenuFragment extends Fragment{
         }
 
     }
-
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        //// TO DO ::::::::::::Code to be removed
-
-        if (requestCode == 1) {
-            if (resultCode == Activity.RESULT_OK) {
-                Bundle dataFromActivity = data.getBundleExtra("perilDetails");
-                String perilName = dataFromActivity.get("name").toString();
-                String perilDescription = dataFromActivity.get("description").toString();
-                PerilPOJO perilPOJO = new PerilPOJO();
-                perilPOJO.setName(perilName);
-                perilPOJO.setDescription(perilDescription);
-                long result = mCategoryListDBHelper.addPeril(perilPOJO);
-
-                onPerilSelectionListener.setPeril(perilPOJO);
-                perilPOJODetails =  perilPOJO;
-
-                if(result == -100){
-                    Toast.makeText(getContext(), "Peril with same name already exists.", Toast.LENGTH_SHORT).show();
-                }else{
-                    updatePerilDetails();
-                }
-
-
-            }
-        }
-
-        if (requestCode == 2) {
-            if (resultCode == 2) {
-                Bundle dataFromActivity = data.getBundleExtra("perilDetails");
-                String perilName = dataFromActivity.get("name").toString();
-                String perilDescription = dataFromActivity.get("description").toString();
-                int id = Integer.parseInt(dataFromActivity.get("id").toString());
-                PerilPOJO perilPOJO = new PerilPOJO();
-                perilPOJO.setName(perilName);
-                perilPOJO.setDescription(perilDescription);
-                perilPOJO.setID(id);
-                mCategoryListDBHelper.updatePeril(perilPOJO);
-
-                updatePerilDetails();
-            }
-        }
-    }
+    
 
     private  void updatePerilDetails(){
         perilPOJOS = mCategoryListDBHelper.getPeril();
