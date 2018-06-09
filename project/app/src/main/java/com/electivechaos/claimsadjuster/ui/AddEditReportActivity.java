@@ -11,6 +11,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
@@ -101,6 +102,14 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     private  ReportPOJO modifiedReportPojo;
     private static final int SHOWPREFERENCEACTIVITY = 486;
     private static final int ADD_CATEGORY_REQUEST = 10 ;
+    private static final int EDIT_IMAGE_REQUEST = 3 ;
+
+    private static final String CLAIM_DETAILS_FRAGMENT_TAG = "claim_details_fragment" ;
+    private static final String PROPERTY_FRAGMENT_TAG = "property_details_fragment" ;
+    private static final String PERIL_FRAGMENT_TAG = "peril_fragment" ;
+    private static final String POINT_OF_ORIGIN_FRAGMENT_TAG = "point_of_origin_fragment" ;
+    private static final String LABEL_FRAGMENT_TAG = "label_fragment" ;
+
 
 
     @Override
@@ -248,7 +257,6 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
         ClaimDetailsFragment claimDetailsFragment = new ClaimDetailsFragment();
         Bundle claimDetailsData = new Bundle();
-
         claimDetailsData.putString("reportTitle", reportPOJO.getReportTitle());
         claimDetailsData.putString("reportDescription", reportPOJO.getReportDescription());
         claimDetailsData.putString("claimNumber", reportPOJO.getClaimNumber());
@@ -259,7 +267,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         claimDetailsData.putString("addressLine", reportPOJO.getAddressLine());
 
         claimDetailsFragment.setArguments(claimDetailsData);
-        fragmentTransaction.replace(R.id.content_frame, claimDetailsFragment);
+        fragmentTransaction.replace(R.id.content_frame, claimDetailsFragment,CLAIM_DETAILS_FRAGMENT_TAG);
         fragmentTransaction.commit();
 
 
@@ -277,7 +285,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         propertyDetailsData.putParcelable("propertyDetails",reportPOJO.getPropertyDetailsPOJO());
         propertyDetailsFragment.setArguments(propertyDetailsData);
 
-        fragmentTransaction.replace(R.id.content_frame, propertyDetailsFragment);
+        fragmentTransaction.replace(R.id.content_frame, propertyDetailsFragment,PROPERTY_FRAGMENT_TAG);
         fragmentTransaction.commit();
 
         selectedFragmentPosition = 1;
@@ -289,7 +297,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
             FragmentManager transactionManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
             AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment = AddEditReportSelectedImagesFragment.initFragment(labelArrayList.get(selectedFragmentPosition - 4).getSelectedImages(),labelArrayList.get(selectedFragmentPosition - 4).getSelectedElevationImages(), selectedFragmentPosition - 4);
-            fragmentTransaction.replace(R.id.content_frame, addEditReportSelectedImagesFragment);
+            fragmentTransaction.replace(R.id.content_frame, addEditReportSelectedImagesFragment,LABEL_FRAGMENT_TAG);
             fragmentTransaction.commit();
 
             activityActionBar.setTitle(labelArrayList.get(selectedFragmentPosition - 4).getName());
@@ -316,7 +324,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         perilDetailsData.putParcelable("perilDetails",reportPOJO.getPerilPOJO());
         perilListMenuFragment.setArguments(perilDetailsData);
 
-        fragmentTransaction.replace(R.id.content_frame,perilListMenuFragment);
+        fragmentTransaction.replace(R.id.content_frame,perilListMenuFragment,PERIL_FRAGMENT_TAG);
         fragmentTransaction.commit();
 
         selectedFragmentPosition = 2;
@@ -327,7 +335,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
          FragmentManager transactionManager = getSupportFragmentManager();
          FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
 
-         fragmentTransaction.replace(R.id.content_frame,new PointOfOriginFragment());
+         fragmentTransaction.replace(R.id.content_frame,new PointOfOriginFragment(),POINT_OF_ORIGIN_FRAGMENT_TAG);
          fragmentTransaction.commit();
 
          selectedFragmentPosition = 3;
@@ -945,6 +953,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                 }else{
                     onFourImagesPerPage();
                 }
+                break;
             case ADD_CATEGORY_REQUEST:
                 Bundle dataFromActivity = data.getExtras().getBundle("categoryDetails");
                 if(dataFromActivity!= null) {
@@ -971,7 +980,46 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
                     onLabelAdded(label);
                 }
+                break;
 
+            case EDIT_IMAGE_REQUEST:
+
+                ImageDetailsPOJO imageDetailsPOJO =  data.getExtras().getParcelable("image_entered_details");
+                int labelPosition = data.getExtras().getInt("labelPosition");
+                ArrayList<ImageDetailsPOJO> imageDetailsPOJOArrayList = reportPOJO.getLabelArrayList().get(labelPosition).getSelectedImages();
+                if (data.getExtras().getBoolean("isEdit")) {
+                    int position = data.getExtras().getInt("position");
+                    ImageDetailsPOJO selectedImage = imageDetailsPOJOArrayList.get(position);
+                    selectedImage.setTitle(imageDetailsPOJO.getTitle());
+                    selectedImage.setDescription(imageDetailsPOJO.getDescription());
+                    selectedImage.setImageUrl(imageDetailsPOJO.getImageUrl());
+                    selectedImage.setIsDamage(imageDetailsPOJO.isDamage());
+                    selectedImage.setOverview(imageDetailsPOJO.isOverview());
+
+                }else{
+                    if (imageDetailsPOJOArrayList == null) {
+                        imageDetailsPOJOArrayList = new ArrayList<>();
+                    }
+                    imageDetailsPOJOArrayList.add(0, imageDetailsPOJO);
+                }
+
+                setSelectedImages(imageDetailsPOJOArrayList,labelPosition);
+                try {
+                    FragmentManager fm = getSupportFragmentManager();
+                    if(fm.getFragments() != null){
+                        for(int i=0;i<fm.getFragments().size();i++){
+
+                            if(fm.getFragments().get(i) instanceof  AddEditReportSelectedImagesFragment){
+                                AddEditReportSelectedImagesFragment fragment = (AddEditReportSelectedImagesFragment) fm.getFragments().get(i);
+                                fragment.setDataAndAdapter(imageDetailsPOJOArrayList);
+                            }
+                        }
+                    }
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
         }
     }
 

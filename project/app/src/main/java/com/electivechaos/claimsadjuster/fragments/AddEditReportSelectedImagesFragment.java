@@ -635,7 +635,6 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                 }
 
             } else if (requestCode == ADD_IMAGE_DETAILS) {
-                //Got all selected images here
                 ArrayList<ImageDetailsPOJO> selectedImageListReturned = (ArrayList<ImageDetailsPOJO>) data.getExtras().getSerializable("selected_images");
                 if (selectedImageList == null) {
                     selectedImageList = new ArrayList<>();
@@ -648,36 +647,17 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
 
                 selectedImagesDataInterface.setSelectedImages(selectedImageList, labelPosition);
 
-            } else if (requestCode == SET_CLICKED_IMAGE_DETAILS) {
-                ImageDetailsPOJO imageDetails = data.getExtras().getParcelable("image_entered_details");
-
-                if (data.getExtras().getBoolean("isEdit")) {
-                    int position = data.getExtras().getInt("position");
-                    selectedImageList.get(position).setTitle(imageDetails.getTitle());
-                    selectedImageList.get(position).setImageUrl(imageDetails.getImageUrl());
-                    selectedImageList.get(position).setDescription(imageDetails.getDescription());
-                    selectedImageList.get(position).setIsDamage(imageDetails.isDamage());
-                    selectedImageList.get(position).setOverview(imageDetails.isOverview());
-
-                } else {
-                    if (selectedImageList == null) {
-                        selectedImageList = new ArrayList<>();
-                    }
-                    selectedImageList.add(0, imageDetails);
-                }
-
-
-                if (selectedImagesAdapter == null) {
-                    selectedImagesAdapter = new SelectedImagesAdapter(selectedImageList, getContext(), onImageRemovalListener);
-                    selectedImagesRecyclerView.setAdapter(selectedImagesAdapter);
-                } else {
-                    selectedImagesAdapter.notifyDataSetChanged();
-
-
-                }
-                selectedImagesDataInterface.setSelectedImages(selectedImageList, labelPosition);
             }
 
+        }
+    }
+    public void setDataAndAdapter(ArrayList<ImageDetailsPOJO> selectedImageListToSet){
+        selectedImageList = selectedImageListToSet;
+        if (selectedImagesAdapter == null) {
+            selectedImagesAdapter = new SelectedImagesAdapter(selectedImageList, getContext(), onImageRemovalListener);
+            selectedImagesRecyclerView.setAdapter(selectedImagesAdapter);
+        } else {
+            selectedImagesAdapter.notifyDataSetChanged();
         }
     }
 
@@ -942,7 +922,8 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                     intent.putExtra("image_details", imgDetails);
                     intent.putExtra("isEdit", true);
                     intent.putExtra("position", position);
-                    AddEditReportSelectedImagesFragment.this.startActivityForResult(intent, SET_CLICKED_IMAGE_DETAILS);
+                    intent.putExtra("labelPosition",labelPosition);
+                    getActivity().startActivityForResult(intent, SET_CLICKED_IMAGE_DETAILS);
                 }
             });
 

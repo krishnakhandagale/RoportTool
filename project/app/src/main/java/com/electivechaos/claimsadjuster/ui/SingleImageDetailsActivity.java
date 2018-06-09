@@ -21,11 +21,13 @@ import com.electivechaos.claimsadjuster.pojo.ImageDetailsPOJO;
 
 public class SingleImageDetailsActivity extends BaseActivity {
     private ImageDetailsPOJO imageDetails;
-    private int position;
+    private int position, labelPosition;
     private boolean isEdit = false;
 
     private boolean isDamage;
     private boolean isOverview;
+
+    private String titleString, descriptionString;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,9 +43,12 @@ public class SingleImageDetailsActivity extends BaseActivity {
         imageDetails = getIntent().getExtras().getParcelable("image_details");
         isEdit = getIntent().getExtras().getBoolean("isEdit", false);
         position = getIntent().getExtras().getInt("position", -1);
+        labelPosition = getIntent().getExtras().getInt("labelPosition",-1);
+
 
 
         if(savedInstanceState != null) {
+
             isDamage = savedInstanceState.getBoolean("isDamage");
             imageDetails.setIsDamage(isDamage);
             isDamageTextView.setChecked(imageDetails.isDamage());
@@ -88,6 +93,7 @@ public class SingleImageDetailsActivity extends BaseActivity {
                 isOverviewTextView.setBackground(ContextCompat.getDrawable(this,R.drawable.shape_chip_drawable_gray));
                 isOverview = false;
             }
+
 
         }
 
@@ -155,6 +161,7 @@ public class SingleImageDetailsActivity extends BaseActivity {
                 intent.putExtra("image_entered_details", shareImageDetails);
                 intent.putExtra("isEdit", isEdit);
                 intent.putExtra("position",position);
+                intent.putExtra("labelPosition", labelPosition);
                 setResult(RESULT_OK,intent);
                 finish();
             }
@@ -167,6 +174,7 @@ public class SingleImageDetailsActivity extends BaseActivity {
         super.onSaveInstanceState(outState);
         outState.putBoolean("isDamage",isDamage);
         outState.putBoolean("isOverview",isOverview);
+
 
     }
 }
