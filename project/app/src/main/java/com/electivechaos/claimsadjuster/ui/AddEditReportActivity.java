@@ -11,7 +11,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
@@ -54,10 +53,10 @@ import com.electivechaos.claimsadjuster.interfaces.OnGenerateReportClickListener
 import com.electivechaos.claimsadjuster.interfaces.OnPerilSelectionListener;
 import com.electivechaos.claimsadjuster.interfaces.OnPropertyDetailsClickListener;
 import com.electivechaos.claimsadjuster.interfaces.OnSaveReportClickListener;
-import com.electivechaos.claimsadjuster.interfaces.PreferenceDialogCallback;
 import com.electivechaos.claimsadjuster.interfaces.SelectedImagesDataInterface;
 import com.electivechaos.claimsadjuster.listeners.OnMediaScannerListener;
 import com.electivechaos.claimsadjuster.pojo.Category;
+import com.electivechaos.claimsadjuster.pojo.Image;
 import com.electivechaos.claimsadjuster.pojo.ImageDetailsPOJO;
 import com.electivechaos.claimsadjuster.pojo.Label;
 import com.electivechaos.claimsadjuster.pojo.PerilPOJO;
@@ -102,7 +101,11 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     private  ReportPOJO modifiedReportPojo;
     private static final int SHOWPREFERENCEACTIVITY = 486;
     private static final int ADD_CATEGORY_REQUEST = 10 ;
-    private static final int EDIT_IMAGE_REQUEST = 3 ;
+
+
+    private  static final int ADD_IMAGE_DETAILS = 2;
+    private static final int SET_CLICKED_IMAGE_DETAILS = 3 ;
+
 
     private static final String CLAIM_DETAILS_FRAGMENT_TAG = "claim_details_fragment" ;
     private static final String PROPERTY_FRAGMENT_TAG = "property_details_fragment" ;
@@ -888,7 +891,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         super.onDestroy();
     }
 
-    public void showReportPreferenceDialog(final PreferenceDialogCallback callback) {
+    /*public void showReportPreferenceDialog(final PreferenceDialogCallback callback) {
         final CharSequence[] items = {"2", "4"};
         AlertDialog.Builder builder = new AlertDialog.Builder(AddEditReportActivity.this);
 
@@ -907,7 +910,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         AlertDialog alert = builder.create();
         alert.show();
     }
-
+*/
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -982,7 +985,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                 }
                 break;
 
-            case EDIT_IMAGE_REQUEST:
+            case SET_CLICKED_IMAGE_DETAILS:
 
                 ImageDetailsPOJO imageDetailsPOJO =  data.getExtras().getParcelable("image_entered_details");
                 int labelPosition = data.getExtras().getInt("labelPosition");
@@ -1006,7 +1009,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                 setSelectedImages(imageDetailsPOJOArrayList,labelPosition);
                 try {
                     FragmentManager fm = getSupportFragmentManager();
-                    if(fm.getFragments() != null){
+                    if(fm.getFragments() != null && fm.getFragments().size() >0){
                         for(int i=0;i<fm.getFragments().size();i++){
 
                             if(fm.getFragments().get(i) instanceof  AddEditReportSelectedImagesFragment){
@@ -1020,6 +1023,37 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                break;
+            case  ADD_IMAGE_DETAILS:
+                ArrayList<ImageDetailsPOJO> selectedImageListReturned = (ArrayList<ImageDetailsPOJO>) data.getExtras().getSerializable("selected_images");
+                int labelPositionForAddImageDetails = data.getExtras().getInt("labelPosition");
+                ArrayList<ImageDetailsPOJO> selectedImageList = reportPOJO.getLabelArrayList().get(labelPositionForAddImageDetails).getSelectedImages();
+                if (selectedImageList == null) {
+                    selectedImageList = new ArrayList<>();
+                }
+                selectedImageListReturned.addAll(selectedImageList);
+                selectedImageList = selectedImageListReturned;
+                setSelectedImages(selectedImageList,labelPositionForAddImageDetails);
+
+                try {
+                    FragmentManager fm = getSupportFragmentManager();
+                    if(fm.getFragments() != null && fm.getFragments().size() >0){
+                        for(int i=0;i<fm.getFragments().size();i++){
+
+                            if(fm.getFragments().get(i) instanceof  AddEditReportSelectedImagesFragment){
+                                AddEditReportSelectedImagesFragment fragment = (AddEditReportSelectedImagesFragment) fm.getFragments().get(i);
+                                fragment.setDataAndAdapter(selectedImageList);
+                            }
+                        }
+                    }
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
+                break;
         }
     }
 
