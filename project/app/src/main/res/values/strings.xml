@@ -131,4 +131,5 @@
     <string name="please_add_valid_square_footage_message">Please enter valid square footage number.</string>
     <string name="peril_menu">Manage Peril</string>
     <string name="category_menu">Manage Category</string>
+    <string name="insured_name">Insured Name</string>
 </resources>
