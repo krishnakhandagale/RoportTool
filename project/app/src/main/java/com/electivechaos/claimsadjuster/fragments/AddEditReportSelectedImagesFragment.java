@@ -82,14 +82,12 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
     private SelectedImagesAdapter selectedImagesAdapter;
 
     private Boolean isFabOpen = false;
-    private FloatingActionButton showFabBtn, fabGoNextBtn, selectPhotoBtn, fabAddLabelBtn, fabGenerateReportBtn, fabSaveReportBtn;
+    private FloatingActionButton showFabBtn;
+    private FloatingActionButton fabGoNextBtn;
+    private FloatingActionButton fabAddLabelBtn;
+    private FloatingActionButton fabGenerateReportBtn;
+    private FloatingActionButton fabSaveReportBtn;
     private Animation fab_open, fab_close;
-
-
-    private ImageView imageViewOne;
-    private ImageView imageViewTwo;
-    private ImageView imageViewThree;
-    private ImageView imageViewFour;
 
 
     private ImageView imageOnePreview;
@@ -169,7 +167,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
         fabAddLabelBtn = selectImageView.findViewById(R.id.fabAddLabel);
         fabGenerateReportBtn = selectImageView.findViewById(R.id.fabGenerateReport);
         fabSaveReportBtn = selectImageView.findViewById(R.id.fabSaveReport);
-        selectPhotoBtn = selectImageView.findViewById(R.id.btnSelectPhoto);
+        FloatingActionButton selectPhotoBtn = selectImageView.findViewById(R.id.btnSelectPhoto);
 
         fab_open = AnimationUtils.loadAnimation(getActivity(), R.anim.fab_open);
         fab_close = AnimationUtils.loadAnimation(getActivity(), R.anim.fab_close);
@@ -239,10 +237,10 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
         ith.attachToRecyclerView(selectedImagesRecyclerView);
 
 
-        imageViewOne = selectImageView.findViewById(R.id.imageViewOne);
-        imageViewTwo = selectImageView.findViewById(R.id.imageViewTwo);
-        imageViewThree = selectImageView.findViewById(R.id.imageViewThree);
-        imageViewFour = selectImageView.findViewById(R.id.imageViewFour);
+        ImageView imageViewOne = selectImageView.findViewById(R.id.imageViewOne);
+        ImageView imageViewTwo = selectImageView.findViewById(R.id.imageViewTwo);
+        ImageView imageViewThree = selectImageView.findViewById(R.id.imageViewThree);
+        ImageView imageViewFour = selectImageView.findViewById(R.id.imageViewFour);
 
 
         imageOnePreview = selectImageView.findViewById(R.id.imageOnePreview);
@@ -634,29 +632,18 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                     snackbar.show();
                 }
 
-            } else if (requestCode == ADD_IMAGE_DETAILS) {
-                ArrayList<ImageDetailsPOJO> selectedImageListReturned = (ArrayList<ImageDetailsPOJO>) data.getExtras().getSerializable("selected_images");
-                if (selectedImageList == null) {
-                    selectedImageList = new ArrayList<>();
-                }
-                selectedImageListReturned.addAll(selectedImageList);
-                selectedImageList = selectedImageListReturned;
-
-                selectedImagesAdapter = new SelectedImagesAdapter(selectedImageList, getContext(), onImageRemovalListener);
-                selectedImagesRecyclerView.setAdapter(selectedImagesAdapter);
-
-                selectedImagesDataInterface.setSelectedImages(selectedImageList, labelPosition);
-
             }
 
         }
     }
     public void setDataAndAdapter(ArrayList<ImageDetailsPOJO> selectedImageListToSet){
-        selectedImageList = selectedImageListToSet;
+        selectedImageList.clear();
+        selectedImageList.addAll(selectedImageListToSet);
         if (selectedImagesAdapter == null) {
             selectedImagesAdapter = new SelectedImagesAdapter(selectedImageList, getContext(), onImageRemovalListener);
             selectedImagesRecyclerView.setAdapter(selectedImagesAdapter);
         } else {
+
             selectedImagesAdapter.notifyDataSetChanged();
         }
     }
@@ -780,7 +767,8 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                     ImageHelper.revokeAppPermission(getContext(), fileUri);
                     Intent intent = new Intent(getContext(), SingleImageDetailsActivity.class);
                     intent.putExtra("image_details", imgObj);
-                    AddEditReportSelectedImagesFragment.this.startActivityForResult(intent, SET_CLICKED_IMAGE_DETAILS);
+                    intent.putExtra("labelPosition",labelPosition);
+                    getActivity().startActivityForResult(intent, SET_CLICKED_IMAGE_DETAILS);
                 }
             }
         });
@@ -790,7 +778,8 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
         selectedImages = data.getParcelableArrayListExtra("ImageUrls");
         Intent intent = new Intent(getActivity(), ImageSliderActivity.class);
         intent.putExtra("ImageList", selectedImages);
-        AddEditReportSelectedImagesFragment.this.startActivityForResult(intent, ADD_IMAGE_DETAILS);
+        intent.putExtra("labelPosition",labelPosition);
+        getActivity().startActivityForResult(intent, ADD_IMAGE_DETAILS);
     }
 
 

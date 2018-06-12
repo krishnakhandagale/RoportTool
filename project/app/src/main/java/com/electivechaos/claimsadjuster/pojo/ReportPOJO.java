@@ -70,7 +70,6 @@ public class ReportPOJO  implements Parcelable{
         addressLine = in.readString();
         createdDate = in.readString();
         filePath = in.readString();
-        filePath = in.readString();
         googleMapSnapShotFilePath = in.readString();
         labelArrayList = in.createTypedArrayList(Label.CREATOR);
         propertyDetailsPOJO = in.readParcelable(PropertyDetailsPOJO.class.getClassLoader());
@@ -201,7 +200,6 @@ public class ReportPOJO  implements Parcelable{
         dest.writeString(locationLong);
         dest.writeString(addressLine);
         dest.writeString(createdDate);
-        dest.writeString(filePath);
         dest.writeString(filePath);
         dest.writeString(googleMapSnapShotFilePath);
         dest.writeTypedList(labelArrayList);
