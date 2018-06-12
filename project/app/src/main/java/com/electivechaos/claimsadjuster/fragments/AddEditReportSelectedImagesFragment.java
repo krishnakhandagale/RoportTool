@@ -764,8 +764,8 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                     imgObj.setIsDamage(false);
                     imgObj.setOverview(false);
                     imgObj.setImageUrl(path);
-                    ImageHelper.revokeAppPermission(getContext(), fileUri);
-                    Intent intent = new Intent(getContext(), SingleImageDetailsActivity.class);
+                    ImageHelper.revokeAppPermission(getActivity(), fileUri);
+                    Intent intent = new Intent(getActivity(), SingleImageDetailsActivity.class);
                     intent.putExtra("image_details", imgObj);
                     intent.putExtra("labelPosition",labelPosition);
                     getActivity().startActivityForResult(intent, SET_CLICKED_IMAGE_DETAILS);
@@ -978,53 +978,6 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (savedInstanceState != null) {
-            fileUri = savedInstanceState.getParcelable("fileUri");
-
-            if (fileUri != null) {
-                photoFile = new File(fileUri.getPath());
-            }
-            selectedImageList = (ArrayList<ImageDetailsPOJO>) savedInstanceState.getSerializable("selectedImageList");
-            selectedElevationImagesList = (ArrayList<ImageDetailsPOJO>) savedInstanceState.getSerializable("selectedElevationImagesList");
-
-
-            if (selectedImageList != null) {
-                selectedImagesAdapter = new AddEditReportSelectedImagesFragment.SelectedImagesAdapter(selectedImageList, getContext(), onImageRemovalListener);
-                selectedImagesRecyclerView.setAdapter(selectedImagesAdapter);
-            }
-            if (selectedElevationImagesList != null && selectedElevationImagesList.size() > 0) {
-                if (selectedElevationImagesList.get(0).getImageUrl() != null && !selectedElevationImagesList.get(0).getImageUrl().isEmpty()) {
-                    Glide.with(getActivity())
-                            .load("file://" + selectedElevationImagesList.get(0).getImageUrl())
-                            .apply(options)
-                            .into(imageOnePreview);
-                }
-                if (selectedElevationImagesList.get(1).getImageUrl() != null && !selectedElevationImagesList.get(1).getImageUrl().isEmpty()) {
-                    Glide.with(getActivity())
-                            .load("file://" + selectedElevationImagesList.get(1).getImageUrl())
-                            .apply(options)
-                            .into(imageTwoPreview);
-                }
-                if (selectedElevationImagesList.get(2).getImageUrl() != null && !selectedElevationImagesList.get(2).getImageUrl().isEmpty()) {
-                    Glide.with(getActivity())
-                            .load("file://" + selectedElevationImagesList.get(2).getImageUrl())
-                            .apply(options)
-                            .into(imageThreePreview);
-                }
-                if (selectedElevationImagesList.get(3).getImageUrl() != null && !selectedElevationImagesList.get(3).getImageUrl().isEmpty()) {
-                    Glide.with(getActivity())
-                            .load("file://" + selectedElevationImagesList.get(3).getImageUrl())
-                            .apply(options)
-                            .into(imageFourPreview);
-                }
-            }
-
-        } else {
-            if (selectedImageList != null) {
-                selectedImagesAdapter = new AddEditReportSelectedImagesFragment.SelectedImagesAdapter(selectedImageList, getContext(), onImageRemovalListener);
-                selectedImagesRecyclerView.setAdapter(selectedImagesAdapter);
-            }
-        }
     }
 
     public void animateFAB() {
@@ -1054,7 +1007,6 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
         }
 
     }
-
 
 }
 

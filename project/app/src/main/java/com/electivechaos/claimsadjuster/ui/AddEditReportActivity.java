@@ -20,6 +20,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -56,7 +57,6 @@ import com.electivechaos.claimsadjuster.interfaces.OnSaveReportClickListener;
 import com.electivechaos.claimsadjuster.interfaces.SelectedImagesDataInterface;
 import com.electivechaos.claimsadjuster.listeners.OnMediaScannerListener;
 import com.electivechaos.claimsadjuster.pojo.Category;
-import com.electivechaos.claimsadjuster.pojo.Image;
 import com.electivechaos.claimsadjuster.pojo.ImageDetailsPOJO;
 import com.electivechaos.claimsadjuster.pojo.Label;
 import com.electivechaos.claimsadjuster.pojo.PerilPOJO;
@@ -644,7 +644,6 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
     @Override
     public void setSelectedImages(ArrayList<ImageDetailsPOJO> imagesList , int labelPosition) {
-
         reportPOJO.getLabelArrayList().get(labelPosition).setSelectedImages(imagesList);
         new DBSelectedImagesTask(AddEditReportActivity.this, progressBarLayout, reportPOJO.getLabelArrayList().get(labelPosition),false,categoryListDBHelper,"selected_images").execute();
 
@@ -891,26 +890,6 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         super.onDestroy();
     }
 
-    /*public void showReportPreferenceDialog(final PreferenceDialogCallback callback) {
-        final CharSequence[] items = {"2", "4"};
-        AlertDialog.Builder builder = new AlertDialog.Builder(AddEditReportActivity.this);
-
-        builder.setTitle("Number of images per page ?");
-        builder.setItems(items, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int item) {
-
-                if (items[item].equals("2")) {
-                    callback.onTwoImagesPerPage();
-                } else if (items[item].equals("4")) {
-                    callback.onFourImagesPerPage();
-                }
-            }
-        });
-        AlertDialog alert = builder.create();
-        alert.show();
-    }
-*/
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -989,7 +968,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
                 ImageDetailsPOJO imageDetailsPOJO =  data.getExtras().getParcelable("image_entered_details");
                 int labelPosition = data.getExtras().getInt("labelPosition");
-                ArrayList<ImageDetailsPOJO> imageDetailsPOJOArrayList = reportPOJO.getLabelArrayList().get(labelPosition).getSelectedImages();
+                ArrayList<ImageDetailsPOJO> imageDetailsPOJOArrayList = (ArrayList<ImageDetailsPOJO>) reportPOJO.getLabelArrayList().get(labelPosition).getSelectedImages().clone();
                 if (data.getExtras().getBoolean("isEdit")) {
                     int position = data.getExtras().getInt("position");
                     ImageDetailsPOJO selectedImage = imageDetailsPOJOArrayList.get(position);
@@ -1032,8 +1011,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                     selectedImageList = new ArrayList<>();
                 }
                 selectedImageListReturned.addAll(selectedImageList);
-                selectedImageList = selectedImageListReturned;
-                setSelectedImages(selectedImageList,labelPositionForAddImageDetails);
+                setSelectedImages(selectedImageListReturned,labelPositionForAddImageDetails);
 
                 try {
                     FragmentManager fm = getSupportFragmentManager();
@@ -1042,7 +1020,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
                             if(fm.getFragments().get(i) instanceof  AddEditReportSelectedImagesFragment){
                                 AddEditReportSelectedImagesFragment fragment = (AddEditReportSelectedImagesFragment) fm.getFragments().get(i);
-                                fragment.setDataAndAdapter(selectedImageList);
+                                fragment.setDataAndAdapter(selectedImageListReturned);
                             }
                         }
                     }
@@ -1051,8 +1029,6 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
-
                 break;
         }
     }
