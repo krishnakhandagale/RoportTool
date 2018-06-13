@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:id="@+id/selectImagesParentLayout"
+    android:layout_height="match_parent">
+    <ProgressBar
+        android:visibility="gone"
+        android:id="@+id/progressBar"
+        android:layout_centerInParent="true"
+        style="@style/Widget.AppCompat.ProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|center_horizontal"
+        android:theme="@style/CircularProgress" />
+
+    <LinearLayout
+        android:weightSum="6"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/parentLinearLayout">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_weight="1.5"
+            android:orientation="horizontal"
+            android:weightSum="4">
+            <FrameLayout
+                android:layout_margin="5dp"
+                android:background="@color/colorPrimary"
+                android:orientation="vertical"
+                android:layout_width="0dip"
+                android:layout_weight="1"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:id="@+id/imageOnePreview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+                <TextView
+                    android:background="@color/cardview_dark_background"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="Front"
+                    android:textColor="@color/white_color"
+                    android:gravity="center"
+                    android:layout_gravity="bottom"/>
+
+                <ImageView
+                    android:id="@+id/imageViewOne"
+                    android:src="@drawable/image_picker_ic_camera"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <ImageButton
+                    android:id="@+id/imgBtnRemoveOne"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:background="@null"
+                    android:src="@drawable/ic_remove_circle_outline"/>
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_margin="5dp"
+                android:background="@color/colorPrimary"
+                android:orientation="vertical"
+                android:layout_width="0dip"
+                android:layout_weight="1"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:id="@+id/imageTwoPreview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="Back"
+                    android:background="@color/cardview_dark_background"
+                    android:textColor="@color/white_color"
+                    android:gravity="center"
+                    android:layout_gravity="bottom"/>
+                <ImageView
+                    android:id="@+id/imageViewTwo"
+                    android:src="@drawable/image_picker_ic_camera"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <ImageButton
+                    android:id="@+id/imgBtnRemoveTwo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:background="@null"
+                    android:src="@drawable/ic_remove_circle_outline"/>
+            </FrameLayout>
+            <FrameLayout
+                android:layout_margin="5dp"
+                android:background="@color/colorPrimary"
+                android:orientation="vertical"
+                android:layout_width="0dip"
+                android:layout_weight="1"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:id="@+id/imageThreePreview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="Left"
+                    android:background="@color/cardview_dark_background"
+                    android:textColor="@color/white_color"
+                    android:gravity="center"
+                    android:layout_gravity="bottom"/>
+                <ImageView
+                    android:id="@+id/imageViewThree"
+                    android:src="@drawable/image_picker_ic_camera"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <ImageButton
+                    android:id="@+id/imgBtnRemoveThree"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:background="@null"
+                    android:src="@drawable/ic_remove_circle_outline"/>
+            </FrameLayout>
+            <FrameLayout
+                android:layout_margin="5dp"
+                android:background="@color/colorPrimary"
+                android:orientation="vertical"
+                android:layout_width="0dip"
+                android:layout_weight="1"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:id="@+id/imageFourPreview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="Right"
+                    android:background="@color/cardview_dark_background"
+                    android:textColor="@color/white_color"
+                    android:gravity="center"
+                    android:layout_gravity="bottom"/>
+                <ImageView
+                    android:id="@+id/imageViewFour"
+                    android:src="@drawable/image_picker_ic_camera"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <ImageButton
+                    android:id="@+id/imgBtnRemoveFour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:background="@null"
+                    android:src="@drawable/ic_remove_circle_outline"/>
+            </FrameLayout>
+
+        </LinearLayout>
+
+       <android.support.design.widget.TextInputLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content">
+           <android.support.design.widget.TextInputEditText
+               android:id="@+id/houseNumber"
+               android:hint="@string/enter_house_number"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content" />
+       </android.support.design.widget.TextInputLayout>
+
+    </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabGenerateReport"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_gravity="bottom|end"
+        android:layout_marginRight="130dp"
+        android:visibility="invisible"
+        app:elevation="6dp"
+        app:pressedTranslationZ="12dp"
+        android:src="@drawable/pdf_gen" />
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabAddLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="80dp"
+        android:layout_gravity="bottom|end"
+        android:layout_marginRight="120dp"
+        android:visibility="invisible"
+        app:elevation="6dp"
+        app:pressedTranslationZ="12dp"
+        android:src="@drawable/label_add"
+        android:layout_marginEnd="120dp" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabSaveReport"
+        android:layout_width="wrap_content"
+        android:layout_height="58dp"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="125dp"
+        android:layout_marginRight="80dp"
+        android:src="@drawable/ic_white_save"
+        android:visibility="invisible"
+        app:elevation="6dp"
+        app:pressedTranslationZ="12dp"
+        android:layout_marginEnd="80dp" />
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabGoNext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="150dp"
+        android:layout_gravity="bottom|end"
+        android:layout_marginRight="@dimen/fab_margin"
+        android:visibility="invisible"
+        app:elevation="6dp"
+        app:pressedTranslationZ="12dp"
+        android:src="@drawable/next_arrow_white"
+        android:layout_marginEnd="@dimen/fab_margin" />
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/showFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        app:elevation="6dp"
+        app:backgroundTint="@color/colorPrimaryDark"
+        app:pressedTranslationZ="12dp"
+        android:layout_marginBottom="50dp"
+        android:layout_marginRight="40dp"
+        android:src="@drawable/ic_more_vertical_white"
+        android:layout_marginEnd="40dp" />
+
+</android.support.design.widget.CoordinatorLayout>
