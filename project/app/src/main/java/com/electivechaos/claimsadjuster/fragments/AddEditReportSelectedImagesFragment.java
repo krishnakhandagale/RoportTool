@@ -1,6 +1,5 @@
 package com.electivechaos.claimsadjuster.fragments;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -43,6 +42,7 @@ import com.electivechaos.claimsadjuster.adapters.DrawerMenuListAdapter;
 import com.electivechaos.claimsadjuster.interfaces.NextButtonClickListener;
 import com.electivechaos.claimsadjuster.interfaces.OnGenerateReportClickListener;
 import com.electivechaos.claimsadjuster.interfaces.OnSaveReportClickListener;
+import com.electivechaos.claimsadjuster.interfaces.OnSetImageFileUriListener;
 import com.electivechaos.claimsadjuster.interfaces.SelectedImagesDataInterface;
 import com.electivechaos.claimsadjuster.listeners.OnImageRemovalListener;
 import com.electivechaos.claimsadjuster.listeners.OnMediaScannerListener;
@@ -124,8 +124,9 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
     private OnSaveReportClickListener onSaveReportClickListener;
 
     private OnGenerateReportClickListener onGenerateReportClickListener;
+    private OnSetImageFileUriListener onSetImageFileUriListener;
 
-    public static AddEditReportSelectedImagesFragment initFragment(ArrayList<ImageDetailsPOJO> selectedImageList, ArrayList<ImageDetailsPOJO> selectedElevationImagesList, int position) {
+    public static AddEditReportSelectedImagesFragment initFragment(ArrayList<ImageDetailsPOJO> selectedImageList, ArrayList<ImageDetailsPOJO> selectedElevationImagesList, int position, String fileUri) {
         AddEditReportSelectedImagesFragment fragment = new AddEditReportSelectedImagesFragment();
         Bundle args = new Bundle();
 
@@ -141,7 +142,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
         args.putSerializable("selectedImagesList", selectedImageList);
         args.putSerializable("selectedElevationImagesList", selectedElevationImagesList);
         args.putInt("position", position);
-
+        args.putString("fileUri", fileUri);
 
         fragment.setArguments(args);
         return fragment;
@@ -154,12 +155,26 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
             selectedElevationImagesList = (ArrayList<ImageDetailsPOJO>) getArguments().get("selectedElevationImagesList");
             selectedImageList = (ArrayList<ImageDetailsPOJO>) getArguments().get("selectedImagesList");
             labelPosition = (int) getArguments().get("position");
+
+            mCurrentPhotoPath = getArguments().getString("fileUri");
+            if(mCurrentPhotoPath != null){
+                photoFile = new File(mCurrentPhotoPath);
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+                    fileUri = Uri.fromFile(photoFile);
+
+                } else {
+                    fileUri = FileProvider.getUriForFile(getContext().getApplicationContext(),
+                            getContext().getApplicationContext().getPackageName() + ".fileprovider",
+                            photoFile);
+                }
+
+            }
+
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View selectImageView = inflater.inflate(R.layout.fragment_select_photo, container, false);
 
         showFabBtn = selectImageView.findViewById(R.id.showFab);
@@ -398,6 +413,9 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
         });
 
 
+        if(savedInstanceState != null){
+            fileUri = savedInstanceState.getParcelable("fileUri");
+        }
         return selectImageView;
 
 
@@ -485,7 +503,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
         Intent intent = new Intent(getActivity(), ImagePickerActivity.class);
         intent.putExtra("already_selected_images", selectedImageList.size());
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        AddEditReportSelectedImagesFragment.this.startActivityForResult(intent, SELECT_FILE);
+        getActivity().startActivityForResult(intent, SELECT_FILE);
 
     }
 
@@ -510,132 +528,133 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
                 ImageHelper.grantAppPermission(getContext(), intent, fileUri);
-                AddEditReportSelectedImagesFragment.this.startActivityForResult(intent, requestId);
+                onSetImageFileUriListener.onSetImageFileUri(mCurrentPhotoPath);
+                getActivity().startActivityForResult(intent, requestId);
             }
         }
+    }
 
+    public void onElevationImageFourCapture(Intent data, int requestCode){
+        if (fileUri != null) {
+            onElevationImageCaptureResult(data, requestCode);
+        } else {
+            Snackbar snackbar = Snackbar
+                    .make(parentLayout, "Something went wrong.Please retry with system camera app.", Snackbar.LENGTH_INDEFINITE);
+            snackbar.setActionTextColor(ContextCompat.getColor(getActivity(), R.color.white_color));
+            snackbar.setAction("RETRY", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    openCamera(PermissionUtilities.MY_APP_TAKE_RIGHT_PHOTO_PERMISSIONS, IMAGE_FOUR_REQUEST);
+                    v.setVisibility(View.GONE);
+                }
+            });
+            View snackBarView = snackbar.getView();
+            snackBarView.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.color_error));
+            snackbar.show();
+        }
+    }
+
+    public void onElevationImageThreeCapture(Intent data, int requestCode) {
+        if (fileUri != null) {
+            onElevationImageCaptureResult(data, requestCode);
+        } else {
+            Snackbar snackbar = Snackbar
+                    .make(parentLayout, "Something went wrong.Please retry with system camera app.", Snackbar.LENGTH_INDEFINITE);
+            snackbar.setActionTextColor(ContextCompat.getColor(getActivity(), R.color.white_color));
+            snackbar.setAction("RETRY", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    openCamera(PermissionUtilities.MY_APP_TAKE_LEFT_PHOTO_PERMISSIONS, IMAGE_THREE_REQUEST);
+                    v.setVisibility(View.GONE);
+                }
+            });
+            View snackBarView = snackbar.getView();
+            snackBarView.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.color_error));
+            snackbar.show();
+        }
 
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == SELECT_FILE) {
-                if (data != null) {
-                    onSelectFromGalleryResult(data);
-                } else {
-                    Snackbar snackbar = Snackbar
-                            .make(parentLayout, "Something went wrong.Please try again.", Snackbar.LENGTH_INDEFINITE);
-                    snackbar.setAction("RETRY", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            selectImage();
-                            v.setVisibility(View.GONE);
-                        }
-                    });
-                    View snackBarView = snackbar.getView();
-                    snackBarView.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.color_error));
-                    snackbar.show();
+    public void onElevationImageOneCapture(Intent data, int requestCode) {
+        if (fileUri != null) {
+            onElevationImageCaptureResult(data, requestCode);
+        } else {
+            Snackbar snackbar = Snackbar
+                    .make(parentLayout, "Something went wrong.Please retry with system camera app.", Snackbar.LENGTH_INDEFINITE);
+            snackbar.setActionTextColor(ContextCompat.getColor(getActivity(), R.color.white_color));
+            snackbar.setAction("RETRY", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    openCamera(PermissionUtilities.MY_APP_TAKE_FRONT_PHOTO_PERMISSIONS, IMAGE_ONE_REQUEST);
+                    v.setVisibility(View.GONE);
                 }
-            } else if (requestCode == REQUEST_CAMERA) {
-                if (fileUri != null) {
-                        onCaptureImageResult(data);
-                } else {
-                    Snackbar snackbar = Snackbar
-                            .make(parentLayout, "Something went wrong.Please retry with system camera app.", Snackbar.LENGTH_INDEFINITE);
-                    snackbar.setActionTextColor(ContextCompat.getColor(getActivity(), R.color.white_color));
-                    snackbar.setAction("RETRY", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            selectImage();
-                            v.setVisibility(View.GONE);
-                        }
-                    });
-                    View snackBarView = snackbar.getView();
-                    snackBarView.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.color_error));
-                    snackbar.show();
-                }
-            } else if (requestCode == IMAGE_ONE_REQUEST) {
-                if (fileUri != null) {
-                    onElevationImageCaptureResult(data, requestCode);
-                } else {
-                    Snackbar snackbar = Snackbar
-                            .make(parentLayout, "Something went wrong.Please retry with system camera app.", Snackbar.LENGTH_INDEFINITE);
-                    snackbar.setActionTextColor(ContextCompat.getColor(getActivity(), R.color.white_color));
-                    snackbar.setAction("RETRY", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            openCamera(PermissionUtilities.MY_APP_TAKE_FRONT_PHOTO_PERMISSIONS, IMAGE_ONE_REQUEST);
-                            v.setVisibility(View.GONE);
-                        }
-                    });
-                    View snackBarView = snackbar.getView();
-                    snackBarView.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.color_error));
-                    snackbar.show();
-                }
-
-            } else if (requestCode == IMAGE_TWO_REQUEST) {
-                if (fileUri != null) {
-                    onElevationImageCaptureResult(data, requestCode);
-                } else {
-                    Snackbar snackbar = Snackbar
-                            .make(parentLayout, "Something went wrong.Please retry with system camera app.", Snackbar.LENGTH_INDEFINITE);
-                    snackbar.setActionTextColor(ContextCompat.getColor(getActivity(), R.color.white_color));
-                    snackbar.setAction("RETRY", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            openCamera(PermissionUtilities.MY_APP_TAKE_BACK_PHOTO_PERMISSIONS, IMAGE_TWO_REQUEST);
-                            v.setVisibility(View.GONE);
-                        }
-                    });
-                    View snackBarView = snackbar.getView();
-                    snackBarView.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.color_error));
-                    snackbar.show();
-                }
-
-            } else if (requestCode == IMAGE_THREE_REQUEST) {
-                if (fileUri != null) {
-                    onElevationImageCaptureResult(data, requestCode);
-                } else {
-                    Snackbar snackbar = Snackbar
-                            .make(parentLayout, "Something went wrong.Please retry with system camera app.", Snackbar.LENGTH_INDEFINITE);
-                    snackbar.setActionTextColor(ContextCompat.getColor(getActivity(), R.color.white_color));
-                    snackbar.setAction("RETRY", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            openCamera(PermissionUtilities.MY_APP_TAKE_LEFT_PHOTO_PERMISSIONS, IMAGE_THREE_REQUEST);
-                            v.setVisibility(View.GONE);
-                        }
-                    });
-                    View snackBarView = snackbar.getView();
-                    snackBarView.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.color_error));
-                    snackbar.show();
-                }
-
-            } else if (requestCode == IMAGE_FOUR_REQUEST) {
-                if (fileUri != null) {
-                    onElevationImageCaptureResult(data, requestCode);
-                } else {
-                    Snackbar snackbar = Snackbar
-                            .make(parentLayout, "Something went wrong.Please retry with system camera app.", Snackbar.LENGTH_INDEFINITE);
-                    snackbar.setActionTextColor(ContextCompat.getColor(getActivity(), R.color.white_color));
-                    snackbar.setAction("RETRY", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            openCamera(PermissionUtilities.MY_APP_TAKE_RIGHT_PHOTO_PERMISSIONS, IMAGE_FOUR_REQUEST);
-                            v.setVisibility(View.GONE);
-                        }
-                    });
-                    View snackBarView = snackbar.getView();
-                    snackBarView.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.color_error));
-                    snackbar.show();
-                }
-
-            }
-
+            });
+            View snackBarView = snackbar.getView();
+            snackBarView.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.color_error));
+            snackbar.show();
         }
     }
+
+    public void onElevationImageTwoCapture(Intent data, int requestCode) {
+        if (fileUri != null) {
+            onElevationImageCaptureResult(data, requestCode);
+        } else {
+            Snackbar snackbar = Snackbar
+                    .make(parentLayout, "Something went wrong.Please retry with system camera app.", Snackbar.LENGTH_INDEFINITE);
+            snackbar.setActionTextColor(ContextCompat.getColor(getActivity(), R.color.white_color));
+            snackbar.setAction("RETRY", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    openCamera(PermissionUtilities.MY_APP_TAKE_BACK_PHOTO_PERMISSIONS, IMAGE_TWO_REQUEST);
+                    v.setVisibility(View.GONE);
+                }
+            });
+            View snackBarView = snackbar.getView();
+            snackBarView.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.color_error));
+            snackbar.show();
+        }
+    }
+
+    public void onImageCapturedResult(Intent data) {
+        if (fileUri != null) {
+            onCaptureImageResult(data);
+        } else {
+            Snackbar snackbar = Snackbar
+                    .make(parentLayout, "Something went wrong.Please retry with system camera app.", Snackbar.LENGTH_INDEFINITE);
+            snackbar.setActionTextColor(ContextCompat.getColor(getActivity(), R.color.white_color));
+            snackbar.setAction("RETRY", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    selectImage();
+                    v.setVisibility(View.GONE);
+                }
+            });
+            View snackBarView = snackbar.getView();
+            snackBarView.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.color_error));
+            snackbar.show();
+        }
+    }
+
+    public void onSelectImagesFromGallery(Intent data) {
+        if (data != null) {
+            onSelectFromGalleryResult(data);
+        } else {
+            Snackbar snackbar = Snackbar
+                    .make(parentLayout, "Something went wrong.Please try again.", Snackbar.LENGTH_INDEFINITE);
+            snackbar.setAction("RETRY", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    selectImage();
+                    v.setVisibility(View.GONE);
+                }
+            });
+            View snackBarView = snackbar.getView();
+            snackBarView.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.color_error));
+            snackbar.show();
+        }
+
+    }
+
     public void setDataAndAdapter(ArrayList<ImageDetailsPOJO> selectedImageListToSet){
         selectedImageList.clear();
         selectedImageList.addAll(selectedImageListToSet);
@@ -672,7 +691,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
         return imageFile;
     }
 
-    private void onElevationImageCaptureResult(Intent dat, final int requestId) {
+    private void onElevationImageCaptureResult(Intent data, final int requestId) {
         //Worked like charm
         new SingleMediaScanner(getContext(), photoFile, new OnMediaScannerListener() {
             @Override
@@ -793,7 +812,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                 } else {
                     PermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_TAKE_PHOTO_PERMISSIONS);
                 }
-                return;
+                break;
             }
 
             case PermissionUtilities.MY_APP_TAKE_FRONT_PHOTO_PERMISSIONS: {
@@ -802,7 +821,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                 } else {
                     PermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_TAKE_FRONT_PHOTO_PERMISSIONS);
                 }
-                return;
+                break;
             }
 
             case PermissionUtilities.MY_APP_TAKE_BACK_PHOTO_PERMISSIONS: {
@@ -811,7 +830,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                 } else {
                     PermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_TAKE_BACK_PHOTO_PERMISSIONS);
                 }
-                return;
+                break;
             }
 
             case PermissionUtilities.MY_APP_TAKE_LEFT_PHOTO_PERMISSIONS: {
@@ -820,7 +839,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                 } else {
                     PermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_TAKE_LEFT_PHOTO_PERMISSIONS);
                 }
-                return;
+                break;
             }
 
             case PermissionUtilities.MY_APP_TAKE_RIGHT_PHOTO_PERMISSIONS: {
@@ -829,7 +848,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                 } else {
                     PermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_TAKE_RIGHT_PHOTO_PERMISSIONS);
                 }
-                return;
+                break;
             }
             case PermissionUtilities.MY_APP_BROWSE_PHOTO_PERMISSIONS: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -837,7 +856,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                 } else {
                     PermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_BROWSE_PHOTO_PERMISSIONS);
                 }
-                return;
+                break;
             }
         }
     }
@@ -964,6 +983,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
             onLabelAddClickListener = (DrawerMenuListAdapter.OnLabelAddClickListener) getActivity();
             onSaveReportClickListener = (OnSaveReportClickListener) getActivity();
             onGenerateReportClickListener = (OnGenerateReportClickListener) getActivity();
+            onSetImageFileUriListener = (OnSetImageFileUriListener) getActivity();
         } catch (ClassCastException exception) {
             exception.printStackTrace();
         }
@@ -1007,6 +1027,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
         }
 
     }
+
 
 }
 
