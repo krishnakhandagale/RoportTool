@@ -20,7 +20,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -46,7 +45,9 @@ import com.electivechaos.claimsadjuster.fragments.ClaimDetailsFragment;
 import com.electivechaos.claimsadjuster.fragments.PerilListMenuFragment;
 import com.electivechaos.claimsadjuster.fragments.PointOfOriginFragment;
 import com.electivechaos.claimsadjuster.fragments.PropertyDetailsFragment;
+import com.electivechaos.claimsadjuster.fragments.StarterPhotosFragment;
 import com.electivechaos.claimsadjuster.interfaces.AddEditLabelInterface;
+import com.electivechaos.claimsadjuster.interfaces.AsyncTaskStatusCallback;
 import com.electivechaos.claimsadjuster.interfaces.ClaimDetailsDataInterface;
 import com.electivechaos.claimsadjuster.interfaces.LossLocationDataInterface;
 import com.electivechaos.claimsadjuster.interfaces.NextButtonClickListener;
@@ -54,8 +55,10 @@ import com.electivechaos.claimsadjuster.interfaces.OnGenerateReportClickListener
 import com.electivechaos.claimsadjuster.interfaces.OnPerilSelectionListener;
 import com.electivechaos.claimsadjuster.interfaces.OnPropertyDetailsClickListener;
 import com.electivechaos.claimsadjuster.interfaces.OnSaveReportClickListener;
+import com.electivechaos.claimsadjuster.interfaces.OnSetImageFileUriListener;
 import com.electivechaos.claimsadjuster.interfaces.SelectedImagesDataInterface;
 import com.electivechaos.claimsadjuster.listeners.OnMediaScannerListener;
+import com.electivechaos.claimsadjuster.listeners.OnStarterFragmentDataChangeListener;
 import com.electivechaos.claimsadjuster.pojo.Category;
 import com.electivechaos.claimsadjuster.pojo.ImageDetailsPOJO;
 import com.electivechaos.claimsadjuster.pojo.Label;
@@ -75,7 +78,8 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Pattern;
 
-public class AddEditReportActivity extends AppCompatActivity implements DrawerMenuListAdapter.OnLabelAddClickListener, AddEditLabelInterface, ClaimDetailsDataInterface, LossLocationDataInterface,SelectedImagesDataInterface,NextButtonClickListener,OnSaveReportClickListener, OnGenerateReportClickListener, OnPropertyDetailsClickListener,OnPerilSelectionListener {
+public class AddEditReportActivity extends AppCompatActivity implements DrawerMenuListAdapter.OnLabelAddClickListener, AddEditLabelInterface, ClaimDetailsDataInterface, LossLocationDataInterface,SelectedImagesDataInterface,NextButtonClickListener,OnSaveReportClickListener, OnGenerateReportClickListener, OnPropertyDetailsClickListener,OnPerilSelectionListener, OnSetImageFileUriListener,OnStarterFragmentDataChangeListener {
+
     private DrawerLayout mDrawerLayout;
     private DrawerMenuListAdapter drawerMenuListAdapter;
 
@@ -102,10 +106,20 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     private static final int SHOWPREFERENCEACTIVITY = 486;
     private static final int ADD_CATEGORY_REQUEST = 10 ;
 
-
+    private static final int SELECT_FILE = 1;
     private  static final int ADD_IMAGE_DETAILS = 2;
     private static final int SET_CLICKED_IMAGE_DETAILS = 3 ;
 
+    private  static final int REQUEST_CAMERA = 0;
+    private  static final int IMAGE_ONE_REQUEST = 100;
+    private  static final int IMAGE_TWO_REQUEST = 200;
+    private  static final int IMAGE_THREE_REQUEST = 300;
+    private  static final int IMAGE_FOUR_REQUEST = 400;
+
+    private  static final int IMAGE_ONE_REQUEST_STARTER = 500;
+    private  static final int IMAGE_TWO_REQUEST_STARTER = 600;
+    private  static final int IMAGE_THREE_REQUEST_STARTER = 700;
+    private  static final int IMAGE_FOUR_REQUEST_STARTER = 800;
 
     private static final String CLAIM_DETAILS_FRAGMENT_TAG = "claim_details_fragment" ;
     private static final String PROPERTY_FRAGMENT_TAG = "property_details_fragment" ;
@@ -113,6 +127,9 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     private static final String POINT_OF_ORIGIN_FRAGMENT_TAG = "point_of_origin_fragment" ;
     private static final String LABEL_FRAGMENT_TAG = "label_fragment" ;
 
+    private String fileUri;
+
+    private  ExpandableListView mExpandableListView;
 
 
     @Override
@@ -121,15 +138,31 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
         setContentView(R.layout.add_edit_report_activity_layout);
 
+        mExpandableListView = findViewById(R.id.slider_menu);
+
+        mDrawerLayout = findViewById(R.id.drawer_layout);
+
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        activityActionBar = getSupportActionBar();
+
+        activityActionBar.setDisplayHomeAsUpEnabled(true);
+        activityActionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
+
+
+
         parentLayoutForMessages = findViewById(R.id.parentLayoutForMessages);
         progressBarLayout = findViewById(R.id.progressBarLayout);
         categoryListDBHelper = CategoryListDBHelper.getInstance(this);
         if(savedInstanceState != null && savedInstanceState.getParcelable("reportPojo") !=null){
+            fileUri = savedInstanceState.getString("fileUri");
             reportPOJO = savedInstanceState.getParcelable("reportPojo");
+            setDataToExpandableList();
         }else{
             if(getIntent().getExtras() != null){
                 reportPOJO = categoryListDBHelper.getReportItem(getIntent().getExtras().getString("reportId"));
-
+                setDataToExpandableList();
             }else{
                 reportPOJO = new ReportPOJO();
                 Date currentDate = new Date();
@@ -138,19 +171,41 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                 DateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss a");
                 String reportSavedDate = dateFormat.format(currentDate.getTime());
                 setCreatedDate(reportSavedDate);
-                onReportSave(false);
+
+                new DatabaseSaveReportTask(AddEditReportActivity.this, progressBarLayout, reportPOJO, false, categoryListDBHelper, new AsyncTaskStatusCallback() {
+                    @Override
+                    public void onPostExecute(Object object, String type) {
+                        setDataToExpandableList();
+                        Label label = categoryListDBHelper.getLabelFromCategoryDetails("Starter Photos");
+                        label.setReportId(reportPOJO.getId());
+                        String id = "";
+                        try {
+                            id = new DatabaseTaskHelper(AddEditReportActivity.this, label).execute().get();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                        }
+
+                        label.setId(id);
+                        onDefaultLabelAdded(label);
+                    }
+
+                    @Override
+                    public void onPreExecute() {
+
+                    }
+                    @Override
+                    public void onProgress(int progress) {
+
+                    }
+                }).execute();
+
+
             }
         }
 
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        activityActionBar = getSupportActionBar();
-
-
-
-        activityActionBar.setDisplayHomeAsUpEnabled(true);
-        activityActionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
 
 
         if(savedInstanceState != null && savedInstanceState.getInt("selectedFragmentPosition") != -1 ){
@@ -166,37 +221,17 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
             }else if(selectedFragmentPosition == 3){
                 putPointOfOriginFragment();
             }else if(selectedFragmentPosition  > 3){
-                putLabelFragment();
+                if(selectedFragmentPosition == 4){
+                    putDefaultFragment();
+                }else {
+                    putLabelFragment();
+                }
             }
         }else{
            putClaimDetailsFragment();
         }
 
 
-        ExpandableListView mExpandableListView = findViewById(R.id.slider_menu);
-
-
-
-        parentMenuItems = new ArrayList<>();
-
-        parentMenuItems.add("Claim Details");
-        parentMenuItems.add("Property Details");
-        parentMenuItems.add("Peril");
-        parentMenuItems.add("Point Of Origin");
-        parentMenuItems.add("Inspection");
-
-
-        List<Label> inspectionChildMenu = (List<Label>) reportPOJO.getLabelArrayList().clone();
-        childMenuItems.put("Inspection", inspectionChildMenu);
-
-
-        mDrawerLayout = findViewById(R.id.drawer_layout);
-
-        if (parentMenuItems != null && parentMenuItems.size() > 0) {
-            drawerMenuListAdapter = new DrawerMenuListAdapter(this, parentMenuItems, childMenuItems);
-            mExpandableListView.setAdapter(drawerMenuListAdapter);
-            mExpandableListView.setIndicatorBounds(0, 20);
-        }
         mExpandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
 
             @Override
@@ -238,19 +273,38 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
 
                 mDrawerLayout.closeDrawer(Gravity.LEFT);
-                FragmentManager transactionManager = getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
-                AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment = AddEditReportSelectedImagesFragment.initFragment(reportPOJO.getLabelArrayList().get(childPosition).getSelectedImages(), reportPOJO.getLabelArrayList().get(childPosition).getSelectedElevationImages(), childPosition);
-                fragmentTransaction.replace(R.id.content_frame, addEditReportSelectedImagesFragment);
-                fragmentTransaction.commit();
                 selectedFragmentPosition = childPosition + 4;
-                activityActionBar.setTitle(reportPOJO.getLabelArrayList().get(childPosition).getName());
-                actionBarEditBtn.setVisible(true);
-                toolbar.setTag(reportPOJO.getLabelArrayList().get(childPosition));
+                if(selectedFragmentPosition == 4){
+                    putDefaultFragment();
+                }else{
+                    putLabelFragment();
+                }
+
                 return false;
             }
         });
 
+
+    }
+
+    private void setDataToExpandableList() {
+        parentMenuItems = new ArrayList<>();
+
+        parentMenuItems.add("Claim Details");
+        parentMenuItems.add("Property Details");
+        parentMenuItems.add("Peril");
+        parentMenuItems.add("Point Of Origin");
+        parentMenuItems.add("Inspection");
+
+
+        List<Label> inspectionChildMenu = (List<Label>) reportPOJO.getLabelArrayList().clone();
+        childMenuItems.put("Inspection", inspectionChildMenu);
+
+        if (parentMenuItems != null && parentMenuItems.size() > 0) {
+            drawerMenuListAdapter = new DrawerMenuListAdapter(this, parentMenuItems, childMenuItems);
+            mExpandableListView.setAdapter(drawerMenuListAdapter);
+            mExpandableListView.setIndicatorBounds(0, 20);
+        }
 
     }
 
@@ -299,7 +353,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         if( labelArrayList!= null && labelArrayList.size() > selectedFragmentPosition - 4 && labelArrayList.get(selectedFragmentPosition - 4) != null){
             FragmentManager transactionManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
-            AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment = AddEditReportSelectedImagesFragment.initFragment(labelArrayList.get(selectedFragmentPosition - 4).getSelectedImages(),labelArrayList.get(selectedFragmentPosition - 4).getSelectedElevationImages(), selectedFragmentPosition - 4);
+            AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment = AddEditReportSelectedImagesFragment.initFragment(labelArrayList.get(selectedFragmentPosition - 4).getSelectedImages(),labelArrayList.get(selectedFragmentPosition - 4).getSelectedElevationImages(), selectedFragmentPosition - 4,fileUri);
             fragmentTransaction.replace(R.id.content_frame, addEditReportSelectedImagesFragment,LABEL_FRAGMENT_TAG);
             fragmentTransaction.commit();
 
@@ -316,6 +370,37 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
             }
         }
     }
+
+    private void putDefaultFragment(){
+        ArrayList<Label> labelArrayList =  reportPOJO.getLabelArrayList();
+        if( labelArrayList!= null && labelArrayList.size() > selectedFragmentPosition - 4 && labelArrayList.get(selectedFragmentPosition - 4) != null){
+            FragmentManager transactionManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
+            StarterPhotosFragment starterPhotosFragment =  new StarterPhotosFragment();
+            Bundle bundle = new Bundle();
+
+            bundle.putString("fileUri",fileUri);
+            bundle.putInt("position",selectedFragmentPosition - 4);
+            bundle.putString("houseNumber",labelArrayList.get(selectedFragmentPosition - 4).getHouseNumber());
+            bundle.putSerializable("selectedElevationImagesList",labelArrayList.get(selectedFragmentPosition -4).getSelectedElevationImages());
+            starterPhotosFragment.setArguments(bundle);
+            fragmentTransaction.replace(R.id.content_frame, starterPhotosFragment,LABEL_FRAGMENT_TAG);
+            fragmentTransaction.commit();
+
+            activityActionBar.setTitle(labelArrayList.get(selectedFragmentPosition - 4).getName());
+            if(actionBarEditBtn != null){
+                actionBarEditBtn.setVisible(false);
+            }
+            toolbar.setTag(labelArrayList.get(selectedFragmentPosition - 4));
+        }else{
+            mDrawerLayout.closeDrawer(Gravity.LEFT);
+            putClaimDetailsFragment();
+            if(actionBarEditBtn != null){
+                actionBarEditBtn.setVisible(false);
+            }
+        }
+    }
+
 
     private void putPerilDetails(){
         FragmentManager transactionManager = getSupportFragmentManager();
@@ -377,9 +462,12 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                 view.findViewById(R.id.doneBtn).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //database call for edit label and notify data set changed for expandable list view.
+
+
                         label.setName(editLabel.getText().toString());
+
                         categoryListDBHelper.updateLabel(label);
+
                         activityActionBar.setTitle(editLabel.getText().toString());
                         drawerMenuListAdapter.notifyDataSetChanged();
 
@@ -409,8 +497,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         super.onSaveInstanceState(outState);
         outState.putInt("selectedFragmentPosition",selectedFragmentPosition);
         outState.putParcelable("reportPojo", reportPOJO);
-
-
+        outState.putString("fileUri",fileUri);
     }
 
     @Override
@@ -499,7 +586,12 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
     }
 
-
+    public  void  onDefaultLabelAdded(Label label){
+        List<Label> labelList =  childMenuItems.get("Inspection");
+        labelList.add(label);
+        drawerMenuListAdapter.notifyDataSetChanged();
+        reportPOJO.getLabelArrayList().add(label);
+    }
     public void onLabelAdded(Label label) {
 
         List<Label> labelList =  childMenuItems.get("Inspection");
@@ -510,12 +602,14 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment = AddEditReportSelectedImagesFragment.initFragment(new ArrayList<ImageDetailsPOJO>(),new ArrayList<ImageDetailsPOJO>(),labelList.size()-1);
+        AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment = AddEditReportSelectedImagesFragment.initFragment(new ArrayList<ImageDetailsPOJO>(),new ArrayList<ImageDetailsPOJO>(),labelList.size()-1, fileUri);
         fragmentTransaction.replace(R.id.content_frame, addEditReportSelectedImagesFragment);
         fragmentTransaction.commit();
         selectedFragmentPosition = (labelList.size() -1) + 4;
         activityActionBar.setTitle(label.getName());
-        actionBarEditBtn.setVisible(true);
+        if(actionBarEditBtn != null){
+            actionBarEditBtn.setVisible(true);
+        }
         toolbar.setTag(label);
         activityActionBar.setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP);
         activityActionBar.setDisplayShowTitleEnabled(true);
@@ -535,7 +629,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
             if( labelArrayList!= null && labelArrayList.size() > selectedFragmentPosition - 4 && labelArrayList.get(selectedFragmentPosition - 4) != null) {
                 FragmentManager transactionManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
-                AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment = AddEditReportSelectedImagesFragment.initFragment(labelArrayList.get(selectedFragmentPosition - 4).getSelectedImages(), labelArrayList.get(selectedFragmentPosition - 4).getSelectedElevationImages(), selectedFragmentPosition - 4);
+                AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment = AddEditReportSelectedImagesFragment.initFragment(labelArrayList.get(selectedFragmentPosition - 4).getSelectedImages(), labelArrayList.get(selectedFragmentPosition - 4).getSelectedElevationImages(), selectedFragmentPosition - 4, fileUri);
                 fragmentTransaction.replace(R.id.content_frame, addEditReportSelectedImagesFragment);
                 fragmentTransaction.commit();
 
@@ -673,10 +767,11 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
             actionBarEditBtn.setVisible(false);
 
         }else if(selectedFragmentPosition > 3){
-
-            putLabelFragment();
-
-
+            if(selectedFragmentPosition == 4){
+                putDefaultFragment();
+            }else {
+                putLabelFragment();
+            }
         }
 
     }
@@ -712,7 +807,6 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     @Override
     public void onReportSave(boolean isProgressBar) {
 
-        //Is from user action then validate
         boolean isValid;
         if(isProgressBar) {
             isValid = validateData();
@@ -793,6 +887,17 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         reportPOJO.setPerilPOJO(perilPOJO);
         new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, perilPOJO.getName(),reportPOJO.getId(),false,categoryListDBHelper,"peril").execute();
 
+    }
+
+    @Override
+    public void onSetImageFileUri(String fileUriOfImageCapture) {
+        fileUri = fileUriOfImageCapture;
+    }
+
+    @Override
+    public void onHouseNumberChange(String houseNumber, int labelPosition) {
+        reportPOJO.getLabelArrayList().get(labelPosition).setHouseNumber(houseNumber);
+        categoryListDBHelper.updateLabel(reportPOJO.getLabelArrayList().get(labelPosition));
     }
 
 
@@ -876,7 +981,8 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.actionbar_action_menu, menu);
         actionBarEditBtn = menu.findItem(R.id.edit);
-        if(selectedFragmentPosition > 3){
+
+        if(selectedFragmentPosition > 4){
             actionBarEditBtn.setVisible(true);
         }else{
             actionBarEditBtn.setVisible(false);
@@ -1030,6 +1136,205 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                     e.printStackTrace();
                 }
                 break;
+
+            case SELECT_FILE :
+
+                try {
+                    FragmentManager fm = getSupportFragmentManager();
+                    if(fm.getFragments() != null && fm.getFragments().size() >0){
+                        for(int i=0;i<fm.getFragments().size();i++){
+
+                            if(fm.getFragments().get(i) instanceof  AddEditReportSelectedImagesFragment){
+                                AddEditReportSelectedImagesFragment fragment = (AddEditReportSelectedImagesFragment) fm.getFragments().get(i);
+                                fragment.onSelectImagesFromGallery(data);
+                            }
+                        }
+                    }
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
+                break;
+            case  REQUEST_CAMERA:
+                try {
+                    FragmentManager fm = getSupportFragmentManager();
+                    if(fm.getFragments() != null && fm.getFragments().size() >0){
+                        for(int i=0;i<fm.getFragments().size();i++){
+
+                            if(fm.getFragments().get(i) instanceof  AddEditReportSelectedImagesFragment){
+                                AddEditReportSelectedImagesFragment fragment = (AddEditReportSelectedImagesFragment) fm.getFragments().get(i);
+                                fragment.onImageCapturedResult(data);
+                            }
+                        }
+                    }
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                break;
+            case IMAGE_ONE_REQUEST:
+
+                try {
+                    FragmentManager fm = getSupportFragmentManager();
+                    if(fm.getFragments() != null && fm.getFragments().size() >0){
+                        for(int i=0;i<fm.getFragments().size();i++){
+
+                            if(fm.getFragments().get(i) instanceof  AddEditReportSelectedImagesFragment){
+                                AddEditReportSelectedImagesFragment fragment = (AddEditReportSelectedImagesFragment) fm.getFragments().get(i);
+                                fragment.onElevationImageOneCapture(data,requestCode);
+                            }
+                        }
+                    }
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+            case IMAGE_TWO_REQUEST:
+
+                try {
+                    FragmentManager fm = getSupportFragmentManager();
+                    if(fm.getFragments() != null && fm.getFragments().size() >0){
+                        for(int i=0;i<fm.getFragments().size();i++){
+
+                            if(fm.getFragments().get(i) instanceof  AddEditReportSelectedImagesFragment){
+                                AddEditReportSelectedImagesFragment fragment = (AddEditReportSelectedImagesFragment) fm.getFragments().get(i);
+                                fragment.onElevationImageTwoCapture(data,requestCode);
+                            }
+                        }
+                    }
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+            case IMAGE_THREE_REQUEST:
+
+                try {
+                    FragmentManager fm = getSupportFragmentManager();
+                    if(fm.getFragments() != null && fm.getFragments().size() >0){
+                        for(int i=0;i<fm.getFragments().size();i++){
+
+                            if(fm.getFragments().get(i) instanceof  AddEditReportSelectedImagesFragment){
+                                AddEditReportSelectedImagesFragment fragment = (AddEditReportSelectedImagesFragment) fm.getFragments().get(i);
+                                fragment. onElevationImageThreeCapture(data,requestCode);
+                            }
+                        }
+                    }
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
+                break;
+
+            case IMAGE_FOUR_REQUEST:
+
+                try {
+                    FragmentManager fm = getSupportFragmentManager();
+                    if(fm.getFragments() != null && fm.getFragments().size() >0){
+                        for(int i=0;i<fm.getFragments().size();i++){
+
+                            if(fm.getFragments().get(i) instanceof  AddEditReportSelectedImagesFragment){
+                                AddEditReportSelectedImagesFragment fragment = (AddEditReportSelectedImagesFragment) fm.getFragments().get(i);
+                                fragment. onElevationImageFourCapture(data,requestCode);
+                            }
+                        }
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+
+            case IMAGE_ONE_REQUEST_STARTER:
+
+                try {
+                    FragmentManager fm = getSupportFragmentManager();
+                    if(fm.getFragments() != null && fm.getFragments().size() >0){
+                        for(int i=0;i<fm.getFragments().size();i++){
+
+                            if(fm.getFragments().get(i) instanceof  StarterPhotosFragment){
+                                StarterPhotosFragment fragment = (StarterPhotosFragment) fm.getFragments().get(i);
+                                fragment.onElevationImageOneCapture(data,requestCode);
+                            }
+                        }
+                    }
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+            case IMAGE_TWO_REQUEST_STARTER:
+
+                try {
+                    FragmentManager fm = getSupportFragmentManager();
+                    if(fm.getFragments() != null && fm.getFragments().size() >0){
+                        for(int i=0;i<fm.getFragments().size();i++){
+
+                            if(fm.getFragments().get(i) instanceof  StarterPhotosFragment){
+                                StarterPhotosFragment fragment = (StarterPhotosFragment) fm.getFragments().get(i);
+                                fragment.onElevationImageTwoCapture(data,requestCode);
+                            }
+                        }
+                    }
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+            case IMAGE_THREE_REQUEST_STARTER:
+
+                try {
+                    FragmentManager fm = getSupportFragmentManager();
+                    if(fm.getFragments() != null && fm.getFragments().size() >0){
+                        for(int i=0;i<fm.getFragments().size();i++){
+
+                            if(fm.getFragments().get(i) instanceof  StarterPhotosFragment){
+                                StarterPhotosFragment fragment = (StarterPhotosFragment) fm.getFragments().get(i);
+                                fragment.onElevationImageThreeCapture(data,requestCode);
+                            }
+                        }
+                    }
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
+                break;
+
+            case IMAGE_FOUR_REQUEST_STARTER:
+
+                try {
+                    FragmentManager fm = getSupportFragmentManager();
+                    if(fm.getFragments() != null && fm.getFragments().size() >0){
+                        for(int i=0;i<fm.getFragments().size();i++){
+
+                            if(fm.getFragments().get(i) instanceof  StarterPhotosFragment){
+                                StarterPhotosFragment fragment = (StarterPhotosFragment) fm.getFragments().get(i);
+                                fragment.onElevationImageFourCapture(data,requestCode);
+                            }
+                        }
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+
         }
     }
 

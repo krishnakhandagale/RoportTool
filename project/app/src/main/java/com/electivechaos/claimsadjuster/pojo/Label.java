@@ -14,9 +14,11 @@ public class Label implements Parcelable{
     private String name;
     private String description;
     private int categoryID;
+
     private String reportId;
     private ArrayList<ImageDetailsPOJO> selectedImages;
     private ArrayList<ImageDetailsPOJO> selectedElevationImages;
+    private String houseNumber;
 
 
     public Label(){
@@ -27,6 +29,7 @@ public class Label implements Parcelable{
         reportId = "";
         selectedImages = new ArrayList<>();
         selectedElevationImages = new ArrayList<>();
+        houseNumber = "";
 
     }
 
@@ -38,6 +41,7 @@ public class Label implements Parcelable{
         reportId = in.readString();
         selectedImages = in.createTypedArrayList(ImageDetailsPOJO.CREATOR);
         selectedElevationImages = in.createTypedArrayList(ImageDetailsPOJO.CREATOR);
+        houseNumber = in.readString();
     }
 
     public static final Creator<Label> CREATOR = new Creator<Label>() {
@@ -119,6 +123,14 @@ public class Label implements Parcelable{
         return 0;
     }
 
+    public String getHouseNumber() {
+        return houseNumber;
+    }
+
+    public void setHouseNumber(String houseNumber) {
+        this.houseNumber = houseNumber;
+    }
+
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(id);
@@ -128,5 +140,6 @@ public class Label implements Parcelable{
         dest.writeString(reportId);
         dest.writeTypedList(selectedImages);
         dest.writeTypedList(selectedElevationImages);
+        dest.writeString(houseNumber);
     }
 }
