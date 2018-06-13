@@ -132,6 +132,11 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
         imagesInformation.get(position).setOverview(isDamage);
     }
 
+    @Override
+    public void setUnsetPointOfOrigin(boolean isPointOfOrigin, int position) {
+        imagesInformation.get(position).setPointOfOrigin(isPointOfOrigin);
+    }
+
     public class ImagePagerAdapter extends FragmentStatePagerAdapter {
         public ImagePagerAdapter(FragmentManager fragmentManager) {
             super(fragmentManager);
