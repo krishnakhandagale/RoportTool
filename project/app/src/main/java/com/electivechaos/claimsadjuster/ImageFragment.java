@@ -31,6 +31,7 @@ public class ImageFragment extends Fragment {
     private String imgDescription;
     private boolean imgIsDamage;
     private boolean imgIsOverview;
+    private boolean imgIsPointOfOrigin;
 
     private boolean isDamage;
     private boolean isOverview;
@@ -50,6 +51,7 @@ public class ImageFragment extends Fragment {
         args.putString("description",imageDetails.getDescription());
         args.putBoolean("imgIsDamage", imageDetails.isDamage());
         args.putBoolean("imgIsOverview", imageDetails.isOverview());
+        args.putBoolean("imgIsPointPofOrigin", imageDetails.isPointOfOrigin());
         args.putInt("position", position);
 
         imageFragment.setArguments(args);
@@ -66,10 +68,12 @@ public class ImageFragment extends Fragment {
         imgDescription =getArguments() != null ? getArguments().getString("description") : "";
         imgIsDamage =getArguments() != null  && getArguments().getBoolean("imgIsDamage");
         imgIsOverview = getArguments() != null && getArguments().getBoolean("imgIsOverview");
+        imgIsPointOfOrigin = getArguments() != null && getArguments().getBoolean("imgIsPointOfOrigin");
 
         if(savedInstanceState != null){
             imgIsDamage = savedInstanceState.getBoolean("isDamage");
             imgIsOverview = savedInstanceState.getBoolean("isOverview");
+            imgIsPointOfOrigin = savedInstanceState.getBoolean("imgIsPointOfOrigin");
         }
   }
 
@@ -86,7 +90,9 @@ public class ImageFragment extends Fragment {
 
         final CheckedTextView damageTextView = layoutView.findViewById(R.id.damageTextView);
         final CheckedTextView overviewTextView = layoutView.findViewById(R.id.overviewTextView);
+        final  CheckedTextView pointOfOriginTextView = layoutView.findViewById(R.id.isPointOfOrigin);
 
+        pointOfOriginTextView.setChecked(imgIsPointOfOrigin);
         // For damage text view
         damageTextView.setChecked(imgIsDamage);
 
@@ -200,6 +206,23 @@ public class ImageFragment extends Fragment {
             }
         });
 
+        pointOfOriginTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(pointOfOriginTextView.isChecked()){
+                    imgIsPointOfOrigin = false;
+                    pointOfOriginTextView.setChecked(false);
+                    pointOfOriginTextView.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.shape_chip_drawable_gray));
+                    monitorImageDetailsChange.setUnsetPointOfOrigin(false,position);
+                }else{
+                    imgIsPointOfOrigin = true;
+                    pointOfOriginTextView.setChecked(true);
+                    pointOfOriginTextView.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.shape_chip_drawable_active));
+                    monitorImageDetailsChange.setUnsetPointOfOrigin(true,position);
+                }
+            }
+        });
+
 
 
 
@@ -224,6 +247,7 @@ public class ImageFragment extends Fragment {
         void updateImageDescription(String description, int position);
         void setUnsetDamage(boolean isDamage, int position);
         void setUnsetOverview(boolean isOverview, int position);
+        void setUnsetPointOfOrigin(boolean isPointOfOrigin, int position);
 
     }
 
@@ -242,5 +266,6 @@ public class ImageFragment extends Fragment {
         super.onSaveInstanceState(outState);
         outState.putBoolean("isDamage",isDamage);
         outState.putBoolean("isOverview",isOverview);
+        outState.putBoolean("imgIsPointOfOrigin",imgIsPointOfOrigin);
     }
 }
