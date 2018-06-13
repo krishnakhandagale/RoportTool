@@ -26,8 +26,8 @@ public class SingleImageDetailsActivity extends BaseActivity {
 
     private boolean isDamage;
     private boolean isOverview;
+    private boolean isPointOfOrigin;
 
-    private String titleString, descriptionString;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,6 +38,7 @@ public class SingleImageDetailsActivity extends BaseActivity {
         final EditText description = findViewById(R.id.clickedImageDescription);
         final CheckedTextView isDamageTextView = findViewById(R.id.isDamageTextView);
         final CheckedTextView isOverviewTextView = findViewById(R.id.isOverviewTextView);
+        final CheckedTextView isPointOfOriginTextView = findViewById(R.id.isPointOfOrigin);
 
 
         imageDetails = getIntent().getExtras().getParcelable("image_details");
@@ -45,33 +46,7 @@ public class SingleImageDetailsActivity extends BaseActivity {
         position = getIntent().getExtras().getInt("position", -1);
         labelPosition = getIntent().getExtras().getInt("labelPosition",-1);
 
-
-
-        if(savedInstanceState != null) {
-
-            isDamage = savedInstanceState.getBoolean("isDamage");
-            imageDetails.setIsDamage(isDamage);
-            isDamageTextView.setChecked(imageDetails.isDamage());
-            if(imageDetails.isDamage()) {
-                isDamageTextView.setBackground(ContextCompat.getDrawable(this,R.drawable.shape_chip_drawable_active));
-            }else {
-                isDamageTextView.setBackground(ContextCompat.getDrawable(this,R.drawable.shape_chip_drawable_gray));
-            }
-
-
-
-            isOverview = savedInstanceState.getBoolean("isOverview");
-            imageDetails.setOverview(isOverview);
-            isOverviewTextView.setChecked(imageDetails.isOverview());
-            if(imageDetails.isOverview()) {
-                isOverviewTextView.setBackground(ContextCompat.getDrawable(this,R.drawable.shape_chip_drawable_active));
-            }else {
-                isOverviewTextView.setBackground(ContextCompat.getDrawable(this,R.drawable.shape_chip_drawable_gray));
-            }
-        }
-
-
-        if(imageDetails != null && isEdit == true ){
+        if(imageDetails != null && isEdit){
             title.setText(imageDetails.getTitle());
             description.setText(imageDetails.getDescription());
 
@@ -94,7 +69,47 @@ public class SingleImageDetailsActivity extends BaseActivity {
                 isOverview = false;
             }
 
+            isPointOfOriginTextView.setChecked(imageDetails.isPointOfOrigin());
+            if(imageDetails.isPointOfOrigin()) {
+                isPointOfOriginTextView.setBackground(ContextCompat.getDrawable(this,R.drawable.shape_chip_drawable_active));
+                isPointOfOrigin = true;
+            }else {
+                isPointOfOriginTextView.setBackground(ContextCompat.getDrawable(this,R.drawable.shape_chip_drawable_gray));
+                isPointOfOrigin = false;
+            }
 
+
+            if(savedInstanceState != null) {
+
+                isDamage = savedInstanceState.getBoolean("isDamage");
+                imageDetails.setIsDamage(isDamage);
+                isDamageTextView.setChecked(imageDetails.isDamage());
+                if(imageDetails.isDamage()) {
+                    isDamageTextView.setBackground(ContextCompat.getDrawable(this,R.drawable.shape_chip_drawable_active));
+                }else {
+                    isDamageTextView.setBackground(ContextCompat.getDrawable(this,R.drawable.shape_chip_drawable_gray));
+                }
+
+
+
+                isOverview = savedInstanceState.getBoolean("isOverview");
+                imageDetails.setOverview(isOverview);
+                isOverviewTextView.setChecked(imageDetails.isOverview());
+                if(imageDetails.isOverview()) {
+                    isOverviewTextView.setBackground(ContextCompat.getDrawable(this,R.drawable.shape_chip_drawable_active));
+                }else {
+                    isOverviewTextView.setBackground(ContextCompat.getDrawable(this,R.drawable.shape_chip_drawable_gray));
+                }
+
+                isPointOfOrigin = savedInstanceState.getBoolean("isPointOfOrigin");
+                imageDetails.setPointOfOrigin(isPointOfOrigin);
+                isPointOfOriginTextView.setChecked(imageDetails.isPointOfOrigin());
+                if(imageDetails.isPointOfOrigin()) {
+                    isPointOfOriginTextView.setBackground(ContextCompat.getDrawable(this,R.drawable.shape_chip_drawable_active));
+                }else {
+                    isPointOfOriginTextView.setBackground(ContextCompat.getDrawable(this,R.drawable.shape_chip_drawable_gray));
+                }
+            }
         }
 
         isDamageTextView.setOnClickListener(new View.OnClickListener() {
@@ -145,6 +160,26 @@ public class SingleImageDetailsActivity extends BaseActivity {
             }
         });
 
+        isPointOfOriginTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(isPointOfOriginTextView.isChecked()){
+
+                    isPointOfOrigin = false;
+                    isPointOfOriginTextView.setChecked(false);
+                    isPointOfOriginTextView.setBackground(ContextCompat.getDrawable(SingleImageDetailsActivity.this,R.drawable.shape_chip_drawable_gray));
+                    imageDetails.setPointOfOrigin(false);
+                }else{
+                    isPointOfOrigin = true;
+                    isPointOfOriginTextView.setChecked(true);
+                    isPointOfOriginTextView.setBackground(ContextCompat.getDrawable(SingleImageDetailsActivity.this,R.drawable.shape_chip_drawable_active));
+                    imageDetails.setPointOfOrigin(true);
+                }
+
+            }
+        });
+
 
         ImageButton imageButton = findViewById(R.id.submitImageDetails);
 
@@ -157,6 +192,7 @@ public class SingleImageDetailsActivity extends BaseActivity {
                 shareImageDetails.setImageUrl(imageDetails.getImageUrl());
                 shareImageDetails.setIsDamage(imageDetails.isDamage());
                 shareImageDetails.setOverview(imageDetails.isOverview());
+                shareImageDetails.setPointOfOrigin(imageDetails.isPointOfOrigin());
                 Intent intent = new Intent();
                 intent.putExtra("image_entered_details", shareImageDetails);
                 intent.putExtra("isEdit", isEdit);
@@ -174,6 +210,7 @@ public class SingleImageDetailsActivity extends BaseActivity {
         super.onSaveInstanceState(outState);
         outState.putBoolean("isDamage",isDamage);
         outState.putBoolean("isOverview",isOverview);
+        outState.putBoolean("isPointOfOrigin",isPointOfOrigin);
 
 
     }
