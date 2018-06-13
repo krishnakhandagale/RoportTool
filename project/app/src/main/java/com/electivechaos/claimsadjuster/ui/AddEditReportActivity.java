@@ -1083,6 +1083,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                     selectedImage.setImageUrl(imageDetailsPOJO.getImageUrl());
                     selectedImage.setIsDamage(imageDetailsPOJO.isDamage());
                     selectedImage.setOverview(imageDetailsPOJO.isOverview());
+                    selectedImage.setPointOfOrigin(imageDetailsPOJO.isPointOfOrigin());
 
                 }else{
                     if (imageDetailsPOJOArrayList == null) {
