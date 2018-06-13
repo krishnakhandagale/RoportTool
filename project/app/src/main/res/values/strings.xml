@@ -132,4 +132,5 @@
     <string name="peril_menu">Manage Peril</string>
     <string name="category_menu">Manage Category</string>
     <string name="insured_name">Insured Name</string>
+    <string name="enter_house_number">Enter House Number</string>
 </resources>
