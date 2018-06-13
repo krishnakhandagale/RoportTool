@@ -15,6 +15,7 @@ public class ImageDetailsPOJO implements Parcelable {
     private String description;
     private boolean isDamage;
     private boolean isOverview;
+    private boolean isPointOfOrigin;
 
     protected ImageDetailsPOJO(Parcel in) {
         imageUrl = in.readString();
@@ -22,6 +23,15 @@ public class ImageDetailsPOJO implements Parcelable {
         description = in.readString();
         isDamage = in.readByte() != 0;
         isOverview = in.readByte() != 0;
+        isPointOfOrigin = in.readByte() != 0;
+    }
+
+    public boolean isPointOfOrigin() {
+        return isPointOfOrigin;
+    }
+
+    public void setPointOfOrigin(boolean pointOfOrigin) {
+        isPointOfOrigin = pointOfOrigin;
     }
 
     public static final Creator<ImageDetailsPOJO> CREATOR = new Creator<ImageDetailsPOJO>() {
@@ -97,5 +107,6 @@ public class ImageDetailsPOJO implements Parcelable {
         dest.writeString(description);
         dest.writeByte((byte)(isDamage ? 1 : 0));
         dest.writeByte((byte)(isOverview ? 1 : 0));
+        dest.writeByte((byte)(isPointOfOrigin ? 1 : 0));
     }
 }
