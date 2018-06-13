@@ -66,6 +66,7 @@ public class CustomCategoryPopUpAdapter extends BaseAdapter {
             holder.textView.setBackgroundColor(0);
         }
         return convertView;
+
     }
 
     static class ViewHolder {
