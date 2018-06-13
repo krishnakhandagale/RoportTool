@@ -29,7 +29,7 @@ import java.util.Iterator;
  */
 
 public class CategoryListDBHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 152;
+    private static final int DATABASE_VERSION = 156;
 
 
     // Database Name
@@ -106,7 +106,8 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
     private static final String KEY_IMAGE_DESCRIPTION = "image_description";
     private static final String KEY_IMAGE_URL = "image_url";
     private static final String KEY_IS_DAMAGE = "is_damage";
-    private static final String KEY_IS_OVERVIEW= "is_overview";
+    private static final String KEY_IS_OVERVIEW = "is_overview";
+    private static final String KEY_IS_POINT_OF_ORIGIN= "is_point_of_origin";
 
 
 
@@ -195,6 +196,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 + KEY_IS_DAMAGE+ " BOOLEAN,"
                 + KEY_IS_OVERVIEW+ " BOOLEAN,"
                 + KEY_FK_LABEL_ID+ " TEXT,"
+                + KEY_IS_POINT_OF_ORIGIN+ " BOOLEAN,"
                 + "FOREIGN KEY("+ KEY_FK_LABEL_ID +") REFERENCES "+TABLE_CATEGORY_LABELS+"("+KEY_LABEL_ID+ ")"+ " ON DELETE CASCADE )";
 
 
@@ -693,6 +695,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                         imageEntry.put(KEY_IS_DAMAGE, imageItem.isDamage());
                         imageEntry.put(KEY_IS_OVERVIEW, imageItem.isOverview());
                         imageEntry.put(KEY_FK_LABEL_ID, labelId);
+                        imageEntry.put(KEY_IS_POINT_OF_ORIGIN, imageItem.isPointOfOrigin());
                       long count=  db.insert(TABLE_REPORTS_IMAGE_DETAILS, null, imageEntry);
                       if(count!=-1) {
                           Log.d("Error in insertion", String.valueOf(count));
@@ -845,6 +848,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                             sImageDetailsPOJO.setImageUrl(cSelectedImages.getString(3));
                             sImageDetailsPOJO.setIsDamage(cSelectedImages.getString(4).equals("1"));
                             sImageDetailsPOJO.setOverview(cSelectedImages.getString(5).equals("1"));
+                            sImageDetailsPOJO.setPointOfOrigin(cSelectedImages.getString(7).equals("1"));
                             selectedImagesList.add(sImageDetailsPOJO);
 
                         } while (cSelectedImages.moveToNext());
@@ -970,6 +974,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                     imageEntry.put(KEY_IS_DAMAGE, imageItem.isDamage());
                     imageEntry.put(KEY_IS_OVERVIEW, imageItem.isOverview());
                     imageEntry.put(KEY_FK_LABEL_ID, label.getId());
+                    imageEntry.put(KEY_IS_POINT_OF_ORIGIN, imageItem.isPointOfOrigin());
                     long count = db.insert(TABLE_REPORTS_IMAGE_DETAILS, null, imageEntry);
                     if (count != -1) {
                         Log.d("Error in insertion", String.valueOf(count));
