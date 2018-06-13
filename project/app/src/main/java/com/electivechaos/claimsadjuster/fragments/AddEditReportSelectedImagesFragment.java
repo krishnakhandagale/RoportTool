@@ -782,6 +782,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                     imgObj.setTitle("");
                     imgObj.setIsDamage(false);
                     imgObj.setOverview(false);
+                    imgObj.setPointOfOrigin(false);
                     imgObj.setImageUrl(path);
                     ImageHelper.revokeAppPermission(getActivity(), fileUri);
                     Intent intent = new Intent(getActivity(), SingleImageDetailsActivity.class);
@@ -873,6 +874,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
             public TextView title;
             public TextView description;
             public TextView imageType;
+            public TextView isPointOfOrigin;
             public ImageButton editBtn;
             public ImageButton deleteBtn;
 
@@ -884,6 +886,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                 description = view.findViewById(R.id.description);
                 editBtn = view.findViewById(R.id.editBtn);
                 deleteBtn = view.findViewById(R.id.deleteBtn);
+                isPointOfOrigin = view.findViewById(R.id.isPointOfOriginImage);
 
             }
         }
@@ -918,6 +921,12 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                 holder.imageType.setVisibility(View.VISIBLE);
             } else {
                 holder.imageType.setVisibility(View.GONE);
+            }
+
+            if(imgDetails.isPointOfOrigin()){
+                holder.isPointOfOrigin.setVisibility(View.VISIBLE);
+            }else{
+                holder.isPointOfOrigin.setVisibility(View.GONE);
             }
             Glide.with(context)
                     .load("file://" + imgDetails.getImageUrl())
