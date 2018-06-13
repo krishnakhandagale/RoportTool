@@ -140,7 +140,14 @@ public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
         }else{
             holder = (ChildViewHolder) convertView.getTag();
         }
-        holder.menuTitle.setText(childMenuList.get(parentMenuList.get(groupPosition)).get(childPosition).toString());
+        String menuTitle = childMenuList.get(parentMenuList.get(groupPosition)).get(childPosition).toString();
+
+        if(menuTitle.equals("Starter Photos")){
+            holder.labelDeleteBtn.setVisibility(View.GONE);
+        }else{
+            holder.labelDeleteBtn.setVisibility(View.VISIBLE);
+        }
+        holder.menuTitle.setText(menuTitle);
         holder.labelDeleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
