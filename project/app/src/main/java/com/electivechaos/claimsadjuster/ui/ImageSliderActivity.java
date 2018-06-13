@@ -44,6 +44,7 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
     private ArrayList<ImageDetailsPOJO> imagesInformation;
     private ArrayList<Image> imageList;
     private int lastSelectedPosition = -1;
+    private int labelPosition = -1;
 
     private OnLastSelectionChangeListener onLastSelectionChangeListener;
     @Override
@@ -52,11 +53,10 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
         setContentView(R.layout.image_slider_layout);
 
 
-        if(savedInstanceState != null){
-            lastSelectedPosition = savedInstanceState.getInt("lastSelectedPosition",-1);
-        }
+
 
         imageList = (ArrayList<Image>) getIntent().getExtras().get("ImageList");
+        labelPosition = getIntent().getExtras().getInt("labelPosition");
         imagesInformation = new ArrayList<>();
         for(int i =0; i< imageList.size();i++){
             ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
@@ -67,9 +67,10 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
         }
 
         if(savedInstanceState != null){
+            lastSelectedPosition = savedInstanceState.getInt("lastSelectedPosition",-1);
             imagesInformation = (ArrayList<ImageDetailsPOJO>) savedInstanceState.getSerializable("imagesInformation");
+            labelPosition = savedInstanceState.getInt("labelPosition");
         }
-
 
         ITEMS = imageList.size();
         selectImagesBtn = findViewById(R.id.selectImages);
@@ -102,6 +103,7 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
                 Bundle imagesObj = new Bundle();
 
                 imagesObj.putSerializable("selected_images",imagesInformation);
+                imagesObj.putInt("labelPosition",labelPosition);
                 intent.putExtras(imagesObj);
                 setResult(RESULT_OK,intent);
                 finish();
@@ -242,14 +244,12 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
         super.onSaveInstanceState(outState);
         outState.putInt("lastSelectedPosition",lastSelectedPosition);
         outState.putSerializable("imagesInformation",imagesInformation);
+        outState.putInt("labelPosition",labelPosition);
 
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        if(savedInstanceState != null){
-            lastSelectedPosition = savedInstanceState.getInt("lastSelectedPosition",-1);
-        }
     }
 }
