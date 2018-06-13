@@ -29,7 +29,7 @@ import java.util.Iterator;
  */
 
 public class CategoryListDBHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 143;
+    private static final int DATABASE_VERSION = 152;
 
 
     // Database Name
@@ -95,6 +95,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
     private static final String KEY_LABEL_DESCRIPTION  = "description";
 
     private static final String KEY_FK_LABEL_REPORT_ID  = "report_id_fk";
+    private static final String KEY_LABEL_HOUSE_NUMBER  = "house_number";
 
 
 
@@ -175,6 +176,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
 
                 + KEY_FK_LABEL_REPORT_ID + " TEXT,"
 
+                +KEY_LABEL_HOUSE_NUMBER + " TEXT,"
                 + "FOREIGN KEY("+ KEY_FK_LABEL_REPORT_ID +") REFERENCES "+TABLE_REPORTS_LIST+"("+ KEY_REPORT_ID +")"+ " ON DELETE CASCADE)";
 
         String CREATE_PERIL_TABLE = "CREATE TABLE "
@@ -238,7 +240,12 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
 
 
         final String categories[] = {
-                "Elevations",
+                "Starter Photos",
+                "Front Elevation",
+                "Back Elevation",
+                "Left Elevation",
+                "Right Elevation",
+                /*"Elevations",*/
                 "Roof",
                 "Kitchen",
                 "Living Room",
@@ -259,6 +266,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 "Barn",
                 "Detached Garage",
                 "Underwriting Risk"
+
         };
 
         final String roofSystem[] = {
@@ -406,12 +414,13 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
 
         if (cursor.moveToFirst()) {
             do {
-
-                Category category = new Category();
-                category.setCategoryId(cursor.getInt(0));
-                category.setCategoryName(cursor.getString(1));
-                category.setCategoryDescription(cursor.getString(2));
-                tempList.add(category);
+                if(!cursor.getString(1).equals("Starter Photos")){
+                    Category category = new Category();
+                    category.setCategoryId(cursor.getInt(0));
+                    category.setCategoryName(cursor.getString(1));
+                    category.setCategoryDescription(cursor.getString(2));
+                    tempList.add(category);
+                }
             } while (cursor.moveToNext());
         }
         return  tempList;
@@ -558,15 +567,35 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         contentValues.put(KEY_LABEL_NAME, label.getName());
         contentValues.put(KEY_LABEL_DESCRIPTION, label.getDescription());
         contentValues.put(KEY_FK_LABEL_REPORT_ID, label.getReportId());
+        contentValues.put(KEY_LABEL_HOUSE_NUMBER,label.getHouseNumber());
         db.insert(TABLE_CATEGORY_LABELS,null,contentValues);
         return  id;
     }
 
+    public Label getLabelFromCategoryDetails(String categoryLabel){
+
+        Label label = new Label();
+        String selectLabelDetailsQuery = "SELECT * FROM master_category WHERE name = '"+categoryLabel+"'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectLabelDetailsQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                label.setCategoryID(cursor.getInt(0));
+                label.setName(cursor.getString(1));
+                label.setDescription(cursor.getString(2));
+            } while (cursor.moveToNext());
+        }
+        return  label;
+    }
+
+
+
     public int updateLabel(Label label){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(KEY_CATEGORY_NAME, label.getName());
-        contentValues.put(KEY_CATEGORY_DESCRIPTION, label.getDescription());
+        contentValues.put(KEY_LABEL_NAME, label.getName());
+        contentValues.put(KEY_LABEL_DESCRIPTION, label.getDescription());
+        contentValues.put(KEY_LABEL_HOUSE_NUMBER,label.getHouseNumber());
         return  db.update(TABLE_CATEGORY_LABELS, contentValues,KEY_LABEL_ID+"="+label.getId(),null);
     }
 
@@ -790,7 +819,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 label.setName(cLabelList.getString(1));
                 label.setDescription(cLabelList.getString(2));
                 label.setReportId(cLabelList.getString(3));
-
+                label.setHouseNumber(cLabelList.getString(4));
                 Cursor cElevationImages = db.rawQuery("SELECT * FROM report_elevation_image_details  WHERE  label_id_fk = '"+cLabelList.getString(0)+"'", null);
                 ArrayList<ImageDetailsPOJO> elevationImagesList=new ArrayList<>();
 
