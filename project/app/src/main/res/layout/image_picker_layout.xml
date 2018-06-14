@@ -28,7 +28,7 @@
         android:layout_height="wrap_content">
         <TextView
             android:layout_weight="5.5"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:textStyle="bold"
             android:id="@+id/text_toolbar_title"
             android:padding="@dimen/image_picker_padding_large"
@@ -37,6 +37,7 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:singleLine="true"
+            android:textAllCaps="true"
             android:text="@string/folder"
             android:textColor="@color/black" />
         <TextView

@@ -19,10 +19,12 @@
         android:padding="@dimen/imagepicker_padding_small">
 
         <TextView
+            android:textSize="13sp"
+            android:textAllCaps="true"
             android:id="@+id/text_folder_name"
             style="@style/imagepicker_TextSmall"
             android:ellipsize="end"
-            android:maxLines="2"
+            android:maxLines="1"
             android:textColor="@color/image_picker_white" />
 
         <TextView
