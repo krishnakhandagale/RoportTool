@@ -134,4 +134,6 @@
     <string name="insured_name">Insured Name</string>
     <string name="enter_house_number">Enter House Number</string>
     <string name="p_o_o">P.O.O</string>
+    <string name="please_add_all_starter_photos">Please click all starter photos.</string>
+    <string name="please_enter_house_number">Please enter house number.</string>
 </resources>
