@@ -226,7 +226,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
                         table.setWidthPercentage(100);
                         table.addCell(getImageNumberPdfPCell((i + 1) + ".", PdfPCell.ALIGN_LEFT));
                         table.addCell(getCellImagCell(img, PdfPCell.ALIGN_LEFT, document, numberOfImagesPerPage));
-                        table.addCell(getCell(selectedImageList.get(i).getTitle(), selectedImageList.get(i).getDescription(), PdfPCell.LEFT, document, numberOfImagesPerPage));
+                        table.addCell(getCell(selectedImageList.get(i).getTitle(), selectedImageList.get(i).getDescription(),selectedImageList.get(i).isPointOfOrigin(),selectedImageList.get(i).isOverview(),selectedImageList.get(i).isDamage(), PdfPCell.LEFT, document, numberOfImagesPerPage));
                         document.add(table);
                         document.add(new Paragraph(" "));
 
@@ -302,7 +302,29 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
         cell.setFixedHeight(document.getPageSize().getHeight() / perPage - 100);
         return cell;
 
+    }public PdfPCell getCell(String title, String description,boolean isPointOfOrigin, boolean isOverview,boolean isDamage, int alignment, Document document, int perPage) {
+        PdfPCell cell = new PdfPCell();
+        Font font=new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.NORMAL);
+        Font boldFont=new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD);
+        if(isPointOfOrigin){
+            cell.addElement(new Phrase("P.O.O",boldFont));
+        }
+        if(isOverview){
+            cell.addElement(new Phrase("Overview",boldFont));
+        }
+        if(isDamage){
+            cell.addElement(new Phrase("Damage",boldFont));
+        }
+
+        cell.addElement(new Phrase(title,font));
+        cell.addElement(new Phrase(description,font));
+        cell.setPadding(0);
+        cell.setBorder(Rectangle.NO_BORDER);
+        cell.setFixedHeight(document.getPageSize().getHeight() / perPage - 100);
+        return cell;
+
     }
+
 
     public PdfPCell getCellImagCell(com.itextpdf.text.Image img, int alignment, Document document, int perPage) {
 

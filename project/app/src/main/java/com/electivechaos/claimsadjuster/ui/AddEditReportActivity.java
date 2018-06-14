@@ -778,7 +778,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
 
     public  boolean validateData(){
-        boolean validate= Pattern.compile("^[1-9]\\d*(\\.\\d+)?$").matcher(reportPOJO.getPropertyDetailsPOJO().getSquareFootage().trim()).matches();
+        boolean validateSquareFootage= Pattern.compile("^[1-9]\\d*(\\.\\d+)?$").matcher(reportPOJO.getPropertyDetailsPOJO().getSquareFootage().trim()).matches();
         if(reportPOJO.getReportTitle().trim().isEmpty()){
             CommonUtils.showSnackbarMessage(getString(R.string.please_enter_title), true, true,parentLayoutForMessages, AddEditReportActivity.this);
             return false;
@@ -796,11 +796,29 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
             return false;
         }
         else if(!reportPOJO.getPropertyDetailsPOJO().getSquareFootage().trim().isEmpty()){
-            if(!validate) {
+            if(!validateSquareFootage) {
                 CommonUtils.showSnackbarMessage(getString(R.string.please_add_valid_square_footage_message), true, true, parentLayoutForMessages, AddEditReportActivity.this);
                 return false;
             }
         }
+       Label label =  reportPOJO.getLabelArrayList().get(0);
+       ArrayList<ImageDetailsPOJO> elevationImages = label.getSelectedElevationImages();
+       if(elevationImages != null && elevationImages.size() > 0){
+           if(elevationImages.get(0).getImageUrl().isEmpty() || elevationImages.get(1).getImageUrl().isEmpty() || elevationImages.get(2).getImageUrl().isEmpty() || elevationImages.get(3).getImageUrl().isEmpty()){
+               CommonUtils.showSnackbarMessage(getString(R.string.please_add_all_starter_photos), true, true, parentLayoutForMessages, AddEditReportActivity.this);
+               return false;
+           }
+       }else{
+           CommonUtils.showSnackbarMessage(getString(R.string.please_add_all_starter_photos), true, true, parentLayoutForMessages, AddEditReportActivity.this);
+           return false;
+       }
+
+       if(label.getHouseNumber().trim().isEmpty()){
+           CommonUtils.showSnackbarMessage(getString(R.string.please_enter_house_number), true, true, parentLayoutForMessages, AddEditReportActivity.this);
+           return false;
+       }
+
+
         return true;
     }
 
