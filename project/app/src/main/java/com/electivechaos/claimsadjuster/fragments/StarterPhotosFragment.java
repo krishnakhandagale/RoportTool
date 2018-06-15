@@ -59,6 +59,7 @@ public class StarterPhotosFragment extends Fragment {
     private  static final int IMAGE_TWO_REQUEST_STARTER = 600;
     private  static final int IMAGE_THREE_REQUEST_STARTER = 700;
     private  static final int IMAGE_FOUR_REQUEST_STARTER = 800;
+    private  static final int HOUSE_NUMBER_REQUEST_STARTER = 900;
 
     private LinearLayout parentLayout;
 
@@ -75,11 +76,13 @@ public class StarterPhotosFragment extends Fragment {
     private ImageView imageTwoPreview;
     private ImageView imageThreePreview;
     private ImageView imageFourPreview;
+    private ImageView imageHouseNumberPreview;
 
     private ImageButton imgBtnRemoveOne;
     private ImageButton imgBtnRemoveTwo;
     private ImageButton imgBtnRemoveThree;
     private ImageButton imgBtnRemoveFour;
+    private ImageButton imgBtnRemoveHouseNumber;
 
     private Uri fileUri;
     private String mCurrentPhotoPath;
@@ -104,7 +107,6 @@ public class StarterPhotosFragment extends Fragment {
     private OnSetImageFileUriListener onSetImageFileUriListener;
     private OnStarterFragmentDataChangeListener onStarterFragmentDataChangeListener;
 
-    private TextInputEditText houseNumberEditText;
     private  String houseNumber = "";
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -142,25 +144,6 @@ public class StarterPhotosFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View selectImageView = inflater.inflate(R.layout.starter_fragment_layout, container, false);
-
-        houseNumberEditText = selectImageView.findViewById(R.id.houseNumber);
-
-        houseNumberEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                onStarterFragmentDataChangeListener.onHouseNumberChange(s.toString(),labelPosition);
-            }
-        });
         showFabBtn = selectImageView.findViewById(R.id.showFab);
         fabGoNextBtn = selectImageView.findViewById(R.id.fabGoNext);
         fabAddLabelBtn = selectImageView.findViewById(R.id.fabAddLabel);
@@ -207,14 +190,24 @@ public class StarterPhotosFragment extends Fragment {
         ImageView imageViewTwo = selectImageView.findViewById(R.id.imageViewTwo);
         ImageView imageViewThree = selectImageView.findViewById(R.id.imageViewThree);
         ImageView imageViewFour = selectImageView.findViewById(R.id.imageViewFour);
+        ImageView imageViewHouseNumber = selectImageView.findViewById(R.id.houseNumberImage);
 
 
         imageOnePreview = selectImageView.findViewById(R.id.imageOnePreview);
         imageTwoPreview = selectImageView.findViewById(R.id.imageTwoPreview);
         imageThreePreview = selectImageView.findViewById(R.id.imageThreePreview);
         imageFourPreview = selectImageView.findViewById(R.id.imageFourPreview);
+        imageHouseNumberPreview = selectImageView.findViewById(R.id.houseNumberPreview);
 
+        imageViewHouseNumber.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean result = PermissionUtilities.checkPermission(getActivity(), StarterPhotosFragment.this, PermissionUtilities.MY_APP_TAKE_FRONT_PHOTO_PERMISSIONS);
 
+                if (result)
+                    cameraIntent(HOUSE_NUMBER_REQUEST_STARTER);
+            }
+        });
         imageViewOne.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -262,11 +255,13 @@ public class StarterPhotosFragment extends Fragment {
         imgBtnRemoveTwo = selectImageView.findViewById(R.id.imgBtnRemoveTwo);
         imgBtnRemoveThree = selectImageView.findViewById(R.id.imgBtnRemoveThree);
         imgBtnRemoveFour = selectImageView.findViewById(R.id.imgBtnRemoveFour);
+        imgBtnRemoveHouseNumber =  selectImageView.findViewById(R.id.imgBtnRemoveHouseNumber);
 
         imgBtnRemoveOne.setVisibility(View.INVISIBLE);
         imgBtnRemoveTwo.setVisibility(View.INVISIBLE);
         imgBtnRemoveThree.setVisibility(View.INVISIBLE);
         imgBtnRemoveFour.setVisibility(View.INVISIBLE);
+        imgBtnRemoveHouseNumber.setVisibility(View.INVISIBLE);
 
         imgBtnRemoveOne.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -321,6 +316,20 @@ public class StarterPhotosFragment extends Fragment {
                     selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList, labelPosition);
                     imageFourPreview.setImageDrawable(null);
                     imgBtnRemoveFour.setVisibility(View.INVISIBLE);
+
+                }
+
+            }
+        });
+
+        imgBtnRemoveHouseNumber.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (houseNumber != null) {
+                    onStarterFragmentDataChangeListener.onHouseNumberChange("", labelPosition);
+                    imageHouseNumberPreview.setImageDrawable(null);
+                    imgBtnRemoveHouseNumber.setVisibility(View.INVISIBLE);
 
                 }
 
@@ -397,7 +406,12 @@ public class StarterPhotosFragment extends Fragment {
         }
 
         if(houseNumber !=  null){
-            houseNumberEditText.setText(houseNumber);
+            Glide.with(getActivity())
+                    .load("file://" + houseNumber)
+                    .thumbnail(0.1f)
+                    .apply(options)
+                    .into(imageHouseNumberPreview);
+            imgBtnRemoveHouseNumber.setVisibility(View.VISIBLE);
         }
     }
 
@@ -432,10 +446,9 @@ public class StarterPhotosFragment extends Fragment {
         if (fileUri != null) {
             onElevationImageCaptureResult(data, requestCode);
         } else {
-            Snackbar snackbar = Snackbar
-                    .make(parentLayout, "Something went wrong.Please retry with system camera app.", Snackbar.LENGTH_INDEFINITE);
+            Snackbar snackbar = Snackbar.make(parentLayout, R.string.camera_error_msg, Snackbar.LENGTH_INDEFINITE);
             snackbar.setActionTextColor(ContextCompat.getColor(getActivity(), R.color.white_color));
-            snackbar.setAction("RETRY", new View.OnClickListener() {
+            snackbar.setAction(R.string.retry, new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     openCamera(PermissionUtilities.MY_APP_TAKE_RIGHT_PHOTO_PERMISSIONS, IMAGE_FOUR_REQUEST_STARTER);
@@ -452,10 +465,9 @@ public class StarterPhotosFragment extends Fragment {
         if (fileUri != null) {
             onElevationImageCaptureResult(data, requestCode);
         } else {
-            Snackbar snackbar = Snackbar
-                    .make(parentLayout, "Something went wrong.Please retry with system camera app.", Snackbar.LENGTH_INDEFINITE);
+            Snackbar snackbar = Snackbar.make(parentLayout, R.string.camera_error_msg, Snackbar.LENGTH_INDEFINITE);
             snackbar.setActionTextColor(ContextCompat.getColor(getActivity(), R.color.white_color));
-            snackbar.setAction("RETRY", new View.OnClickListener() {
+            snackbar.setAction(R.string.retry, new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     openCamera(PermissionUtilities.MY_APP_TAKE_LEFT_PHOTO_PERMISSIONS, IMAGE_THREE_REQUEST_STARTER);
@@ -473,10 +485,9 @@ public class StarterPhotosFragment extends Fragment {
         if (fileUri != null) {
             onElevationImageCaptureResult(data, requestCode);
         } else {
-            Snackbar snackbar = Snackbar
-                    .make(parentLayout, "Something went wrong.Please retry with system camera app.", Snackbar.LENGTH_INDEFINITE);
+            Snackbar snackbar = Snackbar.make(parentLayout, R.string.camera_error_msg, Snackbar.LENGTH_INDEFINITE);
             snackbar.setActionTextColor(ContextCompat.getColor(getActivity(), R.color.white_color));
-            snackbar.setAction("RETRY", new View.OnClickListener() {
+            snackbar.setAction(R.string.retry, new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     openCamera(PermissionUtilities.MY_APP_TAKE_FRONT_PHOTO_PERMISSIONS, IMAGE_ONE_REQUEST_STARTER);
@@ -493,10 +504,9 @@ public class StarterPhotosFragment extends Fragment {
         if (fileUri != null) {
             onElevationImageCaptureResult(data, requestCode);
         } else {
-            Snackbar snackbar = Snackbar
-                    .make(parentLayout, "Something went wrong.Please retry with system camera app.", Snackbar.LENGTH_INDEFINITE);
+            Snackbar snackbar = Snackbar.make(parentLayout, R.string.camera_error_msg, Snackbar.LENGTH_INDEFINITE);
             snackbar.setActionTextColor(ContextCompat.getColor(getActivity(), R.color.white_color));
-            snackbar.setAction("RETRY", new View.OnClickListener() {
+            snackbar.setAction(R.string.retry, new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     openCamera(PermissionUtilities.MY_APP_TAKE_BACK_PHOTO_PERMISSIONS, IMAGE_TWO_REQUEST_STARTER);
@@ -508,6 +518,26 @@ public class StarterPhotosFragment extends Fragment {
             snackbar.show();
         }
     }
+
+    public void onHouseNumberImmageCapture(Intent data, int requestCode) {
+        if (fileUri != null) {
+            onElevationImageCaptureResult(data, requestCode);
+        } else {
+            Snackbar snackbar = Snackbar.make(parentLayout, R.string.camera_error_msg, Snackbar.LENGTH_INDEFINITE);
+            snackbar.setActionTextColor(ContextCompat.getColor(getActivity(), R.color.white_color));
+            snackbar.setAction(R.string.retry, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    openCamera(PermissionUtilities.MY_APP_TAKE_BACK_PHOTO_PERMISSIONS, HOUSE_NUMBER_REQUEST_STARTER);
+                    v.setVisibility(View.GONE);
+                }
+            });
+            View snackBarView = snackbar.getView();
+            snackBarView.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.color_error));
+            snackbar.show();
+        }
+    }
+
 
     private void openCamera(int requestId, int cameraIntentReqCode) {
         boolean result = PermissionUtilities.checkPermission(getActivity(), StarterPhotosFragment.this, requestId);
@@ -604,6 +634,18 @@ public class StarterPhotosFragment extends Fragment {
                                 selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList, labelPosition);
                                 imgBtnRemoveFour.setVisibility(View.VISIBLE);
                             }
+                            else if (requestId == HOUSE_NUMBER_REQUEST_STARTER) {
+
+                                houseNumber = finalPath1;
+
+                                Glide.with(getActivity())
+                                        .load("file://" + houseNumber)
+                                        .apply(options)
+                                        .thumbnail(0.1f)
+                                        .into(imageHouseNumberPreview);
+                                onStarterFragmentDataChangeListener.onHouseNumberChange(houseNumber, labelPosition);
+                                imgBtnRemoveFour.setVisibility(View.VISIBLE);
+                            }
 
                         }
 
@@ -650,6 +692,14 @@ public class StarterPhotosFragment extends Fragment {
                     cameraIntent(IMAGE_FOUR_REQUEST_STARTER);
                 } else {
                     PermissionUtilities.checkPermission(getActivity(), StarterPhotosFragment.this, PermissionUtilities.MY_APP_TAKE_RIGHT_PHOTO_PERMISSIONS);
+                }
+                break;
+            }
+            case PermissionUtilities.MY_APP_TAKE_HOUSE_NUMBER_PHOTO_PERMISSIONS: {
+                if (grantResults.length == 3 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
+                    cameraIntent(HOUSE_NUMBER_REQUEST_STARTER);
+                } else {
+                    PermissionUtilities.checkPermission(getActivity(), StarterPhotosFragment.this, PermissionUtilities.MY_APP_TAKE_HOUSE_NUMBER_PHOTO_PERMISSIONS);
                 }
                 break;
             }

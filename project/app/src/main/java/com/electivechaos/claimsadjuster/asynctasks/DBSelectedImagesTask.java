@@ -9,31 +9,41 @@ import com.electivechaos.claimsadjuster.database.CategoryListDBHelper;
 import com.electivechaos.claimsadjuster.pojo.Label;
 import com.electivechaos.claimsadjuster.utils.CommonUtils;
 
+import java.lang.ref.WeakReference;
+
 /**
  * Created by nafeesa on 5/17/18.
  */
 
 public class DBSelectedImagesTask  extends AsyncTask<String,Void,Void> {
 
-    private Context context;
+
+    private WeakReference<Context> contextWeakReference;
+    private WeakReference<View> viewWeakReference;
     private boolean isProgressBar;
-    private View progressBarLayout;
     private CategoryListDBHelper categoryListDBHelper;
-    String type;
-    Label label;
+    private String type;
+    private Label label;
 
     public  DBSelectedImagesTask (Context context, View progressBarLayout, Label label,  boolean isProgressBar, CategoryListDBHelper categoryListDBHelper, String type) {
-        this.context = context;
         this.isProgressBar = isProgressBar;
         this.categoryListDBHelper = categoryListDBHelper;
         this.type = type;
         this.label = label;
-        this.progressBarLayout = progressBarLayout;
+        this.contextWeakReference = new WeakReference<>(context);
+        this.viewWeakReference = new WeakReference<>(progressBarLayout);
+
 
     }
 
     @Override
     protected void onPreExecute() {
+        Context context = contextWeakReference.get();
+        View progressBarLayout  =  viewWeakReference.get();
+
+        if(context == null){
+            return;
+        }
         CommonUtils.lockOrientation((Activity) context);
         if(isProgressBar)
         {
@@ -57,6 +67,12 @@ public class DBSelectedImagesTask  extends AsyncTask<String,Void,Void> {
 
     @Override
     protected void onPostExecute(Void result) {
+
+        Context context = contextWeakReference.get();
+        View progressBarLayout  =  viewWeakReference.get();
+        if(context == null){
+            return;
+        }
         if(progressBarLayout != null){
             progressBarLayout.setVisibility(View.GONE);
         }

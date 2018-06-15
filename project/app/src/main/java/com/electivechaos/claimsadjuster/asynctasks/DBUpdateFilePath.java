@@ -41,6 +41,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -50,23 +51,29 @@ import java.util.Date;
  */
 
 public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
-
-    private Context context;
+    private WeakReference<Context> contextWeakReference;
+    private WeakReference<View> viewWeakReference;
     private boolean isProgressBar;
-    private View progressBarLayout;
     private CategoryListDBHelper categoryListDBHelper;
     private ReportPOJO reportPOJO;
 
     public  DBUpdateFilePath(Context context, View progressBarLayout, ReportPOJO reportPOJO, boolean isProgressBar, CategoryListDBHelper categoryListDBHelper) {
-        this.context = context;
         this.isProgressBar = isProgressBar;
         this.categoryListDBHelper = categoryListDBHelper;
         this.reportPOJO = reportPOJO;
-        this.progressBarLayout = progressBarLayout;
+        this.contextWeakReference = new WeakReference<>(context);
+        this.viewWeakReference = new WeakReference<>(progressBarLayout);
     }
 
     @Override
     protected void onPreExecute() {
+
+        Context context = contextWeakReference.get();
+        View progressBarLayout = viewWeakReference.get();
+
+        if(context == null){
+            return;
+        }
         CommonUtils.lockOrientation((Activity) context);
         if(isProgressBar)
         {
@@ -93,9 +100,6 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
         Font fontTitles = new Font(Font.FontFamily.TIMES_ROMAN, 16, Font.BOLD);
 
 
-
-
-        // This will be dynamic
         int numberOfImagesPerPage = integers[0];
 
         PDFDocHeader event = new PDFDocHeader(reportPOJO.getReportTitle());
@@ -259,6 +263,12 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
 
     @Override
     protected void onPostExecute(Void result) {
+        Context context = contextWeakReference.get();
+        View progressBarLayout = viewWeakReference.get();
+
+        if(context == null){
+            return;
+        }
         if(progressBarLayout != null && progressBarLayout.getVisibility() == View.VISIBLE){
             progressBarLayout.setVisibility(View.GONE);
         }
