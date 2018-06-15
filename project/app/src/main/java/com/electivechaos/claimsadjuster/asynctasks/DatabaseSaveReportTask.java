@@ -10,38 +10,48 @@ import com.electivechaos.claimsadjuster.interfaces.AsyncTaskStatusCallback;
 import com.electivechaos.claimsadjuster.pojo.ReportPOJO;
 import com.electivechaos.claimsadjuster.utils.CommonUtils;
 
+import java.lang.ref.WeakReference;
+
 /**
  * Created by nafeesa on 5/16/18.
  */
 
 public class DatabaseSaveReportTask extends AsyncTask<String,Void,Void> {
 
-    private Context context;
+    private WeakReference<Context> contextWeakReference;
+    private WeakReference<View> viewWeakReference;
+
     private boolean isProgressBar;
-    private View progressBarLayout;
     private CategoryListDBHelper categoryListDBHelper;
     private ReportPOJO reportPOJO;
     private AsyncTaskStatusCallback asyncTaskStatusCallback;
 
     public  DatabaseSaveReportTask(Context context, View progressBarLayout, ReportPOJO reportPOJO, boolean isProgressBar, CategoryListDBHelper categoryListDBHelper) {
-        this.context = context;
         this.isProgressBar = isProgressBar;
         this.categoryListDBHelper = categoryListDBHelper;
         this.reportPOJO = reportPOJO;
-        this.progressBarLayout = progressBarLayout;
+        this.contextWeakReference = new WeakReference<>(context);
+        this.viewWeakReference = new WeakReference<>(progressBarLayout);
     }
 
     public  DatabaseSaveReportTask(Context context, View progressBarLayout, ReportPOJO reportPOJO, boolean isProgressBar, CategoryListDBHelper categoryListDBHelper, AsyncTaskStatusCallback asyncTaskStatusCallback) {
-        this.context = context;
         this.isProgressBar = isProgressBar;
         this.categoryListDBHelper = categoryListDBHelper;
         this.reportPOJO = reportPOJO;
-        this.progressBarLayout = progressBarLayout;
         this.asyncTaskStatusCallback = asyncTaskStatusCallback;
+        this.contextWeakReference = new WeakReference<>(context);
+        this.viewWeakReference = new WeakReference<>(progressBarLayout);
     }
 
     @Override
     protected void onPreExecute() {
+
+        Context context = contextWeakReference.get();
+        View progressBarLayout = viewWeakReference.get();
+
+        if(context == null){
+            return;
+        }
         CommonUtils.lockOrientation((Activity) context);
 
         if(asyncTaskStatusCallback != null){
@@ -63,6 +73,11 @@ public class DatabaseSaveReportTask extends AsyncTask<String,Void,Void> {
 
     @Override
     protected void onPostExecute(Void result) {
+        Context context = contextWeakReference.get();
+        View progressBarLayout = viewWeakReference.get();
+        if(context == null){
+            return;
+        }
         if(asyncTaskStatusCallback != null){
             asyncTaskStatusCallback.onPostExecute(null,"report_save_complete");
         }

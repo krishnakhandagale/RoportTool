@@ -120,6 +120,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     private  static final int IMAGE_TWO_REQUEST_STARTER = 600;
     private  static final int IMAGE_THREE_REQUEST_STARTER = 700;
     private  static final int IMAGE_FOUR_REQUEST_STARTER = 800;
+    private  static final int HOUSE_NUMBER_REQUEST_STARTER = 900;
 
     private static final String CLAIM_DETAILS_FRAGMENT_TAG = "claim_details_fragment" ;
     private static final String PROPERTY_FRAGMENT_TAG = "property_details_fragment" ;
@@ -1345,6 +1346,24 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                             if(fm.getFragments().get(i) instanceof  StarterPhotosFragment){
                                 StarterPhotosFragment fragment = (StarterPhotosFragment) fm.getFragments().get(i);
                                 fragment.onElevationImageFourCapture(data,requestCode);
+                            }
+                        }
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+                case HOUSE_NUMBER_REQUEST_STARTER :
+
+                try {
+                    FragmentManager fm = getSupportFragmentManager();
+                    if(fm.getFragments() != null && fm.getFragments().size() >0){
+                        for(int i=0;i<fm.getFragments().size();i++){
+
+                            if(fm.getFragments().get(i) instanceof  StarterPhotosFragment){
+                                StarterPhotosFragment fragment = (StarterPhotosFragment) fm.getFragments().get(i);
+                                fragment.onHouseNumberImmageCapture(data,requestCode);
                             }
                         }
                     }

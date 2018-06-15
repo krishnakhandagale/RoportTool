@@ -8,32 +8,42 @@ import android.view.View;
 import com.electivechaos.claimsadjuster.database.CategoryListDBHelper;
 import com.electivechaos.claimsadjuster.utils.CommonUtils;
 
+import java.lang.ref.WeakReference;
+
 /**
  * Created by nafeesa on 5/17/18.
  */
 
 public class DBUpdateTaskOnTextChanged extends AsyncTask<String,Void,Void> {
 
-    private Context context;
+    private WeakReference<Context> contextWeakReference;
+    private  WeakReference<View>  viewWeakReference;
+
     private boolean isProgressBar;
-    View progressBarLayout;
-    CategoryListDBHelper categoryListDBHelper;
-    String value;
-    String type;
-    String reportId;
+    private CategoryListDBHelper categoryListDBHelper;
+    private String value;
+    private String type;
+    private String reportId;
 
     public  DBUpdateTaskOnTextChanged(Context context, View progressBarLayout, String value,String reportId, boolean isProgressBar, CategoryListDBHelper categoryListDBHelper, String type) {
-        this.context = context;
         this.isProgressBar = isProgressBar;
         this.categoryListDBHelper = categoryListDBHelper;
         this.value = value;
         this.type = type;
         this.reportId = reportId;
-        this.progressBarLayout = progressBarLayout;
+        this.contextWeakReference = new WeakReference<>(context);
+        this.viewWeakReference = new WeakReference<>(progressBarLayout);
     }
 
   @Override
     protected void onPreExecute() {
+
+        Context context = contextWeakReference.get();
+        View progressBarLayout = viewWeakReference.get();
+
+        if(context == null){
+            return;
+        }
         CommonUtils.lockOrientation((Activity) context);
         if(isProgressBar)
         {
@@ -92,6 +102,12 @@ public class DBUpdateTaskOnTextChanged extends AsyncTask<String,Void,Void> {
 
     @Override
     protected void onPostExecute(Void result) {
+        Context context = contextWeakReference.get();
+        View progressBarLayout = viewWeakReference.get();
+
+        if(context == null){
+            return;
+        }
         if(progressBarLayout != null){
             progressBarLayout.setVisibility(View.GONE);
         }
