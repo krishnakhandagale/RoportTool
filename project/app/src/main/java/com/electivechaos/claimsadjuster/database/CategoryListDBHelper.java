@@ -29,7 +29,7 @@ import java.util.Iterator;
  */
 
 public class CategoryListDBHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 156;
+    private static final int DATABASE_VERSION = 157;
 
 
     // Database Name

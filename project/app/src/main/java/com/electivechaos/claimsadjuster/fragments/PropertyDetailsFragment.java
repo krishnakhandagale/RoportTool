@@ -44,6 +44,7 @@ import com.electivechaos.claimsadjuster.ui.SidingActivity;
 import com.electivechaos.claimsadjuster.utils.CommonUtils;
 
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -170,7 +171,7 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
                 if (enteredDate.isEmpty() || enteredDate == null) {
 
                 } else {
-                    DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+                    DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
                     Date startDate = null;
                     try {
                         startDate = df.parse(enteredDate);
@@ -465,11 +466,12 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
 
     @Override
     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-        int yearFinal = i;
-        int monthFinal = i1 + 1;
-        int dayFinal = i2;
-        txtDate.setText(dayFinal + "/" + monthFinal + "/" + yearFinal);
-        onPropertyDetailsClickListener.setPropertyDate(dayFinal + "/" + monthFinal + "/" + yearFinal);
+
+        DecimalFormat formatter = new DecimalFormat("00");
+
+        String dateString =   formatter.format(i1 + 1) + "/" + formatter.format(i2) + "/" + i;
+        txtDate.setText(dateString);
+        onPropertyDetailsClickListener.setPropertyDate(dateString);
 
     }
 
