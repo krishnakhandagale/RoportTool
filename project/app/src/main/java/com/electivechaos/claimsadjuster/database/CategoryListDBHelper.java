@@ -29,7 +29,7 @@ import java.util.Iterator;
  */
 
 public class CategoryListDBHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 157;
+    private static final int DATABASE_VERSION = 158;
 
 
     // Database Name
@@ -247,7 +247,6 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 "Back Elevation",
                 "Left Elevation",
                 "Right Elevation",
-                /*"Elevations",*/
                 "Roof",
                 "Kitchen",
                 "Living Room",
@@ -302,8 +301,8 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
 
         final String foundation[] = {
                 "Concrete Slab",
-                "Pier",
-                "Beam"
+                "Pier and Beam",
+                "None"
         };
 
         final String  buildingType[] = {
