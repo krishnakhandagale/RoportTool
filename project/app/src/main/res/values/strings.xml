@@ -136,4 +136,6 @@
     <string name="p_o_o">P.O.O</string>
     <string name="please_add_all_starter_photos">Please click all starter photos.</string>
     <string name="please_enter_house_number">Please enter house number.</string>
+    <string name="camera_error_msg">Something went wrong.Please retry with system camera app.</string>
+    <string name="retry">RETRY</string>
 </resources>

@@ -48,18 +48,19 @@
                     android:layout_gravity="bottom"/>
 
                 <ImageView
+                    android:background="@drawable/rounded_button"
                     android:id="@+id/imageViewOne"
                     android:src="@drawable/image_picker_ic_camera"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
                 <ImageButton
+                    android:background="@drawable/rounded_button"
                     android:id="@+id/imgBtnRemoveOne"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
-                    android:background="@null"
-                    android:src="@drawable/ic_remove_circle_outline"/>
+                    android:src="@drawable/ic_remove_white"/>
             </FrameLayout>
 
             <FrameLayout
@@ -82,17 +83,18 @@
                     android:gravity="center"
                     android:layout_gravity="bottom"/>
                 <ImageView
+                    android:background="@drawable/rounded_button"
                     android:id="@+id/imageViewTwo"
                     android:src="@drawable/image_picker_ic_camera"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <ImageButton
+                    android:background="@drawable/rounded_button"
                     android:id="@+id/imgBtnRemoveTwo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
-                    android:background="@null"
-                    android:src="@drawable/ic_remove_circle_outline"/>
+                    android:src="@drawable/ic_remove_white"/>
             </FrameLayout>
             <FrameLayout
                 android:layout_margin="5dp"
@@ -114,17 +116,18 @@
                     android:gravity="center"
                     android:layout_gravity="bottom"/>
                 <ImageView
+                    android:background="@drawable/rounded_button"
                     android:id="@+id/imageViewThree"
                     android:src="@drawable/image_picker_ic_camera"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <ImageButton
+                    android:background="@drawable/rounded_button"
                     android:id="@+id/imgBtnRemoveThree"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
-                    android:background="@null"
-                    android:src="@drawable/ic_remove_circle_outline"/>
+                    android:src="@drawable/ic_remove_white"/>
             </FrameLayout>
             <FrameLayout
                 android:layout_margin="5dp"
@@ -146,17 +149,18 @@
                     android:gravity="center"
                     android:layout_gravity="bottom"/>
                 <ImageView
+                    android:background="@drawable/rounded_button"
                     android:id="@+id/imageViewFour"
                     android:src="@drawable/image_picker_ic_camera"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <ImageButton
+                    android:background="@drawable/rounded_button"
                     android:id="@+id/imgBtnRemoveFour"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
-                    android:background="@null"
-                    android:src="@drawable/ic_remove_circle_outline"/>
+                    android:src="@drawable/ic_remove_white"/>
             </FrameLayout>
 
         </LinearLayout>
