@@ -519,7 +519,7 @@ public class StarterPhotosFragment extends Fragment {
         }
     }
 
-    public void onHouseNumberImmageCapture(Intent data, int requestCode) {
+    public void onHouseNumberImageCapture(Intent data, int requestCode) {
         if (fileUri != null) {
             onElevationImageCaptureResult(data, requestCode);
         } else {
@@ -644,7 +644,7 @@ public class StarterPhotosFragment extends Fragment {
                                         .thumbnail(0.1f)
                                         .into(imageHouseNumberPreview);
                                 onStarterFragmentDataChangeListener.onHouseNumberChange(houseNumber, labelPosition);
-                                imgBtnRemoveFour.setVisibility(View.VISIBLE);
+                                imgBtnRemoveHouseNumber.setVisibility(View.VISIBLE);
                             }
 
                         }

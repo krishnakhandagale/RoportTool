@@ -1363,7 +1363,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
                             if(fm.getFragments().get(i) instanceof  StarterPhotosFragment){
                                 StarterPhotosFragment fragment = (StarterPhotosFragment) fm.getFragments().get(i);
-                                fragment.onHouseNumberImmageCapture(data,requestCode);
+                                fragment.onHouseNumberImageCapture(data,requestCode);
                             }
                         }
                     }
