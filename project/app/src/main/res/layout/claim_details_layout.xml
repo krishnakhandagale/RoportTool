@@ -4,16 +4,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <android.support.design.widget.TabLayout
-        android:id="@+id/claim_details_tab_layout"
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="@style/ThemeOverlay.AppCompat.Light"/>
+        android:layout_height="wrap_content">
+        <android.support.design.widget.TabLayout
+            android:id="@+id/claim_details_tab_layout"
+            android:layout_width="match_parent"
+            android:background="?attr/colorPrimary"
+            android:layout_height="?attr/actionBarSize"
+            android:theme="@style/ThemeOverlay.AppCompat.Light"/>
+    </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.view.ViewPager
-        android:layout_marginTop="36dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:id="@+id/claim_details_view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
@@ -28,7 +31,8 @@
         android:visibility="invisible"
         app:elevation="6dp"
         app:pressedTranslationZ="12dp"
-        android:src="@drawable/pdf_gen" />
+        android:src="@drawable/pdf_gen"
+        android:layout_marginEnd="130dp" />
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabAddLabel"
         android:layout_width="wrap_content"
