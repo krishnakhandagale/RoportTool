@@ -50,7 +50,7 @@
                 <ImageView
                     android:background="@drawable/rounded_button"
                     android:id="@+id/imageViewOne"
-                    android:src="@drawable/image_picker_ic_camera"
+                    android:src="@drawable/ic_camera_16"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
@@ -85,7 +85,7 @@
                 <ImageView
                     android:background="@drawable/rounded_button"
                     android:id="@+id/imageViewTwo"
-                    android:src="@drawable/image_picker_ic_camera"
+                    android:src="@drawable/ic_camera_16"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <ImageButton
@@ -118,7 +118,7 @@
                 <ImageView
                     android:background="@drawable/rounded_button"
                     android:id="@+id/imageViewThree"
-                    android:src="@drawable/image_picker_ic_camera"
+                    android:src="@drawable/ic_camera_16"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <ImageButton
@@ -151,7 +151,7 @@
                 <ImageView
                     android:background="@drawable/rounded_button"
                     android:id="@+id/imageViewFour"
-                    android:src="@drawable/image_picker_ic_camera"
+                    android:src="@drawable/ic_camera_16"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <ImageButton
