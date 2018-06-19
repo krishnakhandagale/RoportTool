@@ -34,7 +34,7 @@ public class ImageFragment extends Fragment {
     private boolean imgIsPointOfOrigin;
 
     private int position;
-    MonitorImageDetailsChange monitorImageDetailsChange;
+    private MonitorImageDetailsChange monitorImageDetailsChange;
     static ViewPager mPagerInstance;
 
     public static ImageFragment init(ImageDetailsPOJO imageDetails, int position, ViewPager mPager) {
