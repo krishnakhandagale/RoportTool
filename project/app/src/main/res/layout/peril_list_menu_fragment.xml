@@ -19,7 +19,8 @@
         android:visibility="invisible"
         app:elevation="6dp"
         app:pressedTranslationZ="12dp"
-        android:src="@drawable/pdf_gen" />
+        android:src="@drawable/pdf_gen"
+        android:layout_marginEnd="130dp" />
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabAddLabel"
         android:layout_width="wrap_content"

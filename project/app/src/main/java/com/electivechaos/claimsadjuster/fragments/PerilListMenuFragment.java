@@ -149,27 +149,25 @@ public class PerilListMenuFragment extends Fragment{
 
     private  void updatePerilDetails(){
         perilPOJOS = mCategoryListDBHelper.getPeril();
-        mAdapter = new PerilListMenuFragment.PerilListAdapter(perilPOJOS, getContext(),perilPOJODetails);
+        mAdapter = new PerilListMenuFragment.PerilListAdapter(perilPOJOS,perilPOJODetails);
         recyclerView.setAdapter(mAdapter);
 
     }
 
     public class PerilListAdapter extends RecyclerView.Adapter<PerilListMenuFragment.PerilListAdapter.MyViewHolder> {
-        private Context context;
-        public List<PerilPOJO> perilPOJOS;
+        List<PerilPOJO> perilPOJOS;
 
         private int sSelected;
         private CheckBox lastSelectedCheckbox;
         PerilPOJO perilPOJODetails;
 
-        public PerilListAdapter(ArrayList<PerilPOJO> perilPOJOS, Context context, PerilPOJO perilPOJODetails) {
-            this.context = context;
+        PerilListAdapter(ArrayList<PerilPOJO> perilPOJOS, PerilPOJO perilPOJODetails) {
             this.perilPOJOS = perilPOJOS;
             this.perilPOJODetails = perilPOJODetails;
             this.sSelected = getSelectedPosition();
         }
 
-        public int getSelectedPosition(){
+        int getSelectedPosition(){
             for(int i=0;i<perilPOJOS.size();i++){
                 if(perilPOJOS.get(i).getName().equals(perilPOJODetails.getName())){
                     return i;
@@ -231,9 +229,9 @@ public class PerilListMenuFragment extends Fragment{
 
         public class MyViewHolder extends RecyclerView.ViewHolder{
             public TextView title, desc;
-            public CheckBox chkItem;
+            CheckBox chkItem;
 
-            public MyViewHolder(View itemView) {
+            MyViewHolder(View itemView) {
                 super(itemView);
                 title = itemView.findViewById(R.id.category_name);
                 desc = itemView.findViewById(R.id.category_description);
