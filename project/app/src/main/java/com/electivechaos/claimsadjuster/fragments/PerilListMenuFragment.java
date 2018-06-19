@@ -10,11 +10,13 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.electivechaos.claimsadjuster.R;
@@ -196,28 +198,60 @@ public class PerilListMenuFragment extends Fragment{
                 lastSelectedCheckbox = holder.chkItem;
 
             }
+
+
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onCheckChange(holder,perilPOJO);
+                }
+            });
             holder.chkItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(((CheckBox) v).isChecked()){
-                        sSelected = holder.getAdapterPosition();
-                        onPerilSelectionListener.setPeril(perilPOJO);
-
-                         if(lastSelectedCheckbox != null && (int) lastSelectedCheckbox.getTag() != holder.getAdapterPosition()){
-                            lastSelectedCheckbox.setChecked(false);
-                            lastSelectedCheckbox = (CheckBox) v;
-                        }else{
-                             lastSelectedCheckbox = (CheckBox) v;
-                         }
-
-                    }else{
-                        lastSelectedCheckbox = null;
-                        sSelected = -1;
-                        onPerilSelectionListener.setPeril(new PerilPOJO());
-                    }
+                    onCheckChangeFromCheckbox(holder,perilPOJO);
                 }
             });
 
+        }
+
+       void onCheckChange(MyViewHolder holder, PerilPOJO perilPOJO){
+
+            holder.chkItem.setChecked(!holder.chkItem.isChecked());
+            if(holder.chkItem.isChecked()){
+                sSelected = holder.getAdapterPosition();
+                onPerilSelectionListener.setPeril(perilPOJO);
+                if(lastSelectedCheckbox != null && (int) lastSelectedCheckbox.getTag() != holder.getAdapterPosition()){
+                    lastSelectedCheckbox.setChecked(false);
+                    lastSelectedCheckbox = holder.chkItem;
+                }else{
+                    lastSelectedCheckbox = holder.chkItem;
+                }
+
+            }else{
+                lastSelectedCheckbox = null;
+                sSelected = -1;
+                onPerilSelectionListener.setPeril(new PerilPOJO());
+            }
+        }
+
+        void onCheckChangeFromCheckbox(MyViewHolder holder, PerilPOJO perilPOJO){
+
+            if(holder.chkItem.isChecked()){
+                sSelected = holder.getAdapterPosition();
+                onPerilSelectionListener.setPeril(perilPOJO);
+                if(lastSelectedCheckbox != null && (int) lastSelectedCheckbox.getTag() != holder.getAdapterPosition()){
+                    lastSelectedCheckbox.setChecked(false);
+                    lastSelectedCheckbox = holder.chkItem;
+                }else{
+                    lastSelectedCheckbox = holder.chkItem;
+                }
+
+            }else{
+                lastSelectedCheckbox = null;
+                sSelected = -1;
+                onPerilSelectionListener.setPeril(new PerilPOJO());
+            }
         }
 
         @Override
