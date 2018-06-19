@@ -1,28 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
-    >
+    android:layout_width="match_parent">
 <LinearLayout
+
     android:id="@+id/lossLocationParentLayout"
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="wrap_content">
     <AutoCompleteTextView
         android:textSize="16sp"
         android:hint="@string/search_place"
-        android:layout_marginTop="36dp"
         android:id="@+id/place_autocomplete_text_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     <com.google.android.gms.maps.MapView
-        android:layout_marginTop="36dp"
         android:id="@+id/mapView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
+        android:layout_height="320dp" />
 </LinearLayout>
-</android.support.design.widget.CoordinatorLayout>
+</ScrollView>
