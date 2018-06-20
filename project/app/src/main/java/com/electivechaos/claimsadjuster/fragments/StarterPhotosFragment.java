@@ -17,6 +17,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -326,7 +327,7 @@ public class StarterPhotosFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                if (houseNumber != null) {
+                if (!TextUtils.isEmpty(houseNumber)) {
                     onStarterFragmentDataChangeListener.onHouseNumberChange("", labelPosition);
                     imageHouseNumberPreview.setImageDrawable(null);
                     imgBtnRemoveHouseNumber.setVisibility(View.INVISIBLE);
@@ -405,7 +406,7 @@ public class StarterPhotosFragment extends Fragment {
             }
         }
 
-        if(houseNumber !=  null){
+        if (!TextUtils.isEmpty(houseNumber)) {
             Glide.with(getActivity())
                     .load("file://" + houseNumber)
                     .thumbnail(0.1f)

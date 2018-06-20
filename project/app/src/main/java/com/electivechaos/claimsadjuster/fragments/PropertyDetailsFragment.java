@@ -211,7 +211,7 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
                             }
                         });
                         ad.setTitle("Roof System");
-                        CustomMenuAdapter adapter = new CustomMenuAdapter(roofSystemList, propertyDetailsPOJO.getRoofSystem().toString(), "roof_system");
+                        CustomMenuAdapter adapter = new CustomMenuAdapter(roofSystemList, propertyDetailsPOJO.getRoofSystem(), "roof_system");
 
                         ad.setSingleChoiceItems(adapter, -1, new DialogInterface.OnClickListener() {
 

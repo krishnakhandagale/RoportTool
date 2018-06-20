@@ -16,6 +16,7 @@ public class ImageDetailsPOJO implements Parcelable {
     private boolean isDamage;
     private boolean isOverview;
     private boolean isPointOfOrigin;
+    private String coverageTye; // Default value from label
 
     protected ImageDetailsPOJO(Parcel in) {
         imageUrl = in.readString();
@@ -24,6 +25,7 @@ public class ImageDetailsPOJO implements Parcelable {
         isDamage = in.readByte() != 0;
         isOverview = in.readByte() != 0;
         isPointOfOrigin = in.readByte() != 0;
+        coverageTye = in.readString();
     }
 
     public boolean isPointOfOrigin() {
@@ -58,6 +60,7 @@ public class ImageDetailsPOJO implements Parcelable {
         this.imageUrl = "";
         this.title = "";
         this.description = "";
+        this.coverageTye = "";
     }
     public String getImageUrl() {
         return imageUrl;
@@ -95,6 +98,14 @@ public class ImageDetailsPOJO implements Parcelable {
         isOverview = overview;
     }
 
+    public String getCoverageTye() {
+        return coverageTye;
+    }
+
+    public void setCoverageTye(String coverageTye) {
+        this.coverageTye = coverageTye;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -108,5 +119,6 @@ public class ImageDetailsPOJO implements Parcelable {
         dest.writeByte((byte)(isDamage ? 1 : 0));
         dest.writeByte((byte)(isOverview ? 1 : 0));
         dest.writeByte((byte)(isPointOfOrigin ? 1 : 0));
+        dest.writeString(coverageTye);
     }
 }

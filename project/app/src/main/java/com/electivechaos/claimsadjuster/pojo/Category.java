@@ -4,6 +4,15 @@ public class Category {
     String categoryName;
     String categoryDescription;
     int categoryId;
+    String coverageType;
+
+    public String getCoverageType() {
+        return coverageType;
+    }
+
+    public void setCoverageType(String coverageType) {
+        this.coverageType = coverageType;
+    }
 
     public int getCategoryId() {
         return categoryId;
