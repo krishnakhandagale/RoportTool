@@ -89,6 +89,18 @@
 
 
     </LinearLayout>
+    <TextView
+        android:layout_marginTop="10dp"
+        android:layout_gravity="start|top"
+        android:id="@+id/imageCoverageType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
+        android:background="@drawable/shape_chip_drawable_gray"
+        android:text="@string/coverage_type"
+        android:textColor="@color/black"
+        android:textStyle="bold" />
 
 
 </FrameLayout>
