@@ -27,11 +27,14 @@ import com.electivechaos.claimsadjuster.BaseActivity;
 import com.electivechaos.claimsadjuster.DepthPageTransformer;
 import com.electivechaos.claimsadjuster.ImageFragment;
 import com.electivechaos.claimsadjuster.R;
+import com.electivechaos.claimsadjuster.fragments.AddEditReportSelectedImagesFragment;
 import com.electivechaos.claimsadjuster.listeners.OnLastSelectionChangeListener;
 import com.electivechaos.claimsadjuster.pojo.Image;
 import com.electivechaos.claimsadjuster.pojo.ImageDetailsPOJO;
 
 import java.util.ArrayList;
+
+import static com.electivechaos.claimsadjuster.ui.AddEditCategoryActivity.ADD_COVERAGE_REQUEST_CODE;
 
 public class ImageSliderActivity extends BaseActivity implements ImageFragment.MonitorImageDetailsChange {
     static  int ITEMS;
@@ -45,6 +48,7 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
     private ArrayList<Image> imageList;
     private int lastSelectedPosition = -1;
     private int labelPosition = -1;
+    private String labelDefaultCoverageType = "";
 
     private OnLastSelectionChangeListener onLastSelectionChangeListener;
     @Override
@@ -57,12 +61,14 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
 
         imageList = (ArrayList<Image>) getIntent().getExtras().get("ImageList");
         labelPosition = getIntent().getExtras().getInt("labelPosition");
+        labelDefaultCoverageType = getIntent().getExtras().getString("labelDefaultCoverageType");
         imagesInformation = new ArrayList<>();
         for(int i =0; i< imageList.size();i++){
             ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
             imgObj.setImageUrl(imageList.get(i).getPath());
             imgObj.setTitle("");
             imgObj.setDescription("");
+            imgObj.setCoverageTye(labelDefaultCoverageType);
             imagesInformation.add(imgObj);
         }
 
@@ -70,6 +76,7 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
             lastSelectedPosition = savedInstanceState.getInt("lastSelectedPosition",-1);
             imagesInformation = (ArrayList<ImageDetailsPOJO>) savedInstanceState.getSerializable("imagesInformation");
             labelPosition = savedInstanceState.getInt("labelPosition");
+            labelDefaultCoverageType = savedInstanceState.getString("labelDefaultCoverageType");
         }
 
         ITEMS = imageList.size();
@@ -137,8 +144,15 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
         imagesInformation.get(position).setPointOfOrigin(isPointOfOrigin);
     }
 
+    @Override
+    public void setUnsetCoverageType(String coverageType, int position) {
+        imagesInformation.get(position).setCoverageTye(coverageType);
+    }
+
     public class ImagePagerAdapter extends FragmentStatePagerAdapter {
-        public ImagePagerAdapter(FragmentManager fragmentManager) {
+        private Fragment mCurrentFragment;
+
+        ImagePagerAdapter(FragmentManager fragmentManager) {
             super(fragmentManager);
         }
 
@@ -151,6 +165,18 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
         public Fragment getItem(int position) {
             return ImageFragment.init(imagesInformation.get(position),position,mPager);
         }
+
+        @Override
+        public void setPrimaryItem(ViewGroup container, int position, Object object) {
+            if (getCurrentFragment() != object) {
+                mCurrentFragment = ((Fragment) object);
+            }
+            super.setPrimaryItem(container, position, object);
+        }
+
+        Fragment getCurrentFragment() {
+            return mCurrentFragment;
+        }
     }
 
     public class ImagePreviewListAdapter extends RecyclerView.Adapter<ImagePreviewListAdapter.MyViewHolder> {
@@ -158,7 +184,7 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
         private ArrayList<ImageDetailsPOJO> imageList;
         private Context context;
         private ViewPager mPager;
-        private int lastSelectedPos = -1;
+        private int lastSelectedPos;
         private OnLastSelectionChangeListener onLastSelectionChangeListener;
         public class MyViewHolder extends RecyclerView.ViewHolder {
             public ImageView imageView;
@@ -250,11 +276,24 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
         outState.putInt("lastSelectedPosition",lastSelectedPosition);
         outState.putSerializable("imagesInformation",imagesInformation);
         outState.putInt("labelPosition",labelPosition);
+        outState.putString("labelDefaultCoverageType",labelDefaultCoverageType);
 
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK){
+            if(requestCode == ADD_COVERAGE_REQUEST_CODE){
+                Bundle b = data.getExtras().getBundle("coverageDetails");
+                ((ImageFragment) mAdapter.getCurrentFragment()).setCoverageType(b.getString("name"));
+            }
+        }
+
     }
 }

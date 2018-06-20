@@ -354,7 +354,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         if( labelArrayList!= null && labelArrayList.size() > selectedFragmentPosition - 4 && labelArrayList.get(selectedFragmentPosition - 4) != null){
             FragmentManager transactionManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
-            AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment = AddEditReportSelectedImagesFragment.initFragment(labelArrayList.get(selectedFragmentPosition - 4).getSelectedImages(),labelArrayList.get(selectedFragmentPosition - 4).getSelectedElevationImages(), selectedFragmentPosition - 4,fileUri);
+            AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment = AddEditReportSelectedImagesFragment.initFragment(labelArrayList.get(selectedFragmentPosition - 4).getSelectedImages(),labelArrayList.get(selectedFragmentPosition - 4).getSelectedElevationImages(), selectedFragmentPosition - 4,fileUri, labelArrayList.get(selectedFragmentPosition - 4).getCoverageType());
             fragmentTransaction.replace(R.id.content_frame, addEditReportSelectedImagesFragment,LABEL_FRAGMENT_TAG);
             fragmentTransaction.commit();
 
@@ -566,6 +566,8 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                                     label.setCategoryID(categories.get(pos).getCategoryId());
                                     label.setName(categories.get(pos).getCategoryName());
                                     label.setReportId(reportPOJO.getId());
+                                    label.setDescription(categories.get(pos).getCategoryDescription());
+                                    label.setCoverageType(categories.get(pos).getCoverageType());
                                     String id = "";
                                     try {
                                         id = new DatabaseTaskHelper(AddEditReportActivity.this, label).execute().get();
@@ -603,7 +605,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment = AddEditReportSelectedImagesFragment.initFragment(new ArrayList<ImageDetailsPOJO>(),new ArrayList<ImageDetailsPOJO>(),labelList.size()-1, fileUri);
+        AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment = AddEditReportSelectedImagesFragment.initFragment(new ArrayList<ImageDetailsPOJO>(),new ArrayList<ImageDetailsPOJO>(),labelList.size()-1, fileUri,labelList.get(selectedFragmentPosition - 4).getCoverageType());
         fragmentTransaction.replace(R.id.content_frame, addEditReportSelectedImagesFragment);
         fragmentTransaction.commit();
         selectedFragmentPosition = (labelList.size() -1) + 4;
@@ -630,7 +632,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
             if( labelArrayList!= null && labelArrayList.size() > selectedFragmentPosition - 4 && labelArrayList.get(selectedFragmentPosition - 4) != null) {
                 FragmentManager transactionManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
-                AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment = AddEditReportSelectedImagesFragment.initFragment(labelArrayList.get(selectedFragmentPosition - 4).getSelectedImages(), labelArrayList.get(selectedFragmentPosition - 4).getSelectedElevationImages(), selectedFragmentPosition - 4, fileUri);
+                AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment = AddEditReportSelectedImagesFragment.initFragment(labelArrayList.get(selectedFragmentPosition - 4).getSelectedImages(), labelArrayList.get(selectedFragmentPosition - 4).getSelectedElevationImages(), selectedFragmentPosition - 4, fileUri,labelArrayList.get(selectedFragmentPosition - 4).getCoverageType());
                 fragmentTransaction.replace(R.id.content_frame, addEditReportSelectedImagesFragment);
                 fragmentTransaction.commit();
 
@@ -1067,12 +1069,14 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                     int categoryId = dataFromActivity.getInt("categoryId");
                     String categoryName = dataFromActivity.get("categoryName").toString();
                     String categoryDescription = dataFromActivity.get("categoryDescription").toString();
+                    String categoryCoverageType= dataFromActivity.get("categoryCoverageType").toString();
 
                     final Label label = new Label();
                     label.setCategoryID(categoryId);
                     label.setName(categoryName);
                     label.setDescription(categoryDescription);
                     label.setReportId(reportPOJO.getId());
+                    label.setCoverageType(categoryCoverageType);
 
                     String labelId = "";
                     try {
@@ -1103,6 +1107,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                     selectedImage.setIsDamage(imageDetailsPOJO.isDamage());
                     selectedImage.setOverview(imageDetailsPOJO.isOverview());
                     selectedImage.setPointOfOrigin(imageDetailsPOJO.isPointOfOrigin());
+                    selectedImage.setCoverageTye(imageDetailsPOJO.getCoverageTye());
 
                 }else{
                     if (imageDetailsPOJOArrayList == null) {
@@ -1132,11 +1137,13 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
             case  ADD_IMAGE_DETAILS:
                 ArrayList<ImageDetailsPOJO> selectedImageListReturned = (ArrayList<ImageDetailsPOJO>) data.getExtras().getSerializable("selected_images");
                 int labelPositionForAddImageDetails = data.getExtras().getInt("labelPosition");
-                ArrayList<ImageDetailsPOJO> selectedImageList = reportPOJO.getLabelArrayList().get(labelPositionForAddImageDetails).getSelectedImages();
+                Label label = reportPOJO.getLabelArrayList().get(labelPositionForAddImageDetails);
+                ArrayList<ImageDetailsPOJO> selectedImageList = label.getSelectedImages();
                 if (selectedImageList == null) {
                     selectedImageList = new ArrayList<>();
                 }
                 selectedImageListReturned.addAll(selectedImageList);
+
                 setSelectedImages(selectedImageListReturned,labelPositionForAddImageDetails);
 
                 try {

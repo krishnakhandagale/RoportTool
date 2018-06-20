@@ -59,6 +59,10 @@ public class MainTabsActivity extends BaseActivity {
                 Intent perilIntent = new Intent(this,PerilDetailsActivity.class);
                 startActivity(perilIntent);
                 break;
+            case R.id.Coverage:
+                Intent coverageIntent = new Intent(this,CoverageDetailsActivity.class);
+                startActivity(coverageIntent);
+                break;
 
         }
         return super.onOptionsItemSelected(item);
