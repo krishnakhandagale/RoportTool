@@ -72,7 +72,9 @@
         <activity android:name=".ui.FoundationActivity" />
         <activity android:name=".ui.BuildingTypeActivity" />
         <activity android:name=".ui.CategoryDetailsActivity" />
-        <activity android:name=".ui.PerilDetailsActivity"></activity>
+        <activity android:name=".ui.PerilDetailsActivity"/>
+        <activity android:name=".ui.CoverageDetailsActivity"/>
+        <activity android:name=".ui.AddEditCoverageActivity"/>
     </application>
 
 </manifest>
