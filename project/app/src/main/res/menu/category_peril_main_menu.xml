@@ -8,4 +8,8 @@
         android:id="@+id/Peril"
         android:title="@string/peril_menu" />
 
+    <item
+        android:id="@+id/Coverage"
+        android:title="@string/coverage_menu" />
+
 </menu>

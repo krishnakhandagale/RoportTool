@@ -35,7 +35,6 @@ public class PerilDetailsActivity extends AppCompatActivity {
     public ArrayList<PerilPOJO> perilPOJOS = new ArrayList<>();
     private RecyclerView recyclerView;
     static CategoryListDBHelper mCategoryListDBHelper;
-    private PerilListAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +43,7 @@ public class PerilDetailsActivity extends AppCompatActivity {
 
         Toolbar toolbar =  findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Peril Details");
+        getSupportActionBar().setTitle("Manage Peril");
 
 
         recyclerView = findViewById(R.id.recycler_view);
@@ -81,14 +80,14 @@ public class PerilDetailsActivity extends AppCompatActivity {
 
     private  void updatePerilDetails(){
         perilPOJOS = mCategoryListDBHelper.getPeril();
-        mAdapter = new PerilListAdapter(perilPOJOS,PerilDetailsActivity.this);
+        PerilListAdapter mAdapter = new PerilListAdapter(perilPOJOS, PerilDetailsActivity.this);
         recyclerView.setAdapter(mAdapter);
     }
 
     public class PerilListAdapter extends RecyclerView.Adapter<PerilListAdapter.MyViewHolder> {
         private Context context;
-        public List<PerilPOJO> perilPOJOS;
-        public PerilListAdapter(ArrayList<PerilPOJO> perilPOJOS, Context context) {
+        List<PerilPOJO> perilPOJOS;
+        PerilListAdapter(ArrayList<PerilPOJO> perilPOJOS, Context context) {
             this.context = context;
             this.perilPOJOS = perilPOJOS;
         }

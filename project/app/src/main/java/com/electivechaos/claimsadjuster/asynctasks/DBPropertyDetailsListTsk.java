@@ -42,28 +42,27 @@ public class DBPropertyDetailsListTsk extends AsyncTask<String,Integer,ArrayList
     @Override
     protected ArrayList doInBackground(String... strings) {
 
-        ArrayList list=null;
         if(type.equalsIgnoreCase("roof_system")) {
 
-            ArrayList<RoofSystemPOJO> rlist =categoryListDBHelper.getRoofSystemList();
-            return rlist;
+            return categoryListDBHelper.getRoofSystemList();
         }
         else if(type.equalsIgnoreCase("siding")) {
 
-            ArrayList<SidingPOJO> rlist = categoryListDBHelper.getSidingList();
-           return rlist;
+            return categoryListDBHelper.getSidingList();
         }
         else if(type.equalsIgnoreCase("foundation")) {
 
-            ArrayList<FoundationPOJO> rlist = categoryListDBHelper.getFoundationList();
-            return rlist;
+            return categoryListDBHelper.getFoundationList();
         }
         else if(type.equalsIgnoreCase("building_type")) {
 
-            ArrayList<BuildingTypePOJO> rlist = categoryListDBHelper.getBuildingTypeList();
-            return rlist;
+            return categoryListDBHelper.getBuildingTypeList();
+
+        }else if(type.equalsIgnoreCase("coverage_type")) {
+
+            return categoryListDBHelper.getCoverageList();
         }
-        return list;
+        return null;
     }
 
     @Override

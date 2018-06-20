@@ -110,6 +110,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
     private ArrayList<ImageDetailsPOJO> selectedImageList = null;
     private ArrayList<ImageDetailsPOJO> selectedElevationImagesList = new ArrayList<>();
     private int labelPosition;
+    private String labelDefaultCoverageType;
 
 
     private OnImageRemovalListener onImageRemovalListener = null;
@@ -126,7 +127,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
     private OnGenerateReportClickListener onGenerateReportClickListener;
     private OnSetImageFileUriListener onSetImageFileUriListener;
 
-    public static AddEditReportSelectedImagesFragment initFragment(ArrayList<ImageDetailsPOJO> selectedImageList, ArrayList<ImageDetailsPOJO> selectedElevationImagesList, int position, String fileUri) {
+    public static AddEditReportSelectedImagesFragment initFragment(ArrayList<ImageDetailsPOJO> selectedImageList, ArrayList<ImageDetailsPOJO> selectedElevationImagesList, int position, String fileUri, String labelDefaultCoverageType) {
         AddEditReportSelectedImagesFragment fragment = new AddEditReportSelectedImagesFragment();
         Bundle args = new Bundle();
 
@@ -143,7 +144,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
         args.putSerializable("selectedElevationImagesList", selectedElevationImagesList);
         args.putInt("position", position);
         args.putString("fileUri", fileUri);
-
+        args.putString("labelDefaultCoverageType",labelDefaultCoverageType);
         fragment.setArguments(args);
         return fragment;
     }
@@ -155,6 +156,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
             selectedElevationImagesList = (ArrayList<ImageDetailsPOJO>) getArguments().get("selectedElevationImagesList");
             selectedImageList = (ArrayList<ImageDetailsPOJO>) getArguments().get("selectedImagesList");
             labelPosition = (int) getArguments().get("position");
+            labelDefaultCoverageType = (String) getArguments().get("labelDefaultCoverageType");
 
             mCurrentPhotoPath = getArguments().getString("fileUri");
             if(mCurrentPhotoPath != null){
@@ -784,6 +786,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                     imgObj.setOverview(false);
                     imgObj.setPointOfOrigin(false);
                     imgObj.setImageUrl(path);
+                    imgObj.setCoverageTye(labelDefaultCoverageType);
                     ImageHelper.revokeAppPermission(getActivity(), fileUri);
                     Intent intent = new Intent(getActivity(), SingleImageDetailsActivity.class);
                     intent.putExtra("image_details", imgObj);
@@ -798,7 +801,9 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
         selectedImages = data.getParcelableArrayListExtra("ImageUrls");
         Intent intent = new Intent(getActivity(), ImageSliderActivity.class);
         intent.putExtra("ImageList", selectedImages);
+
         intent.putExtra("labelPosition",labelPosition);
+        intent.putExtra("labelDefaultCoverageType",labelDefaultCoverageType);
         getActivity().startActivityForResult(intent, ADD_IMAGE_DETAILS);
     }
 

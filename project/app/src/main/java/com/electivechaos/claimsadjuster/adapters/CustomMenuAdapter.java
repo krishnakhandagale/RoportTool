@@ -11,6 +11,7 @@ import android.widget.CheckedTextView;
 
 import com.electivechaos.claimsadjuster.R;
 import com.electivechaos.claimsadjuster.pojo.BuildingTypePOJO;
+import com.electivechaos.claimsadjuster.pojo.CoveragePOJO;
 import com.electivechaos.claimsadjuster.pojo.FoundationPOJO;
 import com.electivechaos.claimsadjuster.pojo.RoofSystemPOJO;
 import com.electivechaos.claimsadjuster.pojo.SidingPOJO;
@@ -27,11 +28,11 @@ public class CustomMenuAdapter extends BaseAdapter {
     private String value;
     private String type;
 
-    public CustomMenuAdapter(ArrayList arrayList, String value, String type){
+    public  CustomMenuAdapter(ArrayList arrayList, String value, String type){
         this.arrayList = arrayList;
         this.value = value;
         this.type = type;
-        this.selectedPosition =  findSelectedPosition();;
+        this.selectedPosition =  findSelectedPosition();
     }
     @Override
     public int getCount() {
@@ -44,11 +45,16 @@ public class CustomMenuAdapter extends BaseAdapter {
     }
 
     @Override
+    public boolean isEmpty() {
+        return arrayList.size() == 0;
+    }
+
+    @Override
     public long getItemId(int position) {
         return 0;
     }
 
-    public int findSelectedPosition(){
+    private int findSelectedPosition(){
 
         for(int i=0;i<arrayList.size();i++){
             if(type.equals("roof_system")) {
@@ -67,6 +73,11 @@ public class CustomMenuAdapter extends BaseAdapter {
                 }
                 else if(type.equals("building_type")) {
                     if (((BuildingTypePOJO)arrayList.get(i)).getName().equals(value)){
+                        return  i;
+                    }
+                }
+                else if(type.equals("coverage_type")) {
+                    if (((CoveragePOJO)arrayList.get(i)).getName().equals(value)){
                         return  i;
                     }
                 }
@@ -137,6 +148,18 @@ public class CustomMenuAdapter extends BaseAdapter {
            holder.checkedTextView.setText(buildingTypePOJO.getName());
 
            if(selectedPosition == position || buildingTypePOJO.getName().equals(value)) {
+               holder.checkedTextView.setChecked(true);
+           }else {
+               holder.checkedTextView.setChecked(false);
+           }
+
+       }
+       else if(type.equals("coverage_type")){
+           CoveragePOJO coveragePOJO=(CoveragePOJO) arrayList.get(position);
+
+           holder.checkedTextView.setText(coveragePOJO.getName());
+
+           if(selectedPosition == position || coveragePOJO.getName().equals(value)) {
                holder.checkedTextView.setChecked(true);
            }else {
                holder.checkedTextView.setChecked(false);
