@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.electivechaos.claimsadjuster.pojo.BuildingTypePOJO;
 import com.electivechaos.claimsadjuster.pojo.Category;
+import com.electivechaos.claimsadjuster.pojo.CoveragePOJO;
 import com.electivechaos.claimsadjuster.pojo.FoundationPOJO;
 import com.electivechaos.claimsadjuster.pojo.ImageDetailsPOJO;
 import com.electivechaos.claimsadjuster.pojo.Label;
@@ -29,7 +30,7 @@ import java.util.Iterator;
  */
 
 public class CategoryListDBHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 158;
+    private static final int DATABASE_VERSION = 169;
 
 
     // Database Name
@@ -40,6 +41,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
     private static final String TABLE_MASTER_CATEGORY = "master_category";
     private static final String TABLE_CATEGORY_LABELS = "category_label";
     private static final String TABLE_PERIL = "peril";
+    private static final String TABLE_COVERAGE = "coverage";
     private static final String TABLE_REPORTS_IMAGE_DETAILS = "report_image_details";
     private static final String TABLE_REPORTS_ELEVATION_IMAGE_DETAILS = "report_elevation_image_details";
     private static final String TABLE_PROPERTY_DETAILS = "property_details";
@@ -87,12 +89,14 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
     private static final String KEY_CATEGORY_ID = "_id";
     private static final String KEY_CATEGORY_NAME = "name";
     private static final String KEY_CATEGORY_DESCRIPTION  = "description";
+    private static final String KEY_CATEGORY_COVERAGE_TYPE  = "coverage_type";
 
 
     // Label Table Column Names
     private static final String KEY_LABEL_ID = "label_id";
     private static final String KEY_LABEL_NAME = "name";
     private static final String KEY_LABEL_DESCRIPTION  = "description";
+    private static final String KEY_LABEL_COVERAGE_TYPE  = "coverage_type";
 
     private static final String KEY_FK_LABEL_REPORT_ID  = "report_id_fk";
     private static final String KEY_LABEL_HOUSE_NUMBER  = "house_number";
@@ -108,6 +112,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
     private static final String KEY_IS_DAMAGE = "is_damage";
     private static final String KEY_IS_OVERVIEW = "is_overview";
     private static final String KEY_IS_POINT_OF_ORIGIN= "is_point_of_origin";
+    private static final String KEY_IMAGE_COVERAGE_TYPE= "image_coverage_type";
 
 
 
@@ -118,7 +123,12 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
     private static final String KEY_PERIL_ID = "_id";
     private static final String KEY_PERIL_NAME = "name";
     private static final String KEY_PERIL_DESCRIPTION = "description";
-    private static final String KEY_FK_LABEL_ID = "label_id_fk";
+    private static final String KEY_FK_LABEL_ID = "label_id_fk";//Peril table columns
+
+
+    private static final String KEY_COVERAGE_ID = "_id";
+    private static final String KEY_COVERAGE_NAME = "name";
+    private static final String KEY_COVERAGE_DESCRIPTION = "description";
 
 
     //Property details table columns name
@@ -168,6 +178,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         String CREATE_CATEGORY_DETAILS_TABLE = "CREATE TABLE " + TABLE_MASTER_CATEGORY + "("
                 +KEY_CATEGORY_ID +" INTEGER PRIMARY KEY AUTOINCREMENT DEFAULT 0,"
                 + KEY_CATEGORY_NAME + " TEXT,"
+                + KEY_CATEGORY_COVERAGE_TYPE + " TEXT,"
                 + KEY_CATEGORY_DESCRIPTION +" TEXT "+")";
 
         String CATEGORY_LABELS_TABLE = "CREATE TABLE " + TABLE_CATEGORY_LABELS + "("
@@ -178,6 +189,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 + KEY_FK_LABEL_REPORT_ID + " TEXT,"
 
                 +KEY_LABEL_HOUSE_NUMBER + " TEXT,"
+                +KEY_LABEL_COVERAGE_TYPE + " TEXT,"
                 + "FOREIGN KEY("+ KEY_FK_LABEL_REPORT_ID +") REFERENCES "+TABLE_REPORTS_LIST+"("+ KEY_REPORT_ID +")"+ " ON DELETE CASCADE)";
 
         String CREATE_PERIL_TABLE = "CREATE TABLE "
@@ -185,6 +197,13 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 + KEY_PERIL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT DEFAULT 0,"
                 + KEY_PERIL_NAME + " TEXT,"
                 + KEY_PERIL_DESCRIPTION + " TEXT,"+ " CONSTRAINT uc_peril UNIQUE ("+KEY_PERIL_NAME+" COLLATE NOCASE), CHECK("+KEY_PERIL_NAME+"<> '')"+")";
+
+
+        String CREATE_COVERAGE_TABLE = "CREATE TABLE "
+                + TABLE_COVERAGE + "("
+                + KEY_COVERAGE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT DEFAULT 0,"
+                + KEY_COVERAGE_NAME + " TEXT,"
+                + KEY_COVERAGE_DESCRIPTION + " TEXT,"+ " CONSTRAINT uc_coverage UNIQUE ("+KEY_COVERAGE_NAME+" COLLATE NOCASE), CHECK("+KEY_COVERAGE_NAME+"<> '')"+")";
 
 
         String CREATE_IMAGE_DETAILS_TABLE = "CREATE TABLE " + TABLE_REPORTS_IMAGE_DETAILS + "("
@@ -197,6 +216,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 + KEY_IS_OVERVIEW+ " BOOLEAN,"
                 + KEY_FK_LABEL_ID+ " TEXT,"
                 + KEY_IS_POINT_OF_ORIGIN+ " BOOLEAN,"
+                + KEY_IMAGE_COVERAGE_TYPE+ " TEXT,"
                 + "FOREIGN KEY("+ KEY_FK_LABEL_ID +") REFERENCES "+TABLE_CATEGORY_LABELS+"("+KEY_LABEL_ID+ ")"+ " ON DELETE CASCADE )";
 
 
@@ -330,38 +350,38 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_FOUNDATION_TABLE);
         db.execSQL(CREATE_BUILDING_TYPE_TABLE);
 
+        db.execSQL(CREATE_COVERAGE_TABLE);
 
 
-
-        for(int i=0;i<categories.length;i++){
+        for (String category : categories) {
             ContentValues contentValues = new ContentValues();
-            contentValues.put(KEY_CATEGORY_NAME, categories[i]);
-            contentValues.put(KEY_CATEGORY_DESCRIPTION, categories[i]);
-            db.insert(TABLE_MASTER_CATEGORY,null,contentValues);
+            contentValues.put(KEY_CATEGORY_NAME, category);
+            contentValues.put(KEY_CATEGORY_DESCRIPTION, category);
+            db.insert(TABLE_MASTER_CATEGORY, null, contentValues);
         }
 
-        for(int i=0;i<roofSystem.length;i++){
+        for (String aRoofSystem : roofSystem) {
             ContentValues contentValues = new ContentValues();
-            contentValues.put(KEY_ROOF_SYSTEM_NAME, roofSystem[i]);
-            db.insert(TABLE_ROOF_SYSTEM,null,contentValues);
+            contentValues.put(KEY_ROOF_SYSTEM_NAME, aRoofSystem);
+            db.insert(TABLE_ROOF_SYSTEM, null, contentValues);
         }
 
-        for(int i=0;i<siding.length;i++){
+        for (String aSiding : siding) {
             ContentValues contentValues = new ContentValues();
-            contentValues.put(KEY_SIDING_NAME, siding[i]);
-            db.insert(TABLE_SIDING,null,contentValues);
+            contentValues.put(KEY_SIDING_NAME, aSiding);
+            db.insert(TABLE_SIDING, null, contentValues);
         }
 
-        for(int i=0;i<foundation.length;i++){
+        for (String aFoundation : foundation) {
             ContentValues contentValues = new ContentValues();
-            contentValues.put(KEY_FOUNDATION_NAME, foundation[i]);
-            db.insert(TABLE_FOUNDATION,null,contentValues);
+            contentValues.put(KEY_FOUNDATION_NAME, aFoundation);
+            db.insert(TABLE_FOUNDATION, null, contentValues);
         }
 
-        for(int i=0;i<buildingType.length;i++){
+        for (String aBuildingType : buildingType) {
             ContentValues contentValues = new ContentValues();
-            contentValues.put(KEY_BUILDING_NAME, buildingType[i]);
-            db.insert(TABLE_BUILDING_TYPE,null,contentValues);
+            contentValues.put(KEY_BUILDING_NAME, aBuildingType);
+            db.insert(TABLE_BUILDING_TYPE, null, contentValues);
         }
     }
 
@@ -380,6 +400,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_SIDING);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_FOUNDATION);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_BUILDING_TYPE);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_COVERAGE);
         onCreate(db);
     }
 
@@ -395,6 +416,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(KEY_CATEGORY_NAME, category.getCategoryName());
         contentValues.put(KEY_CATEGORY_DESCRIPTION, category.getCategoryDescription());
+        contentValues.put(KEY_CATEGORY_COVERAGE_TYPE, category.getCoverageType());
         return  db.insert(TABLE_MASTER_CATEGORY,null,contentValues);
     }
 
@@ -403,6 +425,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(KEY_CATEGORY_NAME, category.getCategoryName());
         contentValues.put(KEY_CATEGORY_DESCRIPTION, category.getCategoryDescription());
+        contentValues.put(KEY_CATEGORY_COVERAGE_TYPE, category.getCoverageType());
         return  db.update(TABLE_MASTER_CATEGORY, contentValues,KEY_CATEGORY_ID+"="+category.getCategoryId(),null);
     }
 
@@ -419,7 +442,8 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                     Category category = new Category();
                     category.setCategoryId(cursor.getInt(0));
                     category.setCategoryName(cursor.getString(1));
-                    category.setCategoryDescription(cursor.getString(2));
+                    category.setCategoryDescription(cursor.getString(3));
+                    category.setCoverageType(cursor.getString(2));
                     tempList.add(category);
                 }
             } while (cursor.moveToNext());
@@ -569,6 +593,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         contentValues.put(KEY_LABEL_DESCRIPTION, label.getDescription());
         contentValues.put(KEY_FK_LABEL_REPORT_ID, label.getReportId());
         contentValues.put(KEY_LABEL_HOUSE_NUMBER,label.getHouseNumber());
+        contentValues.put(KEY_LABEL_COVERAGE_TYPE,label.getCoverageType());
         db.insert(TABLE_CATEGORY_LABELS,null,contentValues);
         return  id;
     }
@@ -583,7 +608,8 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
             do {
                 label.setCategoryID(cursor.getInt(0));
                 label.setName(cursor.getString(1));
-                label.setDescription(cursor.getString(2));
+                label.setDescription(cursor.getString(3));
+                label.setCoverageType(cursor.getString(2));
             } while (cursor.moveToNext());
         }
         return  label;
@@ -597,6 +623,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         contentValues.put(KEY_LABEL_NAME, label.getName());
         contentValues.put(KEY_LABEL_DESCRIPTION, label.getDescription());
         contentValues.put(KEY_LABEL_HOUSE_NUMBER,label.getHouseNumber());
+        contentValues.put(KEY_LABEL_COVERAGE_TYPE,label.getCoverageType());
         return  db.update(TABLE_CATEGORY_LABELS, contentValues,KEY_LABEL_ID+"="+label.getId(),null);
     }
 
@@ -649,6 +676,62 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         return  tempList;
     }
 
+
+
+
+    public int deleteCoverage(String id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        return  db.delete(TABLE_COVERAGE,"_id=?",new String[]{id});
+    }
+
+    public long addCoverage(CoveragePOJO coveragePOJO){
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(KEY_COVERAGE_NAME, coveragePOJO.getName());
+            contentValues.put(KEY_COVERAGE_DESCRIPTION, coveragePOJO.getDescription());
+            return  db.insertOrThrow(TABLE_COVERAGE,null,contentValues);
+        }catch (SQLiteConstraintException exception){
+            return -100;
+        }
+
+    }
+
+    public int updateCoverage(CoveragePOJO coveragePOJO){
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(KEY_COVERAGE_NAME, coveragePOJO.getName());
+            contentValues.put(KEY_COVERAGE_DESCRIPTION, coveragePOJO.getDescription());
+            return  db.update(TABLE_COVERAGE, contentValues,KEY_COVERAGE_ID+"="+ coveragePOJO.getID(),null);
+
+        }catch (SQLiteConstraintException ex){
+            return -100;
+        }
+    }
+
+    public ArrayList<CoveragePOJO> getCoverageList(){
+
+        ArrayList<CoveragePOJO> tempList = new ArrayList<>();
+        String selectQueryCoverageTable = "SELECT  * FROM " + TABLE_COVERAGE;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQueryCoverageTable, null);
+        if (cursor.moveToFirst()) {
+            do {
+                CoveragePOJO coveragePOJO = new CoveragePOJO();
+                coveragePOJO.setID(cursor.getInt(0));
+                coveragePOJO.setName(cursor.getString(1));
+                coveragePOJO.setDescription(cursor.getString(2));
+                tempList.add(coveragePOJO);
+            } while (cursor.moveToNext());
+        }
+        return  tempList;
+    }
+
+
+
+
+
     public void addReportEntry(ReportPOJO reportItemPOJO) {
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -693,6 +776,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                         imageEntry.put(KEY_IMAGE_URL, imageItem.getImageUrl());
                         imageEntry.put(KEY_IS_DAMAGE, imageItem.isDamage());
                         imageEntry.put(KEY_IS_OVERVIEW, imageItem.isOverview());
+                        imageEntry.put(KEY_IMAGE_COVERAGE_TYPE, imageItem.getCoverageTye());
                         imageEntry.put(KEY_FK_LABEL_ID, labelId);
                         imageEntry.put(KEY_IS_POINT_OF_ORIGIN, imageItem.isPointOfOrigin());
                       long count=  db.insert(TABLE_REPORTS_IMAGE_DETAILS, null, imageEntry);
@@ -822,6 +906,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 label.setDescription(cLabelList.getString(2));
                 label.setReportId(cLabelList.getString(3));
                 label.setHouseNumber(cLabelList.getString(4));
+                label.setCoverageType(cLabelList.getString(5));
                 Cursor cElevationImages = db.rawQuery("SELECT * FROM report_elevation_image_details  WHERE  label_id_fk = '"+cLabelList.getString(0)+"'", null);
                 ArrayList<ImageDetailsPOJO> elevationImagesList=new ArrayList<>();
 
@@ -848,6 +933,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                             sImageDetailsPOJO.setIsDamage(cSelectedImages.getString(4).equals("1"));
                             sImageDetailsPOJO.setOverview(cSelectedImages.getString(5).equals("1"));
                             sImageDetailsPOJO.setPointOfOrigin(cSelectedImages.getString(7).equals("1"));
+                            sImageDetailsPOJO.setCoverageTye(cSelectedImages.getString(8));
                             selectedImagesList.add(sImageDetailsPOJO);
 
                         } while (cSelectedImages.moveToNext());
@@ -974,6 +1060,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                     imageEntry.put(KEY_IS_OVERVIEW, imageItem.isOverview());
                     imageEntry.put(KEY_FK_LABEL_ID, label.getId());
                     imageEntry.put(KEY_IS_POINT_OF_ORIGIN, imageItem.isPointOfOrigin());
+                    imageEntry.put(KEY_IMAGE_COVERAGE_TYPE, imageItem.getCoverageTye());
                     long count = db.insert(TABLE_REPORTS_IMAGE_DETAILS, null, imageEntry);
                     if (count != -1) {
                         Log.d("Error in insertion", String.valueOf(count));
