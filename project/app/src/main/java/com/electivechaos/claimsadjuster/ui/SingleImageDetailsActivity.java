@@ -67,8 +67,11 @@ public class SingleImageDetailsActivity extends BaseActivity {
         labelPosition = getIntent().getExtras().getInt("labelPosition",-1);
 
         if(imageDetails != null && isEdit){
-
-            imageCoverageType.setText(imageDetails.getCoverageTye());
+            if(imageDetails.getCoverageTye() == null || imageDetails.getCoverageTye().isEmpty()){
+                imageCoverageType.setText("Coverage Type");
+            }else {
+                imageCoverageType.setText(imageDetails.getCoverageTye());
+            }
             title.setText(imageDetails.getTitle());
             description.setText(imageDetails.getDescription());
 
@@ -107,8 +110,12 @@ public class SingleImageDetailsActivity extends BaseActivity {
                 imageDetails.setIsDamage(isDamage);
                 isDamageTextView.setChecked(imageDetails.isDamage());
 
+                if(imageDetails.getCoverageTye() == null || imageDetails.getCoverageTye().isEmpty()){
+                    imageCoverageType.setText("Coverage Type");
+                }else {
+                    imageCoverageType.setText(imageDetails.getCoverageTye());
+                }
 
-                imageCoverageType.setText(imageDetails.getCoverageTye());
 
                 if(imageDetails.isDamage()) {
                     isDamageTextView.setBackground(ContextCompat.getDrawable(this,R.drawable.shape_chip_drawable_active));

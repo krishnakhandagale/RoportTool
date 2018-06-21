@@ -108,8 +108,12 @@ public class ImageFragment extends Fragment {
         final CheckedTextView overviewTextView = layoutView.findViewById(R.id.overviewTextView);
         final  CheckedTextView pointOfOriginTextView = layoutView.findViewById(R.id.isPointOfOrigin);
         imageCoverageType = layoutView.findViewById(R.id.imageCoverageType);
+        if(coverageType == null || coverageType.isEmpty()){
+            imageCoverageType.setText("Coverage Type");
+        }else {
+            imageCoverageType.setText(coverageType);
+        }
 
-        imageCoverageType.setText(coverageType);
 
         pointOfOriginTextView.setChecked(imgIsPointOfOrigin);
         // For damage text view
