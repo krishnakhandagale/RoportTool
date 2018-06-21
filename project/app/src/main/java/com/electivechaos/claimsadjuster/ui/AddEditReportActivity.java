@@ -602,13 +602,13 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         drawerMenuListAdapter.notifyDataSetChanged();
         reportPOJO.getLabelArrayList().add(label);
 
+        selectedFragmentPosition = (labelList.size() -1) + 4;
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment = AddEditReportSelectedImagesFragment.initFragment(new ArrayList<ImageDetailsPOJO>(),new ArrayList<ImageDetailsPOJO>(),labelList.size()-1, fileUri,labelList.get(selectedFragmentPosition - 4).getCoverageType());
         fragmentTransaction.replace(R.id.content_frame, addEditReportSelectedImagesFragment);
         fragmentTransaction.commit();
-        selectedFragmentPosition = (labelList.size() -1) + 4;
         activityActionBar.setTitle(label.getName());
         if(actionBarEditBtn != null){
             actionBarEditBtn.setVisible(true);
