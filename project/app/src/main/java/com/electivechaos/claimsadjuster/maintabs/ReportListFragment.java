@@ -150,12 +150,12 @@ public class ReportListFragment extends Fragment {
                                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                                 public void onClick(DialogInterface dialog, int which) {
 
-                                                    mCategoryListDBHelper.deleteReportEntry(reportItemPOJO.getId());
-
-                                                    if(!reportItemPOJO.getFilePath().trim().isEmpty()){
-                                                        File file = new File(reportItemPOJO.getFilePath());
-                                                        if (file != null && file.exists()) {
-                                                            file.delete();
+                                                    if(mCategoryListDBHelper.deleteReportEntry(reportItemPOJO.getId())>0) {
+                                                        if (!reportItemPOJO.getFilePath().trim().isEmpty()) {
+                                                            File file = new File(reportItemPOJO.getFilePath());
+                                                            if (file != null && file.exists()) {
+                                                                file.delete();
+                                                            }
                                                         }
                                                     }
 
