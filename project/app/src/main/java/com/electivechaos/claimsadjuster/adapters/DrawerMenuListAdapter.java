@@ -52,7 +52,7 @@ public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        List<Label> list = childMenuList.get(parentMenuList.get(groupPosition));
+        List<Label> list = childMenuList.get(parentMenuList.get(groupPosition).getTitle());
         return list == null ? 0 : list.size();
     }
 
@@ -63,7 +63,7 @@ public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {
-        return childMenuList.get(parentMenuList.get(groupPosition)).get(childPosition);
+        return childMenuList.get(parentMenuList.get(groupPosition).getTitle()).get(childPosition);
     }
 
     @Override
@@ -146,10 +146,10 @@ public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
         }else{
             holder = (ChildViewHolder) convertView.getTag();
         }
-        String menuTitle = childMenuList.get(parentMenuList.get(groupPosition)).get(childPosition).toString();
+        String menuTitle = childMenuList.get(parentMenuList.get(groupPosition).getTitle()).get(childPosition).toString();
 
         if(menuTitle.equals("Starter Photos")){
-            holder.labelDeleteBtn.setVisibility(View.INVISIBLE);
+            holder.labelDeleteBtn.setVisibility(View.GONE);
         }else{
             holder.labelDeleteBtn.setVisibility(View.VISIBLE);
         }
@@ -163,7 +163,7 @@ public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
                             .setMessage("Are you sure wanna remove label ?")
                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
-                                    String id = childMenuList.get(parentMenuList.get(groupPosition)).get(childPosition).getId();
+                                    String id = childMenuList.get(parentMenuList.get(groupPosition).getTitle()).get(childPosition).getId();
                                     int result = mCategoryList.deleteLabel(id);
                                     if(result > 0) {
                                         addEditLabelInterface.onLabelDeleted(childPosition);

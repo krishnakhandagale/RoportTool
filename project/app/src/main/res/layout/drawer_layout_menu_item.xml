@@ -30,6 +30,8 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
+        android:focusable="false"
+        android:layout_margin="5dp"
         android:id="@+id/addInspection"
         android:layout_width="wrap_content"
         android:layout_height="28dp"
