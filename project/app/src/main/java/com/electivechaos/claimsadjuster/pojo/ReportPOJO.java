@@ -4,8 +4,9 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.ArrayList;
+import java.util.Observable;
 
-public class ReportPOJO  implements Parcelable{
+public class ReportPOJO  extends Observable implements Parcelable  {
     private String id;
     private String reportTitle;
     private String reportDescription;
@@ -19,7 +20,7 @@ public class ReportPOJO  implements Parcelable{
     private String filePath;
     private String googleMapSnapShotFilePath;
 
-    public ArrayList labelArrayList;
+    private ArrayList labelArrayList;
     private PropertyDetailsPOJO propertyDetailsPOJO;
     private PerilPOJO perilPOJO;
 
@@ -47,6 +48,8 @@ public class ReportPOJO  implements Parcelable{
 
     public void setPropertyDetailsPOJO(PropertyDetailsPOJO propertyDetailsPOJO) {
         this.propertyDetailsPOJO = propertyDetailsPOJO;
+        setChanged();
+        notifyObservers();
     }
 
     public PerilPOJO getPerilPOJO() {
@@ -54,7 +57,10 @@ public class ReportPOJO  implements Parcelable{
     }
 
     public void setPerilPOJO(PerilPOJO perilPOJO) {
+
         this.perilPOJO = perilPOJO;
+        setChanged();
+        notifyObservers();
     }
 
     protected ReportPOJO(Parcel in) {
@@ -95,6 +101,8 @@ public class ReportPOJO  implements Parcelable{
 
     public void setAddressLine(String addressLine) {
         this.addressLine = addressLine;
+        setChanged();
+        notifyObservers();
     }
 
 
@@ -105,6 +113,8 @@ public class ReportPOJO  implements Parcelable{
 
     public void setLocationLat(String locationLat) {
         this.locationLat = locationLat;
+        setChanged();
+        notifyObservers();
     }
 
     public String getLocationLong() {
@@ -113,6 +123,8 @@ public class ReportPOJO  implements Parcelable{
 
     public void setLocationLong(String locationLong) {
         this.locationLong = locationLong;
+        setChanged();
+        notifyObservers();
     }
 
     public String getId() {
@@ -121,6 +133,8 @@ public class ReportPOJO  implements Parcelable{
 
     public void setId(String id) {
         this.id = id;
+        setChanged();
+        notifyObservers();
     }
 
     public String getReportTitle() {
@@ -129,6 +143,8 @@ public class ReportPOJO  implements Parcelable{
 
     public void setReportTitle(String reportTitle) {
         this.reportTitle = reportTitle;
+        setChanged();
+        notifyObservers();
     }
 
     public String getReportDescription() {
@@ -137,6 +153,8 @@ public class ReportPOJO  implements Parcelable{
 
     public void setReportDescription(String reportDescription) {
         this.reportDescription = reportDescription;
+        setChanged();
+        notifyObservers();
     }
 
     public String getClientName() {
@@ -145,6 +163,8 @@ public class ReportPOJO  implements Parcelable{
 
     public void setClientName(String clientName) {
         this.clientName = clientName;
+        setChanged();
+        notifyObservers();
     }
 
     public String getClaimNumber() {
@@ -153,6 +173,8 @@ public class ReportPOJO  implements Parcelable{
 
     public void setClaimNumber(String claimNumber) {
         this.claimNumber = claimNumber;
+        setChanged();
+        notifyObservers();
     }
 
     public String getCreatedDate() {
@@ -161,6 +183,8 @@ public class ReportPOJO  implements Parcelable{
 
     public void setCreatedDate(String createdDate) {
         this.createdDate = createdDate;
+        setChanged();
+        notifyObservers();
     }
 
     public String getFilePath() {
@@ -169,6 +193,8 @@ public class ReportPOJO  implements Parcelable{
 
     public void setFilePath(String filePath) {
         this.filePath = filePath;
+        setChanged();
+        notifyObservers();
     }
 
     public ArrayList<Label> getLabelArrayList() {
@@ -177,6 +203,8 @@ public class ReportPOJO  implements Parcelable{
 
     public void setLabelArrayList(ArrayList<Label> labelArrayList) {
         this.labelArrayList = labelArrayList;
+        setChanged();
+        notifyObservers();
     }
 
     @Override

@@ -20,6 +20,8 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -62,7 +64,9 @@ import com.electivechaos.claimsadjuster.listeners.OnStarterFragmentDataChangeLis
 import com.electivechaos.claimsadjuster.pojo.Category;
 import com.electivechaos.claimsadjuster.pojo.ImageDetailsPOJO;
 import com.electivechaos.claimsadjuster.pojo.Label;
+import com.electivechaos.claimsadjuster.pojo.ParentMenuItem;
 import com.electivechaos.claimsadjuster.pojo.PerilPOJO;
+import com.electivechaos.claimsadjuster.pojo.PropertyDetailsPOJO;
 import com.electivechaos.claimsadjuster.pojo.ReportPOJO;
 import com.electivechaos.claimsadjuster.utils.CommonUtils;
 
@@ -75,16 +79,18 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Pattern;
 
-public class AddEditReportActivity extends AppCompatActivity implements DrawerMenuListAdapter.OnLabelAddClickListener, AddEditLabelInterface, ClaimDetailsDataInterface, LossLocationDataInterface,SelectedImagesDataInterface,NextButtonClickListener,OnSaveReportClickListener, OnGenerateReportClickListener, OnPropertyDetailsClickListener,OnPerilSelectionListener, OnSetImageFileUriListener,OnStarterFragmentDataChangeListener {
+public class AddEditReportActivity extends AppCompatActivity implements DrawerMenuListAdapter.OnLabelAddClickListener, AddEditLabelInterface, ClaimDetailsDataInterface, LossLocationDataInterface,SelectedImagesDataInterface,NextButtonClickListener,OnSaveReportClickListener, OnGenerateReportClickListener, OnPropertyDetailsClickListener,OnPerilSelectionListener, OnSetImageFileUriListener,OnStarterFragmentDataChangeListener, Observer {
 
     private DrawerLayout mDrawerLayout;
     private DrawerMenuListAdapter drawerMenuListAdapter;
 
     private HashMap<String, List<Label>> childMenuItems = new HashMap<>();
-    private ArrayList<String> parentMenuItems;
+    private ArrayList<ParentMenuItem> parentMenuItems;
 
     private int selectedFragmentPosition = 0;
 
@@ -151,7 +157,8 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         activityActionBar.setDisplayHomeAsUpEnabled(true);
         activityActionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
 
-
+        reportPOJO = new ReportPOJO();
+        reportPOJO.addObserver(this);
 
         parentLayoutForMessages = findViewById(R.id.parentLayoutForMessages);
         progressBarLayout = findViewById(R.id.progressBarLayout);
@@ -159,13 +166,16 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         if(savedInstanceState != null && savedInstanceState.getParcelable("reportPojo") !=null){
             fileUri = savedInstanceState.getString("fileUri");
             reportPOJO = savedInstanceState.getParcelable("reportPojo");
+            reportPOJO.addObserver(this);
             setDataToExpandableList();
         }else{
             if(getIntent().getExtras() != null){
                 reportPOJO = categoryListDBHelper.getReportItem(getIntent().getExtras().getString("reportId"));
+                reportPOJO.addObserver(this);
                 setDataToExpandableList();
             }else{
-                reportPOJO = new ReportPOJO();
+                reportPOJO =new ReportPOJO();
+                reportPOJO.addObserver(this);
                 Date currentDate = new Date();
                 reportPOJO.setId(String.valueOf(currentDate.getTime()));
 
@@ -238,27 +248,27 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
 
-                if (parentMenuItems.get(groupPosition).equals("Claim Details")) {
+                if (parentMenuItems.get(groupPosition).getTitle().equals("Claim Details")) {
 
                     mDrawerLayout.closeDrawer(Gravity.LEFT);
                     putClaimDetailsFragment();
                     actionBarEditBtn.setVisible(false);
 
 
-                } else if (parentMenuItems.get(groupPosition).equals("Property Details")) {
+                } else if (parentMenuItems.get(groupPosition).getTitle().equals("Property Details")) {
 
                     mDrawerLayout.closeDrawer(Gravity.LEFT);
                     putPropertyDetails();
                     actionBarEditBtn.setVisible(false);
 
                 }
-                else if (parentMenuItems.get(groupPosition).equals("Peril")) {
+                else if (parentMenuItems.get(groupPosition).getTitle().equals("Peril")) {
 
                     mDrawerLayout.closeDrawer(Gravity.LEFT);
                     putPerilDetails();
                     actionBarEditBtn.setVisible(false);
 
-                } else if (parentMenuItems.get(groupPosition).equals("Point Of Origin")) {
+                } else if (parentMenuItems.get(groupPosition).getTitle().equals("Point Of Origin")) {
 
                     mDrawerLayout.closeDrawer(Gravity.LEFT);
                     putPointOfOriginFragment();
@@ -291,11 +301,11 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     private void setDataToExpandableList() {
         parentMenuItems = new ArrayList<>();
 
-        parentMenuItems.add("Claim Details");
-        parentMenuItems.add("Property Details");
-        parentMenuItems.add("Peril");
-        parentMenuItems.add("Point Of Origin");
-        parentMenuItems.add("Inspection");
+        parentMenuItems.add(new ParentMenuItem("Claim Details",false));
+        parentMenuItems.add(new ParentMenuItem("Property Details",false));
+        parentMenuItems.add(new ParentMenuItem("Peril",false));
+        parentMenuItems.add(new ParentMenuItem("Point Of Origin",false));
+        parentMenuItems.add(new ParentMenuItem("Inspection",false));
 
 
         List<Label> inspectionChildMenu = (List<Label>) reportPOJO.getLabelArrayList().clone();
@@ -868,6 +878,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     @Override
     public void setPropertyDate(String propertyDate) {
         reportPOJO.getPropertyDetailsPOJO().setPropertyDate(propertyDate);
+        reportPOJO.setPropertyDetailsPOJO( reportPOJO.getPropertyDetailsPOJO());
         new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, propertyDate,reportPOJO.getId(),false,categoryListDBHelper,"property_date").execute();
 
     }
@@ -875,24 +886,28 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     @Override
     public void setPropertySquareFootage(String squareFootage) {
         reportPOJO.getPropertyDetailsPOJO().setSquareFootage(squareFootage);
+        reportPOJO.setPropertyDetailsPOJO( reportPOJO.getPropertyDetailsPOJO());
         new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, String.valueOf(squareFootage),reportPOJO.getId(),false,categoryListDBHelper,"square_footage").execute();
     }
 
     @Override
     public void setPropertyRoofSystem(String roofSystem) {
         reportPOJO.getPropertyDetailsPOJO().setRoofSystem(roofSystem);
+        reportPOJO.setPropertyDetailsPOJO( reportPOJO.getPropertyDetailsPOJO());
         new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, roofSystem, reportPOJO.getId(),false,categoryListDBHelper,"roof_system").execute();
     }
 
     @Override
     public void setPropertySiding(String siding) {
         reportPOJO.getPropertyDetailsPOJO().setSiding(siding);
+        reportPOJO.setPropertyDetailsPOJO( reportPOJO.getPropertyDetailsPOJO());
         new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, siding, reportPOJO.getId(),false,categoryListDBHelper,"siding").execute();
     }
 
     @Override
     public void setPropertyFoundation(String foundation) {
         reportPOJO.getPropertyDetailsPOJO().setFoundation(foundation);
+        reportPOJO.setPropertyDetailsPOJO( reportPOJO.getPropertyDetailsPOJO());
         new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, foundation, reportPOJO.getId(),false,categoryListDBHelper,"foundation").execute();
 
     }
@@ -900,6 +915,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     @Override
     public void setPropertyBuildingType(String buildingType) {
         reportPOJO.getPropertyDetailsPOJO().setBuildingType(buildingType);
+        reportPOJO.setPropertyDetailsPOJO( reportPOJO.getPropertyDetailsPOJO());
         new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, buildingType, reportPOJO.getId(),false,categoryListDBHelper,"building_type").execute();
     }
 
@@ -919,6 +935,56 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     public void onHouseNumberChange(String houseNumber, int labelPosition) {
         reportPOJO.getLabelArrayList().get(labelPosition).setHouseNumber(houseNumber);
         categoryListDBHelper.updateLabel(reportPOJO.getLabelArrayList().get(labelPosition));
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        if(o instanceof ReportPOJO){
+           enableDisableCheckList(reportPOJO);
+        }
+    }
+
+    private void enableDisableCheckList(ReportPOJO reportPOJO) {
+
+        if(!TextUtils.isEmpty(reportPOJO.getReportTitle())
+                && !TextUtils.isEmpty(reportPOJO.getReportDescription())
+                &&  !TextUtils.isEmpty(reportPOJO.getClaimNumber())
+                && !TextUtils.isEmpty(reportPOJO.getClientName())
+                && !TextUtils.isEmpty(reportPOJO.getAddressLine())){
+            parentMenuItems.get(0).setChecked(true);
+            drawerMenuListAdapter.notifyDataSetChanged();
+        }else{
+            parentMenuItems.get(0).setChecked(false);
+            drawerMenuListAdapter.notifyDataSetChanged();
+        }
+
+        PropertyDetailsPOJO propertyDetailsPOJO = reportPOJO.getPropertyDetailsPOJO();
+        if(!TextUtils.isEmpty(propertyDetailsPOJO.getPropertyDate())
+                && !TextUtils.equals(propertyDetailsPOJO.getPropertyDate(),"--Select Date--")
+                && !TextUtils.isEmpty(propertyDetailsPOJO.getSquareFootage())
+                && !TextUtils.isEmpty(propertyDetailsPOJO.getRoofSystem())
+                && !TextUtils.equals(propertyDetailsPOJO.getSquareFootage(),"--Select Roof System--")
+                && !TextUtils.isEmpty(propertyDetailsPOJO.getSiding())
+                && !TextUtils.equals(propertyDetailsPOJO.getSiding(),"--Select Siding--")
+                && !TextUtils.isEmpty(propertyDetailsPOJO.getFoundation())
+                && !TextUtils.equals(propertyDetailsPOJO.getSquareFootage(),"--Select Foundation--")
+                && !TextUtils.isEmpty(propertyDetailsPOJO.getBuildingType())
+                && !TextUtils.equals(propertyDetailsPOJO.getBuildingType(),"--Select Building Type--")){
+            parentMenuItems.get(1).setChecked(true);
+            drawerMenuListAdapter.notifyDataSetChanged();
+        }else{
+            parentMenuItems.get(1).setChecked(false);
+            drawerMenuListAdapter.notifyDataSetChanged();
+        }
+        if(!TextUtils.isEmpty(reportPOJO.getPerilPOJO().getName())){
+            parentMenuItems.get(2).setChecked(true);
+            drawerMenuListAdapter.notifyDataSetChanged();
+        }else{
+            parentMenuItems.get(2).setChecked(false);
+            drawerMenuListAdapter.notifyDataSetChanged();
+        }
+
+
     }
 
 
@@ -1015,6 +1081,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        reportPOJO.deleteObserver(this);
     }
 
     @Override
