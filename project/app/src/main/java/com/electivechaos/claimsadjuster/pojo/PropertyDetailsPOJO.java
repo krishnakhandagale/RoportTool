@@ -3,11 +3,13 @@ package com.electivechaos.claimsadjuster.pojo;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.Observable;
+
 /**
  * Created by nafeesa on 5/23/18.
  */
 
-public class PropertyDetailsPOJO implements Parcelable {
+public class PropertyDetailsPOJO extends Observable implements Parcelable {
 
     private String propertyDate;
     private String squareFootage;
@@ -33,6 +35,8 @@ public class PropertyDetailsPOJO implements Parcelable {
 
     public void setSquareFootage(String squareFootage) {
         this.squareFootage = squareFootage;
+        setChanged();
+        notifyObservers();
     }
 
     public String getRoofSystem() {
@@ -73,6 +77,7 @@ public class PropertyDetailsPOJO implements Parcelable {
 
     public void setReportId(String reportId) {
         this.reportId = reportId;
+
     }
 
 
