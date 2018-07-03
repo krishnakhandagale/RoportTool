@@ -16,6 +16,7 @@ import com.electivechaos.claimsadjuster.R;
 import com.electivechaos.claimsadjuster.database.CategoryListDBHelper;
 import com.electivechaos.claimsadjuster.interfaces.AddEditLabelInterface;
 import com.electivechaos.claimsadjuster.pojo.Label;
+import com.electivechaos.claimsadjuster.pojo.ParentMenuItem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,7 +26,7 @@ public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
 
     private Context context;
     private HashMap<String,List<Label>> childMenuList;
-    private ArrayList<String> parentMenuList;
+    private ArrayList<ParentMenuItem> parentMenuList;
     private OnLabelAddClickListener onLabelAddClickListener;
     private CategoryListDBHelper mCategoryList;
     private AddEditLabelInterface addEditLabelInterface;
@@ -34,7 +35,7 @@ public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
         void onLabelAddClick();
     }
 
-    public DrawerMenuListAdapter(Context context, ArrayList<String> parentMenuList, HashMap<String,List<Label>> childMenuList){
+    public DrawerMenuListAdapter(Context context, ArrayList<ParentMenuItem> parentMenuList, HashMap<String,List<Label>> childMenuList){
         this.context= context;
         this.parentMenuList = parentMenuList ;
         this.childMenuList = childMenuList;
@@ -92,7 +93,7 @@ public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
             holder.menuTitle =  convertView.findViewById(R.id.menuTitle);
             holder.imageView = convertView.findViewById(R.id.menuIcon);
             holder.addInspectionView = convertView.findViewById(R.id.addInspection);
-
+            holder.checked =  convertView.findViewById(R.id.checked);
             convertView.setTag(holder);
         }else{
             holder = (ParentViewHolder) convertView.getTag();
@@ -100,7 +101,7 @@ public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
 
 
 
-        String parentMenuString = parentMenuList.get(groupPosition);
+        String parentMenuString = parentMenuList.get(groupPosition).getTitle();
 
         holder.menuTitle.setText(parentMenuString);
 
@@ -111,17 +112,22 @@ public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
             }
         });
 
+        if(parentMenuList.get(groupPosition).isChecked()){
+            holder.checked.setVisibility(View.VISIBLE);
+        }else{
+            holder.checked.setVisibility(View.GONE);
+        }
         if(parentMenuString.equals("Claim Details")) {
-            holder.imageView.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_reports));
+            holder.imageView.setImageResource(R.drawable.ic_reports);
         }
         else if(parentMenuString.equals("Property Details")){
-                holder.imageView.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_building));
+                holder.imageView.setImageResource(R.drawable.ic_building);
         }else if(parentMenuString.equals("Peril")){
-            holder.imageView.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_warning));
+            holder.imageView.setImageResource(R.drawable.ic_warning);
         }else if(parentMenuString.equals("Point Of Origin")){
-            holder.imageView.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_point_of_origin));
+            holder.imageView.setImageResource(R.drawable.ic_point_of_origin);
         }else{
-            holder.imageView.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_damage));
+            holder.imageView.setImageResource(R.drawable.ic_damage);
             holder.addInspectionView.setVisibility(View.VISIBLE);
         }
         return convertView;
@@ -143,7 +149,7 @@ public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
         String menuTitle = childMenuList.get(parentMenuList.get(groupPosition)).get(childPosition).toString();
 
         if(menuTitle.equals("Starter Photos")){
-            holder.labelDeleteBtn.setVisibility(View.GONE);
+            holder.labelDeleteBtn.setVisibility(View.INVISIBLE);
         }else{
             holder.labelDeleteBtn.setVisibility(View.VISIBLE);
         }
@@ -199,6 +205,7 @@ public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
     static class ParentViewHolder{
         TextView menuTitle;
         ImageView imageView;
+        ImageView checked;
         Button addInspectionView;
     }
 
