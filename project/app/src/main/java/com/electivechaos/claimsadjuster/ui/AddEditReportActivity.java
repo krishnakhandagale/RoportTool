@@ -174,8 +174,11 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                 reportPOJO.addObserver(this);
                 setDataToExpandableList();
             }else{
+
                 reportPOJO =new ReportPOJO();
                 reportPOJO.addObserver(this);
+                setDataToExpandableList();
+
                 Date currentDate = new Date();
                 reportPOJO.setId(String.valueOf(currentDate.getTime()));
 
@@ -214,6 +217,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
 
             }
+
         }
 
 
