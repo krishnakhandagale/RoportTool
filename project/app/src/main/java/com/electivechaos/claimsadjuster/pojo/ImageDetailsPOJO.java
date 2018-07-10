@@ -17,6 +17,11 @@ public class ImageDetailsPOJO implements Parcelable {
     private boolean isOverview;
     private boolean isPointOfOrigin;
     private String coverageTye; // Default value from label
+    private String imageName;
+
+
+    private String imageDateTime;
+    private String imageGeoTag;
 
     protected ImageDetailsPOJO(Parcel in) {
         imageUrl = in.readString();
@@ -26,6 +31,10 @@ public class ImageDetailsPOJO implements Parcelable {
         isOverview = in.readByte() != 0;
         isPointOfOrigin = in.readByte() != 0;
         coverageTye = in.readString();
+        imageName = in.readString();
+        imageDateTime = in.readString();
+        imageGeoTag = in.readString();
+
     }
 
     public boolean isPointOfOrigin() {
@@ -61,6 +70,9 @@ public class ImageDetailsPOJO implements Parcelable {
         this.title = "";
         this.description = "";
         this.coverageTye = "";
+        this.imageName = "";
+        this.imageDateTime = "";
+        this.imageGeoTag = "";
     }
     public String getImageUrl() {
         return imageUrl;
@@ -106,10 +118,35 @@ public class ImageDetailsPOJO implements Parcelable {
         this.coverageTye = coverageTye;
     }
 
+    public String getImageName() {
+        return imageName;
+    }
+
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
+    }
+
+    public String getImageDateTime() {
+        return imageDateTime;
+    }
+
+    public void setImageDateTime(String imageDateTime) {
+        this.imageDateTime = imageDateTime;
+    }
+
+    public String getImageGeoTag() {
+        return imageGeoTag;
+    }
+
+    public void setImageGeoTag(String imageGeoTag) {
+        this.imageGeoTag = imageGeoTag;
+    }
+
     @Override
     public int describeContents() {
         return 0;
     }
+
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
@@ -120,5 +157,8 @@ public class ImageDetailsPOJO implements Parcelable {
         dest.writeByte((byte)(isOverview ? 1 : 0));
         dest.writeByte((byte)(isPointOfOrigin ? 1 : 0));
         dest.writeString(coverageTye);
+        dest.writeString(imageName);
+        dest.writeString(imageDateTime);
+        dest.writeString(imageGeoTag);
     }
 }
