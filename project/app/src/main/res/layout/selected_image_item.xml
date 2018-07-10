@@ -108,6 +108,16 @@
                 android:src="@drawable/ic_delete_black"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
+            <ImageButton
+                android:id="@+id/imageInfo"
+                android:padding="5dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_below="@+id/description"
+                android:layout_toRightOf="@id/deleteBtn"
+                android:layout_toEndOf="@id/deleteBtn"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_info_black_24dp"/>
         </RelativeLayout>
 
     </android.support.v7.widget.CardView>
