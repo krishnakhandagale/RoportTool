@@ -21,6 +21,7 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <CheckedTextView
                 android:id="@+id/isPointOfOrigin"
                 android:layout_width="wrap_content"
@@ -49,6 +50,14 @@
                 android:textColor="@color/black"
                 android:textStyle="bold"
                 android:layout_marginStart="5dp" />
+
+            <ImageButton
+                android:padding="5dp"
+                android:id="@+id/imageInfo"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/ic_info_black_24dp"
+                android:background="?attr/selectableItemBackgroundBorderless"/>
         </LinearLayout>
         <TextView
             android:id="@+id/imageCoverageType"
@@ -61,18 +70,6 @@
             android:drawableRight="@drawable/ic_key_arrow_down"
             android:nextFocusRight="@+id/imageTitle"
             android:padding="7dp"/>
-
-        <EditText
-            android:id="@+id/imageTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/rounded_edit_text"
-            android:hint="@string/enter_title"
-            android:imeOptions="actionNext"
-            android:inputType="text"
-            android:nextFocusRight="@+id/image_description"
-            android:padding="5dp" />
         <EditText
             android:id="@+id/image_description"
             android:layout_width="match_parent"

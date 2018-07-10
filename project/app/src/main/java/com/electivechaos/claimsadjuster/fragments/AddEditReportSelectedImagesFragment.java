@@ -1,9 +1,11 @@
 package com.electivechaos.claimsadjuster.fragments;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Point;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,6 +22,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.Display;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +33,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -127,6 +132,9 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
     private OnGenerateReportClickListener onGenerateReportClickListener;
     private OnSetImageFileUriListener onSetImageFileUriListener;
 
+    private View selectImageView;
+    private PopupWindow popupWindow;
+
     public static AddEditReportSelectedImagesFragment initFragment(ArrayList<ImageDetailsPOJO> selectedImageList, ArrayList<ImageDetailsPOJO> selectedElevationImagesList, int position, String fileUri, String labelDefaultCoverageType) {
         AddEditReportSelectedImagesFragment fragment = new AddEditReportSelectedImagesFragment();
         Bundle args = new Bundle();
@@ -177,7 +185,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View selectImageView = inflater.inflate(R.layout.fragment_select_photo, container, false);
+        selectImageView = inflater.inflate(R.layout.fragment_select_photo, container, false);
 
         showFabBtn = selectImageView.findViewById(R.id.showFab);
         fabGoNextBtn = selectImageView.findViewById(R.id.fabGoNext);
@@ -882,6 +890,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
             public TextView isPointOfOrigin;
             public ImageButton editBtn;
             public ImageButton deleteBtn;
+            public ImageButton imageInfoBtn;
 
             public MyViewHolder(View view) {
                 super(view);
@@ -892,6 +901,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                 editBtn = view.findViewById(R.id.editBtn);
                 deleteBtn = view.findViewById(R.id.deleteBtn);
                 isPointOfOrigin = view.findViewById(R.id.isPointOfOriginImage);
+                imageInfoBtn = view.findViewById(R.id.imageInfo);
 
             }
         }
@@ -979,6 +989,13 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                     }
                 }
             });
+
+            holder.imageInfoBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onShowPopup(selectImageView, imgDetails);
+                }
+            });
         }
 
         @Override
@@ -1007,6 +1024,41 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public void onShowPopup(View v, ImageDetailsPOJO imageDetails){
+
+        LayoutInflater layoutInflater = (LayoutInflater)getLayoutInflater();
+
+        // inflate the custom popup layout
+        final View inflatedView = layoutInflater.inflate(R.layout.image_info_popup_layout, null,false);
+        // find the ListView in the popup layout
+        TextView imageName, imageDateTime;
+        imageName = inflatedView.findViewById(R.id.imageName);
+        imageDateTime = inflatedView.findViewById(R.id.imageDateTime);
+
+
+        imageName.setText(imageDetails.getImageName());
+        imageDateTime.setText(imageDetails.getImageDateTime());
+
+        // get device size
+        Display display = getActivity().getWindowManager().getDefaultDisplay();
+        final Point size = new Point();
+        display.getSize(size);
+
+        // set height depends on the device size
+        popupWindow = new PopupWindow(inflatedView, size.x - 50,size.y - 1000, true );
+
+        // set a background drawable with rounders corners
+        popupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_image_info));
+
+        popupWindow.setElevation(10.0f);
+        // make it outside touchable to dismiss the popup window
+        popupWindow.setOutsideTouchable(true);
+
+        // show the popup at bottom of the screen and set some margin at bottom ie,
+        popupWindow.showAtLocation(v, Gravity.BOTTOM, 0,100);
     }
 
     @Override

@@ -32,7 +32,10 @@ import com.electivechaos.claimsadjuster.listeners.OnLastSelectionChangeListener;
 import com.electivechaos.claimsadjuster.pojo.Image;
 import com.electivechaos.claimsadjuster.pojo.ImageDetailsPOJO;
 
+import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import static com.electivechaos.claimsadjuster.ui.AddEditCategoryActivity.ADD_COVERAGE_REQUEST_CODE;
 
@@ -69,6 +72,13 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
             imgObj.setTitle("");
             imgObj.setDescription("");
             imgObj.setCoverageTye(labelDefaultCoverageType);
+            File file = new File(imageList.get(i).getPath());
+            if (file.exists()){
+                imgObj.setImageName(file.getName());
+                Date date = new Date(file.lastModified());
+                String dateString = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(date);
+                imgObj.setImageDateTime(dateString);
+            }
             imagesInformation.add(imgObj);
         }
 
@@ -119,10 +129,10 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
 
     }
 
-    @Override
-    public void updateImageTitle(String title, int position) {
-        imagesInformation.get(position).setTitle(title);
-    }
+//    @Override
+//    public void updateImageTitle(String title, int position) {
+//        imagesInformation.get(position).setTitle(title);
+//    }
 
     @Override
     public void updateImageDescription(String description, int position) {
@@ -147,6 +157,21 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
     @Override
     public void setUnsetCoverageType(String coverageType, int position) {
         imagesInformation.get(position).setCoverageTye(coverageType);
+    }
+
+    @Override
+    public void setImageName(String name, int position) {
+        imagesInformation.get(position).setImageName(name);
+    }
+
+    @Override
+    public void setImageDateTime(String dateTime, int position) {
+        imagesInformation.get(position).setImageDateTime(dateTime);
+    }
+
+    @Override
+    public void setGeoTag(String geoTag, int position) {
+        imagesInformation.get(position).setImageGeoTag(geoTag);
     }
 
     public class ImagePagerAdapter extends FragmentStatePagerAdapter {
@@ -296,4 +321,6 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
         }
 
     }
+
+
 }
