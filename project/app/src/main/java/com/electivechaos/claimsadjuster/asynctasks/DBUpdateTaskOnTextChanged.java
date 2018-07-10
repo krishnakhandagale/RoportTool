@@ -58,7 +58,7 @@ public class DBUpdateTaskOnTextChanged extends AsyncTask<String,Void,Void> {
         if(type.equals("title")) {
             categoryListDBHelper.updateReportTitle(value,reportId);
         }
-        else if(type.equals("description")){
+        if(type.equals("description")){
             categoryListDBHelper.updateReportDescription(value, reportId);
         }
         else if(type.equals("client_name")){

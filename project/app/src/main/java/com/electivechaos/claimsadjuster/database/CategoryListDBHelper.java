@@ -786,6 +786,9 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                         imageEntry.put(KEY_IMAGE_COVERAGE_TYPE, imageItem.getCoverageTye());
                         imageEntry.put(KEY_FK_LABEL_ID, labelId);
                         imageEntry.put(KEY_IS_POINT_OF_ORIGIN, imageItem.isPointOfOrigin());
+                        imageEntry.put(KEY_IMAGE_NAME, imageItem.getImageName());
+                        imageEntry.put(KEY_IMAGE_DATE_TIME, imageItem.getImageDateTime());
+                        imageEntry.put(KEY_IMAGE_GEO_TAG, imageItem.getImageGeoTag());
                       long count=  db.insert(TABLE_REPORTS_IMAGE_DETAILS, null, imageEntry);
                       if(count!=-1) {
                           Log.d("Error in insertion", String.valueOf(count));
@@ -941,8 +944,10 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                             sImageDetailsPOJO.setOverview(cSelectedImages.getString(5).equals("1"));
                             sImageDetailsPOJO.setPointOfOrigin(cSelectedImages.getString(7).equals("1"));
                             sImageDetailsPOJO.setCoverageTye(cSelectedImages.getString(8));
+                            sImageDetailsPOJO.setImageName(cSelectedImages.getString(9));
+                            sImageDetailsPOJO.setImageDateTime(cSelectedImages.getString(10));
+                            sImageDetailsPOJO.setImageGeoTag(cSelectedImages.getString(11));
                             selectedImagesList.add(sImageDetailsPOJO);
-
                         } while (cSelectedImages.moveToNext());
                     }
 
@@ -1068,6 +1073,9 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                     imageEntry.put(KEY_FK_LABEL_ID, label.getId());
                     imageEntry.put(KEY_IS_POINT_OF_ORIGIN, imageItem.isPointOfOrigin());
                     imageEntry.put(KEY_IMAGE_COVERAGE_TYPE, imageItem.getCoverageTye());
+                    imageEntry.put(KEY_IMAGE_NAME, imageItem.getImageName());
+                    imageEntry.put(KEY_IMAGE_DATE_TIME, imageItem.getImageDateTime());
+                    imageEntry.put(KEY_IMAGE_GEO_TAG, imageItem.getImageGeoTag());
                     long count = db.insert(TABLE_REPORTS_IMAGE_DETAILS, null, imageEntry);
                     if (count != -1) {
                         Log.d("Error in insertion", String.valueOf(count));
