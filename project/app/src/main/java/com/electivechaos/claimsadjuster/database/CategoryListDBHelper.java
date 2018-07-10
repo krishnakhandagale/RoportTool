@@ -30,7 +30,7 @@ import java.util.Iterator;
  */
 
 public class CategoryListDBHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 170;
+    private static final int DATABASE_VERSION = 171;
 
 
     // Database Name
@@ -113,6 +113,9 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
     private static final String KEY_IS_OVERVIEW = "is_overview";
     private static final String KEY_IS_POINT_OF_ORIGIN= "is_point_of_origin";
     private static final String KEY_IMAGE_COVERAGE_TYPE= "image_coverage_type";
+    private static final String KEY_IMAGE_NAME= "image_name";
+    private static final String KEY_IMAGE_DATE_TIME= "image_date_time";
+    private static final String KEY_IMAGE_GEO_TAG= "image_geo_tag";
 
 
 
@@ -217,6 +220,9 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 + KEY_FK_LABEL_ID+ " TEXT,"
                 + KEY_IS_POINT_OF_ORIGIN+ " BOOLEAN,"
                 + KEY_IMAGE_COVERAGE_TYPE+ " TEXT,"
+                + KEY_IMAGE_NAME+ " TEXT,"
+                + KEY_IMAGE_DATE_TIME+ " TEXT,"
+                + KEY_IMAGE_GEO_TAG+ " TEXT,"
                 + "FOREIGN KEY("+ KEY_FK_LABEL_ID +") REFERENCES "+TABLE_CATEGORY_LABELS+"("+KEY_LABEL_ID+ ")"+ " ON DELETE CASCADE )";
 
 
