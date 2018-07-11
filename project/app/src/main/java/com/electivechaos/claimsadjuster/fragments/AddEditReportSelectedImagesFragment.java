@@ -795,6 +795,15 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                     imgObj.setPointOfOrigin(false);
                     imgObj.setImageUrl(path);
                     imgObj.setCoverageTye(labelDefaultCoverageType);
+
+                    File file = new File(path);
+                    if(file.exists()){
+                        imgObj.setImageName(file.getName());
+                        Date date = new Date(file.lastModified());
+                        String dateString = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(date);
+                        imgObj.setImageDateTime(dateString);
+                    }
+
                     ImageHelper.revokeAppPermission(getActivity(), fileUri);
                     Intent intent = new Intent(getActivity(), SingleImageDetailsActivity.class);
                     intent.putExtra("image_details", imgObj);

@@ -256,6 +256,9 @@ public class SingleImageDetailsActivity extends BaseActivity {
                 shareImageDetails.setOverview(imageDetails.isOverview());
                 shareImageDetails.setPointOfOrigin(imageDetails.isPointOfOrigin());
                 shareImageDetails.setCoverageTye(imageDetails.getCoverageTye());
+                shareImageDetails.setImageName(imageDetails.getImageName());
+                shareImageDetails.setImageDateTime(imageDetails.getImageDateTime());
+                shareImageDetails.setImageGeoTag(imageDetails.getImageGeoTag());
                 Intent intent = new Intent();
                 intent.putExtra("image_entered_details", shareImageDetails);
                 intent.putExtra("isEdit", isEdit);
