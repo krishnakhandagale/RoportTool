@@ -1,8 +1,10 @@
 package com.electivechaos.claimsadjuster.fragments;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,6 +18,7 @@ import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
+import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -44,11 +47,15 @@ import com.electivechaos.claimsadjuster.interfaces.SelectedImagesDataInterface;
 import com.electivechaos.claimsadjuster.listeners.OnMediaScannerListener;
 import com.electivechaos.claimsadjuster.listeners.OnStarterFragmentDataChangeListener;
 import com.electivechaos.claimsadjuster.pojo.ImageDetailsPOJO;
+import com.electivechaos.claimsadjuster.ui.AddEditReportActivity;
+import com.electivechaos.claimsadjuster.ui.ImagePickerActivity;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * Created by krishna on 11/23/17.
@@ -61,6 +68,13 @@ public class StarterPhotosFragment extends Fragment {
     private  static final int IMAGE_THREE_REQUEST_STARTER = 700;
     private  static final int IMAGE_FOUR_REQUEST_STARTER = 800;
     private  static final int HOUSE_NUMBER_REQUEST_STARTER = 900;
+
+
+    private  static final int SELECT_FILE_IMAGE_ONE_STARTER = 201;
+    private  static final int SELECT_FILE_IMAGE_TWO_STARTER = 202;
+    private  static final int SELECT_FILE_IMAGE_THREE_STARTER = 203;
+    private  static final int SELECT_FILE_IMAGE_FOUR_STARTER = 204;
+    private  static final int SELECT_FILE_IMAGE_HOUSE_NUMBER_STARTER = 205;
 
     private LinearLayout parentLayout;
 
@@ -109,6 +123,9 @@ public class StarterPhotosFragment extends Fragment {
     private OnStarterFragmentDataChangeListener onStarterFragmentDataChangeListener;
 
     private  String houseNumber = "";
+
+    private  static final int SELECT_FILE = 1;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -206,7 +223,7 @@ public class StarterPhotosFragment extends Fragment {
                 boolean result = PermissionUtilities.checkPermission(getActivity(), StarterPhotosFragment.this, PermissionUtilities.MY_APP_TAKE_FRONT_PHOTO_PERMISSIONS);
 
                 if (result)
-                    cameraIntent(HOUSE_NUMBER_REQUEST_STARTER);
+                    selectImage(HOUSE_NUMBER_REQUEST_STARTER, SELECT_FILE_IMAGE_HOUSE_NUMBER_STARTER);
             }
         });
         imageViewOne.setOnClickListener(new View.OnClickListener() {
@@ -215,7 +232,7 @@ public class StarterPhotosFragment extends Fragment {
                 boolean result = PermissionUtilities.checkPermission(getActivity(), StarterPhotosFragment.this, PermissionUtilities.MY_APP_TAKE_FRONT_PHOTO_PERMISSIONS);
 
                 if (result)
-                    cameraIntent(IMAGE_ONE_REQUEST_STARTER);
+                    selectImage(IMAGE_ONE_REQUEST_STARTER, SELECT_FILE_IMAGE_ONE_STARTER);
 
             }
         });
@@ -227,7 +244,7 @@ public class StarterPhotosFragment extends Fragment {
                 boolean result = PermissionUtilities.checkPermission(getActivity(), StarterPhotosFragment.this, PermissionUtilities.MY_APP_TAKE_BACK_PHOTO_PERMISSIONS);
 
                 if (result)
-                    cameraIntent(IMAGE_TWO_REQUEST_STARTER);
+                    selectImage(IMAGE_TWO_REQUEST_STARTER, SELECT_FILE_IMAGE_TWO_STARTER);
             }
         });
 
@@ -238,7 +255,7 @@ public class StarterPhotosFragment extends Fragment {
                 boolean result = PermissionUtilities.checkPermission(getActivity(), StarterPhotosFragment.this, PermissionUtilities.MY_APP_TAKE_LEFT_PHOTO_PERMISSIONS);
 
                 if (result)
-                    cameraIntent(IMAGE_THREE_REQUEST_STARTER);
+                    selectImage(IMAGE_THREE_REQUEST_STARTER, SELECT_FILE_IMAGE_THREE_STARTER);
             }
         });
 
@@ -248,7 +265,7 @@ public class StarterPhotosFragment extends Fragment {
                 boolean result = PermissionUtilities.checkPermission(getActivity(), StarterPhotosFragment.this, PermissionUtilities.MY_APP_TAKE_RIGHT_PHOTO_PERMISSIONS);
 
                 if (result)
-                    cameraIntent(IMAGE_FOUR_REQUEST_STARTER);
+                    selectImage(IMAGE_FOUR_REQUEST_STARTER, SELECT_FILE_IMAGE_FOUR_STARTER);
             }
         });
 
@@ -416,6 +433,136 @@ public class StarterPhotosFragment extends Fragment {
         }
     }
 
+    private void selectImage(final int requestCode, final int galleryRequestCode) {
+        final CharSequence[] items = {"Take Photo", "Choose from Gallery", "Cancel"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Choose option");
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+
+                if (items[item].equals("Take Photo")) {
+                    boolean result = PermissionUtilities.checkPermission(getActivity(), StarterPhotosFragment.this, PermissionUtilities.MY_APP_TAKE_PHOTO_PERMISSIONS);
+
+                    if (result)
+                        cameraIntent(requestCode);
+                } else if (items[item].equals("Choose from Gallery")) {
+                    boolean result = PermissionUtilities.checkPermission(getActivity(), StarterPhotosFragment.this, PermissionUtilities.MY_APP_BROWSE_PHOTO_PERMISSIONS);
+                    if (result)
+                        galleryIntent(galleryRequestCode);
+                } else if (items[item].equals("Cancel")) {
+                    dialog.dismiss();
+                }
+            }
+        });
+        builder.show();
+    }
+
+    private void galleryIntent(int requestCode) {
+        Intent intent = new Intent(getActivity(), ImagePickerActivity.class);
+        intent.putExtra("number_of_images_allowed",1 );
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        getActivity().startActivityForResult(intent, requestCode);
+
+    }
+
+    public void onSelectImagesFromGallery(Intent data, final int requestId) {
+        if (data != null) {
+            onSelectFromGalleryResult(data,requestId);
+        } else {
+            Snackbar snackbar = Snackbar
+                    .make(parentLayout, "Something went wrong.Please try again.", Snackbar.LENGTH_INDEFINITE);
+            snackbar.setAction("RETRY", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    selectImage(requestId,requestId);
+                    v.setVisibility(View.GONE);
+                }
+            });
+            View snackBarView = snackbar.getView();
+            snackBarView.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.color_error));
+            snackbar.show();
+        }
+
+    }
+
+    private void onSelectFromGalleryResult(Intent data, int requestId) {
+
+        ArrayList<com.electivechaos.claimsadjuster.pojo.Image> selectedImages = data.getParcelableArrayListExtra("ImageUrls");
+
+        if (requestId == SELECT_FILE_IMAGE_ONE_STARTER) {
+            final ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
+            imgObj.setDescription("Front view for incidence");
+            imgObj.setTitle("Front View");
+            imgObj.setImageUrl(selectedImages.get(0).getPath());
+            selectedElevationImagesList.set(0, imgObj);
+            Glide.with(getActivity())
+                    .load("file://" + selectedImages.get(0).getPath())
+                    .thumbnail(0.1f)
+                    .apply(options)
+                    .into(imageOnePreview);
+            imgBtnRemoveOne.setVisibility(View.VISIBLE);
+
+            selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList, labelPosition);
+
+        } else if (requestId == SELECT_FILE_IMAGE_TWO_STARTER) {
+
+            final ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
+            imgObj.setDescription("Back view for incidence");
+            imgObj.setTitle("Back View");
+            imgObj.setImageUrl(selectedImages.get(0).getPath());
+            selectedElevationImagesList.set(1, imgObj);
+            Glide.with(getActivity())
+                    .load("file://" + selectedImages.get(0).getPath())
+                    .thumbnail(0.1f)
+                    .apply(options)
+                    .into(imageTwoPreview);
+            imgBtnRemoveTwo.setVisibility(View.VISIBLE);
+            selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList, labelPosition);
+        } else if (requestId == SELECT_FILE_IMAGE_THREE_STARTER) {
+            final ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
+            imgObj.setDescription("Left view for incidence");
+            imgObj.setTitle("Left View");
+            imgObj.setImageUrl(selectedImages.get(0).getPath());
+            selectedElevationImagesList.set(2, imgObj);
+            Glide.with(getActivity())
+                    .load("file://" + selectedImages.get(0).getPath())
+                    .thumbnail(0.1f)
+                    .apply(options)
+                    .into(imageThreePreview);
+            imgBtnRemoveThree.setVisibility(View.VISIBLE);
+            selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList, labelPosition);
+        } else if (requestId == SELECT_FILE_IMAGE_FOUR_STARTER) {
+            final ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
+            imgObj.setDescription("Right view for incidence");
+            imgObj.setTitle("Right View");
+            imgObj.setImageUrl(selectedImages.get(0).getPath());
+            selectedElevationImagesList.set(3, imgObj);
+            Glide.with(getActivity())
+                    .load("file://" + selectedImages.get(0).getPath())
+                    .apply(options)
+                    .thumbnail(0.1f)
+                    .into(imageFourPreview);
+            selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList, labelPosition);
+            imgBtnRemoveFour.setVisibility(View.VISIBLE);
+        }
+        else if (requestId == SELECT_FILE_IMAGE_HOUSE_NUMBER_STARTER) {
+
+            houseNumber = selectedImages.get(0).getPath();
+
+            Glide.with(getActivity())
+                    .load("file://" + houseNumber)
+                    .apply(options)
+                    .thumbnail(0.1f)
+                    .into(imageHouseNumberPreview);
+            onStarterFragmentDataChangeListener.onHouseNumberChange(houseNumber, labelPosition);
+            imgBtnRemoveHouseNumber.setVisibility(View.VISIBLE);
+        }
+    }
+
+
+
+
     private void cameraIntent(int requestId) {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
@@ -432,7 +579,6 @@ public class StarterPhotosFragment extends Fragment {
                             photoFile);
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
                 }
-
 
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
@@ -718,7 +864,7 @@ public class StarterPhotosFragment extends Fragment {
             onGenerateReportClickListener = (OnGenerateReportClickListener) getActivity();
             onSetImageFileUriListener = (OnSetImageFileUriListener) getActivity();
             onStarterFragmentDataChangeListener = (OnStarterFragmentDataChangeListener) getActivity();
-            
+
         } catch (ClassCastException exception) {
             exception.printStackTrace();
         }

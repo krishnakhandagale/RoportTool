@@ -601,7 +601,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         contentValues.put(KEY_FK_LABEL_REPORT_ID, label.getReportId());
         contentValues.put(KEY_LABEL_HOUSE_NUMBER,label.getHouseNumber());
         contentValues.put(KEY_LABEL_COVERAGE_TYPE,label.getCoverageType());
-        db.insert(TABLE_CATEGORY_LABELS,null,contentValues);
+        db.insertOrThrow(TABLE_CATEGORY_LABELS,null,contentValues);
         return  id;
     }
 

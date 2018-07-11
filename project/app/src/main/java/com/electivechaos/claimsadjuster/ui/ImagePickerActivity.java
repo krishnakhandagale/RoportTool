@@ -303,7 +303,7 @@ public class ImagePickerActivity extends BaseActivity {
                             numberOfAlreadySelectedImages = numberOfAlreadySelectedImages + 1;
                             imageClickListener.onImageSelectionChanged(getSelectedImages());
                         }else{
-                            Toast.makeText(context,"You can not select more than"+numberOfImagesAllowed+" images.",Toast.LENGTH_LONG).show();
+                            Toast.makeText(context,"You can not select more than "+numberOfImagesAllowed+" images.",Toast.LENGTH_LONG).show();
                         }
 
                     }

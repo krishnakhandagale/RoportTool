@@ -128,6 +128,21 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     private  static final int IMAGE_FOUR_REQUEST_STARTER = 800;
     private  static final int HOUSE_NUMBER_REQUEST_STARTER = 900;
 
+
+    private  static final int SELECT_FILE_IMAGE_ONE_STARTER = 201;
+    private  static final int SELECT_FILE_IMAGE_TWO_STARTER = 202;
+    private  static final int SELECT_FILE_IMAGE_THREE_STARTER = 203;
+    private  static final int SELECT_FILE_IMAGE_FOUR_STARTER = 204;
+    private  static final int SELECT_FILE_IMAGE_HOUSE_NUMBER_STARTER = 205;
+
+
+
+    private  static final int SELECT_FILE_IMAGE_ONE_STARTER_1 = 901;
+    private  static final int SELECT_FILE_IMAGE_TWO_STARTER_2 = 902;
+    private  static final int SELECT_FILE_IMAGE_THREE_STARTER_3 = 903;
+    private  static final int SELECT_FILE_IMAGE_FOUR_STARTER_4 = 904;
+
+
     private static final String CLAIM_DETAILS_FRAGMENT_TAG = "claim_details_fragment" ;
     private static final String PROPERTY_FRAGMENT_TAG = "property_details_fragment" ;
     private static final String PERIL_FRAGMENT_TAG = "peril_fragment" ;
@@ -509,10 +524,11 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     @Override
     public void onSaveInstanceState(Bundle outState) {
 
-        super.onSaveInstanceState(outState);
+
         outState.putInt("selectedFragmentPosition",selectedFragmentPosition);
         outState.putParcelable("reportPojo", reportPOJO);
         outState.putString("fileUri",fileUri);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -1452,6 +1468,50 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                 }
                 break;
 
+            case SELECT_FILE_IMAGE_ONE_STARTER :
+            case SELECT_FILE_IMAGE_TWO_STARTER :
+            case SELECT_FILE_IMAGE_THREE_STARTER :
+            case SELECT_FILE_IMAGE_FOUR_STARTER :
+            case SELECT_FILE_IMAGE_HOUSE_NUMBER_STARTER :
+
+                try {
+                    FragmentManager fm = getSupportFragmentManager();
+                    if(fm.getFragments() != null && fm.getFragments().size() >0){
+                        for(int i=0;i<fm.getFragments().size();i++){
+
+                            if(fm.getFragments().get(i) instanceof  StarterPhotosFragment){
+                                StarterPhotosFragment fragment = (StarterPhotosFragment) fm.getFragments().get(i);
+                                fragment.onSelectImagesFromGallery(data,requestCode);
+                            }
+                        }
+                    }
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+            case SELECT_FILE_IMAGE_ONE_STARTER_1 :
+            case SELECT_FILE_IMAGE_TWO_STARTER_2 :
+            case SELECT_FILE_IMAGE_THREE_STARTER_3 :
+            case SELECT_FILE_IMAGE_FOUR_STARTER_4 :
+
+                try {
+                    FragmentManager fm = getSupportFragmentManager();
+                    if(fm.getFragments() != null && fm.getFragments().size() >0){
+                        for(int i=0;i<fm.getFragments().size();i++){
+
+                            if(fm.getFragments().get(i) instanceof  AddEditReportSelectedImagesFragment){
+                                AddEditReportSelectedImagesFragment fragment = (AddEditReportSelectedImagesFragment) fm.getFragments().get(i);
+                                fragment.onSelectImagesFromGallery(data,requestCode);
+                            }
+                        }
+                    }
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
         }
     }
 
