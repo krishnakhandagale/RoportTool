@@ -4,9 +4,7 @@ package com.electivechaos.claimsadjuster;
  * Created by krishna on 11/7/17.
  */
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -18,6 +16,8 @@ import android.media.ExifInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.text.Editable;
@@ -73,7 +73,6 @@ public class ImageFragment extends Fragment {
     TextView imageCoverageType;
 
     ImageButton imageInfo;
-
 
     public static ImageFragment init(ImageDetailsPOJO imageDetails, int position, ViewPager mPager) {
         ImageFragment imageFragment = new ImageFragment();
@@ -147,7 +146,7 @@ public class ImageFragment extends Fragment {
         imageInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onShowPopup(v);
+                onShowPopup();
             }
         });
 
@@ -389,10 +388,11 @@ public class ImageFragment extends Fragment {
         void setGeoTag(String geoTag, int position);
 
     }
-    public void onShowPopup(View v){
+    public void onShowPopup(){
 
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-         Fragment prev = getFragmentManager().findFragmentByTag("dialog");
+        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+
+        Fragment prev = getFragmentManager().findFragmentByTag("dialog");
         if (prev != null) {
             ft.remove(prev);
         }
@@ -403,7 +403,8 @@ public class ImageFragment extends Fragment {
         imageDetailsData.putString("imgGeoTag", imgGeoTag);
 
         imageDetailsFragment.setArguments(imageDetailsData);
-        imageDetailsFragment.show(ft, "dialog");
+        imageDetailsFragment.show(ft,"dialog");
+
     }
 
     @Override
