@@ -4,7 +4,9 @@ package com.electivechaos.claimsadjuster;
  * Created by krishna on 11/7/17.
  */
 
-import android.annotation.TargetApi;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -16,7 +18,6 @@ import android.media.ExifInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.text.Editable;
@@ -40,6 +41,7 @@ import com.bumptech.glide.Glide;
 import com.electivechaos.claimsadjuster.adapters.CustomMenuAdapter;
 import com.electivechaos.claimsadjuster.asynctasks.DBPropertyDetailsListTsk;
 import com.electivechaos.claimsadjuster.database.CategoryListDBHelper;
+import com.electivechaos.claimsadjuster.dialog.ImageDetailsFragment;
 import com.electivechaos.claimsadjuster.interfaces.AsyncTaskStatusCallback;
 import com.electivechaos.claimsadjuster.pojo.CoveragePOJO;
 import com.electivechaos.claimsadjuster.pojo.ImageDetailsPOJO;
@@ -70,9 +72,7 @@ public class ImageFragment extends Fragment {
     private static CategoryListDBHelper categoryListDBHelper;
     TextView imageCoverageType;
 
-    TextView imageName, imageDateTime, imageGeoTag;
     ImageButton imageInfo;
-    private PopupWindow popWindow;
 
 
     public static ImageFragment init(ImageDetailsPOJO imageDetails, int position, ViewPager mPager) {
@@ -389,38 +389,21 @@ public class ImageFragment extends Fragment {
         void setGeoTag(String geoTag, int position);
 
     }
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public void onShowPopup(View v){
 
-        LayoutInflater layoutInflater = (LayoutInflater)getLayoutInflater();
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+         Fragment prev = getFragmentManager().findFragmentByTag("dialog");
+        if (prev != null) {
+            ft.remove(prev);
+        }
+        ImageDetailsFragment imageDetailsFragment = new ImageDetailsFragment();
+        Bundle imageDetailsData = new Bundle();
+        imageDetailsData.putString("imgName",imgName);
+        imageDetailsData.putString("imgDateTime", imgDateTime);
+        imageDetailsData.putString("imgGeoTag", imgGeoTag);
 
-        // inflate the custom popup layout
-        final View inflatedView = layoutInflater.inflate(R.layout.image_info_popup_layout, null,false);
-        // find the ListView in the popup layout
-
-        imageName = inflatedView.findViewById(R.id.imageName);
-        imageDateTime = inflatedView.findViewById(R.id.imageDateTime);
-
-
-        imageName.setText(imgName);
-        imageDateTime.setText(imgDateTime);
-        // get device size
-        Display display = getActivity().getWindowManager().getDefaultDisplay();
-        final Point size = new Point();
-        display.getSize(size);
-
-        // set height depends on the device size
-        popWindow = new PopupWindow(inflatedView, size.x - 50,size.y - 1000, true );
-
-        // set a background drawable with rounders corners
-        popWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_image_info));
-
-        popWindow.setElevation(10.0f);
-        // make it outside touchable to dismiss the popup window
-        popWindow.setOutsideTouchable(true);
-
-        // show the popup at bottom of the screen and set some margin at bottom ie,
-        popWindow.showAtLocation(v, Gravity.BOTTOM, 0,100);
+        imageDetailsFragment.setArguments(imageDetailsData);
+        imageDetailsFragment.show(ft, "dialog");
     }
 
     @Override
