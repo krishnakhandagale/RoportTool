@@ -132,7 +132,6 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
     private OnGenerateReportClickListener onGenerateReportClickListener;
     private OnSetImageFileUriListener onSetImageFileUriListener;
 
-    private View selectImageView;
     private PopupWindow popupWindow;
 
     public static AddEditReportSelectedImagesFragment initFragment(ArrayList<ImageDetailsPOJO> selectedImageList, ArrayList<ImageDetailsPOJO> selectedElevationImagesList, int position, String fileUri, String labelDefaultCoverageType) {
@@ -185,7 +184,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        selectImageView = inflater.inflate(R.layout.fragment_select_photo, container, false);
+        View  selectImageView = inflater.inflate(R.layout.fragment_select_photo, container, false);
 
         showFabBtn = selectImageView.findViewById(R.id.showFab);
         fabGoNextBtn = selectImageView.findViewById(R.id.fabGoNext);
@@ -1002,7 +1001,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
             holder.imageInfoBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onShowPopup(selectImageView, imgDetails);
+                    onShowPopup(v, imgDetails);
                 }
             });
         }

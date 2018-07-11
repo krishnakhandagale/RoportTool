@@ -147,7 +147,7 @@ public class ImageFragment extends Fragment {
         imageInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onShowPopup(layoutView);
+                onShowPopup(v);
             }
         });
 

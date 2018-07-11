@@ -141,7 +141,7 @@ public class SingleImageDetailsActivity extends BaseActivity {
         imageInfoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onShowPopup(imageDetails);
+                onShowPopup(v, imageDetails);
             }
         });
 
@@ -290,7 +290,7 @@ public class SingleImageDetailsActivity extends BaseActivity {
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public void onShowPopup(ImageDetailsPOJO imageDetails){
+    public void onShowPopup(View v, ImageDetailsPOJO imageDetails){
 
         LayoutInflater layoutInflater = (LayoutInflater)getLayoutInflater();
 
@@ -320,12 +320,8 @@ public class SingleImageDetailsActivity extends BaseActivity {
         // make it outside touchable to dismiss the popup window
         popupWindow.setOutsideTouchable(true);
 
-
-        ViewGroup viewGroup = (ViewGroup) ((ViewGroup) (findViewById(android.R.id.content))).getChildAt(0);
-
-
         // show the popup at bottom of the screen and set some margin at bottom ie,
-        popupWindow.showAtLocation(viewGroup, Gravity.BOTTOM, 0,100);
+        popupWindow.showAtLocation(v, Gravity.BOTTOM, 0,100);
     }
 
     @Override
