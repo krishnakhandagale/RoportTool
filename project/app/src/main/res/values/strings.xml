@@ -143,4 +143,9 @@
     <string name="add_coverage">Add Coverage</string>
     <string name="select_coverage_type">--Select Coverage Type--</string>
     <string name="coverage_type">Coverage Type</string>
+    <string name="name">Name</string>
+    <string name="no_geo_tag_found">No geo tag found.</string>
+    <string name="date">Date</string>
+    <string name="geo_tag">Geo Tag</string>
+    <string name="image_name">Image name.</string>
 </resources>

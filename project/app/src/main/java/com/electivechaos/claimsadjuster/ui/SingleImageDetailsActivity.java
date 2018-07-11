@@ -2,12 +2,16 @@ package com.electivechaos.claimsadjuster.ui;
 
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
 import android.view.Display;
 import android.view.Gravity;
@@ -27,6 +31,7 @@ import com.electivechaos.claimsadjuster.R;
 import com.electivechaos.claimsadjuster.adapters.CustomMenuAdapter;
 import com.electivechaos.claimsadjuster.asynctasks.DBPropertyDetailsListTsk;
 import com.electivechaos.claimsadjuster.database.CategoryListDBHelper;
+import com.electivechaos.claimsadjuster.dialog.ImageDetailsFragment;
 import com.electivechaos.claimsadjuster.interfaces.AsyncTaskStatusCallback;
 import com.electivechaos.claimsadjuster.pojo.CoveragePOJO;
 import com.electivechaos.claimsadjuster.pojo.ImageDetailsPOJO;
@@ -289,39 +294,21 @@ public class SingleImageDetailsActivity extends BaseActivity {
         Glide.with(this).load("file://"+imageDetails.getImageUrl()).into(imgView);
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public void onShowPopup(View v, ImageDetailsPOJO imageDetails){
 
-        LayoutInflater layoutInflater = (LayoutInflater)getLayoutInflater();
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        Fragment prev = getFragmentManager().findFragmentByTag("dialog");
+        if (prev != null) {
+            ft.remove(prev);
+        }
+        ImageDetailsFragment imageDetailsFragment = new ImageDetailsFragment();
+        Bundle imageDetailsData = new Bundle();
+        imageDetailsData.putString("imgName",imageDetails.getImageName());
+        imageDetailsData.putString("imgDateTime", imageDetails.getImageDateTime());
+        imageDetailsData.putString("imgGeoTag", imageDetails.getImageGeoTag());
 
-        // inflate the custom popup layout
-        final View inflatedView = layoutInflater.inflate(R.layout.image_info_popup_layout, null,false);
-        // find the ListView in the popup layout
-        TextView imageName, imageDateTime;
-        imageName = inflatedView.findViewById(R.id.imageName);
-        imageDateTime = inflatedView.findViewById(R.id.imageDateTime);
-
-
-        imageName.setText(imageDetails.getImageName());
-        imageDateTime.setText(imageDetails.getImageDateTime());
-
-        // get device size
-        Display display = getWindowManager().getDefaultDisplay();
-        final Point size = new Point();
-        display.getSize(size);
-
-        // set height depends on the device size
-        popupWindow = new PopupWindow(inflatedView, size.x - 50,size.y - 1000, true );
-
-        // set a background drawable with rounders corners
-        popupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_image_info));
-
-        popupWindow.setElevation(10.0f);
-        // make it outside touchable to dismiss the popup window
-        popupWindow.setOutsideTouchable(true);
-
-        // show the popup at bottom of the screen and set some margin at bottom ie,
-        popupWindow.showAtLocation(v, Gravity.BOTTOM, 0,100);
+        imageDetailsFragment.setArguments(imageDetailsData);
+        imageDetailsFragment.show(ft, "dialog");
     }
 
     @Override

@@ -799,7 +799,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                     if(file.exists()){
                         imgObj.setImageName(file.getName());
                         Date date = new Date(file.lastModified());
-                        String dateString = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(date);
+                        String dateString = new SimpleDateFormat("dd/MM/yyyy  HH:mm:ss").format(date);
                         imgObj.setImageDateTime(dateString);
                     }
 
