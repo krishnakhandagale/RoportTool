@@ -90,7 +90,7 @@ public class ImagePickerActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         numberOfAlreadySelectedImages =  getIntent().getIntExtra("already_selected_images",0);
-        numberOfImagesAllowed = getIntent().getIntExtra("number_of_images_allowed", 0);
+        numberOfImagesAllowed = getIntent().getIntExtra("number_of_images_allowed", 300);
         if(selectedImages == null){
             selectedImages = new ArrayList<>();
         }
