@@ -1,11 +1,10 @@
 package com.electivechaos.claimsadjuster.fragments;
 
-import android.annotation.TargetApi;
+
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Point;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,14 +15,13 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.view.Display;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,6 +42,7 @@ import com.electivechaos.claimsadjuster.PermissionUtilities;
 import com.electivechaos.claimsadjuster.R;
 import com.electivechaos.claimsadjuster.SingleMediaScanner;
 import com.electivechaos.claimsadjuster.adapters.DrawerMenuListAdapter;
+import com.electivechaos.claimsadjuster.dialog.ImageDetailsFragment;
 import com.electivechaos.claimsadjuster.interfaces.NextButtonClickListener;
 import com.electivechaos.claimsadjuster.interfaces.OnGenerateReportClickListener;
 import com.electivechaos.claimsadjuster.interfaces.OnSaveReportClickListener;
@@ -799,7 +798,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                     if(file.exists()){
                         imgObj.setImageName(file.getName());
                         Date date = new Date(file.lastModified());
-                        String dateString = new SimpleDateFormat("dd/MM/yyyy  HH:mm:ss").format(date);
+                        String dateString = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(date);
                         imgObj.setImageDateTime(dateString);
                     }
 
@@ -1001,7 +1000,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
             holder.imageInfoBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onShowPopup(v, imgDetails);
+                    onShowPopup(imgDetails);
                 }
             });
         }
@@ -1034,39 +1033,21 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
 
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public void onShowPopup(View v, ImageDetailsPOJO imageDetails){
+    public void onShowPopup(ImageDetailsPOJO imageDetails){
 
-        LayoutInflater layoutInflater = (LayoutInflater)getLayoutInflater();
+       FragmentTransaction ft = getFragmentManager().beginTransaction();
+        Fragment prev = getFragmentManager().findFragmentByTag("dialog");
+        if (prev != null) {
+            ft.remove(prev);
+        }
+        ImageDetailsFragment imageDetailsFragment = new ImageDetailsFragment();
+        Bundle imageDetailsData = new Bundle();
+        imageDetailsData.putString("imgName",imageDetails.getImageName());
+        imageDetailsData.putString("imgDateTime", imageDetails.getImageDateTime());
+        imageDetailsData.putString("imgGeoTag", imageDetails.getImageGeoTag());
 
-        // inflate the custom popup layout
-        final View inflatedView = layoutInflater.inflate(R.layout.image_info_popup_layout, null,false);
-        // find the ListView in the popup layout
-        TextView imageName, imageDateTime;
-        imageName = inflatedView.findViewById(R.id.imageName);
-        imageDateTime = inflatedView.findViewById(R.id.imageDateTime);
-
-
-        imageName.setText(imageDetails.getImageName());
-        imageDateTime.setText(imageDetails.getImageDateTime());
-
-        // get device size
-        Display display = getActivity().getWindowManager().getDefaultDisplay();
-        final Point size = new Point();
-        display.getSize(size);
-
-        // set height depends on the device size
-        popupWindow = new PopupWindow(inflatedView, size.x - 50,size.y - 1000, true );
-
-        // set a background drawable with rounders corners
-        popupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_image_info));
-
-        popupWindow.setElevation(10.0f);
-        // make it outside touchable to dismiss the popup window
-        popupWindow.setOutsideTouchable(true);
-
-        // show the popup at bottom of the screen and set some margin at bottom ie,
-        popupWindow.showAtLocation(v, Gravity.BOTTOM, 0,100);
+        imageDetailsFragment.setArguments(imageDetailsData);
+        imageDetailsFragment.show(ft, "dialog");
     }
 
     @Override

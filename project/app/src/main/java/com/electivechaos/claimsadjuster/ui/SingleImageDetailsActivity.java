@@ -2,9 +2,8 @@ package com.electivechaos.claimsadjuster.ui;
 
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Point;
@@ -146,7 +145,7 @@ public class SingleImageDetailsActivity extends BaseActivity {
         imageInfoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onShowPopup(v, imageDetails);
+                onShowPopup(imageDetails);
             }
         });
 
@@ -294,10 +293,10 @@ public class SingleImageDetailsActivity extends BaseActivity {
         Glide.with(this).load("file://"+imageDetails.getImageUrl()).into(imgView);
     }
 
-    public void onShowPopup(View v, ImageDetailsPOJO imageDetails){
+    public void onShowPopup(ImageDetailsPOJO imageDetails){
 
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        Fragment prev = getFragmentManager().findFragmentByTag("dialog");
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        Fragment prev = getSupportFragmentManager().findFragmentByTag("dialog");
         if (prev != null) {
             ft.remove(prev);
         }
