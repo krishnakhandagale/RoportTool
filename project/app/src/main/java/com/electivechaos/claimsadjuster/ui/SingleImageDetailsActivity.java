@@ -1,16 +1,24 @@
 package com.electivechaos.claimsadjuster.ui;
 
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Point;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.view.Display;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CheckedTextView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -39,6 +47,7 @@ public class SingleImageDetailsActivity extends BaseActivity {
 
     private TextView imageCoverageType;
     private CategoryListDBHelper categoryListDBHelper;
+    private PopupWindow popupWindow;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,11 +56,12 @@ public class SingleImageDetailsActivity extends BaseActivity {
 
         categoryListDBHelper = CategoryListDBHelper.getInstance(this);
         ImageView imgView = findViewById(R.id.imageView);
-        final EditText title = findViewById(R.id.clickedImageTitle);
+       // final EditText title = findViewById(R.id.clickedImageTitle);
         final EditText description = findViewById(R.id.clickedImageDescription);
         final CheckedTextView isDamageTextView = findViewById(R.id.isDamageTextView);
         final CheckedTextView isOverviewTextView = findViewById(R.id.isOverviewTextView);
         final CheckedTextView isPointOfOriginTextView = findViewById(R.id.isPointOfOrigin);
+        final ImageButton imageInfoBtn = findViewById(R.id.imageInfo);
 
         imageCoverageType = findViewById(R.id.imageCoverageType);
 
@@ -67,7 +77,7 @@ public class SingleImageDetailsActivity extends BaseActivity {
             }else {
                 imageCoverageType.setText(imageDetails.getCoverageTye());
             }
-            title.setText(imageDetails.getTitle());
+            //title.setText(imageDetails.getTitle());
             description.setText(imageDetails.getDescription());
 
             isDamageTextView.setChecked(imageDetails.isDamage());
@@ -91,6 +101,7 @@ public class SingleImageDetailsActivity extends BaseActivity {
             }else {
                 isPointOfOriginTextView.setBackground(ContextCompat.getDrawable(this,R.drawable.shape_chip_drawable_gray));
             }
+
 
         }
         if(savedInstanceState != null) {
@@ -126,6 +137,13 @@ public class SingleImageDetailsActivity extends BaseActivity {
                 isPointOfOriginTextView.setBackground(ContextCompat.getDrawable(this,R.drawable.shape_chip_drawable_gray));
             }
         }
+
+        imageInfoBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onShowPopup(imageDetails);
+            }
+        });
 
         isDamageTextView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -249,7 +267,7 @@ public class SingleImageDetailsActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 ImageDetailsPOJO shareImageDetails = new ImageDetailsPOJO();
-                shareImageDetails.setTitle(title.getText().toString());
+               // shareImageDetails.setTitle(title.getText().toString());
                 shareImageDetails.setDescription(description.getText().toString());
                 shareImageDetails.setImageUrl(imageDetails.getImageUrl());
                 shareImageDetails.setIsDamage(imageDetails.isDamage());
@@ -269,6 +287,45 @@ public class SingleImageDetailsActivity extends BaseActivity {
             }
         });
         Glide.with(this).load("file://"+imageDetails.getImageUrl()).into(imgView);
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public void onShowPopup(ImageDetailsPOJO imageDetails){
+
+        LayoutInflater layoutInflater = (LayoutInflater)getLayoutInflater();
+
+        // inflate the custom popup layout
+        final View inflatedView = layoutInflater.inflate(R.layout.image_info_popup_layout, null,false);
+        // find the ListView in the popup layout
+        TextView imageName, imageDateTime;
+        imageName = inflatedView.findViewById(R.id.imageName);
+        imageDateTime = inflatedView.findViewById(R.id.imageDateTime);
+
+
+        imageName.setText(imageDetails.getImageName());
+        imageDateTime.setText(imageDetails.getImageDateTime());
+
+        // get device size
+        Display display = getWindowManager().getDefaultDisplay();
+        final Point size = new Point();
+        display.getSize(size);
+
+        // set height depends on the device size
+        popupWindow = new PopupWindow(inflatedView, size.x - 50,size.y - 1000, true );
+
+        // set a background drawable with rounders corners
+        popupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_image_info));
+
+        popupWindow.setElevation(10.0f);
+        // make it outside touchable to dismiss the popup window
+        popupWindow.setOutsideTouchable(true);
+
+
+        ViewGroup viewGroup = (ViewGroup) ((ViewGroup) (findViewById(android.R.id.content))).getChildAt(0);
+
+
+        // show the popup at bottom of the screen and set some margin at bottom ie,
+        popupWindow.showAtLocation(viewGroup, Gravity.BOTTOM, 0,100);
     }
 
     @Override
