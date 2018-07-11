@@ -62,7 +62,7 @@ public class ImagePickerActivity extends BaseActivity {
     Boolean isFolderView;
 
     List<Image> selectedImages = null;
-    int numberOfAlreadySelectedImages = 0;
+    private int numberOfAlreadySelectedImages = 0;
     private FolderClickListener folderClickListener = new FolderClickListener() {
 
         @Override
@@ -83,12 +83,14 @@ public class ImagePickerActivity extends BaseActivity {
             }
         }
     };
+    private int numberOfImagesAllowed = 300;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         numberOfAlreadySelectedImages =  getIntent().getIntExtra("already_selected_images",0);
+        numberOfImagesAllowed = getIntent().getIntExtra("number_of_images_allowed", 0);
         if(selectedImages == null){
             selectedImages = new ArrayList<>();
         }
@@ -256,9 +258,10 @@ public class ImagePickerActivity extends BaseActivity {
         Context context;
         List<Image> images;
         List<Image> selectedImages;
-        int numberOfAlreadySelectedImages = 0;
+        int numberOfAlreadySelectedImages;
         LayoutInflater mInflater;
         ImageClickListener imageClickListener;
+        int numberOfImagesAllowed;
 
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -294,13 +297,13 @@ public class ImagePickerActivity extends BaseActivity {
                         numberOfAlreadySelectedImages = numberOfAlreadySelectedImages -1;
                         imageClickListener.onImageSelectionChanged(getSelectedImages());
                     }else{
-                        if(numberOfAlreadySelectedImages < 300){
+                        if(numberOfAlreadySelectedImages < numberOfImagesAllowed){
                             selectedImages.add(image);
                             notifyItemChanged(position);
                             numberOfAlreadySelectedImages = numberOfAlreadySelectedImages + 1;
                             imageClickListener.onImageSelectionChanged(getSelectedImages());
                         }else{
-                            Toast.makeText(context,"You can not select more than 30 images.",Toast.LENGTH_LONG).show();
+                            Toast.makeText(context,"You can not select more than"+numberOfImagesAllowed+" images.",Toast.LENGTH_LONG).show();
                         }
 
                     }
@@ -339,13 +342,14 @@ public class ImagePickerActivity extends BaseActivity {
         }
 
 
-        ImagePickerAdapter (Context context, List<Image> images,  List<Image> selectedImages,ImageClickListener imageClickListener, int numberOfAlreadySelectedImages){
+        ImagePickerAdapter (Context context, List<Image> images,  List<Image> selectedImages,ImageClickListener imageClickListener, int numberOfAlreadySelectedImages, int numberOfImagesAllowed){
             mInflater = LayoutInflater.from(context);
             this.context = context;
             this.images = images;
             this.selectedImages = selectedImages;
             this.imageClickListener = imageClickListener;
             this.numberOfAlreadySelectedImages = numberOfAlreadySelectedImages;
+            this.numberOfImagesAllowed = numberOfImagesAllowed;
             if(this.selectedImages == null){
                 this.selectedImages = new ArrayList<>();
             }
@@ -362,7 +366,7 @@ public class ImagePickerActivity extends BaseActivity {
         isFolderView = false;
         backToFolder.setVisibility(View.VISIBLE);
         imageToolbarTitle.setText(folderName);
-        ImagePickerAdapter adapter = new ImagePickerAdapter(getBaseContext(),images,selectedImages, imageClickListener,numberOfAlreadySelectedImages);
+        ImagePickerAdapter adapter = new ImagePickerAdapter(getBaseContext(),images,selectedImages, imageClickListener,numberOfAlreadySelectedImages,numberOfImagesAllowed);
         gridView.setAdapter(adapter);
     }
 
