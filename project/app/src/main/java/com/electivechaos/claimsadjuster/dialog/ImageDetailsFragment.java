@@ -46,7 +46,6 @@ public class ImageDetailsFragment extends DialogFragment{
             imageName = passedArgs.get("imgName").toString();
             imageDateTime = passedArgs.get("imgDateTime").toString();
             imageGeoTag = passedArgs.get("imgGeoTag").toString();
-            setStyle(DialogFragment.STYLE_NORMAL, R.style.mytheme);
         }
 
 
