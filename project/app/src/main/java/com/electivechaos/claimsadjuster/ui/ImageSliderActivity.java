@@ -27,7 +27,6 @@ import com.electivechaos.claimsadjuster.BaseActivity;
 import com.electivechaos.claimsadjuster.DepthPageTransformer;
 import com.electivechaos.claimsadjuster.ImageFragment;
 import com.electivechaos.claimsadjuster.R;
-import com.electivechaos.claimsadjuster.fragments.AddEditReportSelectedImagesFragment;
 import com.electivechaos.claimsadjuster.listeners.OnLastSelectionChangeListener;
 import com.electivechaos.claimsadjuster.pojo.Image;
 import com.electivechaos.claimsadjuster.pojo.ImageDetailsPOJO;
