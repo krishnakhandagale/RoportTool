@@ -78,6 +78,7 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
                 String timeString = new SimpleDateFormat("HH:mm:ss").format(date);
                 imgObj.setImageDateTime(dateString+" At "+timeString);
             }
+            imgObj.setImageGeoTag("");
             imagesInformation.add(imgObj);
         }
 

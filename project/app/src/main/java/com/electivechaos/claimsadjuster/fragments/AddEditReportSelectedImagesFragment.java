@@ -814,6 +814,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                         String dateString = new SimpleDateFormat("dd/MM/yyyy").format(date);
                         String timeString = new SimpleDateFormat("HH:mm:ss").format(date);
                         imgObj.setImageDateTime(dateString+" At "+timeString);
+                        imgObj.setImageGeoTag("");
                     }
 
                     ImageHelper.revokeAppPermission(getActivity(), fileUri);
@@ -883,7 +884,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                     .into(imageFourPreview);
             selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList, labelPosition);
             imgBtnRemoveFour.setVisibility(View.VISIBLE);
-        }else if(requestId == REQUEST_CAMERA || requestId == SELECT_FILE){
+        }else if(requestId == SELECT_FILE){
             Intent intent = new Intent(getActivity(), ImageSliderActivity.class);
             intent.putExtra("ImageList", selectedImages);
 
