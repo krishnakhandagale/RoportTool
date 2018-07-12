@@ -1,7 +1,9 @@
- <RelativeLayout
-        android:layout_margin="5dp"
-        xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+<LinearLayout
         android:layout_width="match_parent"
+        android:orientation="vertical"
         android:layout_height="match_parent">
     <LinearLayout
         android:padding="5dp"
@@ -11,6 +13,7 @@
         android:weightSum="3"
         android:orientation="horizontal">
         <TextView
+            android:textColor="@color/grayDark"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/name"
@@ -19,6 +22,7 @@
             android:textSize="16sp"/>
 
         <TextView
+            android:textColor="@color/grayDark"
             android:id="@+id/imageName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -38,7 +42,7 @@
         android:orientation="horizontal"
         android:weightSum="3">
         <TextView
-
+            android:textColor="@color/grayDark"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/date"
@@ -47,6 +51,7 @@
             android:textSize="16sp"/>
 
         <TextView
+            android:textColor="@color/grayDark"
             android:id="@+id/imageDateTime"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -65,7 +70,7 @@
         android:orientation="horizontal"
         android:weightSum="3">
         <TextView
-
+            android:textColor="@color/grayDark"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/geo_tag"
@@ -74,6 +79,7 @@
             android:textSize="16sp"/>
 
         <TextView
+            android:textColor="@color/grayDark"
             android:id="@+id/imageGeoTag"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -84,4 +90,14 @@
             android:ellipsize="end"/>
     </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>
+    <ImageButton
+        android:background="@null"
+        android:id="@+id/closeImageDialog"
+        android:padding="10dp"
+        android:src="@drawable/ic_close_black"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</FrameLayout>

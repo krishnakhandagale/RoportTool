@@ -5,6 +5,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -812,8 +815,8 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                         imgObj.setImageName(file.getName());
                         Date date = new Date(file.lastModified());
                         String dateString = new SimpleDateFormat("dd/MM/yyyy").format(date);
-                        String timeString = new SimpleDateFormat("HH:mm:ss").format(date);
-                        imgObj.setImageDateTime(dateString+" At "+timeString);
+                        String timeString = new SimpleDateFormat("HH:mm:ss a").format(date);
+                        imgObj.setImageDateTime(dateString+" at "+timeString);
                         imgObj.setImageGeoTag("");
                     }
 
@@ -1117,7 +1120,6 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
         imageDetailsData.putString("imgName",imageDetails.getImageName());
         imageDetailsData.putString("imgDateTime", imageDetails.getImageDateTime());
         imageDetailsData.putString("imgGeoTag", imageDetails.getImageGeoTag());
-
         imageDetailsFragment.setArguments(imageDetailsData);
         imageDetailsFragment.show(ft, "dialog");
     }

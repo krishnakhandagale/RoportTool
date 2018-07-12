@@ -74,8 +74,8 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
                 imgObj.setImageName(file.getName());
                 Date date = new Date(file.lastModified());
                 String dateString = new SimpleDateFormat("dd/MM/yyyy").format(date);
-                String timeString = new SimpleDateFormat("HH:mm:ss").format(date);
-                imgObj.setImageDateTime(dateString+" At "+timeString);
+                String timeString = new SimpleDateFormat("HH:mm:ss a").format(date);
+                imgObj.setImageDateTime(dateString+" at "+timeString);
             }
             imgObj.setImageGeoTag("");
             imagesInformation.add(imgObj);
