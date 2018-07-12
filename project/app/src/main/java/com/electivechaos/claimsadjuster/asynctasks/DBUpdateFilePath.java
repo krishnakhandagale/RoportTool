@@ -8,6 +8,7 @@ import android.graphics.Matrix;
 import android.support.media.ExifInterface;
 import android.os.AsyncTask;
 import android.os.Environment;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 
@@ -178,8 +179,8 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
             for(int p=0;p <labels.size() ;p++){
 
                 Label label = labels.get(p);
-
                 event.setHeader(label.getName());
+
 
                 ArrayList<ImageDetailsPOJO> selectedElevationImagesList =  label.getSelectedElevationImages();
                 ArrayList<ImageDetailsPOJO> selectedImageList = label.getSelectedImages();
@@ -191,7 +192,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
                             PdfPTable table = new PdfPTable(3);
                             byte[] imageBytesResized;
                             table.setWidths(new float[]{1, 5, 4});
-                            imageBytesResized = resizeImage(selectedElevationImagesList.get(j).getImageUrl(), (int) ((document.getPageSize().getWidth() / 2) - 100), (int) ((document.getPageSize().getHeight() / numberOfImagesPerPage) - 100));
+                            imageBytesResized = resizeImage(selectedElevationImagesList.get(j).getImageUrl(), (int) ((document.getPageSize().getWidth() / numberOfImagesPerPage) - 100), (int) ((document.getPageSize().getHeight() / numberOfImagesPerPage) - 100));
                             com.itextpdf.text.Image img = com.itextpdf.text.Image.getInstance(imageBytesResized);
 
                             table.setHorizontalAlignment(Element.ALIGN_LEFT);
@@ -217,6 +218,24 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
                 if(k +1 < selectedElevationImagesList.size()){
                     document.newPage();
                 }
+
+                if(!TextUtils.isEmpty(label.getHouseNumber())){
+
+                    PdfPTable table = new PdfPTable(3);
+                    byte[] imageBytesResized;
+                    table.setWidths(new float[]{1, 5, 4});
+                    imageBytesResized = resizeImage(label.getHouseNumber(), (int) ((document.getPageSize().getWidth()/2) - 100), (int) ((document.getPageSize().getHeight()/2) - 100));
+                    com.itextpdf.text.Image img = com.itextpdf.text.Image.getInstance(imageBytesResized);
+
+                    table.setHorizontalAlignment(Element.ALIGN_LEFT);
+                    table.setWidthPercentage(100);
+                    table.addCell(getImageNumberPdfPCell("", PdfPCell.ALIGN_LEFT));
+                    table.addCell(getCellImagCell(img, PdfPCell.ALIGN_LEFT, document, 2));
+                    table.addCell(getCell("House Number", "House Number Image", PdfPCell.LEFT, document, 2));
+                    document.add(table);
+                    document.add(new Paragraph(" "));
+                }
+
 
                 for (int i = 0; i < selectedImageList.size(); i++) {
                     try {

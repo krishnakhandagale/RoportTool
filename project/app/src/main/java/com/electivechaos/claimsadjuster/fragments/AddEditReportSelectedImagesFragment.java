@@ -834,8 +834,8 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
         selectedImages = data.getParcelableArrayListExtra("ImageUrls");
         if (requestId == SELECT_FILE_IMAGE_ONE_OVERVIEW) {
             final ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
-            imgObj.setDescription("Front view for incidence");
-            imgObj.setTitle("Front View");
+            imgObj.setDescription("Overview 1");
+            imgObj.setTitle("Overview 1 Image");
             imgObj.setImageUrl(selectedImages.get(0).getPath());
             selectedElevationImagesList.set(0, imgObj);
             Glide.with(getActivity())
@@ -850,8 +850,8 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
         } else if (requestId == SELECT_FILE_IMAGE_TWO_OVERVIEW) {
 
             final ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
-            imgObj.setDescription("Back view for incidence");
-            imgObj.setTitle("Back View");
+            imgObj.setDescription("Overview 2");
+            imgObj.setTitle("Overview 2 Image");
             imgObj.setImageUrl(selectedImages.get(0).getPath());
             selectedElevationImagesList.set(1, imgObj);
             Glide.with(getActivity())
@@ -863,8 +863,8 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
             selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList, labelPosition);
         } else if (requestId == SELECT_FILE_IMAGE_THREE_OVERVIEW) {
             final ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
-            imgObj.setDescription("Left view for incidence");
-            imgObj.setTitle("Left View");
+            imgObj.setDescription("Overview 3");
+            imgObj.setTitle("Overview 3 Image");
             imgObj.setImageUrl(selectedImages.get(0).getPath());
             selectedElevationImagesList.set(2, imgObj);
             Glide.with(getActivity())
@@ -876,8 +876,8 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
             selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList, labelPosition);
         } else if (requestId == SELECT_FILE_IMAGE_FOUR_OVERVIEW) {
             final ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
-            imgObj.setDescription("Right view for incidence");
-            imgObj.setTitle("Right View");
+            imgObj.setDescription("Overview 4");
+            imgObj.setTitle("Overview 4 Image");
             imgObj.setImageUrl(selectedImages.get(0).getPath());
             selectedElevationImagesList.set(3, imgObj);
             Glide.with(getActivity())
