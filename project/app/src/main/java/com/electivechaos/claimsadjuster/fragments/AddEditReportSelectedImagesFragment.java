@@ -76,6 +76,11 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
     private  static final int IMAGE_THREE_REQUEST = 300;
     private  static final int IMAGE_FOUR_REQUEST = 400;
 
+    private  static final int SELECT_FILE_IMAGE_ONE_OVERVIEW = 301;
+    private  static final int SELECT_FILE_IMAGE_TWO_OVERVIEW  = 302;
+    private  static final int SELECT_FILE_IMAGE_THREE_OVERVIEW  = 303;
+    private  static final int SELECT_FILE_IMAGE_FOUR_OVERVIEW  = 304;
+
     private  static final int SELECT_FILE = 1;
     private  static final int ADD_IMAGE_DETAILS = 2;
     private  static final int SET_CLICKED_IMAGE_DETAILS = 3;
@@ -278,7 +283,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                 boolean result = PermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_TAKE_FRONT_PHOTO_PERMISSIONS);
 
                 if (result)
-                    cameraIntent(IMAGE_ONE_REQUEST);
+                    selectImage(IMAGE_ONE_REQUEST, SELECT_FILE_IMAGE_ONE_OVERVIEW );
 
             }
         });
@@ -290,7 +295,8 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                 boolean result = PermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_TAKE_BACK_PHOTO_PERMISSIONS);
 
                 if (result)
-                    cameraIntent(IMAGE_TWO_REQUEST);
+                    selectImage(IMAGE_TWO_REQUEST, SELECT_FILE_IMAGE_TWO_OVERVIEW );
+
             }
         });
 
@@ -301,7 +307,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                 boolean result = PermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_TAKE_LEFT_PHOTO_PERMISSIONS);
 
                 if (result)
-                    cameraIntent(IMAGE_THREE_REQUEST);
+                    selectImage(IMAGE_THREE_REQUEST, SELECT_FILE_IMAGE_THREE_OVERVIEW );
             }
         });
 
@@ -311,7 +317,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                 boolean result = PermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_TAKE_RIGHT_PHOTO_PERMISSIONS);
 
                 if (result)
-                    cameraIntent(IMAGE_FOUR_REQUEST);
+                    selectImage(IMAGE_FOUR_REQUEST, SELECT_FILE_IMAGE_FOUR_OVERVIEW );
             }
         });
 
@@ -386,7 +392,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
         selectPhotoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectImage();
+                selectImage(REQUEST_CAMERA, SELECT_FILE);
                 if (isFabOpen) {
                     showFabBtn.setImageResource(R.drawable.ic_more_vertical_white);
                     fabGoNextBtn.startAnimation(fab_close);
@@ -479,7 +485,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
         }
     }
 
-    private void selectImage() {
+    private void selectImage(final int CameraRequestCode, final int galleryRequestCode) {
         final CharSequence[] items = {"Take Photo", "Choose from Gallery", "Cancel"};
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Choose option");
@@ -491,11 +497,11 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                     boolean result = PermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_TAKE_PHOTO_PERMISSIONS);
 
                     if (result)
-                        cameraIntent(REQUEST_CAMERA);
+                        cameraIntent(CameraRequestCode);
                 } else if (items[item].equals("Choose from Gallery")) {
                     boolean result = PermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_BROWSE_PHOTO_PERMISSIONS);
                     if (result)
-                        galleryIntent();
+                        galleryIntent(galleryRequestCode);
                 } else if (items[item].equals("Cancel")) {
                     dialog.dismiss();
                 }
@@ -504,14 +510,21 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
         builder.show();
     }
 
-    private void galleryIntent() {
+    private void galleryIntent(int galleryRequestCode) {
         if (selectedImageList == null) {
             selectedImageList = new ArrayList<>();
         }
+
         Intent intent = new Intent(getActivity(), ImagePickerActivity.class);
         intent.putExtra("already_selected_images", selectedImageList.size());
+
+        if(galleryRequestCode != 1) {
+            intent.putExtra("already_selected_images", 0);
+            intent.putExtra("number_of_images_allowed", 1);
+        }
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        getActivity().startActivityForResult(intent, SELECT_FILE);
+        getActivity().startActivityForResult(intent, galleryRequestCode);
+
 
     }
 
@@ -633,7 +646,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
             snackbar.setAction("RETRY", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    selectImage();
+                    selectImage(REQUEST_CAMERA, SELECT_FILE);
                     v.setVisibility(View.GONE);
                 }
             });
@@ -643,16 +656,16 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
         }
     }
 
-    public void onSelectImagesFromGallery(Intent data) {
+    public void onSelectImagesFromGallery(Intent data, final int requestCode) {
         if (data != null) {
-            onSelectFromGalleryResult(data);
+            onSelectFromGalleryResult(data, requestCode);
         } else {
             Snackbar snackbar = Snackbar
                     .make(parentLayout, "Something went wrong.Please try again.", Snackbar.LENGTH_INDEFINITE);
             snackbar.setAction("RETRY", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    selectImage();
+                    selectImage(requestCode, requestCode);
                     v.setVisibility(View.GONE);
                 }
             });
@@ -812,14 +825,71 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
         });
     }
 
-    private void onSelectFromGalleryResult(Intent data) {
+    private void onSelectFromGalleryResult(Intent data, int requestId) {
         selectedImages = data.getParcelableArrayListExtra("ImageUrls");
-        Intent intent = new Intent(getActivity(), ImageSliderActivity.class);
-        intent.putExtra("ImageList", selectedImages);
+        if (requestId == SELECT_FILE_IMAGE_ONE_OVERVIEW) {
+            final ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
+            imgObj.setDescription("Front view for incidence");
+            imgObj.setTitle("Front View");
+            imgObj.setImageUrl(selectedImages.get(0).getPath());
+            selectedElevationImagesList.set(0, imgObj);
+            Glide.with(getActivity())
+                    .load("file://" + selectedImages.get(0).getPath())
+                    .thumbnail(0.1f)
+                    .apply(options)
+                    .into(imageOnePreview);
+            imgBtnRemoveOne.setVisibility(View.VISIBLE);
 
-        intent.putExtra("labelPosition",labelPosition);
-        intent.putExtra("labelDefaultCoverageType",labelDefaultCoverageType);
-        getActivity().startActivityForResult(intent, ADD_IMAGE_DETAILS);
+            selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList, labelPosition);
+
+        } else if (requestId == SELECT_FILE_IMAGE_TWO_OVERVIEW) {
+
+            final ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
+            imgObj.setDescription("Back view for incidence");
+            imgObj.setTitle("Back View");
+            imgObj.setImageUrl(selectedImages.get(0).getPath());
+            selectedElevationImagesList.set(1, imgObj);
+            Glide.with(getActivity())
+                    .load("file://" + selectedImages.get(0).getPath())
+                    .thumbnail(0.1f)
+                    .apply(options)
+                    .into(imageTwoPreview);
+            imgBtnRemoveTwo.setVisibility(View.VISIBLE);
+            selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList, labelPosition);
+        } else if (requestId == SELECT_FILE_IMAGE_THREE_OVERVIEW) {
+            final ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
+            imgObj.setDescription("Left view for incidence");
+            imgObj.setTitle("Left View");
+            imgObj.setImageUrl(selectedImages.get(0).getPath());
+            selectedElevationImagesList.set(2, imgObj);
+            Glide.with(getActivity())
+                    .load("file://" + selectedImages.get(0).getPath())
+                    .thumbnail(0.1f)
+                    .apply(options)
+                    .into(imageThreePreview);
+            imgBtnRemoveThree.setVisibility(View.VISIBLE);
+            selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList, labelPosition);
+        } else if (requestId == SELECT_FILE_IMAGE_FOUR_OVERVIEW) {
+            final ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
+            imgObj.setDescription("Right view for incidence");
+            imgObj.setTitle("Right View");
+            imgObj.setImageUrl(selectedImages.get(0).getPath());
+            selectedElevationImagesList.set(3, imgObj);
+            Glide.with(getActivity())
+                    .load("file://" + selectedImages.get(0).getPath())
+                    .apply(options)
+                    .thumbnail(0.1f)
+                    .into(imageFourPreview);
+            selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList, labelPosition);
+            imgBtnRemoveFour.setVisibility(View.VISIBLE);
+        }else if(requestId == REQUEST_CAMERA || requestId == SELECT_FILE){
+            Intent intent = new Intent(getActivity(), ImageSliderActivity.class);
+            intent.putExtra("ImageList", selectedImages);
+
+            intent.putExtra("labelPosition", labelPosition);
+            intent.putExtra("labelDefaultCoverageType", labelDefaultCoverageType);
+            getActivity().startActivityForResult(intent, ADD_IMAGE_DETAILS);
+        }
     }
 
 
@@ -873,7 +943,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
             }
             case PermissionUtilities.MY_APP_BROWSE_PHOTO_PERMISSIONS: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    galleryIntent();
+                    galleryIntent(SELECT_FILE);
                 } else {
                     PermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_BROWSE_PHOTO_PERMISSIONS);
                 }

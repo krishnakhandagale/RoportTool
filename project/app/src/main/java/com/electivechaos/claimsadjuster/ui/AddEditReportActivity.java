@@ -137,10 +137,10 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
 
 
-    private  static final int SELECT_FILE_IMAGE_ONE_STARTER_1 = 901;
-    private  static final int SELECT_FILE_IMAGE_TWO_STARTER_2 = 902;
-    private  static final int SELECT_FILE_IMAGE_THREE_STARTER_3 = 903;
-    private  static final int SELECT_FILE_IMAGE_FOUR_STARTER_4 = 904;
+    private  static final int SELECT_FILE_IMAGE_ONE_OVERVIEW = 301;
+    private  static final int SELECT_FILE_IMAGE_TWO_OVERVIEW = 302;
+    private  static final int SELECT_FILE_IMAGE_THREE_OVERVIEW = 303;
+    private  static final int SELECT_FILE_IMAGE_FOUR_OVERVIEW = 304;
 
 
     private static final String CLAIM_DETAILS_FRAGMENT_TAG = "claim_details_fragment" ;
@@ -1261,7 +1261,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
                             if(fm.getFragments().get(i) instanceof  AddEditReportSelectedImagesFragment){
                                 AddEditReportSelectedImagesFragment fragment = (AddEditReportSelectedImagesFragment) fm.getFragments().get(i);
-                                fragment.onSelectImagesFromGallery(data);
+                                fragment.onSelectImagesFromGallery(data, SELECT_FILE);
                             }
                         }
                     }
@@ -1491,10 +1491,10 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                     e.printStackTrace();
                 }
                 break;
-            case SELECT_FILE_IMAGE_ONE_STARTER_1 :
-            case SELECT_FILE_IMAGE_TWO_STARTER_2 :
-            case SELECT_FILE_IMAGE_THREE_STARTER_3 :
-            case SELECT_FILE_IMAGE_FOUR_STARTER_4 :
+            case SELECT_FILE_IMAGE_ONE_OVERVIEW :
+            case SELECT_FILE_IMAGE_TWO_OVERVIEW :
+            case SELECT_FILE_IMAGE_THREE_OVERVIEW :
+            case SELECT_FILE_IMAGE_FOUR_OVERVIEW :
 
                 try {
                     FragmentManager fm = getSupportFragmentManager();
