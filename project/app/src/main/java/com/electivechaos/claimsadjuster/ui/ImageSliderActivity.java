@@ -60,8 +60,6 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
         setContentView(R.layout.image_slider_layout);
 
 
-
-
         imageList = (ArrayList<Image>) getIntent().getExtras().get("ImageList");
         labelPosition = getIntent().getExtras().getInt("labelPosition");
         labelDefaultCoverageType = getIntent().getExtras().getString("labelDefaultCoverageType");
@@ -76,8 +74,9 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
             if (file.exists()){
                 imgObj.setImageName(file.getName());
                 Date date = new Date(file.lastModified());
-                String dateString = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(date);
-                imgObj.setImageDateTime(dateString);
+                String dateString = new SimpleDateFormat("dd/MM/yyyy").format(date);
+                String timeString = new SimpleDateFormat("HH:mm:ss").format(date);
+                imgObj.setImageDateTime(dateString+" At "+timeString);
             }
             imagesInformation.add(imgObj);
         }

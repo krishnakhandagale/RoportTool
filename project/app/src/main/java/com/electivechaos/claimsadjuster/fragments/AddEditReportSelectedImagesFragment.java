@@ -811,8 +811,9 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                     if(file.exists()){
                         imgObj.setImageName(file.getName());
                         Date date = new Date(file.lastModified());
-                        String dateString = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(date);
-                        imgObj.setImageDateTime(dateString);
+                        String dateString = new SimpleDateFormat("dd/MM/yyyy").format(date);
+                        String timeString = new SimpleDateFormat("HH:mm:ss").format(date);
+                        imgObj.setImageDateTime(dateString+" At "+timeString);
                     }
 
                     ImageHelper.revokeAppPermission(getActivity(), fileUri);
