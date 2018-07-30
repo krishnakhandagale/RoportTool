@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -37,6 +38,7 @@ public class AddEditCategoryActivity extends AppCompatActivity{
     private CategoryListDBHelper categoryListDBHelper;
     private int catId;
     private TextView selectCoverageType;
+    private String coverageType;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,7 +50,6 @@ public class AddEditCategoryActivity extends AppCompatActivity{
         categoryDescription = findViewById(R.id.editTextCategoryDescription);
         selectCoverageType = findViewById(R.id.selectCoverageType);
         addEditCategoryParentLayout = findViewById(R.id.addEditCategoryParentLayout);
-
         if(getIntent().getExtras()!= null){
             Bundle dataFromActivity = getIntent().getExtras().getBundle("categoryDetails");
             String intentCategoryTitle = dataFromActivity.getString("categoryName","");
@@ -67,6 +68,13 @@ public class AddEditCategoryActivity extends AppCompatActivity{
                 selectCoverageType.setText(intentCategoryCoverageType);
             }
             categoryDescription.setText(intentCategoryDescription);
+        }
+
+        if(savedInstanceState!= null){
+            coverageType = savedInstanceState.getString("coverageType");
+            if(coverageType!=null && !coverageType.isEmpty()){
+                selectCoverageType.setText(coverageType);
+            }
         }
 
         final Button updateCategoryButton = findViewById(R.id.updateCategory);
@@ -166,6 +174,7 @@ public class AddEditCategoryActivity extends AppCompatActivity{
                             public void onClick(DialogInterface dialogInterface, int position) {
 
                                 selectCoverageType.setText(coveragePOJOS.get(position).getName());
+                                coverageType = coveragePOJOS.get(position).getName();
                                 dialogInterface.dismiss();
 
                             }
@@ -197,5 +206,11 @@ public class AddEditCategoryActivity extends AppCompatActivity{
                 selectCoverageType.setText(data.getBundleExtra("coverageDetails").getString("name"));
             }
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("coverageType",coverageType);
     }
 }
