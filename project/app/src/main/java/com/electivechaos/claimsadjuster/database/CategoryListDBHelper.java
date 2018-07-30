@@ -1056,9 +1056,6 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         db.delete(TABLE_REPORTS_IMAGE_DETAILS, KEY_FK_LABEL_ID + "=" + label.getId(), null);
-
-
-
             ArrayList<ImageDetailsPOJO> labelSelectedImages = label.getSelectedImages();
             if (labelSelectedImages != null && labelSelectedImages.size() > 0) {
                 for (int index = 0; index < labelSelectedImages.size(); index++) {
