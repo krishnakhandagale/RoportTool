@@ -195,7 +195,7 @@
             </ScrollView>
         </LinearLayout>
 
-        <LinearLayout
+        <android.support.constraint.ConstraintLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="3.3"
@@ -246,7 +246,7 @@
                     android:src="@drawable/ic_remove_white" />
             </FrameLayout>
             </LinearLayout>
-        </LinearLayout>
+        </android.support.constraint.ConstraintLayout>
     </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
