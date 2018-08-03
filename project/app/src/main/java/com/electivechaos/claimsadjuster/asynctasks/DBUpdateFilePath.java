@@ -9,6 +9,7 @@ import android.support.media.ExifInterface;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -192,7 +193,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
                             PdfPTable table = new PdfPTable(3);
                             byte[] imageBytesResized;
                             table.setWidths(new float[]{1, 5, 4});
-                            imageBytesResized = resizeImage(selectedElevationImagesList.get(j).getImageUrl(), (int) ((document.getPageSize().getWidth() / numberOfImagesPerPage) - 100), (int) ((document.getPageSize().getHeight() / numberOfImagesPerPage) - 100));
+                            imageBytesResized = resizeImage(selectedElevationImagesList.get(j).getImageUrl(), (int) ((document.getPageSize().getWidth() / 2) - 100), (int) ((document.getPageSize().getHeight() / 2) - 100));
                             com.itextpdf.text.Image img = com.itextpdf.text.Image.getInstance(imageBytesResized);
 
                             table.setHorizontalAlignment(Element.ALIGN_LEFT);
@@ -242,7 +243,9 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
                         PdfPTable table = new PdfPTable(3);
                         byte[] imageBytesResized;
                         table.setWidths(new float[]{1, 5, 4});
-                        imageBytesResized = resizeImage(selectedImageList.get(i).getImageUrl(), (int) ((document.getPageSize().getWidth() / 2) - 100), (int) ((document.getPageSize().getHeight() / numberOfImagesPerPage) - 100));
+                        imageBytesResized = resizeImage(selectedImageList.get(i).getImageUrl(), (int) ((document.getPageSize().getWidth()/ 2) - 100), (int) ((document.getPageSize().getHeight() / numberOfImagesPerPage) - 100));
+                        Log.d("FOOOOO====HEIGHT",""+(document.getPageSize().getHeight() / 2 - 100));
+                        Log.d("FOOOOO====WIDTH",""+((document.getPageSize().getHeight() / numberOfImagesPerPage) - 100));
                         com.itextpdf.text.Image img = com.itextpdf.text.Image.getInstance(imageBytesResized);
 
                         table.setHorizontalAlignment(Element.ALIGN_LEFT);
@@ -349,7 +352,8 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
         cell.addElement(new Phrase(description,font));
         cell.setPadding(0);
         cell.setBorder(Rectangle.NO_BORDER);
-        cell.setFixedHeight(document.getPageSize().getHeight() / perPage - 100);
+        cell.setFixedHeight(document.getPageSize().getHeight() / 4 - 50);
+        Log.d("DON",""+(document.getPageSize().getHeight() / perPage - 100));
         return cell;
 
     }
@@ -361,7 +365,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
         cell.setPadding(0);
         cell.setHorizontalAlignment(alignment);
         cell.setBorder(Rectangle.NO_BORDER);
-        cell.setFixedHeight(document.getPageSize().getHeight() / perPage - 100);
+        cell.setFixedHeight(document.getPageSize().getHeight()/ perPage - 100);
         return cell;
     }
 
