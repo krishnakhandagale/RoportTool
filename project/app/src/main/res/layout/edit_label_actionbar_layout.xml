@@ -28,7 +28,6 @@
         android:background="@null"
         android:inputType="text" />
     <ImageButton
-
         android:id="@+id/doneBtn"
         android:background="@null"
         android:src="@drawable/ic_done"
