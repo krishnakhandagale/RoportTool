@@ -151,27 +151,53 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
             // Now read property details
             event.setHeader("Property Details");
             document.add(new Paragraph("Inspection Date", fontTitles));
-            document.add(new Paragraph(propertyDetailsPOJO.getPropertyDate()));
+            if(propertyDetailsPOJO.getPropertyDate().isEmpty()) {
+                document.add(new Paragraph("No date specified."));
+            }else {
+                document.add(new Paragraph(propertyDetailsPOJO.getPropertyDate()));
+            }
             document.add(new Paragraph(""));
 
+
             document.add(new Paragraph("Square footage", fontTitles));
-            document.add(new Paragraph(String.valueOf(propertyDetailsPOJO.getSquareFootage())));
+            if(propertyDetailsPOJO.getSquareFootage().isEmpty()){
+                document.add(new Paragraph("No square footage specified."));
+            }else {
+                document.add(new Paragraph(String.valueOf(propertyDetailsPOJO.getSquareFootage())));
+            }
             document.add(new Paragraph(""));
 
             document.add(new Paragraph("Roof System", fontTitles));
-            document.add(new Paragraph(propertyDetailsPOJO.getRoofSystem()));
+            if(propertyDetailsPOJO.getRoofSystem().isEmpty()) {
+                document.add(new Paragraph("No roof system specified."));
+            }else {
+                document.add(new Paragraph(propertyDetailsPOJO.getRoofSystem()));
+            }
             document.add(new Paragraph(""));
 
             document.add(new Paragraph("Siding", fontTitles));
-            document.add(new Paragraph(propertyDetailsPOJO.getSiding()));
+
+            if(propertyDetailsPOJO.getSiding().isEmpty()) {
+                document.add(new Paragraph("No siding type specified."));
+            }else {
+                document.add(new Paragraph(propertyDetailsPOJO.getSiding()));
+            }
             document.add(new Paragraph(""));
 
             document.add(new Paragraph("Foundation", fontTitles));
-            document.add(new Paragraph(propertyDetailsPOJO.getFoundation()));
+            if(propertyDetailsPOJO.getFoundation().isEmpty()) {
+                document.add(new Paragraph("No foundation type specified."));
+            }else {
+                document.add(new Paragraph(propertyDetailsPOJO.getFoundation()));
+            }
             document.add(new Paragraph(""));
 
             document.add(new Paragraph("Building Type", fontTitles));
-            document.add(new Paragraph(propertyDetailsPOJO.getBuildingType()));
+            if(propertyDetailsPOJO.getBuildingType().isEmpty()) {
+                document.add(new Paragraph("No building type specified."));
+            }else {
+                document.add(new Paragraph(propertyDetailsPOJO.getBuildingType()));
+            }
             document.add(new Paragraph(""));
 
 
