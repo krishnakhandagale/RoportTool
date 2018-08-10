@@ -981,7 +981,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
         PropertyDetailsPOJO propertyDetailsPOJO = reportPOJO.getPropertyDetailsPOJO();
         if(!TextUtils.isEmpty(propertyDetailsPOJO.getPropertyDate())
-                && !TextUtils.equals(propertyDetailsPOJO.getPropertyDate(),"--Select Date--")
+                && !TextUtils.equals(propertyDetailsPOJO.getPropertyDate(),"--Select Inspection Date--")
                 && !TextUtils.isEmpty(propertyDetailsPOJO.getSquareFootage())
                 && !TextUtils.isEmpty(propertyDetailsPOJO.getRoofSystem())
                 && !TextUtils.equals(propertyDetailsPOJO.getSquareFootage(),"--Select Roof System--")
