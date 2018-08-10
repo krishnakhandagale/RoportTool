@@ -13,6 +13,7 @@
     <string name="claimant">Claimant</string>
     <string name="claim_number">Claim Number</string>
     <string name="policy_number">Policy Number</string>
+    <string name="select_inspection_date">--Select Inspection Date--</string>
     <string name="select_date">--Select Date--</string>
     <string name="location_icon">Location icon</string>
     <string name="claim_details">Claim Details</string>
