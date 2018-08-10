@@ -732,8 +732,8 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                         public void run() {
                             if (requestId == IMAGE_ONE_REQUEST) {
                                 final ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
-                                imgObj.setDescription("Image one view for incidence");
-                                imgObj.setTitle("Image One View");
+                                imgObj.setDescription("Overview 1");
+                                imgObj.setTitle("Overview Image 1");
                                 imgObj.setImageUrl(finalPath1);
                                 selectedElevationImagesList.set(0, imgObj);
                                 Glide.with(getActivity())
@@ -748,8 +748,8 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                             } else if (requestId == IMAGE_TWO_REQUEST) {
 
                                 final ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
-                                imgObj.setDescription("Image two view for incidence");
-                                imgObj.setTitle("Image Two View");
+                                imgObj.setDescription("Overview 2");
+                                imgObj.setTitle("Overview Image 2");
                                 imgObj.setImageUrl(finalPath1);
                                 selectedElevationImagesList.set(1, imgObj);
                                 Glide.with(getActivity())
@@ -761,8 +761,8 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                                 selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList, labelPosition);
                             } else if (requestId == IMAGE_THREE_REQUEST) {
                                 final ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
-                                imgObj.setDescription("Image three view for incidence");
-                                imgObj.setTitle("Image Three View");
+                                imgObj.setDescription("Overview 3");
+                                imgObj.setTitle("Overview Image 3");
                                 imgObj.setImageUrl(finalPath1);
                                 selectedElevationImagesList.set(2, imgObj);
                                 Glide.with(getActivity())
@@ -774,8 +774,8 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                                 selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList, labelPosition);
                             } else if (requestId == IMAGE_FOUR_REQUEST) {
                                 final ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
-                                imgObj.setDescription("Image four view for incidence");
-                                imgObj.setTitle("Image Four View");
+                                imgObj.setDescription("Overview 4");
+                                imgObj.setTitle("Overview Image 4");
                                 imgObj.setImageUrl(finalPath1);
                                 selectedElevationImagesList.set(3, imgObj);
                                 Glide.with(getActivity())
@@ -835,7 +835,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
         if (requestId == SELECT_FILE_IMAGE_ONE_OVERVIEW) {
             final ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
             imgObj.setDescription("Overview 1");
-            imgObj.setTitle("Overview 1 Image");
+            imgObj.setTitle("Overview Image 1");
             imgObj.setImageUrl(selectedImages.get(0).getPath());
             selectedElevationImagesList.set(0, imgObj);
             Glide.with(getActivity())
@@ -851,7 +851,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
 
             final ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
             imgObj.setDescription("Overview 2");
-            imgObj.setTitle("Overview 2 Image");
+            imgObj.setTitle("Overview Image 2");
             imgObj.setImageUrl(selectedImages.get(0).getPath());
             selectedElevationImagesList.set(1, imgObj);
             Glide.with(getActivity())
@@ -864,7 +864,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
         } else if (requestId == SELECT_FILE_IMAGE_THREE_OVERVIEW) {
             final ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
             imgObj.setDescription("Overview 3");
-            imgObj.setTitle("Overview 3 Image");
+            imgObj.setTitle("Overview Image 3");
             imgObj.setImageUrl(selectedImages.get(0).getPath());
             selectedElevationImagesList.set(2, imgObj);
             Glide.with(getActivity())
@@ -877,7 +877,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
         } else if (requestId == SELECT_FILE_IMAGE_FOUR_OVERVIEW) {
             final ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
             imgObj.setDescription("Overview 4");
-            imgObj.setTitle("Overview 4 Image");
+            imgObj.setTitle("Overview Image 4");
             imgObj.setImageUrl(selectedImages.get(0).getPath());
             selectedElevationImagesList.set(3, imgObj);
             Glide.with(getActivity())
