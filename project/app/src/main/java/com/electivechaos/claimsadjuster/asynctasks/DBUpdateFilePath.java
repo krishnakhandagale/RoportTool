@@ -244,8 +244,6 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
                         byte[] imageBytesResized;
                         table.setWidths(new float[]{1, 5, 4});
                         imageBytesResized = resizeImage(selectedImageList.get(i).getImageUrl(), (int) ((document.getPageSize().getWidth()/ 2) - 100), (int) ((document.getPageSize().getHeight() / numberOfImagesPerPage) - 100));
-                        Log.d("FOOOOO====HEIGHT",""+(document.getPageSize().getHeight() / 2 - 100));
-                        Log.d("FOOOOO====WIDTH",""+((document.getPageSize().getHeight() / numberOfImagesPerPage) - 100));
                         com.itextpdf.text.Image img = com.itextpdf.text.Image.getInstance(imageBytesResized);
 
                         table.setHorizontalAlignment(Element.ALIGN_LEFT);
