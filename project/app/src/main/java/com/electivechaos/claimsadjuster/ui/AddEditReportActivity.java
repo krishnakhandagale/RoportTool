@@ -1226,13 +1226,16 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                 ArrayList<ImageDetailsPOJO> selectedImageListReturned = (ArrayList<ImageDetailsPOJO>) data.getExtras().getSerializable("selected_images");
                 int labelPositionForAddImageDetails = data.getExtras().getInt("labelPosition");
                 Label label = reportPOJO.getLabelArrayList().get(labelPositionForAddImageDetails);
-                ArrayList<ImageDetailsPOJO> selectedImageList = label.getSelectedImages();
+
+                ArrayList<ImageDetailsPOJO> selectedImageList = (ArrayList<ImageDetailsPOJO>) label.getSelectedImages().clone();
                 if (selectedImageList == null) {
                     selectedImageList = new ArrayList<>();
                 }
-                selectedImageListReturned.addAll(selectedImageList);
 
-                setSelectedImages(selectedImageListReturned,labelPositionForAddImageDetails);
+                selectedImageList.addAll(selectedImageListReturned);
+                setSelectedImages(selectedImageList,labelPositionForAddImageDetails);
+
+
 
                 try {
                     FragmentManager fm = getSupportFragmentManager();
@@ -1241,7 +1244,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
                             if(fm.getFragments().get(i) instanceof  AddEditReportSelectedImagesFragment){
                                 AddEditReportSelectedImagesFragment fragment = (AddEditReportSelectedImagesFragment) fm.getFragments().get(i);
-                                fragment.setDataAndAdapter(selectedImageListReturned);
+                                fragment.setDataAndAdapter(selectedImageList);
                             }
                         }
                     }
