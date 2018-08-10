@@ -147,7 +147,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
             document.newPage();
             // Now read property details
             event.setHeader("Property Details");
-            document.add(new Paragraph("Property Date", fontTitles));
+            document.add(new Paragraph("Inspection Date", fontTitles));
             document.add(new Paragraph(propertyDetailsPOJO.getPropertyDate()));
             document.add(new Paragraph(""));
 
