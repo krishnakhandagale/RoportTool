@@ -1201,7 +1201,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                     if (imageDetailsPOJOArrayList == null) {
                         imageDetailsPOJOArrayList = new ArrayList<>();
                     }
-                    imageDetailsPOJOArrayList.add(0, imageDetailsPOJO);
+                    imageDetailsPOJOArrayList.add(imageDetailsPOJO);
                 }
 
                 setSelectedImages(imageDetailsPOJOArrayList,labelPosition);
