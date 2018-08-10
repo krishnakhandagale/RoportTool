@@ -492,8 +492,8 @@ public class StarterPhotosFragment extends Fragment {
 
         if (requestId == SELECT_FILE_IMAGE_ONE_STARTER) {
             final ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
-            imgObj.setDescription("Front view for incidence");
-            imgObj.setTitle("Front View");
+            imgObj.setDescription("Starter Overview Image 1");
+            imgObj.setTitle("Starter Overview 1");
             imgObj.setImageUrl(selectedImages.get(0).getPath());
             selectedElevationImagesList.set(0, imgObj);
             Glide.with(getActivity())
@@ -508,8 +508,8 @@ public class StarterPhotosFragment extends Fragment {
         } else if (requestId == SELECT_FILE_IMAGE_TWO_STARTER) {
 
             final ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
-            imgObj.setDescription("Back view for incidence");
-            imgObj.setTitle("Back View");
+            imgObj.setDescription("Starter Overview Image 2");
+            imgObj.setTitle("Starter Overview 2");
             imgObj.setImageUrl(selectedImages.get(0).getPath());
             selectedElevationImagesList.set(1, imgObj);
             Glide.with(getActivity())
@@ -521,8 +521,8 @@ public class StarterPhotosFragment extends Fragment {
             selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList, labelPosition);
         } else if (requestId == SELECT_FILE_IMAGE_THREE_STARTER) {
             final ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
-            imgObj.setDescription("Left view for incidence");
-            imgObj.setTitle("Left View");
+            imgObj.setDescription("Starter Overview Image 3");
+            imgObj.setTitle("Starter Overview 3");
             imgObj.setImageUrl(selectedImages.get(0).getPath());
             selectedElevationImagesList.set(2, imgObj);
             Glide.with(getActivity())
@@ -534,8 +534,8 @@ public class StarterPhotosFragment extends Fragment {
             selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList, labelPosition);
         } else if (requestId == SELECT_FILE_IMAGE_FOUR_STARTER) {
             final ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
-            imgObj.setDescription("Right view for incidence");
-            imgObj.setTitle("Right View");
+            imgObj.setDescription("Starter Overview Image 4");
+            imgObj.setTitle("Starter Overview 4");
             imgObj.setImageUrl(selectedImages.get(0).getPath());
             selectedElevationImagesList.set(3, imgObj);
             Glide.with(getActivity())
@@ -727,8 +727,8 @@ public class StarterPhotosFragment extends Fragment {
                         public void run() {
                             if (requestId == IMAGE_ONE_REQUEST_STARTER) {
                                 final ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
-                                imgObj.setDescription("Front view for incidence");
-                                imgObj.setTitle("Front View");
+                                imgObj.setDescription("Starter Overview Image 1");
+                                imgObj.setTitle("Starter Overview 1");
                                 imgObj.setImageUrl(finalPath1);
                                 selectedElevationImagesList.set(0, imgObj);
                                 Glide.with(getActivity())
@@ -743,8 +743,8 @@ public class StarterPhotosFragment extends Fragment {
                             } else if (requestId == IMAGE_TWO_REQUEST_STARTER) {
 
                                 final ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
-                                imgObj.setDescription("Back view for incidence");
-                                imgObj.setTitle("Back View");
+                                imgObj.setDescription("Starter Overview Image 2");
+                                imgObj.setTitle("Starter Overview 2");
                                 imgObj.setImageUrl(finalPath1);
                                 selectedElevationImagesList.set(1, imgObj);
                                 Glide.with(getActivity())
@@ -756,8 +756,8 @@ public class StarterPhotosFragment extends Fragment {
                                 selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList, labelPosition);
                             } else if (requestId == IMAGE_THREE_REQUEST_STARTER) {
                                 final ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
-                                imgObj.setDescription("Left view for incidence");
-                                imgObj.setTitle("Left View");
+                                imgObj.setDescription("Starter Overview Image 3");
+                                imgObj.setTitle("Starter Overview 3");
                                 imgObj.setImageUrl(finalPath1);
                                 selectedElevationImagesList.set(2, imgObj);
                                 Glide.with(getActivity())
@@ -769,8 +769,8 @@ public class StarterPhotosFragment extends Fragment {
                                 selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList, labelPosition);
                             } else if (requestId == IMAGE_FOUR_REQUEST_STARTER) {
                                 final ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
-                                imgObj.setDescription("Right view for incidence");
-                                imgObj.setTitle("Right View");
+                                imgObj.setDescription("Starter Overview Image 4");
+                                imgObj.setTitle("Starter Overview 4");
                                 imgObj.setImageUrl(finalPath1);
                                 selectedElevationImagesList.set(3, imgObj);
                                 Glide.with(getActivity())
