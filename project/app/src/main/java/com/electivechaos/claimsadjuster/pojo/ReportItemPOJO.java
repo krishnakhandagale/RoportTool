@@ -10,7 +10,8 @@ public class ReportItemPOJO {
     String reportDescription;
     String createdDate;
     String filePath;
-
+    String insuredName;
+    String claimNumber;
 
 
     public String getFilePath() {
@@ -54,4 +55,21 @@ public class ReportItemPOJO {
     public void setReportDescription(String reportDescription) {
         this.reportDescription = reportDescription;
     }
+
+    public String getInsuredName() {
+        return insuredName;
+    }
+
+    public void setInsuredName(String insuredName) {
+        this.insuredName = insuredName;
+    }
+
+    public String getClaimNumber() {
+        return claimNumber;
+    }
+
+    public void setClaimNumber(String claimNumber) {
+        this.claimNumber = claimNumber;
+    }
+
 }
