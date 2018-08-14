@@ -91,15 +91,15 @@ public class ReportListFragment extends Fragment {
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
 
-            public TextView reportName, reportDescription;
+            public TextView insuredName, claimNumber;
             public ImageView textViewOptions;
 
 
             public MyViewHolder(View view) {
                 super(view);
 
-                reportName = view.findViewById(R.id.reportName);
-                reportDescription = view.findViewById(R.id.reportDescription);
+                insuredName = view.findViewById(R.id.insuredName);
+                claimNumber = view.findViewById(R.id.claimNumber);
                 textViewOptions = view.findViewById(R.id.textViewOptions);
 
             }
@@ -119,14 +119,14 @@ public class ReportListFragment extends Fragment {
         @Override
         public void onBindViewHolder(final ReportListAdapter.MyViewHolder holder, final int position) {
             final ReportItemPOJO reportItemPOJO = reportItemPOJOArrayList.get(position);
-            if(reportItemPOJO.getReportTitle().isEmpty() || reportItemPOJO.getReportTitle()==null) {
+            if(reportItemPOJO.getInsuredName().isEmpty() || reportItemPOJO.getInsuredName()==null) {
 
-                holder.reportName.setText(reportItemPOJO.getCreatedDate());
+                holder.insuredName.setText(reportItemPOJO.getCreatedDate());
             }else{
-                holder.reportName.setText(reportItemPOJO.getReportTitle());
+                holder.insuredName.setText(reportItemPOJO.getInsuredName());
             }
 
-            holder.reportDescription.setText(reportItemPOJO.getReportDescription());
+            holder.claimNumber.setText(reportItemPOJO.getClaimNumber());
 
             holder.textViewOptions.setOnClickListener(new View.OnClickListener() {
                 @Override

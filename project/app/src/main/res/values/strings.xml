@@ -149,4 +149,6 @@
     <string name="date">Date</string>
     <string name="geo_tag">Geo Tag</string>
     <string name="image_name">Image name.</string>
+    <string name="report_insured_name">Insured Name.</string>
+    <string name="report_claim_number">Claim Number.</string>
 </resources>
