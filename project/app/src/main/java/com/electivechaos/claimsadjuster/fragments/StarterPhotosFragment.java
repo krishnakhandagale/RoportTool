@@ -93,11 +93,6 @@ public class StarterPhotosFragment extends Fragment {
     private ImageView imageFourPreview;
     private ImageView imageHouseNumberPreview;
 
-    private ImageButton imgBtnRemoveOne;
-    private ImageButton imgBtnRemoveTwo;
-    private ImageButton imgBtnRemoveThree;
-    private ImageButton imgBtnRemoveFour;
-    private ImageButton imgBtnRemoveHouseNumber;
 
     private Uri fileUri;
     private String mCurrentPhotoPath;
@@ -269,90 +264,8 @@ public class StarterPhotosFragment extends Fragment {
             }
         });
 
-        imgBtnRemoveOne = selectImageView.findViewById(R.id.imgBtnRemoveOne);
-        imgBtnRemoveTwo = selectImageView.findViewById(R.id.imgBtnRemoveTwo);
-        imgBtnRemoveThree = selectImageView.findViewById(R.id.imgBtnRemoveThree);
-        imgBtnRemoveFour = selectImageView.findViewById(R.id.imgBtnRemoveFour);
-        imgBtnRemoveHouseNumber =  selectImageView.findViewById(R.id.imgBtnRemoveHouseNumber);
 
-        imgBtnRemoveOne.setVisibility(View.INVISIBLE);
-        imgBtnRemoveTwo.setVisibility(View.INVISIBLE);
-        imgBtnRemoveThree.setVisibility(View.INVISIBLE);
-        imgBtnRemoveFour.setVisibility(View.INVISIBLE);
-        imgBtnRemoveHouseNumber.setVisibility(View.INVISIBLE);
 
-        imgBtnRemoveOne.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                if (selectedElevationImagesList != null && selectedElevationImagesList.size() > 0) {
-                    selectedElevationImagesList.set(0, new ImageDetailsPOJO());
-                    selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList, labelPosition);
-                    imageOnePreview.setImageDrawable(null);
-                    imgBtnRemoveOne.setVisibility(View.INVISIBLE);
-
-                }
-            }
-        });
-
-        imgBtnRemoveTwo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                if (selectedElevationImagesList != null && selectedElevationImagesList.size() > 0) {
-                    selectedElevationImagesList.set(1, new ImageDetailsPOJO());
-                    selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList, labelPosition);
-                    imageTwoPreview.setImageDrawable(null);
-                    imgBtnRemoveTwo.setVisibility(View.INVISIBLE);
-
-                }
-
-            }
-        });
-
-        imgBtnRemoveThree.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                if (selectedElevationImagesList != null && selectedElevationImagesList.size() > 0) {
-                    selectedElevationImagesList.set(2, new ImageDetailsPOJO());
-                    selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList, labelPosition);
-                    imageThreePreview.setImageDrawable(null);
-                    imgBtnRemoveThree.setVisibility(View.INVISIBLE);
-
-                }
-
-            }
-        });
-
-        imgBtnRemoveFour.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                if (selectedElevationImagesList != null && selectedElevationImagesList.size() > 0) {
-                    selectedElevationImagesList.set(3, new ImageDetailsPOJO());
-                    selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList, labelPosition);
-                    imageFourPreview.setImageDrawable(null);
-                    imgBtnRemoveFour.setVisibility(View.INVISIBLE);
-
-                }
-
-            }
-        });
-
-        imgBtnRemoveHouseNumber.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                if (!TextUtils.isEmpty(houseNumber)) {
-                    onStarterFragmentDataChangeListener.onHouseNumberChange("", labelPosition);
-                    imageHouseNumberPreview.setImageDrawable(null);
-                    imgBtnRemoveHouseNumber.setVisibility(View.INVISIBLE);
-
-                }
-
-            }
-        });
 
         fabGoNextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -393,7 +306,6 @@ public class StarterPhotosFragment extends Fragment {
                         .thumbnail(0.1f)
                         .apply(options)
                         .into(imageOnePreview);
-                imgBtnRemoveOne.setVisibility(View.VISIBLE);
 
             }
             if (selectedElevationImagesList.get(1).getImageUrl() != null && !selectedElevationImagesList.get(1).getImageUrl().isEmpty()) {
@@ -402,7 +314,6 @@ public class StarterPhotosFragment extends Fragment {
                         .thumbnail(0.1f)
                         .apply(options)
                         .into(imageTwoPreview);
-                imgBtnRemoveTwo.setVisibility(View.VISIBLE);
             }
             if (selectedElevationImagesList.get(2).getImageUrl() != null && !selectedElevationImagesList.get(2).getImageUrl().isEmpty()) {
                 Glide.with(getActivity())
@@ -410,7 +321,6 @@ public class StarterPhotosFragment extends Fragment {
                         .thumbnail(0.1f)
                         .apply(options)
                         .into(imageThreePreview);
-                imgBtnRemoveThree.setVisibility(View.VISIBLE);
 
             }
             if (selectedElevationImagesList.get(3).getImageUrl() != null && !selectedElevationImagesList.get(3).getImageUrl().isEmpty()) {
@@ -419,7 +329,6 @@ public class StarterPhotosFragment extends Fragment {
                         .thumbnail(0.1f)
                         .apply(options)
                         .into(imageFourPreview);
-                imgBtnRemoveFour.setVisibility(View.VISIBLE);
             }
         }
 
@@ -429,7 +338,6 @@ public class StarterPhotosFragment extends Fragment {
                     .thumbnail(0.1f)
                     .apply(options)
                     .into(imageHouseNumberPreview);
-            imgBtnRemoveHouseNumber.setVisibility(View.VISIBLE);
         }
     }
 
@@ -501,8 +409,6 @@ public class StarterPhotosFragment extends Fragment {
                     .thumbnail(0.1f)
                     .apply(options)
                     .into(imageOnePreview);
-            imgBtnRemoveOne.setVisibility(View.VISIBLE);
-
             selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList, labelPosition);
 
         } else if (requestId == SELECT_FILE_IMAGE_TWO_STARTER) {
@@ -517,7 +423,6 @@ public class StarterPhotosFragment extends Fragment {
                     .thumbnail(0.1f)
                     .apply(options)
                     .into(imageTwoPreview);
-            imgBtnRemoveTwo.setVisibility(View.VISIBLE);
             selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList, labelPosition);
         } else if (requestId == SELECT_FILE_IMAGE_THREE_STARTER) {
             final ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
@@ -530,7 +435,6 @@ public class StarterPhotosFragment extends Fragment {
                     .thumbnail(0.1f)
                     .apply(options)
                     .into(imageThreePreview);
-            imgBtnRemoveThree.setVisibility(View.VISIBLE);
             selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList, labelPosition);
         } else if (requestId == SELECT_FILE_IMAGE_FOUR_STARTER) {
             final ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
@@ -544,7 +448,6 @@ public class StarterPhotosFragment extends Fragment {
                     .thumbnail(0.1f)
                     .into(imageFourPreview);
             selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList, labelPosition);
-            imgBtnRemoveFour.setVisibility(View.VISIBLE);
         }
         else if (requestId == SELECT_FILE_IMAGE_HOUSE_NUMBER_STARTER) {
 
@@ -556,7 +459,6 @@ public class StarterPhotosFragment extends Fragment {
                     .thumbnail(0.1f)
                     .into(imageHouseNumberPreview);
             onStarterFragmentDataChangeListener.onHouseNumberChange(houseNumber, labelPosition);
-            imgBtnRemoveHouseNumber.setVisibility(View.VISIBLE);
         }
     }
 
@@ -736,7 +638,6 @@ public class StarterPhotosFragment extends Fragment {
                                         .thumbnail(0.1f)
                                         .apply(options)
                                         .into(imageOnePreview);
-                                imgBtnRemoveOne.setVisibility(View.VISIBLE);
 
                                 selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList, labelPosition);
 
@@ -752,7 +653,6 @@ public class StarterPhotosFragment extends Fragment {
                                         .thumbnail(0.1f)
                                         .apply(options)
                                         .into(imageTwoPreview);
-                                imgBtnRemoveTwo.setVisibility(View.VISIBLE);
                                 selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList, labelPosition);
                             } else if (requestId == IMAGE_THREE_REQUEST_STARTER) {
                                 final ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
@@ -765,7 +665,6 @@ public class StarterPhotosFragment extends Fragment {
                                         .thumbnail(0.1f)
                                         .apply(options)
                                         .into(imageThreePreview);
-                                imgBtnRemoveThree.setVisibility(View.VISIBLE);
                                 selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList, labelPosition);
                             } else if (requestId == IMAGE_FOUR_REQUEST_STARTER) {
                                 final ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
@@ -779,7 +678,6 @@ public class StarterPhotosFragment extends Fragment {
                                         .thumbnail(0.1f)
                                         .into(imageFourPreview);
                                 selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList, labelPosition);
-                                imgBtnRemoveFour.setVisibility(View.VISIBLE);
                             }
                             else if (requestId == HOUSE_NUMBER_REQUEST_STARTER) {
 
@@ -791,7 +689,6 @@ public class StarterPhotosFragment extends Fragment {
                                         .thumbnail(0.1f)
                                         .into(imageHouseNumberPreview);
                                 onStarterFragmentDataChangeListener.onHouseNumberChange(houseNumber, labelPosition);
-                                imgBtnRemoveHouseNumber.setVisibility(View.VISIBLE);
                             }
 
                         }
