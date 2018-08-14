@@ -839,6 +839,8 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 reportItemPOJO.setId(cursor.getString(0));
                 reportItemPOJO.setReportTitle(cursor.getString(1));
                 reportItemPOJO.setReportDescription(cursor.getString(2));
+                reportItemPOJO.setInsuredName(cursor.getString(3));
+                reportItemPOJO.setClaimNumber(cursor.getString(4));
                 reportItemPOJO.setCreatedDate(cursor.getString(5));
                 reportItemPOJO.setFilePath(cursor.getString(6));
 
