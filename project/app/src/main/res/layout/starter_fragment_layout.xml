@@ -54,13 +54,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
-                <ImageButton
-                    android:id="@+id/imgBtnRemoveOne"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:background="@drawable/rounded_button"
-                    android:src="@drawable/ic_remove_white"/>
             </FrameLayout>
 
             <FrameLayout
@@ -88,13 +81,6 @@
                     android:src="@drawable/ic_camera_16"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
-                <ImageButton
-                    android:id="@+id/imgBtnRemoveTwo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:background="@drawable/rounded_button"
-                    android:src="@drawable/ic_remove_white"/>
             </FrameLayout>
             <FrameLayout
                 android:layout_margin="5dp"
@@ -121,13 +107,6 @@
                     android:layout_width="wrap_content"
                     android:background="@drawable/rounded_button"
                     android:layout_height="wrap_content" />
-                <ImageButton
-                    android:id="@+id/imgBtnRemoveThree"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:background="@drawable/rounded_button"
-                    android:src="@drawable/ic_remove_white"/>
             </FrameLayout>
             <FrameLayout
                 android:layout_margin="5dp"
@@ -154,14 +133,6 @@
                     android:src="@drawable/ic_camera_16"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
-                <ImageButton
-
-                    android:id="@+id/imgBtnRemoveFour"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:background="@drawable/rounded_button"
-                    android:src="@drawable/ic_remove_white"/>
             </FrameLayout>
 
         </LinearLayout>
@@ -190,13 +161,6 @@
                 android:src="@drawable/ic_camera_16"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
-            <ImageButton
-                android:id="@+id/imgBtnRemoveHouseNumber"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:background="@drawable/rounded_button"
-                android:src="@drawable/ic_remove_white"/>
         </FrameLayout>
 
 
