@@ -13,7 +13,6 @@ import android.widget.CheckedTextView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -43,7 +42,6 @@ public class SingleImageDetailsActivity extends BaseActivity {
 
     private TextView imageCoverageType;
     private CategoryListDBHelper categoryListDBHelper;
-    private PopupWindow popupWindow;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,7 +50,6 @@ public class SingleImageDetailsActivity extends BaseActivity {
 
         categoryListDBHelper = CategoryListDBHelper.getInstance(this);
         ImageView imgView = findViewById(R.id.imageView);
-       // final EditText title = findViewById(R.id.clickedImageTitle);
         final EditText description = findViewById(R.id.clickedImageDescription);
         final CheckedTextView isDamageTextView = findViewById(R.id.isDamageTextView);
         final CheckedTextView isOverviewTextView = findViewById(R.id.isOverviewTextView);
@@ -69,11 +66,10 @@ public class SingleImageDetailsActivity extends BaseActivity {
 
         if(imageDetails != null && isEdit){
             if(imageDetails.getCoverageTye() == null || imageDetails.getCoverageTye().isEmpty()){
-                imageCoverageType.setText("Coverage Type");
+                imageCoverageType.setText(R.string.coverage_type);
             }else {
                 imageCoverageType.setText(imageDetails.getCoverageTye());
             }
-            //title.setText(imageDetails.getTitle());
             description.setText(imageDetails.getDescription());
 
             isDamageTextView.setChecked(imageDetails.isDamage());
@@ -106,7 +102,7 @@ public class SingleImageDetailsActivity extends BaseActivity {
             isDamageTextView.setChecked(imageDetails.isDamage());
 
             if(imageDetails.getCoverageTye() == null || imageDetails.getCoverageTye().isEmpty()){
-                imageCoverageType.setText("Coverage Type");
+                imageCoverageType.setText(R.string.coverage_type);
             }else {
                 imageCoverageType.setText(imageDetails.getCoverageTye());
             }
@@ -263,7 +259,6 @@ public class SingleImageDetailsActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 ImageDetailsPOJO shareImageDetails = new ImageDetailsPOJO();
-               // shareImageDetails.setTitle(title.getText().toString());
                 shareImageDetails.setDescription(description.getText().toString());
                 shareImageDetails.setImageUrl(imageDetails.getImageUrl());
                 shareImageDetails.setIsDamage(imageDetails.isDamage());
