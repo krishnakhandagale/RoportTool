@@ -205,7 +205,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                     @Override
                     public void onPostExecute(Object object, String type) {
                         setDataToExpandableList();
-                        Label label = categoryListDBHelper.getLabelFromCategoryDetails("Starter Photos");
+                        Label label = categoryListDBHelper.getLabelFromCategoryDetails("Risk Overview");
                         label.setReportId(reportPOJO.getId());
                         String id = "";
                         try {
