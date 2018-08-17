@@ -30,7 +30,7 @@ import java.util.Iterator;
  */
 
 public class CategoryListDBHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 174;
+    private static final int DATABASE_VERSION = 175;
 
 
     // Database Name
@@ -300,6 +300,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         final String roofSystem[] = {
                 "Composition Shingle 20 year",
                 "Composition Shingle 25 year",
+                "Composition Shingle 30 year",
                 "Composition Shingle 40 year",
                 "Composition Shingle 50 year",
                 "Metal- Steel",
