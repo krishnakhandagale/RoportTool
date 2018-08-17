@@ -44,7 +44,6 @@ import static com.electivechaos.claimsadjuster.ui.AddEditCategoryActivity.ADD_CO
 
 public class ImageFragment extends Fragment {
     private String imageUrl;
-   // private String imgTitle;
     private String imgDescription;
     private String coverageType;
     private String imgName, imgDateTime, imgGeoTag;
@@ -56,8 +55,8 @@ public class ImageFragment extends Fragment {
     private MonitorImageDetailsChange monitorImageDetailsChange;
     static ViewPager mPagerInstance;
     private static CategoryListDBHelper categoryListDBHelper;
-    TextView imageCoverageType;
 
+    TextView imageCoverageType;
     ImageButton imageInfo;
 
     public static ImageFragment init(ImageDetailsPOJO imageDetails, int position, ViewPager mPager) {
@@ -67,7 +66,6 @@ public class ImageFragment extends Fragment {
         Bundle args = new Bundle();
 
         args.putString("imageUrl", imageDetails.getImageUrl());
-       // args.putString("title",imageDetails.getTitle());
         args.putString("description",imageDetails.getDescription());
         args.putString("coverageType",imageDetails.getCoverageTye());
         args.putBoolean("imgIsDamage", imageDetails.isDamage());
@@ -88,7 +86,6 @@ public class ImageFragment extends Fragment {
 
         imageUrl = getArguments() != null ? getArguments().getString("imageUrl") : "";
         position = getArguments() != null ? getArguments().getInt("position") : 0;
-      //  imgTitle = getArguments() != null ? getArguments().getString("title") : "";
         imgDescription =getArguments() != null ? getArguments().getString("description") : "";
         coverageType =getArguments() != null ? getArguments().getString("coverageType") : "";
         imgIsDamage =getArguments() != null  && getArguments().getBoolean("imgIsDamage");
@@ -111,15 +108,10 @@ public class ImageFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        final View layoutView = inflater.inflate(R.layout.fragment_image, container,
-                false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        final View layoutView = inflater.inflate(R.layout.fragment_image, container, false);
         ImageView iv = layoutView.findViewById(R.id.imageView1);
-       // EditText title = layoutView.findViewById(R.id.imageTitle);
         EditText description = layoutView.findViewById(R.id.image_description);
-
-
 
         final CheckedTextView damageTextView = layoutView.findViewById(R.id.damageTextView);
         final CheckedTextView overviewTextView = layoutView.findViewById(R.id.overviewTextView);
@@ -142,14 +134,15 @@ public class ImageFragment extends Fragment {
         }else {
             imageCoverageType.setText(coverageType);
         }
-
-
-
-
         pointOfOriginTextView.setChecked(imgIsPointOfOrigin);
-        // For damage text view
-        damageTextView.setChecked(imgIsDamage);
 
+        if(imgIsPointOfOrigin) {
+            pointOfOriginTextView.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.shape_chip_drawable_active));
+        }else {
+            pointOfOriginTextView.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.shape_chip_drawable_gray));
+        }
+
+        damageTextView.setChecked(imgIsDamage);
         if(imgIsDamage) {
             imgIsDamage = true;
             imgIsOverview = false;
@@ -159,9 +152,7 @@ public class ImageFragment extends Fragment {
             damageTextView.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.shape_chip_drawable_gray));
         }
 
-        // For over view  text view
         overviewTextView.setChecked(imgIsOverview);
-
         if(imgIsOverview) {
             imgIsOverview = true;
             imgIsDamage = false;
@@ -171,7 +162,6 @@ public class ImageFragment extends Fragment {
             overviewTextView.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.shape_chip_drawable_gray));
         }
 
-       // title.setText(imgTitle);
 
         description.setText(imgDescription);
 
@@ -251,22 +241,6 @@ public class ImageFragment extends Fragment {
             }
         });
 
-//        title.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//                monitorImageDetailsChange.updateImageTitle(s.toString(),position);
-//            }
-//        });
 
         damageTextView.setOnClickListener(new View.OnClickListener() {
             @Override
