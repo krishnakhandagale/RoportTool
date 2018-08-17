@@ -216,6 +216,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
                 ArrayList<ImageDetailsPOJO> selectedImageList = label.getSelectedImages();
 
                 int j =0, k= 0;
+
                 while( j< selectedElevationImagesList.size()){
                     if(!selectedElevationImagesList.get(j).getImageUrl().isEmpty()){
                         try {
@@ -245,7 +246,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
                     j++;
                 }
 
-                if(k +1 < selectedElevationImagesList.size()){
+                if(k +1 <= selectedElevationImagesList.size()){
                     document.newPage();
                 }
 
@@ -366,7 +367,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
         Font font=new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.NORMAL);
         Font boldFont=new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD);
         if(isPointOfOrigin){
-            cell.addElement(new Phrase("P.O.O",boldFont));
+            cell.addElement(new Phrase("Point Of Origin",boldFont));
         }
         if(isOverview){
             cell.addElement(new Phrase("Overview",boldFont));
