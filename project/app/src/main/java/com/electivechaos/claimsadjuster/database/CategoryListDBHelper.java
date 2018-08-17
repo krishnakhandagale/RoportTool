@@ -30,7 +30,7 @@ import java.util.Iterator;
  */
 
 public class CategoryListDBHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 173;
+    private static final int DATABASE_VERSION = 174;
 
 
     // Database Name
@@ -268,7 +268,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
 
 
         final String categories[] = {
-                "Starter Photos",
+                "Risk Overview",
                 "Front Elevation",
                 "Back Elevation",
                 "Left Elevation",
@@ -445,7 +445,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
 
         if (cursor.moveToFirst()) {
             do {
-                if(!cursor.getString(1).equals("Starter Photos")){
+                if(!cursor.getString(1).equals("Risk Overview")){
                     Category category = new Category();
                     category.setCategoryId(cursor.getInt(0));
                     category.setCategoryName(cursor.getString(1));
