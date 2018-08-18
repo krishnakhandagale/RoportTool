@@ -119,11 +119,11 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
             document.add(new Paragraph("Report Description", fontTitles));
             document.add(new Paragraph(reportPOJO.getReportDescription()));
             document.add(new Paragraph(""));
-            document.add(new Paragraph("Client Name", fontTitles));
+            document.add(new Paragraph("Insured Name", fontTitles));
             document.add(new Paragraph(reportPOJO.getClientName()));
             document.add(new Paragraph(""));
 
-            document.add(new Paragraph("Claim Number", fontTitles));
+            document.add(new Paragraph("Claim Number", fontTitles   ));
             document.add(new Paragraph(reportPOJO.getClaimNumber()));
             document.add(new Paragraph(""));
 
