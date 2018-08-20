@@ -53,7 +53,7 @@ public class ClaimDetailsTabsFragment extends Fragment {
 
         reportTitleEditText = view.findViewById(R.id.reportTitle);
         reportDescriptionEditText =view.findViewById(R.id.reportDescription);
-        clientNameEditText = view.findViewById(R.id.clientName);
+        clientNameEditText = view.findViewById(R.id.insuredName);
         claimNumberEditText = view.findViewById(R.id.claimNumber);
 
 
