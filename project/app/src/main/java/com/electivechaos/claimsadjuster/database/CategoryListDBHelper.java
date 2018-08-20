@@ -754,7 +754,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         values.put(KEY_REPORT_ID, reportId);
         values.put(KEY_REPORT_NAME, reportItemPOJO.getReportTitle());
         values.put(KEY_REPORT_DESCRIPTION, reportItemPOJO.getReportDescription());
-        values.put(KEY_CLIENT_NAME, reportItemPOJO.getClientName());
+        values.put(KEY_CLIENT_NAME, reportItemPOJO.getInsuredName());
         values.put(KEY_CLAIM_NUMBER, reportItemPOJO.getClaimNumber());
         values.put(KEY_DATE_CREATED, reportItemPOJO.getCreatedDate());
         values.put(KEY_FILE_PATH, reportItemPOJO.getFilePath());
@@ -876,7 +876,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 reportPOJO.setId(c.getString(0));
                 reportPOJO.setReportTitle(c.getString(1));
                 reportPOJO.setReportDescription(c.getString(2));
-                reportPOJO.setClientName(c.getString(3));
+                reportPOJO.setInsuredName(c.getString(3));
                 reportPOJO.setClaimNumber(c.getString(4));
                 reportPOJO.setCreatedDate(c.getString(5));
                 reportPOJO.setFilePath(c.getString(6));

@@ -99,7 +99,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
         String dateString = simpleDateFormat.format(new Date());
         File destination = new File(Environment.getExternalStorageDirectory(), dateString + ".pdf");
 
-       // File destination = new File(Environment.getExternalStorageDirectory(), reportPOJO.getClientName() + ".pdf");
+       // File destination = new File(Environment.getExternalStorageDirectory(), reportPOJO.getInsuredName() + ".pdf");
 
         FileOutputStream fo;
         Font fontTitles = new Font(Font.FontFamily.TIMES_ROMAN, 16, Font.BOLD);
@@ -120,7 +120,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
             document.add(new Paragraph(reportPOJO.getReportDescription()));
             document.add(new Paragraph(""));
             document.add(new Paragraph("Insured Name", fontTitles));
-            document.add(new Paragraph(reportPOJO.getClientName()));
+            document.add(new Paragraph(reportPOJO.getInsuredName()));
             document.add(new Paragraph(""));
 
             document.add(new Paragraph("Claim Number", fontTitles   ));

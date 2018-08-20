@@ -21,7 +21,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -347,7 +346,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         claimDetailsData.putString("reportTitle", reportPOJO.getReportTitle());
         claimDetailsData.putString("reportDescription", reportPOJO.getReportDescription());
         claimDetailsData.putString("claimNumber", reportPOJO.getClaimNumber());
-        claimDetailsData.putString("clientName", reportPOJO.getClientName());
+        claimDetailsData.putString("clientName", reportPOJO.getInsuredName());
         claimDetailsData.putString("createdDate", reportPOJO.getCreatedDate());
         claimDetailsData.putString("locationLat", reportPOJO.getLocationLat());
         claimDetailsData.putString("locationLong", reportPOJO.getLocationLong());
@@ -694,7 +693,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     @Override
     public void setReportClientName(String reportClientName) {
         new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout,reportClientName,reportPOJO.getId(),false,categoryListDBHelper,"client_name").execute();
-        reportPOJO.setClientName(reportClientName);
+        reportPOJO.setInsuredName(reportClientName);
     }
 
     @Override
@@ -818,7 +817,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         }else if(reportPOJO.getReportDescription().trim().isEmpty()){
             CommonUtils.showSnackbarMessage(getString(R.string.enter_description_message), true, true, parentLayoutForMessages, AddEditReportActivity.this);
             return false;
-        }else if(reportPOJO.getClientName().trim().isEmpty()){
+        }else if(reportPOJO.getInsuredName().trim().isEmpty()){
             CommonUtils.showSnackbarMessage(getString(R.string.enter_client_name_message), true, true, parentLayoutForMessages, AddEditReportActivity.this);
             return false;
         }else if(reportPOJO.getClaimNumber().trim().isEmpty()){
@@ -970,7 +969,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         if(!TextUtils.isEmpty(reportPOJO.getReportTitle())
                 && !TextUtils.isEmpty(reportPOJO.getReportDescription())
                 &&  !TextUtils.isEmpty(reportPOJO.getClaimNumber())
-                && !TextUtils.isEmpty(reportPOJO.getClientName())
+                && !TextUtils.isEmpty(reportPOJO.getInsuredName())
                 && !TextUtils.isEmpty(reportPOJO.getAddressLine())){
             parentMenuItems.get(0).setChecked(true);
             drawerMenuListAdapter.notifyDataSetChanged();
