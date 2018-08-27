@@ -1,6 +1,6 @@
 package com.electivechaos.claimsadjuster.interfaces;
 
-public  interface NextButtonClickListener {
+public  interface BackButtonClickListener {
 
-     void onNextButtonClick();
+     void onBackButtonClick();
 }
