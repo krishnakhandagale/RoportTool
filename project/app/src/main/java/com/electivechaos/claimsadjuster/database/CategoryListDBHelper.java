@@ -30,7 +30,7 @@ import java.util.Iterator;
  */
 
 public class CategoryListDBHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 176;
+    private static final int DATABASE_VERSION = 177;
 
 
     // Database Name
@@ -334,8 +334,8 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         };
 
         final String  buildingType[] = {
-                "Detached S.F",
-                "Attached S.F",
+                "Detached Single Family",
+                "Attached Single Family",
                 "Single-Wide",
                 "Double-Wide",
                 "Modular",
