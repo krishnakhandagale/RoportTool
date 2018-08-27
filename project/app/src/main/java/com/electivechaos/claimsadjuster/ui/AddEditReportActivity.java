@@ -49,6 +49,7 @@ import com.electivechaos.claimsadjuster.fragments.PropertyDetailsFragment;
 import com.electivechaos.claimsadjuster.fragments.StarterPhotosFragment;
 import com.electivechaos.claimsadjuster.interfaces.AddEditLabelInterface;
 import com.electivechaos.claimsadjuster.interfaces.AsyncTaskStatusCallback;
+import com.electivechaos.claimsadjuster.interfaces.BackButtonClickListener;
 import com.electivechaos.claimsadjuster.interfaces.ClaimDetailsDataInterface;
 import com.electivechaos.claimsadjuster.interfaces.LossLocationDataInterface;
 import com.electivechaos.claimsadjuster.interfaces.NextButtonClickListener;
@@ -83,7 +84,7 @@ import java.util.Observer;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Pattern;
 
-public class AddEditReportActivity extends AppCompatActivity implements DrawerMenuListAdapter.OnLabelAddClickListener, AddEditLabelInterface, ClaimDetailsDataInterface, LossLocationDataInterface,SelectedImagesDataInterface,NextButtonClickListener,OnSaveReportClickListener, OnGenerateReportClickListener, OnPropertyDetailsClickListener,OnPerilSelectionListener, OnSetImageFileUriListener,OnStarterFragmentDataChangeListener, Observer {
+public class AddEditReportActivity extends AppCompatActivity implements DrawerMenuListAdapter.OnLabelAddClickListener, AddEditLabelInterface, ClaimDetailsDataInterface, LossLocationDataInterface,SelectedImagesDataInterface,NextButtonClickListener,BackButtonClickListener,OnSaveReportClickListener, OnGenerateReportClickListener, OnPropertyDetailsClickListener,OnPerilSelectionListener, OnSetImageFileUriListener,OnStarterFragmentDataChangeListener, Observer {
 
     private DrawerLayout mDrawerLayout;
     private DrawerMenuListAdapter drawerMenuListAdapter;
@@ -774,6 +775,50 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         new DBSelectedImagesTask(AddEditReportActivity.this, progressBarLayout, reportPOJO.getLabelArrayList().get(labelPosition),false,categoryListDBHelper,"selected_images").execute();
 
     }
+    @Override
+    public void onBackButtonClick() {
+        selectedFragmentPosition = selectedFragmentPosition -1;
+        if(selectedFragmentPosition >=0){
+
+        if(selectedFragmentPosition == 0) {
+            mDrawerLayout.closeDrawer(Gravity.LEFT);
+            putClaimDetailsFragment();
+            actionBarEditBtn.setVisible(false);
+
+        }
+
+        if(selectedFragmentPosition == 1) {
+            mDrawerLayout.closeDrawer(Gravity.LEFT);
+            putPropertyDetails();
+            actionBarEditBtn.setVisible(false);
+
+        }
+        else if(selectedFragmentPosition == 2) {
+            mDrawerLayout.closeDrawer(Gravity.LEFT);
+            putPerilDetails();
+            activityActionBar.setTitle("Peril");
+            actionBarEditBtn.setVisible(false);
+
+        }
+        else if(selectedFragmentPosition == 3) {
+            mDrawerLayout.closeDrawer(Gravity.LEFT);
+            putPointOfOriginFragment();
+            activityActionBar.setTitle("Point Of Origin");
+            actionBarEditBtn.setVisible(false);
+
+        }else if(selectedFragmentPosition > 3){
+            if(selectedFragmentPosition == 4){
+                putDefaultFragment();
+            }else {
+                putLabelFragment();
+            }
+        }
+        }else{
+            selectedFragmentPosition = 4 + reportPOJO.getLabelArrayList().size() -1 ;
+            putLabelFragment();
+
+        }
+    }
 
     @Override
     public void onNextButtonClick() {
@@ -1006,6 +1051,8 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
 
     }
+
+
 
 
     // Task for label addition
