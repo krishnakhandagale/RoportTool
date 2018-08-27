@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.electivechaos.claimsadjuster.R;
 import com.electivechaos.claimsadjuster.adapters.DrawerMenuListAdapter;
 import com.electivechaos.claimsadjuster.database.CategoryListDBHelper;
+import com.electivechaos.claimsadjuster.interfaces.BackButtonClickListener;
 import com.electivechaos.claimsadjuster.interfaces.NextButtonClickListener;
 import com.electivechaos.claimsadjuster.interfaces.OnGenerateReportClickListener;
 import com.electivechaos.claimsadjuster.interfaces.OnPerilSelectionListener;
@@ -34,9 +35,10 @@ import java.util.List;
 public class PerilListMenuFragment extends Fragment{
 
     private Boolean isFabOpen = false;
-    private FloatingActionButton showFabBtn,fabGoNextBtn, fabAddLabelBtn, fabGenerateReportBtn, fabSaveReportBtn;
+    private FloatingActionButton showFabBtn,fabGoNextBtn, fabGoBackBtn, fabAddLabelBtn, fabGenerateReportBtn, fabSaveReportBtn;
     private Animation fab_open, fab_close;
     private NextButtonClickListener nextButtonClickListener;
+    private BackButtonClickListener backButtonClickListener;
     private DrawerMenuListAdapter.OnLabelAddClickListener onLabelAddClickListener;
     private OnSaveReportClickListener onSaveReportClickListener;
     private OnGenerateReportClickListener onGenerateReportClickListener;
@@ -63,6 +65,7 @@ public class PerilListMenuFragment extends Fragment{
         View view = inflater.inflate(R.layout.peril_list_menu_fragment, container, false);
         showFabBtn = view.findViewById(R.id.showFab);
         fabGoNextBtn = view.findViewById(R.id.fabGoNext);
+        fabGoBackBtn = view.findViewById(R.id.fabGoBack);
         fabAddLabelBtn = view.findViewById(R.id.fabAddLabel);
         fabGenerateReportBtn = view.findViewById(R.id.fabGenerateReport);
         fabSaveReportBtn = view.findViewById(R.id.fabSaveReport);
@@ -75,6 +78,14 @@ public class PerilListMenuFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 nextButtonClickListener.onNextButtonClick();
+                animateFAB();
+            }
+        });
+
+        fabGoBackBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                backButtonClickListener.onBackButtonClick();
                 animateFAB();
             }
         });
@@ -124,10 +135,12 @@ public class PerilListMenuFragment extends Fragment{
         if (isFabOpen) {
             showFabBtn.setImageResource(R.drawable.ic_more_vertical_white);
             fabGoNextBtn.startAnimation(fab_close);
+            fabGoBackBtn.startAnimation(fab_close);
             fabAddLabelBtn.startAnimation(fab_close);
             fabGenerateReportBtn.startAnimation(fab_close);
             fabSaveReportBtn.startAnimation(fab_close);
             fabGoNextBtn.setClickable(false);
+            fabGoBackBtn.setClickable(false);
             fabAddLabelBtn.setClickable(false);
             fabGenerateReportBtn.setClickable(false);
             fabSaveReportBtn.setClickable(false);
@@ -136,10 +149,12 @@ public class PerilListMenuFragment extends Fragment{
         } else {
             showFabBtn.setImageResource(R.drawable.ic_close_white);
             fabGoNextBtn.startAnimation(fab_open);
+            fabGoBackBtn.startAnimation(fab_open);
             fabAddLabelBtn.startAnimation(fab_open);
             fabGenerateReportBtn.startAnimation(fab_open);
             fabSaveReportBtn.startAnimation(fab_open);
             fabGoNextBtn.setClickable(true);
+            fabGoBackBtn.setClickable(true);
             fabAddLabelBtn.setClickable(true);
             fabGenerateReportBtn.setClickable(true);
             fabSaveReportBtn.setClickable(true);
@@ -284,6 +299,7 @@ public class PerilListMenuFragment extends Fragment{
         super.onAttach(context);
         try {
             nextButtonClickListener = (NextButtonClickListener) getActivity();
+            backButtonClickListener = (BackButtonClickListener) getActivity();
             onLabelAddClickListener = (DrawerMenuListAdapter.OnLabelAddClickListener)getActivity();
             onSaveReportClickListener = (OnSaveReportClickListener)getActivity();
             onGenerateReportClickListener = (OnGenerateReportClickListener)getActivity();
