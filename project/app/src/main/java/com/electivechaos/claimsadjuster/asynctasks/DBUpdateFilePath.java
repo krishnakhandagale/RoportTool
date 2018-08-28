@@ -223,8 +223,10 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
                             PdfPTable table = new PdfPTable(3);
                             byte[] imageBytesResized;
                             table.setWidths(new float[]{1, 5, 4});
-                            imageBytesResized = resizeImage(selectedElevationImagesList.get(j).getImageUrl(), (int) ((document.getPageSize().getWidth() / 2) - 100), (int) ((document.getPageSize().getHeight() / 2) - 100));
-                            com.itextpdf.text.Image img = com.itextpdf.text.Image.getInstance(imageBytesResized);
+                            com.itextpdf.text.Image img = com.itextpdf.text.Image.getInstance(selectedElevationImagesList.get(j).getImageUrl());
+                            img.scaleToFit(((document.getPageSize().getWidth()/ 2) - 100),((document.getPageSize().getHeight() / numberOfImagesPerPage) - 100));
+//                            imageBytesResized = resizeImage(selectedElevationImagesList.get(j).getImageUrl(), (int) ((document.getPageSize().getWidth() / 2) - 100), (int) ((document.getPageSize().getHeight() / numberOfImagesPerPage) - 100));
+//                            com.itextpdf.text.Image img = com.itextpdf.text.Image.getInstance(imageBytesResized);
 
                             table.setHorizontalAlignment(Element.ALIGN_LEFT);
                             table.setWidthPercentage(100);
@@ -255,8 +257,10 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
                     PdfPTable table = new PdfPTable(3);
                     byte[] imageBytesResized;
                     table.setWidths(new float[]{1, 5, 4});
-                    imageBytesResized = resizeImage(label.getHouseNumber(), (int) ((document.getPageSize().getWidth()/2) - 100), (int) ((document.getPageSize().getHeight()/2) - 100));
-                    com.itextpdf.text.Image img = com.itextpdf.text.Image.getInstance(imageBytesResized);
+//                    imageBytesResized = resizeImage(label.getHouseNumber(), (int) ((document.getPageSize().getWidth()/2) - 100), (int) ((document.getPageSize().getHeight()/2) - 100));
+                    com.itextpdf.text.Image img = com.itextpdf.text.Image.getInstance(label.getHouseNumber());
+                    img.scaleToFit(((document.getPageSize().getWidth()/ 2) - 100),((document.getPageSize().getHeight() / numberOfImagesPerPage) - 100));
+//                    com.itextpdf.text.Image img = com.itextpdf.text.Image.getInstance(imageBytesResized);
 
                     table.setHorizontalAlignment(Element.ALIGN_LEFT);
                     table.setWidthPercentage(100);
@@ -273,9 +277,9 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
                         PdfPTable table = new PdfPTable(3);
                         byte[] imageBytesResized;
                         table.setWidths(new float[]{1, 5, 4});
-                        imageBytesResized = resizeImage(selectedImageList.get(i).getImageUrl(), (int) ((document.getPageSize().getWidth()/ 2) - 100), (int) ((document.getPageSize().getHeight() / numberOfImagesPerPage) - 100));
-                        com.itextpdf.text.Image img = com.itextpdf.text.Image.getInstance(imageBytesResized);
-
+//                        imageBytesResized = resizeImage(selectedImageList.get(i).getImageUrl(), (int) ((document.getPageSize().getWidth()/ 2) - 100), (int) ((document.getPageSize().getHeight() / numberOfImagesPerPage) - 100));
+                        com.itextpdf.text.Image img = com.itextpdf.text.Image.getInstance(selectedImageList.get(i).getImageUrl());
+                        img.scaleToFit(((document.getPageSize().getWidth()/ 2) - 100),((document.getPageSize().getHeight() / numberOfImagesPerPage) - 100));
                         table.setHorizontalAlignment(Element.ALIGN_LEFT);
                         table.setWidthPercentage(100);
                         table.addCell(getImageNumberPdfPCell((i + 1) + ".", PdfPCell.ALIGN_LEFT));
@@ -339,14 +343,14 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
 
         // First decode with inJustDecodeBounds=true to check dimensions
         final BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(imagePath, options);
+//        options.inJustDecodeBounds = true;
+//        BitmapFactory.decodeFile(imagePath, options);
 
         // Calculate inSampleSize
-        options.inSampleSize = calculateInSampleSize(options, maxWidth, maxHeight);
+//        options.inSampleSize = 8;
 
         // Decode bitmap with inSampleSize set
-        options.inJustDecodeBounds = false;
+//        options.inJustDecodeBounds = false;
         Bitmap bmp = BitmapFactory.decodeFile(imagePath, options);
         return resizeImage(bmp, maxWidth, maxHeight, orientation);
 
@@ -401,18 +405,37 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
     private byte[] resizeImage(Bitmap image, int maxWidth, int maxHeight, int orientation) {
 
         if (maxHeight > 0 && maxWidth > 0) {
+
+
+
             int width = image.getWidth();
             int height = image.getHeight();
-            float ratioBitmap = (float) width / (float) height;
-            float ratioMax = (float) maxWidth / (float) maxHeight;
+            int finalWidth;
+            int finalHeight;
 
-            int finalWidth = maxWidth;
-            int finalHeight = maxHeight;
-            if (ratioMax > ratioBitmap) {
-                finalWidth = (int) ((float) maxHeight * ratioBitmap);
-            } else {
-                finalHeight = (int) ((float) maxHeight / ratioBitmap);
+            if(width >= height){
+                finalWidth = maxWidth;
+                finalHeight = (maxWidth * height)/width;
+            }else{
+                finalWidth = (width * maxHeight)/height;
+                finalHeight = maxHeight;
             }
+
+
+
+//            float ratioBitmap = (float) width / (float) height;
+//            float ratioMax = (float) maxWidth / (float) maxHeight;
+//
+//
+//
+//            if (ratioMax > ratioBitmap) {
+//                finalWidth = (int) ((float) maxHeight * ratioBitmap);
+//            } else {
+//                finalHeight = (int) ((float) maxHeight / ratioBitmap);
+//            }
+//
+
+
             image = Bitmap.createScaledBitmap(image, finalWidth, finalHeight, true);
             Bitmap rotatedBitmap;
             switch (orientation) {
