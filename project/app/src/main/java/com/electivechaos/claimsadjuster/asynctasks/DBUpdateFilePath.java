@@ -362,7 +362,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
         Font font=new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.NORMAL);
         cell.addElement(new Phrase(title,font));
         cell.addElement(new Phrase(description,font));
-        cell.setPadding(0);
+        cell.setPaddingLeft(25f);
         cell.setBorder(Rectangle.NO_BORDER);
         cell.setFixedHeight(document.getPageSize().getHeight() / perPage - 100);
         return cell;
