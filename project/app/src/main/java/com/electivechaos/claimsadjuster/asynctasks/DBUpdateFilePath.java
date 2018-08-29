@@ -282,6 +282,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
                         img.scaleToFit(((document.getPageSize().getWidth()/ 2) - 100),((document.getPageSize().getHeight() / numberOfImagesPerPage) - 100));
                         table.setHorizontalAlignment(Element.ALIGN_LEFT);
                         table.setWidthPercentage(100);
+
                         table.addCell(getImageNumberPdfPCell((i + 1) + ".", PdfPCell.ALIGN_LEFT));
                         table.addCell(getCellImagCell(img, PdfPCell.ALIGN_LEFT, document, numberOfImagesPerPage));
                         table.addCell(getCell(selectedImageList.get(i).getTitle(), selectedImageList.get(i).getDescription(),selectedImageList.get(i).isPointOfOrigin(),selectedImageList.get(i).isOverview(),selectedImageList.get(i).isDamage(), PdfPCell.LEFT, document, numberOfImagesPerPage));
@@ -382,18 +383,16 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
 
         cell.addElement(new Phrase(title,font));
         cell.addElement(new Phrase(description,font));
-        cell.setPadding(0);
+        cell.setPaddingLeft(25f);
         cell.setBorder(Rectangle.NO_BORDER);
         cell.setFixedHeight(document.getPageSize().getHeight() / 4 - 50);
-        Log.d("DON",""+(document.getPageSize().getHeight() / perPage - 100));
         return cell;
 
     }
 
 
     public PdfPCell getCellImagCell(com.itextpdf.text.Image img, int alignment, Document document, int perPage) {
-
-        PdfPCell cell = new PdfPCell(img);
+        PdfPCell cell = new PdfPCell(img, true);
         cell.setPadding(0);
         cell.setHorizontalAlignment(alignment);
         cell.setBorder(Rectangle.NO_BORDER);
