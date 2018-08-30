@@ -4,7 +4,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.support.media.ExifInterface;
 import android.os.AsyncTask;
 import android.os.Environment;
@@ -223,15 +226,13 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
                             PdfPTable table = new PdfPTable(3);
                             byte[] imageBytesResized;
                             table.setWidths(new float[]{1, 5, 4});
-                            com.itextpdf.text.Image img = com.itextpdf.text.Image.getInstance(selectedElevationImagesList.get(j).getImageUrl());
-                            img.scaleToFit(((document.getPageSize().getWidth()/ 2) - 100),((document.getPageSize().getHeight() / numberOfImagesPerPage) - 100));
-//                            imageBytesResized = resizeImage(selectedElevationImagesList.get(j).getImageUrl(), (int) ((document.getPageSize().getWidth() / 2) - 100), (int) ((document.getPageSize().getHeight() / numberOfImagesPerPage) - 100));
-//                            com.itextpdf.text.Image img = com.itextpdf.text.Image.getInstance(imageBytesResized);
-
+                           // com.itextpdf.text.Image img = com.itextpdf.text.Image.getInstance(selectedElevationImagesList.get(j).getImageUrl());
+                            imageBytesResized = resizeImage(selectedElevationImagesList.get(j).getImageUrl(), (int) ((document.getPageSize().getWidth() / 2) - 100), (int) ((document.getPageSize().getHeight() / numberOfImagesPerPage) - 100));
+                            com.itextpdf.text.Image img = com.itextpdf.text.Image.getInstance(imageBytesResized);
                             table.setHorizontalAlignment(Element.ALIGN_LEFT);
                             table.setWidthPercentage(100);
                             table.addCell(getImageNumberPdfPCell("", PdfPCell.ALIGN_LEFT));
-                            table.addCell(getCellImagCell(img, PdfPCell.ALIGN_LEFT, document, numberOfImagesPerPage));
+                            table.addCell(getCellImageCell(img, PdfPCell.ALIGN_LEFT, document, numberOfImagesPerPage));
                             table.addCell(getCell(selectedElevationImagesList.get(j).getTitle(), selectedElevationImagesList.get(j).getDescription(), PdfPCell.LEFT, document, numberOfImagesPerPage));
 
                             document.add(table);
@@ -257,15 +258,16 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
                     PdfPTable table = new PdfPTable(3);
                     byte[] imageBytesResized;
                     table.setWidths(new float[]{1, 5, 4});
-//                    imageBytesResized = resizeImage(label.getHouseNumber(), (int) ((document.getPageSize().getWidth()/2) - 100), (int) ((document.getPageSize().getHeight()/2) - 100));
-                    com.itextpdf.text.Image img = com.itextpdf.text.Image.getInstance(label.getHouseNumber());
-                    img.scaleToFit(((document.getPageSize().getWidth()/ 2) - 100),((document.getPageSize().getHeight() / numberOfImagesPerPage) - 100));
-//                    com.itextpdf.text.Image img = com.itextpdf.text.Image.getInstance(imageBytesResized);
+                    imageBytesResized = resizeImage(label.getHouseNumber(), (int) ((document.getPageSize().getWidth()/2) - 100), (int) ((document.getPageSize().getHeight()/2) - 100));
+                    com.itextpdf.text.Image img = com.itextpdf.text.Image.getInstance(imageBytesResized);
+//                    com.itextpdf.text.Image img = com.itextpdf.text.Image.getInstance(label.getHouseNumber());
+//                    img.scaleToFit(((document.getPageSize().getWidth()/ 2) - 100),((document.getPageSize().getHeight() / numberOfImagesPerPage) - 100));
+
 
                     table.setHorizontalAlignment(Element.ALIGN_LEFT);
                     table.setWidthPercentage(100);
                     table.addCell(getImageNumberPdfPCell("", PdfPCell.ALIGN_LEFT));
-                    table.addCell(getCellImagCell(img, PdfPCell.ALIGN_LEFT, document, 2));
+                    table.addCell(getCellImageCell(img, PdfPCell.ALIGN_LEFT, document, 2));
                     table.addCell(getCell("House Number", "House Number Image", PdfPCell.LEFT, document, 2));
                     document.add(table);
                     document.add(new Paragraph(" "));
@@ -277,14 +279,15 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
                         PdfPTable table = new PdfPTable(3);
                         byte[] imageBytesResized;
                         table.setWidths(new float[]{1, 5, 4});
-//                        imageBytesResized = resizeImage(selectedImageList.get(i).getImageUrl(), (int) ((document.getPageSize().getWidth()/ 2) - 100), (int) ((document.getPageSize().getHeight() / numberOfImagesPerPage) - 100));
-                        com.itextpdf.text.Image img = com.itextpdf.text.Image.getInstance(selectedImageList.get(i).getImageUrl());
-                        img.scaleToFit(((document.getPageSize().getWidth()/ 2) - 100),((document.getPageSize().getHeight() / numberOfImagesPerPage) - 100));
+                        imageBytesResized = resizeImage(selectedImageList.get(i).getImageUrl(), (int) ((document.getPageSize().getWidth()/ 2) - 100), (int) ((document.getPageSize().getHeight() / numberOfImagesPerPage) - 100));
+//                        com.itextpdf.text.Image img = com.itextpdf.text.Image.getInstance(selectedImageList.get(i).getImageUrl());
+                        com.itextpdf.text.Image img = com.itextpdf.text.Image.getInstance(imageBytesResized);
+//                        img.scaleToFit(((document.getPageSize().getWidth()/ 2) - 100),((document.getPageSize().getHeight() / numberOfImagesPerPage) - 100));
                         table.setHorizontalAlignment(Element.ALIGN_LEFT);
                         table.setWidthPercentage(100);
 
                         table.addCell(getImageNumberPdfPCell((i + 1) + ".", PdfPCell.ALIGN_LEFT));
-                        table.addCell(getCellImagCell(img, PdfPCell.ALIGN_LEFT, document, numberOfImagesPerPage));
+                        table.addCell(getCellImageCell(img, PdfPCell.ALIGN_LEFT, document, numberOfImagesPerPage));
                         table.addCell(getCell(selectedImageList.get(i).getTitle(), selectedImageList.get(i).getDescription(),selectedImageList.get(i).isPointOfOrigin(),selectedImageList.get(i).isOverview(),selectedImageList.get(i).isDamage(), PdfPCell.LEFT, document, numberOfImagesPerPage));
                         document.add(table);
                         document.add(new Paragraph(" "));
@@ -316,6 +319,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
         return null;
     }
 
+
     @Override
     protected void onPostExecute(Void result) {
         Context context = contextWeakReference.get();
@@ -333,6 +337,9 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
     }
 
     private byte[] resizeImage(String imagePath, int maxWidth, int maxHeight) {
+        maxWidth = (int) (maxWidth * 3.5);
+        maxHeight = (int) (maxHeight * 3.5);
+
         ExifInterface ei = null;
         try {
             ei = new ExifInterface(imagePath);
@@ -344,17 +351,32 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
 
         // First decode with inJustDecodeBounds=true to check dimensions
         final BitmapFactory.Options options = new BitmapFactory.Options();
-//        options.inJustDecodeBounds = true;
-//        BitmapFactory.decodeFile(imagePath, options);
+
+        options.inScaled = false;
+        options.inDither = false;
+        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+        options.inPreferQualityOverSpeed = true;
+
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(imagePath, options);
 
         // Calculate inSampleSize
-//        options.inSampleSize = 8;
+        options.inSampleSize = calculateInSampleSize(options,maxWidth,maxHeight);
 
         // Decode bitmap with inSampleSize set
-//        options.inJustDecodeBounds = false;
+        options.inJustDecodeBounds = false;
         Bitmap bmp = BitmapFactory.decodeFile(imagePath, options);
         return resizeImage(bmp, maxWidth, maxHeight, orientation);
 
+    }
+
+    private Bitmap convert(Bitmap bitmap, Bitmap.Config config) {
+        Bitmap convertedBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), config);
+        Canvas canvas = new Canvas(convertedBitmap);
+        Paint paint = new Paint();
+        paint.setColor(Color.BLACK);
+        canvas.drawBitmap(bitmap, 0, 0, paint);
+        return convertedBitmap;
     }
 
     public PdfPCell getCell(String title, String description, int alignment, Document document, int perPage) {
@@ -391,7 +413,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
     }
 
 
-    public PdfPCell getCellImagCell(com.itextpdf.text.Image img, int alignment, Document document, int perPage) {
+    public PdfPCell getCellImageCell(com.itextpdf.text.Image img, int alignment, Document document, int perPage) {
         PdfPCell cell = new PdfPCell(img, true);
         cell.setPadding(0);
         cell.setHorizontalAlignment(alignment);
@@ -400,41 +422,21 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
         return cell;
     }
 
-
     private byte[] resizeImage(Bitmap image, int maxWidth, int maxHeight, int orientation) {
 
         if (maxHeight > 0 && maxWidth > 0) {
-
-
-
             int width = image.getWidth();
             int height = image.getHeight();
-            int finalWidth;
-            int finalHeight;
+            float ratioBitmap = (float) width / (float) height;
+            float ratioMax = (float) maxWidth / (float) maxHeight;
 
-            if(width >= height){
-                finalWidth = maxWidth;
-                finalHeight = (maxWidth * height)/width;
-            }else{
-                finalWidth = (width * maxHeight)/height;
-                finalHeight = maxHeight;
+            int finalWidth = maxWidth;
+            int finalHeight = maxHeight;
+            if (ratioMax > ratioBitmap) {
+                finalWidth = (int) ((float) maxHeight * ratioBitmap);
+            } else {
+                finalHeight = (int) ((float) maxHeight / ratioBitmap);
             }
-
-
-
-//            float ratioBitmap = (float) width / (float) height;
-//            float ratioMax = (float) maxWidth / (float) maxHeight;
-//
-//
-//
-//            if (ratioMax > ratioBitmap) {
-//                finalWidth = (int) ((float) maxHeight * ratioBitmap);
-//            } else {
-//                finalHeight = (int) ((float) maxHeight / ratioBitmap);
-//            }
-//
-
-
             image = Bitmap.createScaledBitmap(image, finalWidth, finalHeight, true);
             Bitmap rotatedBitmap;
             switch (orientation) {
@@ -456,14 +458,16 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
                     rotatedBitmap = image;
             }
             ByteArrayOutputStream outStream = new ByteArrayOutputStream();
-            rotatedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
+            rotatedBitmap.compress(Bitmap.CompressFormat.PNG, 100, outStream);
             return outStream.toByteArray();
         } else {
             ByteArrayOutputStream outStream = new ByteArrayOutputStream();
-            image.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
+            image.compress(Bitmap.CompressFormat.PNG, 100, outStream);
             return outStream.toByteArray();
         }
     }
+
+
 
     public static Bitmap rotateImage(Bitmap source, float angle) {
         Matrix matrix = new Matrix();
