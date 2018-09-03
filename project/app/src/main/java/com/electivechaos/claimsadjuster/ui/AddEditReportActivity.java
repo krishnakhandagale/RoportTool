@@ -21,7 +21,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -50,6 +49,7 @@ import com.electivechaos.claimsadjuster.fragments.PropertyDetailsFragment;
 import com.electivechaos.claimsadjuster.fragments.StarterPhotosFragment;
 import com.electivechaos.claimsadjuster.interfaces.AddEditLabelInterface;
 import com.electivechaos.claimsadjuster.interfaces.AsyncTaskStatusCallback;
+import com.electivechaos.claimsadjuster.interfaces.BackButtonClickListener;
 import com.electivechaos.claimsadjuster.interfaces.ClaimDetailsDataInterface;
 import com.electivechaos.claimsadjuster.interfaces.LossLocationDataInterface;
 import com.electivechaos.claimsadjuster.interfaces.NextButtonClickListener;
@@ -84,7 +84,7 @@ import java.util.Observer;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Pattern;
 
-public class AddEditReportActivity extends AppCompatActivity implements DrawerMenuListAdapter.OnLabelAddClickListener, AddEditLabelInterface, ClaimDetailsDataInterface, LossLocationDataInterface,SelectedImagesDataInterface,NextButtonClickListener,OnSaveReportClickListener, OnGenerateReportClickListener, OnPropertyDetailsClickListener,OnPerilSelectionListener, OnSetImageFileUriListener,OnStarterFragmentDataChangeListener, Observer {
+public class AddEditReportActivity extends AppCompatActivity implements DrawerMenuListAdapter.OnLabelAddClickListener, AddEditLabelInterface, ClaimDetailsDataInterface, LossLocationDataInterface,SelectedImagesDataInterface,NextButtonClickListener,BackButtonClickListener,OnSaveReportClickListener, OnGenerateReportClickListener, OnPropertyDetailsClickListener,OnPerilSelectionListener, OnSetImageFileUriListener,OnStarterFragmentDataChangeListener, Observer {
 
     private DrawerLayout mDrawerLayout;
     private DrawerMenuListAdapter drawerMenuListAdapter;
@@ -205,7 +205,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                     @Override
                     public void onPostExecute(Object object, String type) {
                         setDataToExpandableList();
-                        Label label = categoryListDBHelper.getLabelFromCategoryDetails("Starter Photos");
+                        Label label = categoryListDBHelper.getLabelFromCategoryDetails("Risk Overview");
                         label.setReportId(reportPOJO.getId());
                         String id = "";
                         try {
@@ -347,7 +347,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         claimDetailsData.putString("reportTitle", reportPOJO.getReportTitle());
         claimDetailsData.putString("reportDescription", reportPOJO.getReportDescription());
         claimDetailsData.putString("claimNumber", reportPOJO.getClaimNumber());
-        claimDetailsData.putString("clientName", reportPOJO.getClientName());
+        claimDetailsData.putString("clientName", reportPOJO.getInsuredName());
         claimDetailsData.putString("createdDate", reportPOJO.getCreatedDate());
         claimDetailsData.putString("locationLat", reportPOJO.getLocationLat());
         claimDetailsData.putString("locationLong", reportPOJO.getLocationLong());
@@ -694,7 +694,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     @Override
     public void setReportClientName(String reportClientName) {
         new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout,reportClientName,reportPOJO.getId(),false,categoryListDBHelper,"client_name").execute();
-        reportPOJO.setClientName(reportClientName);
+        reportPOJO.setInsuredName(reportClientName);
     }
 
     @Override
@@ -775,6 +775,50 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         new DBSelectedImagesTask(AddEditReportActivity.this, progressBarLayout, reportPOJO.getLabelArrayList().get(labelPosition),false,categoryListDBHelper,"selected_images").execute();
 
     }
+    @Override
+    public void onBackButtonClick() {
+        selectedFragmentPosition = selectedFragmentPosition -1;
+        if(selectedFragmentPosition >=0){
+
+        if(selectedFragmentPosition == 0) {
+            mDrawerLayout.closeDrawer(Gravity.LEFT);
+            putClaimDetailsFragment();
+            actionBarEditBtn.setVisible(false);
+
+        }
+
+        if(selectedFragmentPosition == 1) {
+            mDrawerLayout.closeDrawer(Gravity.LEFT);
+            putPropertyDetails();
+            actionBarEditBtn.setVisible(false);
+
+        }
+        else if(selectedFragmentPosition == 2) {
+            mDrawerLayout.closeDrawer(Gravity.LEFT);
+            putPerilDetails();
+            activityActionBar.setTitle("Peril");
+            actionBarEditBtn.setVisible(false);
+
+        }
+        else if(selectedFragmentPosition == 3) {
+            mDrawerLayout.closeDrawer(Gravity.LEFT);
+            putPointOfOriginFragment();
+            activityActionBar.setTitle("Point Of Origin");
+            actionBarEditBtn.setVisible(false);
+
+        }else if(selectedFragmentPosition > 3){
+            if(selectedFragmentPosition == 4){
+                putDefaultFragment();
+            }else {
+                putLabelFragment();
+            }
+        }
+        }else{
+            selectedFragmentPosition = 4 + reportPOJO.getLabelArrayList().size() -1 ;
+            putLabelFragment();
+
+        }
+    }
 
     @Override
     public void onNextButtonClick() {
@@ -818,7 +862,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         }else if(reportPOJO.getReportDescription().trim().isEmpty()){
             CommonUtils.showSnackbarMessage(getString(R.string.enter_description_message), true, true, parentLayoutForMessages, AddEditReportActivity.this);
             return false;
-        }else if(reportPOJO.getClientName().trim().isEmpty()){
+        }else if(reportPOJO.getInsuredName().trim().isEmpty()){
             CommonUtils.showSnackbarMessage(getString(R.string.enter_client_name_message), true, true, parentLayoutForMessages, AddEditReportActivity.this);
             return false;
         }else if(reportPOJO.getClaimNumber().trim().isEmpty()){
@@ -970,7 +1014,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         if(!TextUtils.isEmpty(reportPOJO.getReportTitle())
                 && !TextUtils.isEmpty(reportPOJO.getReportDescription())
                 &&  !TextUtils.isEmpty(reportPOJO.getClaimNumber())
-                && !TextUtils.isEmpty(reportPOJO.getClientName())
+                && !TextUtils.isEmpty(reportPOJO.getInsuredName())
                 && !TextUtils.isEmpty(reportPOJO.getAddressLine())){
             parentMenuItems.get(0).setChecked(true);
             drawerMenuListAdapter.notifyDataSetChanged();
@@ -981,7 +1025,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
         PropertyDetailsPOJO propertyDetailsPOJO = reportPOJO.getPropertyDetailsPOJO();
         if(!TextUtils.isEmpty(propertyDetailsPOJO.getPropertyDate())
-                && !TextUtils.equals(propertyDetailsPOJO.getPropertyDate(),"--Select Date--")
+                && !TextUtils.equals(propertyDetailsPOJO.getPropertyDate(),"--Select Inspection Date--")
                 && !TextUtils.isEmpty(propertyDetailsPOJO.getSquareFootage())
                 && !TextUtils.isEmpty(propertyDetailsPOJO.getRoofSystem())
                 && !TextUtils.equals(propertyDetailsPOJO.getSquareFootage(),"--Select Roof System--")
@@ -1007,6 +1051,8 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
 
     }
+
+
 
 
     // Task for label addition
@@ -1201,7 +1247,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                     if (imageDetailsPOJOArrayList == null) {
                         imageDetailsPOJOArrayList = new ArrayList<>();
                     }
-                    imageDetailsPOJOArrayList.add(0, imageDetailsPOJO);
+                    imageDetailsPOJOArrayList.add(imageDetailsPOJO);
                 }
 
                 setSelectedImages(imageDetailsPOJOArrayList,labelPosition);
@@ -1226,13 +1272,16 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                 ArrayList<ImageDetailsPOJO> selectedImageListReturned = (ArrayList<ImageDetailsPOJO>) data.getExtras().getSerializable("selected_images");
                 int labelPositionForAddImageDetails = data.getExtras().getInt("labelPosition");
                 Label label = reportPOJO.getLabelArrayList().get(labelPositionForAddImageDetails);
-                ArrayList<ImageDetailsPOJO> selectedImageList = label.getSelectedImages();
+
+                ArrayList<ImageDetailsPOJO> selectedImageList = (ArrayList<ImageDetailsPOJO>) label.getSelectedImages().clone();
                 if (selectedImageList == null) {
                     selectedImageList = new ArrayList<>();
                 }
-                selectedImageListReturned.addAll(selectedImageList);
 
-                setSelectedImages(selectedImageListReturned,labelPositionForAddImageDetails);
+                selectedImageList.addAll(selectedImageListReturned);
+                setSelectedImages(selectedImageList,labelPositionForAddImageDetails);
+
+
 
                 try {
                     FragmentManager fm = getSupportFragmentManager();
@@ -1241,7 +1290,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
                             if(fm.getFragments().get(i) instanceof  AddEditReportSelectedImagesFragment){
                                 AddEditReportSelectedImagesFragment fragment = (AddEditReportSelectedImagesFragment) fm.getFragments().get(i);
-                                fragment.setDataAndAdapter(selectedImageListReturned);
+                                fragment.setDataAndAdapter(selectedImageList);
                             }
                         }
                     }

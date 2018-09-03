@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Claim Adjuster</string>
+    <string name="app_name">Checklist Claims</string>
 
     <string name="title">Title</string>
     <string name="risk">Risk</string>
@@ -135,7 +135,7 @@
     <string name="category_menu">Manage Category</string>
     <string name="insured_name">Insured Name</string>
     <string name="enter_house_number">Enter House Number</string>
-    <string name="p_o_o">P.O.O</string>
+    <string name="p_o_o">Point Of Origin</string>
     <string name="please_add_all_starter_photos">Please click all starter photos.</string>
     <string name="please_enter_house_number">Please enter house number.</string>
     <string name="camera_error_msg">Something went wrong.Please retry with system camera app.</string>
@@ -143,10 +143,12 @@
     <string name="coverage_details">Coverage Details</string>
     <string name="add_coverage">Add Coverage</string>
     <string name="select_coverage_type">--Select Coverage Type--</string>
-    <string name="coverage_type">Coverage Type</string>
     <string name="name">Name</string>
     <string name="no_geo_tag_found">No geo tag found.</string>
     <string name="date">Date</string>
     <string name="geo_tag">Geo Tag</string>
     <string name="image_name">Image name.</string>
+    <string name="report_insured_name">Insured Name.</string>
+    <string name="report_claim_number">Claim Number.</string>
+    <string name="coverage_type">Coverage Type</string>
 </resources>

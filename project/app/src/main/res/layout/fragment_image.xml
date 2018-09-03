@@ -60,6 +60,7 @@
                 android:background="?attr/selectableItemBackgroundBorderless"/>
         </LinearLayout>
         <TextView
+            android:textSize="16sp"
             android:id="@+id/imageCoverageType"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -71,6 +72,7 @@
             android:nextFocusRight="@+id/imageTitle"
             android:padding="7dp"/>
         <EditText
+            android:textSize="16sp"
             android:id="@+id/image_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

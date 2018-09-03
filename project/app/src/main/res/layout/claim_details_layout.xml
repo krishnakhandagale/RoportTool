@@ -27,42 +27,54 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
         android:layout_gravity="bottom|end"
-        android:layout_marginRight="130dp"
+        android:layout_marginRight="160dp"
         android:visibility="invisible"
         app:elevation="6dp"
         app:pressedTranslationZ="12dp"
         android:src="@drawable/pdf_gen"
-        android:layout_marginEnd="130dp" />
+        android:layout_marginEnd="160dp" />
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabAddLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="80dp"
         android:layout_gravity="bottom|end"
-        android:layout_marginRight="120dp"
+        android:layout_marginRight="155dp"
         android:visibility="invisible"
         app:elevation="6dp"
         app:pressedTranslationZ="12dp"
         android:src="@drawable/label_add"
-        android:layout_marginEnd="120dp" />
+        android:layout_marginEnd="155dp" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabSaveReport"
         android:layout_width="wrap_content"
         android:layout_height="58dp"
         android:layout_gravity="bottom|end"
-        android:layout_marginBottom="125dp"
-        android:layout_marginRight="80dp"
+        android:layout_marginBottom="135dp"
+        android:layout_marginRight="130dp"
         android:src="@drawable/ic_white_save"
         android:visibility="invisible"
         app:elevation="6dp"
         app:pressedTranslationZ="12dp"
+        android:layout_marginEnd="130dp" />
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabGoBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="170dp"
+        android:layout_gravity="bottom|end"
+        android:layout_marginRight="80dp"
+        android:visibility="invisible"
+        app:elevation="6dp"
+        app:pressedTranslationZ="12dp"
+        android:src="@drawable/back_arrow_white"
         android:layout_marginEnd="80dp" />
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabGoNext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="150dp"
+        android:layout_marginBottom="180dp"
         android:layout_gravity="bottom|end"
         android:layout_marginRight="@dimen/fab_margin"
         android:visibility="invisible"
@@ -79,8 +91,8 @@
         app:backgroundTint="@color/colorPrimaryDark"
         app:pressedTranslationZ="12dp"
         android:layout_marginBottom="50dp"
-        android:layout_marginRight="40dp"
+        android:layout_marginRight="50dp"
         android:src="@drawable/ic_more_vertical_white"
-        android:layout_marginEnd="40dp" />
+        android:layout_marginEnd="50dp" />
 
 </android.support.design.widget.CoordinatorLayout>

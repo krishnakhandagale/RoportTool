@@ -1,4 +1,5 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
     android:id="@+id/relative_layout_image_fragment"
     android:layout_width="match_parent">
@@ -71,6 +72,7 @@
         </LinearLayout>
 
         <TextView
+            android:textSize="16sp"
             android:id="@+id/imageCoverageType"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -80,21 +82,11 @@
             android:text="@string/coverage_type"
             android:nextFocusRight="@+id/clickedImageTitle"
             android:drawableRight="@drawable/ic_key_arrow_down"
-            android:padding="7dp"/>
-
-        <!--<EditText-->
-            <!--android:id="@+id/clickedImageTitle"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginTop="5dp"-->
-            <!--android:background="@drawable/rounded_edit_text"-->
-            <!--android:hint="@string/enter_title"-->
-            <!--android:imeOptions="actionNext"-->
-            <!--android:inputType="text"-->
-            <!--android:nextFocusRight="@+id/clickedImageDescription"-->
-            <!--android:padding="5dp" />-->
-
+            android:padding="7dp"
+            android:drawableEnd="@drawable/ic_key_arrow_down"
+            tools:ignore="TextViewEdits" />
         <EditText
+            android:textSize="16sp"
             android:id="@+id/clickedImageDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

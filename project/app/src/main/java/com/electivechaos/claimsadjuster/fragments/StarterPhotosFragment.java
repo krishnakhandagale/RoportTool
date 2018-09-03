@@ -39,6 +39,7 @@ import com.electivechaos.claimsadjuster.PermissionUtilities;
 import com.electivechaos.claimsadjuster.R;
 import com.electivechaos.claimsadjuster.SingleMediaScanner;
 import com.electivechaos.claimsadjuster.adapters.DrawerMenuListAdapter;
+import com.electivechaos.claimsadjuster.interfaces.BackButtonClickListener;
 import com.electivechaos.claimsadjuster.interfaces.NextButtonClickListener;
 import com.electivechaos.claimsadjuster.interfaces.OnGenerateReportClickListener;
 import com.electivechaos.claimsadjuster.interfaces.OnSaveReportClickListener;
@@ -81,6 +82,7 @@ public class StarterPhotosFragment extends Fragment {
     private Boolean isFabOpen = false;
     private FloatingActionButton showFabBtn;
     private FloatingActionButton fabGoNextBtn;
+    private FloatingActionButton fabGoBackBtn;
     private FloatingActionButton fabAddLabelBtn;
     private FloatingActionButton fabGenerateReportBtn;
     private FloatingActionButton fabSaveReportBtn;
@@ -93,11 +95,6 @@ public class StarterPhotosFragment extends Fragment {
     private ImageView imageFourPreview;
     private ImageView imageHouseNumberPreview;
 
-    private ImageButton imgBtnRemoveOne;
-    private ImageButton imgBtnRemoveTwo;
-    private ImageButton imgBtnRemoveThree;
-    private ImageButton imgBtnRemoveFour;
-    private ImageButton imgBtnRemoveHouseNumber;
 
     private Uri fileUri;
     private String mCurrentPhotoPath;
@@ -113,6 +110,8 @@ public class StarterPhotosFragment extends Fragment {
     private SelectedImagesDataInterface selectedImagesDataInterface;
 
     private NextButtonClickListener nextButtonClickListener;
+
+    private BackButtonClickListener backButtonClickListener;
 
     private DrawerMenuListAdapter.OnLabelAddClickListener onLabelAddClickListener;
 
@@ -164,6 +163,7 @@ public class StarterPhotosFragment extends Fragment {
         View selectImageView = inflater.inflate(R.layout.starter_fragment_layout, container, false);
         showFabBtn = selectImageView.findViewById(R.id.showFab);
         fabGoNextBtn = selectImageView.findViewById(R.id.fabGoNext);
+        fabGoBackBtn = selectImageView.findViewById(R.id.fabGoBack);
         fabAddLabelBtn = selectImageView.findViewById(R.id.fabAddLabel);
         fabGenerateReportBtn = selectImageView.findViewById(R.id.fabGenerateReport);
         fabSaveReportBtn = selectImageView.findViewById(R.id.fabSaveReport);
@@ -269,95 +269,21 @@ public class StarterPhotosFragment extends Fragment {
             }
         });
 
-        imgBtnRemoveOne = selectImageView.findViewById(R.id.imgBtnRemoveOne);
-        imgBtnRemoveTwo = selectImageView.findViewById(R.id.imgBtnRemoveTwo);
-        imgBtnRemoveThree = selectImageView.findViewById(R.id.imgBtnRemoveThree);
-        imgBtnRemoveFour = selectImageView.findViewById(R.id.imgBtnRemoveFour);
-        imgBtnRemoveHouseNumber =  selectImageView.findViewById(R.id.imgBtnRemoveHouseNumber);
 
-        imgBtnRemoveOne.setVisibility(View.INVISIBLE);
-        imgBtnRemoveTwo.setVisibility(View.INVISIBLE);
-        imgBtnRemoveThree.setVisibility(View.INVISIBLE);
-        imgBtnRemoveFour.setVisibility(View.INVISIBLE);
-        imgBtnRemoveHouseNumber.setVisibility(View.INVISIBLE);
 
-        imgBtnRemoveOne.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                if (selectedElevationImagesList != null && selectedElevationImagesList.size() > 0) {
-                    selectedElevationImagesList.set(0, new ImageDetailsPOJO());
-                    selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList, labelPosition);
-                    imageOnePreview.setImageDrawable(null);
-                    imgBtnRemoveOne.setVisibility(View.INVISIBLE);
-
-                }
-            }
-        });
-
-        imgBtnRemoveTwo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                if (selectedElevationImagesList != null && selectedElevationImagesList.size() > 0) {
-                    selectedElevationImagesList.set(1, new ImageDetailsPOJO());
-                    selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList, labelPosition);
-                    imageTwoPreview.setImageDrawable(null);
-                    imgBtnRemoveTwo.setVisibility(View.INVISIBLE);
-
-                }
-
-            }
-        });
-
-        imgBtnRemoveThree.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                if (selectedElevationImagesList != null && selectedElevationImagesList.size() > 0) {
-                    selectedElevationImagesList.set(2, new ImageDetailsPOJO());
-                    selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList, labelPosition);
-                    imageThreePreview.setImageDrawable(null);
-                    imgBtnRemoveThree.setVisibility(View.INVISIBLE);
-
-                }
-
-            }
-        });
-
-        imgBtnRemoveFour.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                if (selectedElevationImagesList != null && selectedElevationImagesList.size() > 0) {
-                    selectedElevationImagesList.set(3, new ImageDetailsPOJO());
-                    selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList, labelPosition);
-                    imageFourPreview.setImageDrawable(null);
-                    imgBtnRemoveFour.setVisibility(View.INVISIBLE);
-
-                }
-
-            }
-        });
-
-        imgBtnRemoveHouseNumber.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                if (!TextUtils.isEmpty(houseNumber)) {
-                    onStarterFragmentDataChangeListener.onHouseNumberChange("", labelPosition);
-                    imageHouseNumberPreview.setImageDrawable(null);
-                    imgBtnRemoveHouseNumber.setVisibility(View.INVISIBLE);
-
-                }
-
-            }
-        });
 
         fabGoNextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 nextButtonClickListener.onNextButtonClick();
+                animateFAB();
+            }
+        });
+
+        fabGoBackBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                backButtonClickListener.onBackButtonClick();
                 animateFAB();
             }
         });
@@ -393,7 +319,6 @@ public class StarterPhotosFragment extends Fragment {
                         .thumbnail(0.1f)
                         .apply(options)
                         .into(imageOnePreview);
-                imgBtnRemoveOne.setVisibility(View.VISIBLE);
 
             }
             if (selectedElevationImagesList.get(1).getImageUrl() != null && !selectedElevationImagesList.get(1).getImageUrl().isEmpty()) {
@@ -402,7 +327,6 @@ public class StarterPhotosFragment extends Fragment {
                         .thumbnail(0.1f)
                         .apply(options)
                         .into(imageTwoPreview);
-                imgBtnRemoveTwo.setVisibility(View.VISIBLE);
             }
             if (selectedElevationImagesList.get(2).getImageUrl() != null && !selectedElevationImagesList.get(2).getImageUrl().isEmpty()) {
                 Glide.with(getActivity())
@@ -410,7 +334,6 @@ public class StarterPhotosFragment extends Fragment {
                         .thumbnail(0.1f)
                         .apply(options)
                         .into(imageThreePreview);
-                imgBtnRemoveThree.setVisibility(View.VISIBLE);
 
             }
             if (selectedElevationImagesList.get(3).getImageUrl() != null && !selectedElevationImagesList.get(3).getImageUrl().isEmpty()) {
@@ -419,7 +342,6 @@ public class StarterPhotosFragment extends Fragment {
                         .thumbnail(0.1f)
                         .apply(options)
                         .into(imageFourPreview);
-                imgBtnRemoveFour.setVisibility(View.VISIBLE);
             }
         }
 
@@ -429,7 +351,6 @@ public class StarterPhotosFragment extends Fragment {
                     .thumbnail(0.1f)
                     .apply(options)
                     .into(imageHouseNumberPreview);
-            imgBtnRemoveHouseNumber.setVisibility(View.VISIBLE);
         }
     }
 
@@ -492,8 +413,8 @@ public class StarterPhotosFragment extends Fragment {
 
         if (requestId == SELECT_FILE_IMAGE_ONE_STARTER) {
             final ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
-            imgObj.setDescription("Front view for incidence");
-            imgObj.setTitle("Front View");
+            imgObj.setDescription("Risk Overview Image 1");
+            imgObj.setTitle("Risk Overview 1");
             imgObj.setImageUrl(selectedImages.get(0).getPath());
             selectedElevationImagesList.set(0, imgObj);
             Glide.with(getActivity())
@@ -501,15 +422,13 @@ public class StarterPhotosFragment extends Fragment {
                     .thumbnail(0.1f)
                     .apply(options)
                     .into(imageOnePreview);
-            imgBtnRemoveOne.setVisibility(View.VISIBLE);
-
             selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList, labelPosition);
 
         } else if (requestId == SELECT_FILE_IMAGE_TWO_STARTER) {
 
             final ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
-            imgObj.setDescription("Back view for incidence");
-            imgObj.setTitle("Back View");
+            imgObj.setDescription("Risk Overview Image 2");
+            imgObj.setTitle("Risk Overview 2");
             imgObj.setImageUrl(selectedImages.get(0).getPath());
             selectedElevationImagesList.set(1, imgObj);
             Glide.with(getActivity())
@@ -517,12 +436,11 @@ public class StarterPhotosFragment extends Fragment {
                     .thumbnail(0.1f)
                     .apply(options)
                     .into(imageTwoPreview);
-            imgBtnRemoveTwo.setVisibility(View.VISIBLE);
             selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList, labelPosition);
         } else if (requestId == SELECT_FILE_IMAGE_THREE_STARTER) {
             final ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
-            imgObj.setDescription("Left view for incidence");
-            imgObj.setTitle("Left View");
+            imgObj.setDescription("Risk Overview Image 3");
+            imgObj.setTitle("Risk Overview 3");
             imgObj.setImageUrl(selectedImages.get(0).getPath());
             selectedElevationImagesList.set(2, imgObj);
             Glide.with(getActivity())
@@ -530,12 +448,11 @@ public class StarterPhotosFragment extends Fragment {
                     .thumbnail(0.1f)
                     .apply(options)
                     .into(imageThreePreview);
-            imgBtnRemoveThree.setVisibility(View.VISIBLE);
             selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList, labelPosition);
         } else if (requestId == SELECT_FILE_IMAGE_FOUR_STARTER) {
             final ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
-            imgObj.setDescription("Right view for incidence");
-            imgObj.setTitle("Right View");
+            imgObj.setDescription("Risk Overview Image 4");
+            imgObj.setTitle("Risk Overview 4");
             imgObj.setImageUrl(selectedImages.get(0).getPath());
             selectedElevationImagesList.set(3, imgObj);
             Glide.with(getActivity())
@@ -544,7 +461,6 @@ public class StarterPhotosFragment extends Fragment {
                     .thumbnail(0.1f)
                     .into(imageFourPreview);
             selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList, labelPosition);
-            imgBtnRemoveFour.setVisibility(View.VISIBLE);
         }
         else if (requestId == SELECT_FILE_IMAGE_HOUSE_NUMBER_STARTER) {
 
@@ -556,7 +472,6 @@ public class StarterPhotosFragment extends Fragment {
                     .thumbnail(0.1f)
                     .into(imageHouseNumberPreview);
             onStarterFragmentDataChangeListener.onHouseNumberChange(houseNumber, labelPosition);
-            imgBtnRemoveHouseNumber.setVisibility(View.VISIBLE);
         }
     }
 
@@ -727,8 +642,8 @@ public class StarterPhotosFragment extends Fragment {
                         public void run() {
                             if (requestId == IMAGE_ONE_REQUEST_STARTER) {
                                 final ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
-                                imgObj.setDescription("Front view for incidence");
-                                imgObj.setTitle("Front View");
+                                imgObj.setDescription("Risk Overview Image 1");
+                                imgObj.setTitle("Risk Overview 1");
                                 imgObj.setImageUrl(finalPath1);
                                 selectedElevationImagesList.set(0, imgObj);
                                 Glide.with(getActivity())
@@ -736,15 +651,14 @@ public class StarterPhotosFragment extends Fragment {
                                         .thumbnail(0.1f)
                                         .apply(options)
                                         .into(imageOnePreview);
-                                imgBtnRemoveOne.setVisibility(View.VISIBLE);
 
                                 selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList, labelPosition);
 
                             } else if (requestId == IMAGE_TWO_REQUEST_STARTER) {
 
                                 final ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
-                                imgObj.setDescription("Back view for incidence");
-                                imgObj.setTitle("Back View");
+                                imgObj.setDescription("Risk Overview Image 2");
+                                imgObj.setTitle("Risk Overview 2");
                                 imgObj.setImageUrl(finalPath1);
                                 selectedElevationImagesList.set(1, imgObj);
                                 Glide.with(getActivity())
@@ -752,12 +666,11 @@ public class StarterPhotosFragment extends Fragment {
                                         .thumbnail(0.1f)
                                         .apply(options)
                                         .into(imageTwoPreview);
-                                imgBtnRemoveTwo.setVisibility(View.VISIBLE);
                                 selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList, labelPosition);
                             } else if (requestId == IMAGE_THREE_REQUEST_STARTER) {
                                 final ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
-                                imgObj.setDescription("Left view for incidence");
-                                imgObj.setTitle("Left View");
+                                imgObj.setDescription("Risk Overview Image 3");
+                                imgObj.setTitle("Risk Overview 3");
                                 imgObj.setImageUrl(finalPath1);
                                 selectedElevationImagesList.set(2, imgObj);
                                 Glide.with(getActivity())
@@ -765,12 +678,11 @@ public class StarterPhotosFragment extends Fragment {
                                         .thumbnail(0.1f)
                                         .apply(options)
                                         .into(imageThreePreview);
-                                imgBtnRemoveThree.setVisibility(View.VISIBLE);
                                 selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList, labelPosition);
                             } else if (requestId == IMAGE_FOUR_REQUEST_STARTER) {
                                 final ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
-                                imgObj.setDescription("Right view for incidence");
-                                imgObj.setTitle("Right View");
+                                imgObj.setDescription("Risk Overview Image 4");
+                                imgObj.setTitle("Risk Overview 4");
                                 imgObj.setImageUrl(finalPath1);
                                 selectedElevationImagesList.set(3, imgObj);
                                 Glide.with(getActivity())
@@ -779,7 +691,6 @@ public class StarterPhotosFragment extends Fragment {
                                         .thumbnail(0.1f)
                                         .into(imageFourPreview);
                                 selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList, labelPosition);
-                                imgBtnRemoveFour.setVisibility(View.VISIBLE);
                             }
                             else if (requestId == HOUSE_NUMBER_REQUEST_STARTER) {
 
@@ -791,7 +702,6 @@ public class StarterPhotosFragment extends Fragment {
                                         .thumbnail(0.1f)
                                         .into(imageHouseNumberPreview);
                                 onStarterFragmentDataChangeListener.onHouseNumberChange(houseNumber, labelPosition);
-                                imgBtnRemoveHouseNumber.setVisibility(View.VISIBLE);
                             }
 
                         }
@@ -859,6 +769,7 @@ public class StarterPhotosFragment extends Fragment {
         try {
             selectedImagesDataInterface = (SelectedImagesDataInterface) getActivity();
             nextButtonClickListener = (NextButtonClickListener) getActivity();
+            backButtonClickListener = (BackButtonClickListener) getActivity();
             onLabelAddClickListener = (DrawerMenuListAdapter.OnLabelAddClickListener) getActivity();
             onSaveReportClickListener = (OnSaveReportClickListener) getActivity();
             onGenerateReportClickListener = (OnGenerateReportClickListener) getActivity();
@@ -885,10 +796,12 @@ public class StarterPhotosFragment extends Fragment {
         if (isFabOpen) {
             showFabBtn.setImageResource(R.drawable.ic_more_vertical_white);
             fabGoNextBtn.startAnimation(fab_close);
+            fabGoBackBtn.startAnimation(fab_close);
             fabAddLabelBtn.startAnimation(fab_close);
             fabGenerateReportBtn.startAnimation(fab_close);
             fabSaveReportBtn.startAnimation(fab_close);
             fabGoNextBtn.setClickable(false);
+            fabGoBackBtn.setClickable(false);
             fabAddLabelBtn.setClickable(false);
             fabGenerateReportBtn.setClickable(false);
             fabSaveReportBtn.setClickable(false);
@@ -897,10 +810,12 @@ public class StarterPhotosFragment extends Fragment {
         } else {
             showFabBtn.setImageResource(R.drawable.ic_close_white);
             fabGoNextBtn.startAnimation(fab_open);
+            fabGoBackBtn.startAnimation(fab_open);
             fabAddLabelBtn.startAnimation(fab_open);
             fabGenerateReportBtn.startAnimation(fab_open);
             fabSaveReportBtn.startAnimation(fab_open);
             fabGoNextBtn.setClickable(true);
+            fabGoBackBtn.setClickable(true);
             fabAddLabelBtn.setClickable(true);
             fabGenerateReportBtn.setClickable(true);
             fabSaveReportBtn.setClickable(true);

@@ -30,7 +30,7 @@ import java.util.Iterator;
  */
 
 public class CategoryListDBHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 173;
+    private static final int DATABASE_VERSION = 177;
 
 
     // Database Name
@@ -268,11 +268,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
 
 
         final String categories[] = {
-                "Starter Photos",
-                "Front Elevation",
-                "Back Elevation",
-                "Left Elevation",
-                "Right Elevation",
+                "Risk Overview",
                 "Roof",
                 "Kitchen",
                 "Living Room",
@@ -293,13 +289,18 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 "Barn",
                 "Detached Garage",
                 "Underwriting Risk",
-                "Exterior"
+                "Exterior",
+                "Front Elevation",
+                "Back Elevation",
+                "Left Elevation",
+                "Right Elevation"
 
         };
 
         final String roofSystem[] = {
                 "Composition Shingle 20 year",
                 "Composition Shingle 25 year",
+                "Composition Shingle 30 year",
                 "Composition Shingle 40 year",
                 "Composition Shingle 50 year",
                 "Metal- Steel",
@@ -333,8 +334,8 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         };
 
         final String  buildingType[] = {
-                "Detached S.F",
-                "Attached S.F",
+                "Detached Single Family",
+                "Attached Single Family",
                 "Single-Wide",
                 "Double-Wide",
                 "Modular",
@@ -445,7 +446,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
 
         if (cursor.moveToFirst()) {
             do {
-                if(!cursor.getString(1).equals("Starter Photos")){
+                if(!cursor.getString(1).equals("Risk Overview")){
                     Category category = new Category();
                     category.setCategoryId(cursor.getInt(0));
                     category.setCategoryName(cursor.getString(1));
@@ -753,7 +754,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         values.put(KEY_REPORT_ID, reportId);
         values.put(KEY_REPORT_NAME, reportItemPOJO.getReportTitle());
         values.put(KEY_REPORT_DESCRIPTION, reportItemPOJO.getReportDescription());
-        values.put(KEY_CLIENT_NAME, reportItemPOJO.getClientName());
+        values.put(KEY_CLIENT_NAME, reportItemPOJO.getInsuredName());
         values.put(KEY_CLAIM_NUMBER, reportItemPOJO.getClaimNumber());
         values.put(KEY_DATE_CREATED, reportItemPOJO.getCreatedDate());
         values.put(KEY_FILE_PATH, reportItemPOJO.getFilePath());
@@ -839,6 +840,8 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 reportItemPOJO.setId(cursor.getString(0));
                 reportItemPOJO.setReportTitle(cursor.getString(1));
                 reportItemPOJO.setReportDescription(cursor.getString(2));
+                reportItemPOJO.setInsuredName(cursor.getString(3));
+                reportItemPOJO.setClaimNumber(cursor.getString(4));
                 reportItemPOJO.setCreatedDate(cursor.getString(5));
                 reportItemPOJO.setFilePath(cursor.getString(6));
 
@@ -873,7 +876,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 reportPOJO.setId(c.getString(0));
                 reportPOJO.setReportTitle(c.getString(1));
                 reportPOJO.setReportDescription(c.getString(2));
-                reportPOJO.setClientName(c.getString(3));
+                reportPOJO.setInsuredName(c.getString(3));
                 reportPOJO.setClaimNumber(c.getString(4));
                 reportPOJO.setCreatedDate(c.getString(5));
                 reportPOJO.setFilePath(c.getString(6));
