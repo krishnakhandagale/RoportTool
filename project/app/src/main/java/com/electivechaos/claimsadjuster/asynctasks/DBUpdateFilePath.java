@@ -9,6 +9,7 @@ import android.os.AsyncTask;
 import android.os.Environment;
 import android.support.media.ExifInterface;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -324,7 +325,8 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
         options.inJustDecodeBounds = true;
         BitmapFactory.decodeFile(imagePath, options);
 
-        options.inSampleSize = calculateInSampleSize(options,maxWidth,maxHeight);
+
+        options.inSampleSize = calculateInSampleSize(options,320,240);
 
         options.inJustDecodeBounds = false;
         Bitmap bmp = BitmapFactory.decodeFile(imagePath, options);
@@ -344,7 +346,8 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
         cell.setFixedHeight(document.getPageSize().getHeight() / perPage - 100);
         return cell;
 
-    }public PdfPCell getCell(String title, String description,boolean isPointOfOrigin, boolean isOverview,boolean isDamage, int alignment, Document document, int perPage) {
+    }
+    public PdfPCell getCell(String title, String description,boolean isPointOfOrigin, boolean isOverview,boolean isDamage, int alignment, Document document, int perPage) {
         PdfPCell cell = new PdfPCell();
         Font font=new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.NORMAL);
         Font boldFont=new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD);
@@ -451,8 +454,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
     }
 
 
-    public static int calculateInSampleSize(
-            BitmapFactory.Options options, int reqWidth, int reqHeight) {
+    public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
         // Raw height and width of image
         final int height = options.outHeight;
         final int width = options.outWidth;
