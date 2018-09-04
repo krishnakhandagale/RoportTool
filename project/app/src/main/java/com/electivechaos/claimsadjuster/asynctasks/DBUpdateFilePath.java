@@ -324,10 +324,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
 
         options.inJustDecodeBounds = true;
         BitmapFactory.decodeFile(imagePath, options);
-
-
         options.inSampleSize = calculateInSampleSize(options,320,240);
-
         options.inJustDecodeBounds = false;
         Bitmap bmp = BitmapFactory.decodeFile(imagePath, options);
         return resizeImage(bmp, orientation);
@@ -336,7 +333,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
 
 
 
-    public PdfPCell getCell(String title, String description, int alignment, Document document, int perPage) {
+    private PdfPCell getCell(String title, String description, int alignment, Document document, int perPage) {
         PdfPCell cell = new PdfPCell();
         Font font=new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.NORMAL);
         cell.addElement(new Phrase(title,font));
@@ -347,7 +344,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
         return cell;
 
     }
-    public PdfPCell getCell(String title, String description,boolean isPointOfOrigin, boolean isOverview,boolean isDamage, int alignment, Document document, int perPage) {
+    private PdfPCell getCell(String title, String description, boolean isPointOfOrigin, boolean isOverview, boolean isDamage, int alignment, Document document, int perPage) {
         PdfPCell cell = new PdfPCell();
         Font font=new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.NORMAL);
         Font boldFont=new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD);
@@ -371,7 +368,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
     }
 
 
-    public PdfPCell getCellImageCell(com.itextpdf.text.Image img, int alignment, Document document, int perPage) {
+    private PdfPCell getCellImageCell(com.itextpdf.text.Image img, int alignment, Document document, int perPage) {
         PdfPCell cell = new PdfPCell(img, true);
         cell.setPadding(0);
         cell.setHorizontalAlignment(alignment);
@@ -380,7 +377,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
         return cell;
     }
 
-    public PdfPCell getCellGoogleMapCell(int alignment, Document document, PdfWriter pdfWriter) throws IOException, DocumentException {
+    private PdfPCell getCellGoogleMapCell(int alignment, Document document, PdfWriter pdfWriter) throws IOException, DocumentException {
         com.itextpdf.text.Image imgMap = null;
         if(!reportPOJO.getGoogleMapSnapShotFilePath().isEmpty()){
 
@@ -402,7 +399,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
         return cell;
     }
 
-    public PdfPCell getCellReportDetails(int alignment, Document document) throws DocumentException {
+    private PdfPCell getCellReportDetails(int alignment, Document document) throws DocumentException {
         PdfPCell cell = new PdfPCell();
         cell.setPadding(0);
         cell.setHorizontalAlignment(alignment);
@@ -454,7 +451,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
     }
 
 
-    public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+    private static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
         // Raw height and width of image
         final int height = options.outHeight;
         final int width = options.outWidth;
@@ -473,7 +470,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
         return inSampleSize;
     }
 
-    public PdfPCell getImageNumberPdfPCell(String number, int alignment) {
+    private PdfPCell getImageNumberPdfPCell(String number, int alignment) {
         PdfPCell cell = new PdfPCell();
         cell.addElement(new Phrase(number));
         cell.setPadding(0);
