@@ -2,6 +2,7 @@ package com.electivechaos.claimsadjuster.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
@@ -306,6 +307,27 @@ public class CommonUtils {
         Bitmap b = Bitmap.createBitmap(b1, 0, statusBarHeight, width, height  - statusBarHeight);
         view.destroyDrawingCache();
         return b;
+    }
+
+    public static void setReportQuality(String reportQuality, Context context) {
+        SharedPreferences sharedPref = context.getSharedPreferences("quality",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("ReportQuality", reportQuality);
+        editor.apply();
+    }
+
+    //TODO:
+    public static String getReportQuality(Context context){
+        SharedPreferences sharedPref = context.getSharedPreferences("quality",Context.MODE_PRIVATE);
+        String reportQuality = sharedPref.getString("ReportQuality", "");
+        return reportQuality;
+    }
+
+    public static void clearReportQuality(Context context){
+        SharedPreferences sharedPref = context.getSharedPreferences("quality",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.clear();
+        editor.apply();
     }
 
 }
