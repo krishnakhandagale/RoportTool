@@ -63,6 +63,10 @@ public class MainTabsActivity extends BaseActivity {
                 Intent coverageIntent = new Intent(this,CoverageDetailsActivity.class);
                 startActivity(coverageIntent);
                 break;
+            case R.id.Settings:
+                Intent settingsIntent = new Intent(this,SettingsActivity.class);
+                startActivity(settingsIntent);
+                break;
 
         }
         return super.onOptionsItemSelected(item);

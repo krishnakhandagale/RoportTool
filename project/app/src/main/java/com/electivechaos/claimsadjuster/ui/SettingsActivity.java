@@ -5,7 +5,7 @@ import android.os.Bundle;
 
 import com.electivechaos.claimsadjuster.R;
 
-public class SettingActivity extends AppCompatActivity {
+public class SettingsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

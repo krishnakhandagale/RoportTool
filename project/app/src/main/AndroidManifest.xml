@@ -40,8 +40,7 @@
         <activity
             android:name=".ui.AddEditReportActivity"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".ui.MainTabsActivity">
-        </activity>
+        <activity android:name=".ui.MainTabsActivity"></activity>
         <activity android:name=".ui.ImagePickerActivity" />
         <activity
             android:name=".ui.SingleImageDetailsActivity"
@@ -72,9 +71,10 @@
         <activity android:name=".ui.FoundationActivity" />
         <activity android:name=".ui.BuildingTypeActivity" />
         <activity android:name=".ui.CategoryDetailsActivity" />
-        <activity android:name=".ui.PerilDetailsActivity"/>
-        <activity android:name=".ui.CoverageDetailsActivity"/>
-        <activity android:name=".ui.AddEditCoverageActivity"/>
+        <activity android:name=".ui.PerilDetailsActivity" />
+        <activity android:name=".ui.CoverageDetailsActivity" />
+        <activity android:name=".ui.AddEditCoverageActivity" />
+        <activity android:name=".ui.SettingsActivity"></activity>
     </application>
 
 </manifest>
