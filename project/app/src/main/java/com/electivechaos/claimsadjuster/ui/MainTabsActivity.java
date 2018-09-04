@@ -17,6 +17,7 @@ import com.electivechaos.claimsadjuster.R;
 import com.electivechaos.claimsadjuster.maintabs.AlertFragment;
 import com.electivechaos.claimsadjuster.maintabs.CalenderFragment;
 import com.electivechaos.claimsadjuster.maintabs.ReportListFragment;
+import com.electivechaos.claimsadjuster.utils.CommonUtils;
 
 public class MainTabsActivity extends BaseActivity {
 
@@ -38,7 +39,12 @@ public class MainTabsActivity extends BaseActivity {
         TabLayout tabLayout = findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+
+        if(CommonUtils.getReportQuality(MainTabsActivity.this).isEmpty()){
+            CommonUtils.setReportQuality("medium",MainTabsActivity.this);
+        }
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

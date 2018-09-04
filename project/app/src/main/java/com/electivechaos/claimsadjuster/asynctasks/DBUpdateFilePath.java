@@ -9,7 +9,6 @@ import android.os.AsyncTask;
 import android.os.Environment;
 import android.support.media.ExifInterface;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -58,8 +57,10 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
     private boolean isProgressBar;
     private CategoryListDBHelper categoryListDBHelper;
     private ReportPOJO reportPOJO;
+    private Context mContext;
 
     public  DBUpdateFilePath(Context context, View progressBarLayout, ReportPOJO reportPOJO, boolean isProgressBar, CategoryListDBHelper categoryListDBHelper) {
+        this.mContext = context;
         this.isProgressBar = isProgressBar;
         this.categoryListDBHelper = categoryListDBHelper;
         this.reportPOJO = reportPOJO;
@@ -325,10 +326,14 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
         options.inJustDecodeBounds = true;
         BitmapFactory.decodeFile(imagePath, options);
 
+        if(CommonUtils.getReportQuality(mContext).equals("low")){
+            options.inSampleSize = calculateInSampleSize(options,256,192);
+        }else if(CommonUtils.getReportQuality(mContext).equals("high")){
+            options.inSampleSize = calculateInSampleSize(options,512,384);
+        }else {
+            options.inSampleSize = calculateInSampleSize(options,320,240);
+        }
 
-        options.inSampleSize = calculateInSampleSize(options,320,240);
-
-        options.inSampleSize = calculateInSampleSize(options,320,240);
         options.inJustDecodeBounds = false;
         Bitmap bmp = BitmapFactory.decodeFile(imagePath, options);
         return resizeImage(bmp, orientation);
