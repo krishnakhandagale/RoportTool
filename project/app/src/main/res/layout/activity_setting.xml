@@ -1,9 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimaryDark"
+            app:layout_scrollFlags=""
+            app:popupTheme="@style/ThemeOverlay.AppCompat.ActionBar">
+        </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
 <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.electivechaos.claimsadjuster.ui.SettingsActivity">
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_width="match_parent"
+        android:textSize="18dp"
+        android:layout_height="30dp"
+        android:textColor="@color/grayDark"
+        android:fontFamily="sans-serif-condensed"
+        android:text="@string/image_quality_setting"/>
+    <View
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:background="@color/grayLight"/>
+
+    <RadioGroup
+        android:id="@+id/radioQuality"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="5dp"
+        android:textSize="16dp">
+
+        <RadioButton
+            android:id="@+id/radioLow"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:fontFamily="sans-serif-condensed"
+            android:paddingLeft="20dp"
+            android:text="Low"
+            android:textColor="@drawable/custom_radio_button_text" />
+
+        <RadioButton
+            android:id="@+id/radioMedium"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:checked="true"
+            android:fontFamily="sans-serif-condensed"
+            android:paddingLeft="20dp"
+            android:text="Medium"
+            android:textColor="@drawable/custom_radio_button_text" />
+
+
+        <RadioButton
+            android:id="@+id/radioHigh"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:fontFamily="sans-serif-condensed"
+            android:paddingLeft="20dp"
+            android:text="High"
+            android:textColor="@drawable/custom_radio_button_text" />
+
+    </RadioGroup>
+
+</LinearLayout>
 
 </LinearLayout>

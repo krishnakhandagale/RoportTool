@@ -152,4 +152,6 @@
     <string name="report_insured_name">Insured Name.</string>
     <string name="report_claim_number">Claim Number.</string>
     <string name="coverage_type">Coverage Type</string>
+    <string name="settings_details">Settings</string>
+    <string name="image_quality_setting">IMAGE QUALITY</string>
 </resources>
