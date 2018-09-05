@@ -327,11 +327,11 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
         BitmapFactory.decodeFile(imagePath, options);
 
         if(CommonUtils.getReportQuality(mContext).equals("low")){
-            options.inSampleSize = calculateInSampleSize(options,256,192);
+            options.inSampleSize = calculateInSampleSize(options,128,96);
         }else if(CommonUtils.getReportQuality(mContext).equals("high")){
-            options.inSampleSize = calculateInSampleSize(options,512,384);
+            options.inSampleSize = calculateInSampleSize(options,400,300);
         }else {
-            options.inSampleSize = calculateInSampleSize(options,320,240);
+            options.inSampleSize = calculateInSampleSize(options,256,192);
         }
 
         options.inJustDecodeBounds = false;
