@@ -126,12 +126,58 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
             firstTable.addCell(getCellGoogleMapCell(PdfPCell.ALIGN_LEFT, document,pdfWriter));
             document.add(firstTable);
             document.add(new Paragraph(" "));
-
-
-
-            PropertyDetailsPOJO propertyDetailsPOJO = reportPOJO.getPropertyDetailsPOJO();
             document.newPage();
+
+
+            //Risk overview images
+            ArrayList<Label> labels = reportPOJO.getLabelArrayList();
+            Label label = null;
+
+            for(int p=0;p <labels.size() ;p++) {
+
+                label = labels.get(p);
+                event.setHeader("Overview");
+
+                ArrayList<ImageDetailsPOJO> selectedElevationImagesList = label.getSelectedElevationImages();
+                int j = 0, k = 0;
+
+                while (j < selectedElevationImagesList.size()) {
+                    if (!selectedElevationImagesList.get(j).getImageUrl().isEmpty()) {
+                        try {
+                            PdfPTable table = new PdfPTable(3);
+                            byte[] imageBytesResized;
+                            table.setWidths(new float[]{1, 5, 4});
+                            imageBytesResized = resizeImage(selectedElevationImagesList.get(j).getImageUrl(), (int) ((document.getPageSize().getWidth() / 2) - 100), (int) ((document.getPageSize().getHeight() / numberOfImagesPerPage) - 100));
+                            com.itextpdf.text.Image img = com.itextpdf.text.Image.getInstance(imageBytesResized);
+                            table.setHorizontalAlignment(Element.ALIGN_LEFT);
+                            table.setWidthPercentage(100);
+                            table.addCell(getImageNumberPdfPCell("", PdfPCell.ALIGN_LEFT));
+                            table.addCell(getCellImageCell(img, PdfPCell.ALIGN_LEFT, document, numberOfImagesPerPage));
+                            table.addCell(getCell(selectedElevationImagesList.get(j).getTitle(), selectedElevationImagesList.get(j).getDescription(), PdfPCell.LEFT, document, numberOfImagesPerPage));
+
+                            document.add(table);
+                            document.add(new Paragraph(" "));
+
+                            if ((k + 1) % numberOfImagesPerPage == 0) {
+                                document.newPage();
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        k++;
+                    }
+                    j++;
+                }
+
+                if (k + 1 <= selectedElevationImagesList.size()) {
+                    document.newPage();
+                }
+                break;
+            }
+
+
             // Now read property details
+            PropertyDetailsPOJO propertyDetailsPOJO = reportPOJO.getPropertyDetailsPOJO();
             event.setHeader("Property Details");
             document.add(new Paragraph("Inspection Date", fontTitles));
             if(propertyDetailsPOJO.getPropertyDate().isEmpty()) {
@@ -183,15 +229,35 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
             }
             document.add(new Paragraph(""));
 
+            document.newPage();
+
+        if(label != null) {
+            event.setHeader("Risk Overview");
+                if (!TextUtils.isEmpty(label.getHouseNumber())) {
+
+                    PdfPTable table = new PdfPTable(3);
+                    byte[] imageBytesResized;
+                    table.setWidths(new float[]{1, 5, 4});
+                    imageBytesResized = resizeImage(label.getHouseNumber(), (int) ((document.getPageSize().getWidth() / 2) - 100), (int) ((document.getPageSize().getHeight() / 2) - 100));
+                    com.itextpdf.text.Image img = com.itextpdf.text.Image.getInstance(imageBytesResized);
+                    table.setHorizontalAlignment(Element.ALIGN_LEFT);
+                    table.setWidthPercentage(100);
+                    table.addCell(getImageNumberPdfPCell("", PdfPCell.ALIGN_LEFT));
+                    table.addCell(getCellImageCell(img, PdfPCell.ALIGN_LEFT, document, 2));
+                    table.addCell(getCell("House Number", "House Number Image", PdfPCell.LEFT, document, 2));
+                    document.add(table);
+                    document.add(new Paragraph(" "));
+                }
+            }
 
             document.newPage();
 
             //Now read labels and show images accordingly.
 
-            ArrayList<Label> labels = reportPOJO.getLabelArrayList();
-            for(int p=0;p <labels.size() ;p++){
 
-                Label label = labels.get(p);
+            for(int p=1;p <labels.size() ;p++){
+
+                label = labels.get(p);
                 event.setHeader(label.getName());
 
 
@@ -231,23 +297,6 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
                 if(k +1 <= selectedElevationImagesList.size()){
                     document.newPage();
                 }
-
-                if(!TextUtils.isEmpty(label.getHouseNumber())){
-
-                    PdfPTable table = new PdfPTable(3);
-                    byte[] imageBytesResized;
-                    table.setWidths(new float[]{1, 5, 4});
-                    imageBytesResized = resizeImage(label.getHouseNumber(), (int) ((document.getPageSize().getWidth()/2) - 100), (int) ((document.getPageSize().getHeight()/2) - 100));
-                    com.itextpdf.text.Image img = com.itextpdf.text.Image.getInstance(imageBytesResized);
-                    table.setHorizontalAlignment(Element.ALIGN_LEFT);
-                    table.setWidthPercentage(100);
-                    table.addCell(getImageNumberPdfPCell("", PdfPCell.ALIGN_LEFT));
-                    table.addCell(getCellImageCell(img, PdfPCell.ALIGN_LEFT, document, 2));
-                    table.addCell(getCell("House Number", "House Number Image", PdfPCell.LEFT, document, 2));
-                    document.add(table);
-                    document.add(new Paragraph(" "));
-                }
-
 
                 for (int i = 0; i < selectedImageList.size(); i++) {
                     try {
