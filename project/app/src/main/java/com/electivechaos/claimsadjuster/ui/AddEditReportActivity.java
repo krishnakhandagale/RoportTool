@@ -931,13 +931,13 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         boolean result = PermissionUtilities.checkPermission(AddEditReportActivity.this,null,PermissionUtilities.MY_APP_GENERATE_REPORT_PERMISSIONS_TWO);
 
         if(result)
-            new DBUpdateFilePath(AddEditReportActivity.this,findViewById(R.id.progressBarLayout), modifiedReportPojo, true, categoryListDBHelper).execute(2);
+            new DBUpdateFilePath(AddEditReportActivity.this,findViewById(R.id.progressBarLayout), modifiedReportPojo, reportPOJO, true, categoryListDBHelper).execute(2);
     }
 
     public void onFourImagesPerPage() {
         boolean result = PermissionUtilities.checkPermission(AddEditReportActivity.this,null,PermissionUtilities.MY_APP_GENERATE_REPORT_PERMISSIONS_FOUR);
         if(result)
-            new DBUpdateFilePath(AddEditReportActivity.this,findViewById(R.id.progressBarLayout), modifiedReportPojo, true, categoryListDBHelper).execute(4);
+            new DBUpdateFilePath(AddEditReportActivity.this,findViewById(R.id.progressBarLayout), modifiedReportPojo,reportPOJO, true, categoryListDBHelper).execute(4);
     }
 
     @Override
