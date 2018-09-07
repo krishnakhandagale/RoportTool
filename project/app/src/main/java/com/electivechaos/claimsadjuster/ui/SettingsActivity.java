@@ -29,6 +29,12 @@ public class SettingsActivity extends AppCompatActivity {
         radioMedium = findViewById(R.id.radioMedium);
         radioHigh = findViewById(R.id.radioHigh);
 
+        RadioGroup radioGoogleMap = findViewById(R.id.radioMap);
+        final RadioButton radioMapActivate, radioMapDeactivate ;
+
+        radioMapActivate = findViewById(R.id.radioMapActivate);
+        radioMapDeactivate = findViewById(R.id.radioMapDeactivate);
+
            if(CommonUtils.getReportQuality(SettingsActivity.this).equals("low")){
                radioLow.setChecked(true);
            }else if(CommonUtils.getReportQuality(SettingsActivity.this).equals("high")){
@@ -49,6 +55,24 @@ public class SettingsActivity extends AppCompatActivity {
                 }
             }
         });
+
+        if(CommonUtils.getGoogleMap(SettingsActivity.this).equals("true")){
+            radioMapActivate.setChecked(true);
+        }else {
+            radioMapDeactivate.setChecked(true);
+        }
+
+        radioGoogleMap.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if(radioMapActivate.isChecked()){
+                    CommonUtils.setGoogleMap("true",SettingsActivity.this);
+                }else {
+                    CommonUtils.setGoogleMap("false",SettingsActivity.this);
+                }
+            }
+        });
+
 
 
 

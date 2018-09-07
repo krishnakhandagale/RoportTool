@@ -316,7 +316,7 @@ public class CommonUtils {
         editor.apply();
     }
 
-    //TODO:
+
     public static String getReportQuality(Context context){
         SharedPreferences sharedPref = context.getSharedPreferences("quality",Context.MODE_PRIVATE);
         String reportQuality = sharedPref.getString("ReportQuality", "");
@@ -325,6 +325,27 @@ public class CommonUtils {
 
     public static void clearReportQuality(Context context){
         SharedPreferences sharedPref = context.getSharedPreferences("quality",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.clear();
+        editor.apply();
+    }
+
+    public static void setGoogleMap(String googleMap, Context context) {
+        SharedPreferences sharedPref = context.getSharedPreferences("map",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("GoogleMap", googleMap);
+        editor.apply();
+    }
+
+
+    public static String getGoogleMap(Context context){
+        SharedPreferences sharedPref = context.getSharedPreferences("map",Context.MODE_PRIVATE);
+        String googleMap = sharedPref.getString("GoogleMap", "");
+        return googleMap;
+    }
+
+    public static void clearGoogleMap(Context context){
+        SharedPreferences sharedPref = context.getSharedPreferences("map",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.clear();
         editor.apply();

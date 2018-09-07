@@ -43,6 +43,9 @@ public class MainTabsActivity extends BaseActivity {
         if(CommonUtils.getReportQuality(MainTabsActivity.this).isEmpty()){
             CommonUtils.setReportQuality("medium",MainTabsActivity.this);
         }
+        if(CommonUtils.getGoogleMap(MainTabsActivity.this).isEmpty()){
+            CommonUtils.setGoogleMap("true",MainTabsActivity.this);
+        }
     }
 
 
