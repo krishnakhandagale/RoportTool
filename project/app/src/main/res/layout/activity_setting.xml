@@ -42,7 +42,7 @@
     <RadioGroup
         android:id="@+id/radioQuality"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:layout_marginTop="5dp"
@@ -78,6 +78,54 @@
             android:textColor="@drawable/custom_radio_button_text" />
 
     </RadioGroup>
+
+    <TextView
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_width="match_parent"
+        android:textSize="18dp"
+        android:layout_height="30dp"
+        android:textColor="@color/grayDark"
+        android:fontFamily="sans-serif-condensed"
+        android:text="@string/map_setting"/>
+    <View
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:background="@color/grayLight"/>
+
+    <RadioGroup
+        android:id="@+id/radioMap"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="5dp"
+        android:textSize="16dp">
+
+        <RadioButton
+            android:id="@+id/radioMapActivate"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:checked="true"
+            android:fontFamily="sans-serif-condensed"
+            android:paddingLeft="20dp"
+            android:text="True"
+            android:textColor="@drawable/custom_radio_button_text" />
+
+        <RadioButton
+            android:id="@+id/radioMapDeactivate"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:fontFamily="sans-serif-condensed"
+            android:paddingLeft="20dp"
+            android:text="False"
+            android:textColor="@drawable/custom_radio_button_text" />
+    </RadioGroup>
+
+
+
 
 </LinearLayout>
 
