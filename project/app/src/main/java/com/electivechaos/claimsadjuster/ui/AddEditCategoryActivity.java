@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.electivechaos.claimsadjuster.R;
 import com.electivechaos.claimsadjuster.adapters.CustomMenuAdapter;
@@ -39,6 +40,8 @@ public class AddEditCategoryActivity extends AppCompatActivity{
     private int catId;
     private TextView selectCoverageType;
     private String coverageType;
+
+    private static final int UNIQUE_CONSTRAINT_FAIL_ERROR_CODE = -111;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -99,6 +102,7 @@ public class AddEditCategoryActivity extends AppCompatActivity{
                     CommonUtils.showSnackbarMessage("Please enter category description.", true, true,addEditCategoryParentLayout,AddEditCategoryActivity.this);
                     return;
                 }else {
+                    Bundle data = new Bundle();
                     if (categoryID == -1) {
                         Category categoryPOJO = new Category();
                         categoryPOJO.setCategoryName(categoryNameString);
@@ -106,39 +110,46 @@ public class AddEditCategoryActivity extends AppCompatActivity{
                         categoryPOJO.setCoverageType(categoryCoverageType);
 
                         catId = Integer.parseInt(String.valueOf(categoryListDBHelper.addCategory(categoryPOJO)));
-                        categoryPOJO.setCategoryId(catId);
+
+                        if(catId == UNIQUE_CONSTRAINT_FAIL_ERROR_CODE){
+                            Toast.makeText(AddEditCategoryActivity.this, "Category type with same name already exists.", Toast.LENGTH_SHORT).show();
+                        }else {
+
+                            categoryPOJO.setCategoryId(catId);
+                            if(categoryID == -1) {
+                                data.putInt("categoryId",catId);
+                                data.putString("categoryName", categoryNameString);
+                                data.putString("categoryDescription", categoryDescriptionString);
+                                data.putString("categoryCoverageType", categoryCoverageType);
+                                Intent intent = new Intent();
+                                intent.putExtra("categoryDetails", data);
+                                setResult(Activity.RESULT_OK, intent);
+                                finish();
+                            }
+                        }
                     } else {
                         Category categoryPOJO = new Category();
                         categoryPOJO.setCategoryName(categoryNameString);
                         categoryPOJO.setCategoryDescription(categoryDescriptionString);
                         categoryPOJO.setCoverageType(categoryCoverageType);
+                        catId = categoryListDBHelper.updateCategory(categoryPOJO);
 
-                        categoryPOJO.setCategoryId(categoryID);
-                        categoryListDBHelper.updateCategory(categoryPOJO);
+                       if(catId == UNIQUE_CONSTRAINT_FAIL_ERROR_CODE){
+                           Toast.makeText(AddEditCategoryActivity.this, "Category type with same name already exists.", Toast.LENGTH_SHORT).show();
+
+                       }else {
+                           categoryPOJO.setCategoryId(categoryID);
+                           Intent intent = new Intent();
+                           data.putString("categoryName", categoryNameString);
+                           data.putString("categoryDescription", categoryDescriptionString);
+                           data.putString("categoryCoverageType", categoryCoverageType);
+                           data.putInt("categoryID", categoryID);
+                           intent.putExtra("categoryDetails", data);
+                           setResult(Activity.RESULT_OK, intent);
+                           finish();
+                       }
                     }
                 }
-
-                Bundle data = new Bundle();
-                if(categoryID == -1) {
-                    data.putInt("categoryId",catId);
-                    data.putString("categoryName", categoryNameString);
-                    data.putString("categoryDescription", categoryDescriptionString);
-                    data.putString("categoryCoverageType", categoryCoverageType);
-                    Intent intent = new Intent();
-                    intent.putExtra("categoryDetails", data);
-                    setResult(Activity.RESULT_OK, intent);
-                    finish();
-                }else {
-                    Intent intent = new Intent();
-                    data.putString("categoryName", categoryNameString);
-                    data.putString("categoryDescription", categoryDescriptionString);
-                    data.putString("categoryCoverageType", categoryCoverageType);
-                    data.putInt("categoryID", categoryID);
-                    intent.putExtra("categoryDetails", data);
-                    setResult(Activity.RESULT_OK, intent);
-                    finish();
-                }
-
             }
         });
 
