@@ -30,7 +30,7 @@ import java.util.Iterator;
  */
 
 public class CategoryListDBHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 177;
+    private static final int DATABASE_VERSION = 182;
 
 
     // Database Name
@@ -182,7 +182,8 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 +KEY_CATEGORY_ID +" INTEGER PRIMARY KEY AUTOINCREMENT DEFAULT 0,"
                 + KEY_CATEGORY_NAME + " TEXT,"
                 + KEY_CATEGORY_COVERAGE_TYPE + " TEXT,"
-                + KEY_CATEGORY_DESCRIPTION +" TEXT "+")";
+                + KEY_CATEGORY_DESCRIPTION +" TEXT, "
+                + " CONSTRAINT uc_category UNIQUE ("+KEY_CATEGORY_NAME+" COLLATE NOCASE), CHECK("+KEY_CATEGORY_NAME+"<> '')"+")";
 
         String CATEGORY_LABELS_TABLE = "CREATE TABLE " + TABLE_CATEGORY_LABELS + "("
                 + KEY_LABEL_ID + " TEXT PRIMARY KEY,"
@@ -421,20 +422,30 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
 
     public long addCategory(Category category){
         SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(KEY_CATEGORY_NAME, category.getCategoryName());
-        contentValues.put(KEY_CATEGORY_DESCRIPTION, category.getCategoryDescription());
-        contentValues.put(KEY_CATEGORY_COVERAGE_TYPE, category.getCoverageType());
-        return  db.insert(TABLE_MASTER_CATEGORY,null,contentValues);
+        try {
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(KEY_CATEGORY_NAME, category.getCategoryName());
+            contentValues.put(KEY_CATEGORY_DESCRIPTION, category.getCategoryDescription());
+            contentValues.put(KEY_CATEGORY_COVERAGE_TYPE, category.getCoverageType());
+            return db.insertOrThrow(TABLE_MASTER_CATEGORY, null, contentValues);
+        }
+        catch (SQLiteConstraintException exception){
+            return -111;
+        }
     }
 
     public int updateCategory(Category category){
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(KEY_CATEGORY_NAME, category.getCategoryName());
-        contentValues.put(KEY_CATEGORY_DESCRIPTION, category.getCategoryDescription());
-        contentValues.put(KEY_CATEGORY_COVERAGE_TYPE, category.getCoverageType());
-        return  db.update(TABLE_MASTER_CATEGORY, contentValues,KEY_CATEGORY_ID+"="+category.getCategoryId(),null);
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(KEY_CATEGORY_NAME, category.getCategoryName());
+            contentValues.put(KEY_CATEGORY_DESCRIPTION, category.getCategoryDescription());
+            contentValues.put(KEY_CATEGORY_COVERAGE_TYPE, category.getCoverageType());
+            return  db.update(TABLE_MASTER_CATEGORY, contentValues,KEY_CATEGORY_ID+"="+category.getCategoryId(),null);
+
+        }catch (SQLiteConstraintException ex){
+            return -111;
+        }
     }
 
     public ArrayList<Category> getCategoryList(){
@@ -458,6 +469,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         }
         return  tempList;
     }
+
 
     public long addRoofSystem(RoofSystemPOJO roofSystemPOJO){
         try {
@@ -497,9 +509,9 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
             contentValues.put(KEY_SIDING_NAME, sidingPOJO.getName());
             return db.insertOrThrow(TABLE_SIDING,null,contentValues);
         }
-       catch (SQLiteConstraintException e){
+        catch (SQLiteConstraintException e){
             return -111;
-       }
+        }
     }
 
     public ArrayList<SidingPOJO> getSidingList(){
@@ -626,13 +638,13 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
 
 
     public int updateLabel(Label label){
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(KEY_LABEL_NAME, label.getName());
-        contentValues.put(KEY_LABEL_DESCRIPTION, label.getDescription());
-        contentValues.put(KEY_LABEL_HOUSE_NUMBER,label.getHouseNumber());
-        contentValues.put(KEY_LABEL_COVERAGE_TYPE,label.getCoverageType());
-        return  db.update(TABLE_CATEGORY_LABELS, contentValues,KEY_LABEL_ID+"="+label.getId(),null);
+                SQLiteDatabase db = this.getWritableDatabase();
+                ContentValues contentValues = new ContentValues();
+                contentValues.put(KEY_LABEL_NAME, label.getName());
+                contentValues.put(KEY_LABEL_DESCRIPTION, label.getDescription());
+                contentValues.put(KEY_LABEL_HOUSE_NUMBER, label.getHouseNumber());
+                contentValues.put(KEY_LABEL_COVERAGE_TYPE, label.getCoverageType());
+                return db.update(TABLE_CATEGORY_LABELS, contentValues, KEY_LABEL_ID + "=" + label.getId(), null);
     }
 
     public int deletePeril(String id){
@@ -662,7 +674,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
             return  db.update(TABLE_PERIL, contentValues,KEY_PERIL_ID+"="+ perilPOJO.getID(),null);
 
         }catch (SQLiteConstraintException ex){
-          return -100;
+            return -100;
         }
     }
 
@@ -790,10 +802,10 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                         imageEntry.put(KEY_IMAGE_NAME, imageItem.getImageName());
                         imageEntry.put(KEY_IMAGE_DATE_TIME, imageItem.getImageDateTime());
                         imageEntry.put(KEY_IMAGE_GEO_TAG, imageItem.getImageGeoTag());
-                      long count=  db.insert(TABLE_REPORTS_IMAGE_DETAILS, null, imageEntry);
-                      if(count!=-1) {
-                          Log.d("Error in insertion", String.valueOf(count));
-                      }
+                        long count=  db.insert(TABLE_REPORTS_IMAGE_DETAILS, null, imageEntry);
+                        if(count!=-1) {
+                            Log.d("Error in insertion", String.valueOf(count));
+                        }
                     }
                 }
                 ArrayList<ImageDetailsPOJO> reportsElevationImageList = label.getSelectedElevationImages();
@@ -807,7 +819,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                         imageEntry.put(KEY_IMAGE_DESCRIPTION, imageItem.getDescription());
                         imageEntry.put(KEY_IMAGE_URL, imageItem.getImageUrl());
                         imageEntry.put(KEY_FK_LABEL_ID, labelId);
-                    long count = db.insertOrThrow(TABLE_REPORTS_ELEVATION_IMAGE_DETAILS, null, imageEntry);
+                        long count = db.insertOrThrow(TABLE_REPORTS_ELEVATION_IMAGE_DETAILS, null, imageEntry);
                         Log.d("Error in insertion", String.valueOf(count));
                     }
                 }
@@ -911,7 +923,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         Cursor cLabelList = db.rawQuery("SELECT * FROM category_label WHERE report_id_fk = '"+id+"'", null);
         ArrayList<Label> labelList=new ArrayList<>();
 
-            if (cLabelList.moveToFirst()) {
+        if (cLabelList.moveToFirst()) {
             do {
                 Label label =new Label();
                 label.setId(cLabelList.getString(0));
@@ -932,30 +944,30 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                         elevationImagesList.add(eImageDetailsPOJO);
                     } while (cElevationImages.moveToNext());
                 }
-                    label.setSelectedElevationImages(elevationImagesList);
+                label.setSelectedElevationImages(elevationImagesList);
 
-                    Cursor cSelectedImages = db.rawQuery("SELECT * FROM report_image_details  WHERE  label_id_fk = '" + cLabelList.getString(0) + "'", null);
-                    ArrayList<ImageDetailsPOJO> selectedImagesList = new ArrayList<>();
+                Cursor cSelectedImages = db.rawQuery("SELECT * FROM report_image_details  WHERE  label_id_fk = '" + cLabelList.getString(0) + "'", null);
+                ArrayList<ImageDetailsPOJO> selectedImagesList = new ArrayList<>();
 
-                    if (cSelectedImages.moveToFirst()) {
-                        do {
-                            ImageDetailsPOJO sImageDetailsPOJO = new ImageDetailsPOJO();
-                            sImageDetailsPOJO.setTitle(cSelectedImages.getString(1));
-                            sImageDetailsPOJO.setDescription(cSelectedImages.getString(2));
-                            sImageDetailsPOJO.setImageUrl(cSelectedImages.getString(3));
-                            sImageDetailsPOJO.setIsDamage(cSelectedImages.getString(4).equals("1"));
-                            sImageDetailsPOJO.setOverview(cSelectedImages.getString(5).equals("1"));
-                            sImageDetailsPOJO.setPointOfOrigin(cSelectedImages.getString(7).equals("1"));
-                            sImageDetailsPOJO.setCoverageTye(cSelectedImages.getString(8));
-                            sImageDetailsPOJO.setImageName(cSelectedImages.getString(9));
-                            sImageDetailsPOJO.setImageDateTime(cSelectedImages.getString(10));
-                            sImageDetailsPOJO.setImageGeoTag(cSelectedImages.getString(11));
-                            selectedImagesList.add(sImageDetailsPOJO);
-                        } while (cSelectedImages.moveToNext());
-                    }
+                if (cSelectedImages.moveToFirst()) {
+                    do {
+                        ImageDetailsPOJO sImageDetailsPOJO = new ImageDetailsPOJO();
+                        sImageDetailsPOJO.setTitle(cSelectedImages.getString(1));
+                        sImageDetailsPOJO.setDescription(cSelectedImages.getString(2));
+                        sImageDetailsPOJO.setImageUrl(cSelectedImages.getString(3));
+                        sImageDetailsPOJO.setIsDamage(cSelectedImages.getString(4).equals("1"));
+                        sImageDetailsPOJO.setOverview(cSelectedImages.getString(5).equals("1"));
+                        sImageDetailsPOJO.setPointOfOrigin(cSelectedImages.getString(7).equals("1"));
+                        sImageDetailsPOJO.setCoverageTye(cSelectedImages.getString(8));
+                        sImageDetailsPOJO.setImageName(cSelectedImages.getString(9));
+                        sImageDetailsPOJO.setImageDateTime(cSelectedImages.getString(10));
+                        sImageDetailsPOJO.setImageGeoTag(cSelectedImages.getString(11));
+                        selectedImagesList.add(sImageDetailsPOJO);
+                    } while (cSelectedImages.moveToNext());
+                }
 
-                    label.setSelectedImages(selectedImagesList);
-                 labelList.add(label);
+                label.setSelectedImages(selectedImagesList);
+                labelList.add(label);
 
             } while (cLabelList.moveToNext());
         }
@@ -1040,48 +1052,48 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         db.delete(TABLE_REPORTS_ELEVATION_IMAGE_DETAILS, KEY_FK_LABEL_ID + "=" + label.getId(), null);
 
 
-            ArrayList<ImageDetailsPOJO> labelSelectedElevationImages = label.getSelectedElevationImages();
-            if (labelSelectedElevationImages != null && labelSelectedElevationImages.size() > 0) {
-                for (int index = 0; index < labelSelectedElevationImages.size(); index++) {
-                    ImageDetailsPOJO imageItem = labelSelectedElevationImages.get(index);
-                    ContentValues imageEntry = new ContentValues();
-                    imageEntry.put(KEY_ELEVATION_IMAGE_ID, CommonUtils.generateId());
-                    imageEntry.put(KEY_IMAGE_TITLE, imageItem.getTitle());
-                    imageEntry.put(KEY_IMAGE_DESCRIPTION, imageItem.getDescription());
-                    imageEntry.put(KEY_IMAGE_URL, imageItem.getImageUrl());
-                    imageEntry.put(KEY_FK_LABEL_ID, label.getId());
-                    db.insert(TABLE_REPORTS_ELEVATION_IMAGE_DETAILS, null, imageEntry);
-                }
+        ArrayList<ImageDetailsPOJO> labelSelectedElevationImages = label.getSelectedElevationImages();
+        if (labelSelectedElevationImages != null && labelSelectedElevationImages.size() > 0) {
+            for (int index = 0; index < labelSelectedElevationImages.size(); index++) {
+                ImageDetailsPOJO imageItem = labelSelectedElevationImages.get(index);
+                ContentValues imageEntry = new ContentValues();
+                imageEntry.put(KEY_ELEVATION_IMAGE_ID, CommonUtils.generateId());
+                imageEntry.put(KEY_IMAGE_TITLE, imageItem.getTitle());
+                imageEntry.put(KEY_IMAGE_DESCRIPTION, imageItem.getDescription());
+                imageEntry.put(KEY_IMAGE_URL, imageItem.getImageUrl());
+                imageEntry.put(KEY_FK_LABEL_ID, label.getId());
+                db.insert(TABLE_REPORTS_ELEVATION_IMAGE_DETAILS, null, imageEntry);
             }
+        }
     }
 
     public void updateSelectedImages(Label label){
         SQLiteDatabase db = this.getWritableDatabase();
 
         db.delete(TABLE_REPORTS_IMAGE_DETAILS, KEY_FK_LABEL_ID + "=" + label.getId(), null);
-            ArrayList<ImageDetailsPOJO> labelSelectedImages = label.getSelectedImages();
-            if (labelSelectedImages != null && labelSelectedImages.size() > 0) {
-                for (int index = 0; index < labelSelectedImages.size(); index++) {
-                    ImageDetailsPOJO imageItem = labelSelectedImages.get(index);
-                    ContentValues imageEntry = new ContentValues();
-                    imageEntry.put(KEY_IMAGE_ID, CommonUtils.generateId());
-                    imageEntry.put(KEY_IMAGE_TITLE, imageItem.getTitle());
-                    imageEntry.put(KEY_IMAGE_DESCRIPTION, imageItem.getDescription());
-                    imageEntry.put(KEY_IMAGE_URL, imageItem.getImageUrl());
-                    imageEntry.put(KEY_IS_DAMAGE, imageItem.isDamage());
-                    imageEntry.put(KEY_IS_OVERVIEW, imageItem.isOverview());
-                    imageEntry.put(KEY_FK_LABEL_ID, label.getId());
-                    imageEntry.put(KEY_IS_POINT_OF_ORIGIN, imageItem.isPointOfOrigin());
-                    imageEntry.put(KEY_IMAGE_COVERAGE_TYPE, imageItem.getCoverageTye());
-                    imageEntry.put(KEY_IMAGE_NAME, imageItem.getImageName());
-                    imageEntry.put(KEY_IMAGE_DATE_TIME, imageItem.getImageDateTime());
-                    imageEntry.put(KEY_IMAGE_GEO_TAG, imageItem.getImageGeoTag());
-                    long count = db.insert(TABLE_REPORTS_IMAGE_DETAILS, null, imageEntry);
-                    if (count != -1) {
-                        Log.d("Error in insertion", String.valueOf(count));
-                    }
+        ArrayList<ImageDetailsPOJO> labelSelectedImages = label.getSelectedImages();
+        if (labelSelectedImages != null && labelSelectedImages.size() > 0) {
+            for (int index = 0; index < labelSelectedImages.size(); index++) {
+                ImageDetailsPOJO imageItem = labelSelectedImages.get(index);
+                ContentValues imageEntry = new ContentValues();
+                imageEntry.put(KEY_IMAGE_ID, CommonUtils.generateId());
+                imageEntry.put(KEY_IMAGE_TITLE, imageItem.getTitle());
+                imageEntry.put(KEY_IMAGE_DESCRIPTION, imageItem.getDescription());
+                imageEntry.put(KEY_IMAGE_URL, imageItem.getImageUrl());
+                imageEntry.put(KEY_IS_DAMAGE, imageItem.isDamage());
+                imageEntry.put(KEY_IS_OVERVIEW, imageItem.isOverview());
+                imageEntry.put(KEY_FK_LABEL_ID, label.getId());
+                imageEntry.put(KEY_IS_POINT_OF_ORIGIN, imageItem.isPointOfOrigin());
+                imageEntry.put(KEY_IMAGE_COVERAGE_TYPE, imageItem.getCoverageTye());
+                imageEntry.put(KEY_IMAGE_NAME, imageItem.getImageName());
+                imageEntry.put(KEY_IMAGE_DATE_TIME, imageItem.getImageDateTime());
+                imageEntry.put(KEY_IMAGE_GEO_TAG, imageItem.getImageGeoTag());
+                long count = db.insert(TABLE_REPORTS_IMAGE_DETAILS, null, imageEntry);
+                if (count != -1) {
+                    Log.d("Error in insertion", String.valueOf(count));
                 }
             }
+        }
 
     }
 
