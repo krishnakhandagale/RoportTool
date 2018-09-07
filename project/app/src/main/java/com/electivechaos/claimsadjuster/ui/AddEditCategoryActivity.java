@@ -37,7 +37,6 @@ public class AddEditCategoryActivity extends AppCompatActivity{
     private EditText categoryDescription;
     private View addEditCategoryParentLayout;
     private CategoryListDBHelper categoryListDBHelper;
-    private int catId;
     private TextView selectCoverageType;
     private String coverageType;
 
@@ -103,6 +102,7 @@ public class AddEditCategoryActivity extends AppCompatActivity{
                     return;
                 }else {
                     Bundle data = new Bundle();
+                    int catId;
                     if (categoryID == -1) {
                         Category categoryPOJO = new Category();
                         categoryPOJO.setCategoryName(categoryNameString);

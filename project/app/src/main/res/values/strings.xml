@@ -155,4 +155,5 @@
     <string name="settings_details">Settings</string>
     <string name="image_quality_setting">IMAGE QUALITY</string>
     <string name="map_setting">GOOGLE MAP IN REPORT</string>
+    <string name="label_validation_msg">Label with same name already exists.</string>
 </resources>

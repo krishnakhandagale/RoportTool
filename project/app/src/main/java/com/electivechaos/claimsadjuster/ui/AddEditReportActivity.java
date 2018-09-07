@@ -210,13 +210,11 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                         label.setReportId(reportPOJO.getId());
                         String id = "";
                         try {
-                            ArrayList<Label> labelArrayList = reportPOJO.getLabelArrayList();
-                            for(int i=0 ; i<labelArrayList.size();i++){
-                                if(label.getName().equalsIgnoreCase(labelArrayList.get(i).getName())){
-                                    Toast.makeText(AddEditReportActivity.this, "Label with same name already exists.", Toast.LENGTH_SHORT).show();
-                                    return;
-                                }
+                            if(!validateLabelName(reportPOJO.getLabelArrayList(),label.getName())){
+                                Toast.makeText(AddEditReportActivity.this, R.string.label_validation_msg, Toast.LENGTH_SHORT).show();
+                                return;
                             }
+
                             id = new DatabaseTaskHelper(AddEditReportActivity.this, label).execute().get();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
@@ -323,6 +321,17 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         });
 
 
+    }
+
+    private boolean validateLabelName(ArrayList<Label> labelArrayList,String label) {
+        boolean isValid = true;
+        for(int i=0 ; i<labelArrayList.size();i++){
+            if(label.equalsIgnoreCase(labelArrayList.get(i).getName())){
+                isValid = false;
+                break;
+            }
+        }
+        return isValid;
     }
 
     private void setDataToExpandableList() {
@@ -501,14 +510,10 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                 view.findViewById(R.id.doneBtn).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
-                       ArrayList<Label> labelArrayList = reportPOJO.getLabelArrayList();
-                       for(int i =0 ; i<labelArrayList.size(); i++){
-                           if(editLabel.getText().toString().equalsIgnoreCase(labelArrayList.get(i).getName())){
-                               Toast.makeText(AddEditReportActivity.this, "Label type with same name already exists.", Toast.LENGTH_SHORT).show();
-                               return;
-                           }
-                       }
+                        if(!validateLabelName(reportPOJO.getLabelArrayList(),editLabel.getText().toString())){
+                            Toast.makeText(AddEditReportActivity.this, R.string.label_validation_msg, Toast.LENGTH_SHORT).show();
+                            return;
+                        }
                             label.setName(editLabel.getText().toString());
                             activityActionBar.setTitle(editLabel.getText().toString());
                             drawerMenuListAdapter.notifyDataSetChanged();
@@ -615,13 +620,10 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                                     label.setCoverageType(categories.get(pos).getCoverageType());
                                     String id = "";
                                     try {
-                                        ArrayList<Label> labelArrayList = reportPOJO.getLabelArrayList();
-                                       for(int i=0 ; i<labelArrayList.size();i++){
-                                           if(label.getName().equalsIgnoreCase(labelArrayList.get(i).getName())){
-                                               Toast.makeText(AddEditReportActivity.this, "Label with same name already exists.", Toast.LENGTH_SHORT).show();
-                                               return;
-                                           }
-                                       }
+                                        if(!validateLabelName(reportPOJO.getLabelArrayList(),label.getName())){
+                                            Toast.makeText(AddEditReportActivity.this, R.string.label_validation_msg, Toast.LENGTH_SHORT).show();
+                                            return;
+                                        }
                                         id = new DatabaseTaskHelper(AddEditReportActivity.this, label).execute().get();
                                     } catch (InterruptedException e) {
                                         e.printStackTrace();
@@ -1236,12 +1238,10 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
                     String labelId = "";
                     try {
-                        ArrayList<Label> labelArrayList = reportPOJO.getLabelArrayList();
-                        for(int i=0 ; i<labelArrayList.size();i++){
-                            if(label.getName().equalsIgnoreCase(labelArrayList.get(i).getName())){
-                                Toast.makeText(AddEditReportActivity.this, "Label with same name already exists.", Toast.LENGTH_SHORT).show();
-                                return;
-                            }
+
+                        if(!validateLabelName(reportPOJO.getLabelArrayList(),label.getName())){
+                            Toast.makeText(AddEditReportActivity.this, R.string.label_validation_msg, Toast.LENGTH_SHORT).show();
+                            return;
                         }
                         labelId = new DatabaseTaskHelper(AddEditReportActivity.this, label).execute().get();
                     } catch (InterruptedException e) {
