@@ -77,6 +77,13 @@ public class StarterPhotosFragment extends Fragment {
     private  static final int SELECT_FILE_IMAGE_FOUR_STARTER = 204;
     private  static final int SELECT_FILE_IMAGE_HOUSE_NUMBER_STARTER = 205;
 
+    private  static final String OVERVIEW_IMAGE_ONE = "Overview 1";
+    private  static final String OVERVIEW_IMAGE_TWO = "Overview 2";
+    private  static final String OVERVIEW_IMAGE_THREE = "Overview 3";
+    private  static final String OVERVIEW_IMAGE_FOUR = "Overview 4";
+
+
+
     private LinearLayout parentLayout;
 
     private Boolean isFabOpen = false;
@@ -413,8 +420,7 @@ public class StarterPhotosFragment extends Fragment {
 
         if (requestId == SELECT_FILE_IMAGE_ONE_STARTER) {
             final ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
-            imgObj.setDescription("Risk Overview Image 1");
-            imgObj.setTitle("Risk Overview 1");
+            imgObj.setTitle(OVERVIEW_IMAGE_ONE);
             imgObj.setImageUrl(selectedImages.get(0).getPath());
             selectedElevationImagesList.set(0, imgObj);
             Glide.with(getActivity())
@@ -427,8 +433,7 @@ public class StarterPhotosFragment extends Fragment {
         } else if (requestId == SELECT_FILE_IMAGE_TWO_STARTER) {
 
             final ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
-            imgObj.setDescription("Risk Overview Image 2");
-            imgObj.setTitle("Risk Overview 2");
+            imgObj.setTitle(OVERVIEW_IMAGE_TWO);
             imgObj.setImageUrl(selectedImages.get(0).getPath());
             selectedElevationImagesList.set(1, imgObj);
             Glide.with(getActivity())
@@ -439,8 +444,7 @@ public class StarterPhotosFragment extends Fragment {
             selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList, labelPosition);
         } else if (requestId == SELECT_FILE_IMAGE_THREE_STARTER) {
             final ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
-            imgObj.setDescription("Risk Overview Image 3");
-            imgObj.setTitle("Risk Overview 3");
+            imgObj.setTitle(OVERVIEW_IMAGE_THREE);
             imgObj.setImageUrl(selectedImages.get(0).getPath());
             selectedElevationImagesList.set(2, imgObj);
             Glide.with(getActivity())
@@ -451,8 +455,7 @@ public class StarterPhotosFragment extends Fragment {
             selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList, labelPosition);
         } else if (requestId == SELECT_FILE_IMAGE_FOUR_STARTER) {
             final ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
-            imgObj.setDescription("Risk Overview Image 4");
-            imgObj.setTitle("Risk Overview 4");
+            imgObj.setTitle(OVERVIEW_IMAGE_FOUR);
             imgObj.setImageUrl(selectedImages.get(0).getPath());
             selectedElevationImagesList.set(3, imgObj);
             Glide.with(getActivity())
@@ -642,8 +645,7 @@ public class StarterPhotosFragment extends Fragment {
                         public void run() {
                             if (requestId == IMAGE_ONE_REQUEST_STARTER) {
                                 final ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
-                                imgObj.setDescription("Risk Overview Image 1");
-                                imgObj.setTitle("Risk Overview 1");
+                                imgObj.setTitle(OVERVIEW_IMAGE_ONE);
                                 imgObj.setImageUrl(finalPath1);
                                 selectedElevationImagesList.set(0, imgObj);
                                 Glide.with(getActivity())
@@ -657,8 +659,7 @@ public class StarterPhotosFragment extends Fragment {
                             } else if (requestId == IMAGE_TWO_REQUEST_STARTER) {
 
                                 final ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
-                                imgObj.setDescription("Risk Overview Image 2");
-                                imgObj.setTitle("Risk Overview 2");
+                                imgObj.setTitle(OVERVIEW_IMAGE_TWO);
                                 imgObj.setImageUrl(finalPath1);
                                 selectedElevationImagesList.set(1, imgObj);
                                 Glide.with(getActivity())
@@ -669,8 +670,7 @@ public class StarterPhotosFragment extends Fragment {
                                 selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList, labelPosition);
                             } else if (requestId == IMAGE_THREE_REQUEST_STARTER) {
                                 final ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
-                                imgObj.setDescription("Risk Overview Image 3");
-                                imgObj.setTitle("Risk Overview 3");
+                                imgObj.setTitle(OVERVIEW_IMAGE_THREE);
                                 imgObj.setImageUrl(finalPath1);
                                 selectedElevationImagesList.set(2, imgObj);
                                 Glide.with(getActivity())
@@ -681,8 +681,7 @@ public class StarterPhotosFragment extends Fragment {
                                 selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList, labelPosition);
                             } else if (requestId == IMAGE_FOUR_REQUEST_STARTER) {
                                 final ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
-                                imgObj.setDescription("Risk Overview Image 4");
-                                imgObj.setTitle("Risk Overview 4");
+                                imgObj.setTitle(OVERVIEW_IMAGE_FOUR);
                                 imgObj.setImageUrl(finalPath1);
                                 selectedElevationImagesList.set(3, imgObj);
                                 Glide.with(getActivity())
