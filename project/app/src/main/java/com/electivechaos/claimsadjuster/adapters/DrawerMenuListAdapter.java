@@ -148,7 +148,7 @@ public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
         }
         String menuTitle = childMenuList.get(parentMenuList.get(groupPosition).getTitle()).get(childPosition).toString();
 
-        if(menuTitle.equals("Starter Photos")){
+        if(menuTitle.equals("Risk Overview")){
             holder.labelDeleteBtn.setVisibility(View.GONE);
         }else{
             holder.labelDeleteBtn.setVisibility(View.VISIBLE);
