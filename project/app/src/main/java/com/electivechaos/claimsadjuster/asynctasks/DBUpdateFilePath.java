@@ -124,7 +124,9 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
             firstTable.setWidthPercentage(100);
 
             firstTable.addCell(getCellReportDetails(PdfPCell.ALIGN_LEFT, document));
-            firstTable.addCell(getCellGoogleMapCell(PdfPCell.ALIGN_LEFT, document,pdfWriter));
+            if(CommonUtils.getGoogleMap(mContext).equals("true")) {
+                firstTable.addCell(getCellGoogleMapCell(PdfPCell.ALIGN_LEFT, document, pdfWriter));
+            }
             document.add(firstTable);
             document.add(new Paragraph(" "));
             document.newPage();
