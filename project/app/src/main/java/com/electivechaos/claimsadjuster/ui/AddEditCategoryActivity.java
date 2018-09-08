@@ -40,6 +40,7 @@ public class AddEditCategoryActivity extends AppCompatActivity{
     private TextView selectCoverageType;
     private String coverageType;
 
+
     private static final int UNIQUE_CONSTRAINT_FAIL_ERROR_CODE = -111;
 
     @Override
@@ -129,6 +130,7 @@ public class AddEditCategoryActivity extends AppCompatActivity{
                         }
                     } else {
                         Category categoryPOJO = new Category();
+                        categoryPOJO.setCategoryId(categoryID);
                         categoryPOJO.setCategoryName(categoryNameString);
                         categoryPOJO.setCategoryDescription(categoryDescriptionString);
                         categoryPOJO.setCoverageType(categoryCoverageType);
