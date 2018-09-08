@@ -442,7 +442,6 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
             contentValues.put(KEY_CATEGORY_DESCRIPTION, category.getCategoryDescription());
             contentValues.put(KEY_CATEGORY_COVERAGE_TYPE, category.getCoverageType());
             return  db.update(TABLE_MASTER_CATEGORY, contentValues,KEY_CATEGORY_ID+"="+category.getCategoryId(),null);
-
         }catch (SQLiteConstraintException ex){
             return -111;
         }
