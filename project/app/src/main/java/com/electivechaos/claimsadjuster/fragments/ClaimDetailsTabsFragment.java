@@ -14,6 +14,7 @@ import android.widget.EditText;
 
 import com.electivechaos.claimsadjuster.R;
 import com.electivechaos.claimsadjuster.interfaces.ClaimDetailsDataInterface;
+import com.electivechaos.claimsadjuster.utils.CommonUtils;
 
 public class ClaimDetailsTabsFragment extends Fragment {
 
@@ -21,6 +22,7 @@ public class ClaimDetailsTabsFragment extends Fragment {
     private EditText reportDescriptionEditText;
     private EditText clientNameEditText ;
     private EditText claimNumberEditText;
+    private EditText reportByEditText;
 
 
 
@@ -28,6 +30,7 @@ public class ClaimDetailsTabsFragment extends Fragment {
     private String reportDescription;
     private String clientName;
     private String claimNumber;
+    private String reportBy;
 
 
 
@@ -42,6 +45,7 @@ public class ClaimDetailsTabsFragment extends Fragment {
         reportDescription = getArguments() != null ? getArguments().getString("reportDescription") : "";
         clientName = getArguments() != null ? getArguments().getString("clientName") : "";
         claimNumber = getArguments() != null ? getArguments().getString("claimNumber") : "";
+        reportBy = getArguments() != null ? getArguments().getString("reportBy") : "";
 
     }
 
@@ -55,14 +59,20 @@ public class ClaimDetailsTabsFragment extends Fragment {
         reportDescriptionEditText =view.findViewById(R.id.reportDescription);
         clientNameEditText = view.findViewById(R.id.insuredName);
         claimNumberEditText = view.findViewById(R.id.claimNumber);
+        reportByEditText = view.findViewById(R.id.reportBy);
 
+        if(!CommonUtils.getReportByField(getActivity()).equals("enable")){
+            reportByEditText.setVisibility(View.GONE);
+        }else {
+            reportByEditText.setVisibility(View.VISIBLE);
+            reportByEditText.setText(reportBy);
+        }
 
 
         reportTitleEditText.setText(reportTitle);
         reportDescriptionEditText.setText(reportDescription);
         clientNameEditText.setText(clientName);
         claimNumberEditText.setText(claimNumber);
-
 
 
         reportTitleEditText.addTextChangedListener(new TextWatcher() {
@@ -133,6 +143,24 @@ public class ClaimDetailsTabsFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable s) {
                 claimDetailsDataInterface.setReportClaimNumber(s.toString().trim());
+            }
+        });
+
+
+        reportByEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                claimDetailsDataInterface.setReportBy(s.toString().trim());
             }
         });
 

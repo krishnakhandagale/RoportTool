@@ -364,6 +364,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         claimDetailsData.putString("reportTitle", reportPOJO.getReportTitle());
         claimDetailsData.putString("reportDescription", reportPOJO.getReportDescription());
         claimDetailsData.putString("claimNumber", reportPOJO.getClaimNumber());
+        claimDetailsData.putString("reportBy", reportPOJO.getReportBy());
         claimDetailsData.putString("clientName", reportPOJO.getInsuredName());
         claimDetailsData.putString("createdDate", reportPOJO.getCreatedDate());
         claimDetailsData.putString("locationLat", reportPOJO.getLocationLat());
@@ -730,6 +731,12 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     @Override
     public void setCreatedDate(String createdDate) {
         reportPOJO.setCreatedDate(createdDate);
+    }
+
+    @Override
+    public void setReportBy(String reportBy) {
+        new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, reportBy,reportPOJO.getId(),false,categoryListDBHelper,"report_by").execute();
+        reportPOJO.setReportBy(reportBy);
     }
 
 

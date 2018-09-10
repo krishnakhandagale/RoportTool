@@ -12,6 +12,7 @@ public class ReportItemPOJO {
     String filePath;
     String insuredName;
     String claimNumber;
+    String reportBy;
 
 
     public String getFilePath() {
@@ -70,6 +71,14 @@ public class ReportItemPOJO {
 
     public void setClaimNumber(String claimNumber) {
         this.claimNumber = claimNumber;
+    }
+
+    public String getReportBy() {
+        return reportBy;
+    }
+
+    public void setReportBy(String reportBy) {
+        this.reportBy = reportBy;
     }
 
 }

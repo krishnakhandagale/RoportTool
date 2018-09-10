@@ -35,6 +35,7 @@ public class ClaimDetailsFragment  extends Fragment{
     String reportDescription = "";
     String clientName = "";
     String claimNumber = "";
+    String reportBy = "";
     String address = "";
 
 
@@ -63,6 +64,7 @@ public class ClaimDetailsFragment  extends Fragment{
             reportDescription = passedArgs.get("reportDescription").toString();
             clientName = passedArgs.get("clientName").toString();
             claimNumber = passedArgs.get("claimNumber").toString();
+            reportBy = passedArgs.get("reportBy").toString();
 
             locationLat = passedArgs.get("locationLat").toString();
             locationLong = passedArgs.get("locationLong").toString();
@@ -192,6 +194,7 @@ public class ClaimDetailsFragment  extends Fragment{
                 claimDetailsArgs.putString("reportDescription", reportDescription);
                 claimDetailsArgs.putString("clientName", clientName);
                 claimDetailsArgs.putString("claimNumber", claimNumber);
+                claimDetailsArgs.putString("reportBy", reportBy);
                 claimDetailsArgs.putString("address", address);
                 fragment.setArguments(claimDetailsArgs);
                 return fragment;

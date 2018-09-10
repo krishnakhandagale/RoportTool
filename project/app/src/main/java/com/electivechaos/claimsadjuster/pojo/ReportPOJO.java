@@ -12,6 +12,7 @@ public class ReportPOJO  extends Observable implements Parcelable  {
     private String reportDescription;
     private String insuredName;
     private String claimNumber;
+    private String reportBy;
     private String locationLat;
     private String locationLong;
     private String addressLine;
@@ -31,6 +32,7 @@ public class ReportPOJO  extends Observable implements Parcelable  {
         reportDescription = "";
         insuredName = "";
         claimNumber = "";
+        reportBy = "";
         createdDate = "";
         filePath = "";
         locationLat = "";
@@ -70,6 +72,7 @@ public class ReportPOJO  extends Observable implements Parcelable  {
         reportDescription = in.readString();
         insuredName = in.readString();
         claimNumber = in.readString();
+        reportBy = in.readString();
         locationLat = in.readString();
 
         locationLong = in.readString();
@@ -177,6 +180,16 @@ public class ReportPOJO  extends Observable implements Parcelable  {
         notifyObservers();
     }
 
+    public String getReportBy() {
+        return reportBy;
+    }
+
+    public void setReportBy(String reportBy) {
+        this.reportBy = reportBy;
+        setChanged();
+        notifyObservers();
+    }
+
     public String getCreatedDate() {
         return createdDate;
     }
@@ -224,6 +237,7 @@ public class ReportPOJO  extends Observable implements Parcelable  {
         dest.writeString(reportDescription);
         dest.writeString(insuredName);
         dest.writeString(claimNumber);
+        dest.writeString(reportBy);
         dest.writeString(locationLat);
         dest.writeString(locationLong);
         dest.writeString(addressLine);

@@ -7,4 +7,5 @@ public  interface ClaimDetailsDataInterface {
      void setReportClientName(String reportClientName);
      void setReportClaimNumber(String reportClaimNumber);
      void setCreatedDate(String createdDate);
+     void setReportBy(String reportBy);
 }
