@@ -4,6 +4,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
@@ -34,6 +36,10 @@ public class SettingsActivity extends AppCompatActivity {
 
         radioMapActivate = findViewById(R.id.radioMapActivate);
         radioMapDeactivate = findViewById(R.id.radioMapDeactivate);
+
+
+        final CheckBox checkBoxReportBy = findViewById(R.id.checkboxReportBy);
+
 
            if(CommonUtils.getReportQuality(SettingsActivity.this).equals("low")){
                radioLow.setChecked(true);
@@ -74,6 +80,25 @@ public class SettingsActivity extends AppCompatActivity {
         });
 
 
+        if(CommonUtils.getReportByField(SettingsActivity.this).equals("enable")){
+            checkBoxReportBy.setChecked(true);
+        }else {
+            checkBoxReportBy.setChecked(false);
+        }
+
+
+        checkBoxReportBy.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                    checkBoxReportBy.setChecked(isChecked);
+                    if(isChecked){
+                        CommonUtils.setReportByField("enable",SettingsActivity.this);
+                    }else {
+                        CommonUtils.setReportByField("disable",SettingsActivity.this);
+
+                    }
+            }
+        });
 
 
     }

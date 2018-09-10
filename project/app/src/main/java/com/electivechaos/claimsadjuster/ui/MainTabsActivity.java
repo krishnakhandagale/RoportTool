@@ -46,6 +46,9 @@ public class MainTabsActivity extends BaseActivity {
         if(CommonUtils.getGoogleMap(MainTabsActivity.this).isEmpty()){
             CommonUtils.setGoogleMap("true",MainTabsActivity.this);
         }
+        if(CommonUtils.getReportByField(MainTabsActivity.this).isEmpty()){
+            CommonUtils.setReportByField("enable",MainTabsActivity.this);
+        }
     }
 
 

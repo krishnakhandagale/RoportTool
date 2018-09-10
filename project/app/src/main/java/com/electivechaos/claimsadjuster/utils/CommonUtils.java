@@ -351,4 +351,26 @@ public class CommonUtils {
         editor.apply();
     }
 
+    public static void setReportByField(String reportBy, Context context) {
+        SharedPreferences sharedPref = context.getSharedPreferences("report by",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("ReportBy", reportBy);
+        editor.apply();
+    }
+
+
+    public static String getReportByField(Context context){
+        SharedPreferences sharedPref = context.getSharedPreferences("report by",Context.MODE_PRIVATE);
+        String reportBy = sharedPref.getString("ReportBy", "");
+        return reportBy;
+    }
+
+    public static void clearReportByField(Context context){
+        SharedPreferences sharedPref = context.getSharedPreferences("report by",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.clear();
+        editor.apply();
+    }
+
+
 }
