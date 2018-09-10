@@ -153,7 +153,9 @@
     <string name="report_claim_number">Claim Number.</string>
     <string name="coverage_type">Coverage Type</string>
     <string name="settings_details">Settings</string>
-    <string name="image_quality_setting">IMAGE QUALITY</string>
-    <string name="map_setting">GOOGLE MAP IN REPORT</string>
+    <string name="image_quality_setting">Image Quality</string>
+    <string name="map_setting">Google Map In Report</string>
     <string name="label_validation_msg">Label with same name already exists.</string>
+    <string name="enter_report_by">Report by</string>
+    <string name="report_by_field">Enable Report By Field</string>
 </resources>

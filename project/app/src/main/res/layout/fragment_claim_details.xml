@@ -64,4 +64,17 @@
                 android:maxLength="37"
                 android:textSize="16sp" />
         </android.support.design.widget.TextInputLayout>
+    <android.support.design.widget.TextInputLayout
+        android:layout_margin="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/reportBy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/enter_report_by"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+    </android.support.design.widget.TextInputLayout>
     </LinearLayout>
