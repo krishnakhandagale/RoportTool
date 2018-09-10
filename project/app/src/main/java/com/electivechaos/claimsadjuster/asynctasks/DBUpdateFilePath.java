@@ -445,6 +445,15 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
         cell.addElement(new Paragraph("Claim Number", fontTitles));
         cell.addElement(new Paragraph(reportPOJO.getClaimNumber()));
         cell.addElement(new Paragraph(""));
+
+        if(CommonUtils.getReportByField(mContext).equals("enable")){
+            if(!reportPOJO.getReportBy().isEmpty()) {
+                cell.addElement(new Paragraph("Report By", fontTitles));
+                cell.addElement(new Paragraph(reportPOJO.getReportBy()));
+                cell.addElement(new Paragraph(""));
+            }
+        }
+
         LineSeparator ls = new LineSeparator();
         ls.setLineColor(new BaseColor(99,100,99));
 
@@ -524,215 +533,67 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
         cell.setHorizontalAlignment(Element.ALIGN_LEFT);
         cell.setBorder(Rectangle.NO_BORDER);
 
-        com.itextpdf.text.Image img1 = null, img2 = null,img3 = null ,img4 =null;
-        Label label = labels.get(0);
-        ArrayList<ImageDetailsPOJO> selectedElevationImagesList = label.getSelectedElevationImages();
-
-        if(selectedElevationImagesList.size() > 0) {
-            if (!selectedElevationImagesList.get(0).getImageUrl().isEmpty()) {
-                byte[] imageBytesResized;
-                imageBytesResized = resizeImage(selectedElevationImagesList.get(0).getImageUrl(), (int) ((document.getPageSize().getWidth() / 2 - 100)), (int) ((remainingHeight/ 2)));
-                try {
-                    img1 = com.itextpdf.text.Image.getInstance(imageBytesResized);
-
-                } catch (BadElementException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        }
-
-
-        if(selectedElevationImagesList.size() > 0) {
-            if (!selectedElevationImagesList.get(1).getImageUrl().isEmpty()) {
-                byte[] imageBytesResized;
-                imageBytesResized = resizeImage(selectedElevationImagesList.get(1).getImageUrl(), (int) ((document.getPageSize().getWidth() / 2) - 100), (int) ((remainingHeight / 2)));
-                try {
-                    img2 = com.itextpdf.text.Image.getInstance(imageBytesResized);
-                } catch (BadElementException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        }
-
-        if(selectedElevationImagesList.size() > 0) {
-            if (!selectedElevationImagesList.get(2).getImageUrl().isEmpty()) {
-                byte[] imageBytesResized;
-                imageBytesResized = resizeImage(selectedElevationImagesList.get(2).getImageUrl(), (int) ((document.getPageSize().getWidth() / 2) - 100), (int) ((remainingHeight / 2) ));
-                try {
-                    img3 = com.itextpdf.text.Image.getInstance(imageBytesResized);
-                } catch (BadElementException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        }
-
-        if(selectedElevationImagesList.size() > 0) {
-
-            if (!selectedElevationImagesList.get(3).getImageUrl().isEmpty()) {
-                byte[] imageBytesResized;
-                imageBytesResized = resizeImage(selectedElevationImagesList.get(3).getImageUrl(), (int) ((document.getPageSize().getWidth() / 2) - 100), (int) ((remainingHeight / 2)));
-                try {
-                    img4 = com.itextpdf.text.Image.getInstance(imageBytesResized);
-                } catch (BadElementException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        }
-
-
+        Label label1 = labels.get(0);
+        ArrayList<ImageDetailsPOJO> selectedElevationImagesList1 = label1.getSelectedElevationImages();
 
         PdfPTable elevationTable = new PdfPTable(2);
 
-        PdfPCell defaultCell = elevationTable.getDefaultCell();
-        defaultCell.setBorder(PdfPCell.NO_BORDER);
+        PdfPCell defaultCell1 = elevationTable.getDefaultCell();
+        defaultCell1.setBorder(PdfPCell.NO_BORDER);
 
-        PdfPCell cell1 = new PdfPCell();
-        cell1.setPadding(0);
-        cell1.setHorizontalAlignment(Element.ALIGN_LEFT);
-        cell1.setBorder(Rectangle.NO_BORDER);
-        cell1.setFixedHeight((float) (remainingHeight)/2);
+        int count  = 0;
 
+        for(int i = 0 ; i<selectedElevationImagesList1.size() ; i++){
+            if (!selectedElevationImagesList1.get(i).getImageUrl().isEmpty()) {
+                byte[] imageBytesResized;
+                imageBytesResized = resizeImage(selectedElevationImagesList1.get(i).getImageUrl(), (int) ((document.getPageSize().getWidth() / 2 - 100)), (int) ((remainingHeight / 2)));
+                try {
 
-        PdfPTable t1 = new PdfPTable(1);
-        PdfPCell innerCell1 = new PdfPCell(img1, true);
-        innerCell1.setPadding(0);
-        innerCell1.setHorizontalAlignment(Element.ALIGN_LEFT);
-        innerCell1.setBorder(Rectangle.NO_BORDER);
-        innerCell1.setFixedHeight((float) (remainingHeight/2)-50);
-        t1.addCell(innerCell1);
-        cell1.addElement(t1);
-
-        PdfPTable t2 = new PdfPTable(1);
-        PdfPCell innerCell2 = new PdfPCell();
-        innerCell2.setPadding(0);
-        innerCell2.setHorizontalAlignment(Element.ALIGN_LEFT);
-        innerCell2.setBorder(Rectangle.NO_BORDER);
-        innerCell2.setFixedHeight(50);
-        innerCell2.addElement(new Paragraph("Overview1"));
-
-        t2.addCell(innerCell2);
-        cell1.addElement(t2);
-
-        //////////////////////////////
-
-        PdfPCell cell2 = new PdfPCell();
-        cell2.setPadding(0);
-        cell2.setHorizontalAlignment(Element.ALIGN_LEFT);
-        cell2.setBorder(Rectangle.NO_BORDER);
-        cell2.setFixedHeight((float) (remainingHeight)/2);
-
-        PdfPTable t3 = new PdfPTable(1);
-        PdfPCell innerCell3 = new PdfPCell(img2, true);
-        innerCell3.setPadding(0);
-        innerCell3.setHorizontalAlignment(Element.ALIGN_LEFT);
-        innerCell3.setBorder(Rectangle.NO_BORDER);
-        innerCell3.setFixedHeight((float) (remainingHeight/2)-50);
-        t3.addCell(innerCell3);
-        cell2.addElement(t3);
-
-        PdfPTable t4 = new PdfPTable(1);
-        PdfPCell innerCell4 = new PdfPCell();
-        innerCell4.setPadding(0);
-        innerCell4.setHorizontalAlignment(Element.ALIGN_LEFT);
-        innerCell4.setBorder(Rectangle.NO_BORDER);
-        innerCell4.setFixedHeight(50);
-        innerCell4.addElement(new Paragraph("Overview 2"));
-
-        t4.addCell(innerCell4);
-        cell2.addElement(t4);
-
-        /////////////////////////////////////////////
+                    count++ ;
+                    com.itextpdf.text.Image img = null;
+                    img = com.itextpdf.text.Image.getInstance(imageBytesResized);
+                    PdfPCell cell1 = new PdfPCell();
+                    cell1.setPadding(0);
+                    cell1.setHorizontalAlignment(Element.ALIGN_LEFT);
+                    cell1.setBorder(Rectangle.NO_BORDER);
+                    cell1.setFixedHeight((float) (remainingHeight) / 2);
 
 
-        PdfPCell cell3 = new PdfPCell();
-        cell3.setPadding(0);
-        cell3.setHorizontalAlignment(Element.ALIGN_LEFT);
-        cell3.setBorder(Rectangle.NO_BORDER);
-        cell3.setFixedHeight((float) (remainingHeight)/2);
+                    PdfPTable imageTable = new PdfPTable(1);
+                    PdfPCell innerCell1 = new PdfPCell(img, true);
+                    innerCell1.setPadding(0);
+                    innerCell1.setHorizontalAlignment(Element.ALIGN_LEFT);
+                    innerCell1.setBorder(Rectangle.NO_BORDER);
+                    innerCell1.setFixedHeight((float) (remainingHeight / 2) - 50);
+                    imageTable.addCell(innerCell1);
+                    cell1.addElement(imageTable);
 
+                    PdfPTable imageTitleTable = new PdfPTable(1);
+                    PdfPCell innerCell2 = new PdfPCell();
+                    innerCell2.setPadding(0);
+                    innerCell2.setHorizontalAlignment(Element.ALIGN_LEFT);
+                    innerCell2.setBorder(Rectangle.NO_BORDER);
+                    innerCell2.setFixedHeight(50);
+                    innerCell2.addElement(new Paragraph("Overview " +(i+1)));
 
-        PdfPTable t5 = new PdfPTable(1);
-        PdfPCell innerCell5 = new PdfPCell(img3, true);
-        innerCell5.setPadding(0);
-        innerCell5.setHorizontalAlignment(Element.ALIGN_LEFT);
-        innerCell5.setBorder(Rectangle.NO_BORDER);
-        innerCell5.setFixedHeight((float) (remainingHeight/2)-50);
-        t5.addCell(innerCell5);
-        cell3.addElement(t5);
+                    imageTitleTable.addCell(innerCell2);
+                    cell1.addElement(imageTitleTable);
 
-        PdfPTable t6 = new PdfPTable(1);
-        PdfPCell innerCell6 = new PdfPCell();
-        innerCell6.setPadding(0);
-        innerCell6.setHorizontalAlignment(Element.ALIGN_LEFT);
-        innerCell6.setBorder(Rectangle.NO_BORDER);
-        innerCell6.setFixedHeight(50);
-        innerCell6.addElement(new Paragraph("Overview 3"));
+                    elevationTable.addCell(cell1);
 
-        t6.addCell(innerCell6);
-        cell3.addElement(t6);
-
-
-
-        ///////////////////////////////////////////////////
-        PdfPCell cell4 = new PdfPCell();
-        cell4.setPadding(0);
-        cell4.setHorizontalAlignment(Element.ALIGN_LEFT);
-        cell4.setBorder(Rectangle.NO_BORDER);
-        cell4.setFixedHeight((float) (remainingHeight)/2);
-
-
-        PdfPTable t7 = new PdfPTable(1);
-        PdfPCell innerCell7 = new PdfPCell(img4, true);
-        innerCell7.setPadding(0);
-        innerCell7.setHorizontalAlignment(Element.ALIGN_LEFT);
-        innerCell7.setBorder(Rectangle.NO_BORDER);
-        innerCell7.setFixedHeight((float) (remainingHeight/2)-50);
-        t7.addCell(innerCell7);
-        cell4.addElement(t7);
-
-        PdfPTable t8 = new PdfPTable(1);
-        PdfPCell innerCell8 = new PdfPCell();
-        innerCell8.setPadding(0);
-        innerCell8.setHorizontalAlignment(Element.ALIGN_LEFT);
-        innerCell8.setBorder(Rectangle.NO_BORDER);
-        innerCell8.setFixedHeight(50);
-        innerCell8.addElement(new Paragraph("Overview 4"));
-
-        t8.addCell(innerCell8);
-        cell4.addElement(t8);
-
-        //////////////////////////////////////////////////
-
-        if(img1 != null)
-        elevationTable.addCell(cell1);
-
-        if(img2 != null)
-        elevationTable.addCell(cell2);
-
-        if(img3 != null)
-        elevationTable.addCell(cell3);
-
-        if(img4 != null)
-        elevationTable.addCell(cell4);
-
-        elevationTable.completeRow();
+                } catch (BadElementException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        if(count == 1 || count == 3){
+            elevationTable.completeRow();
+        }
         cell.addElement(elevationTable);
 
-
         return cell;
-
 
     }
 
