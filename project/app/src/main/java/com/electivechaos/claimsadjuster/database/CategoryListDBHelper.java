@@ -30,7 +30,7 @@ import java.util.Iterator;
  */
 
 public class CategoryListDBHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 182;
+    private static final int DATABASE_VERSION = 184;
 
 
     // Database Name
@@ -75,6 +75,8 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
     private static final String KEY_REPORT_DESCRIPTION  = "report_description";
     private static final String KEY_CLIENT_NAME = "report_client_name";
     private static final String KEY_CLAIM_NUMBER = "report_claim_number";
+    private static final String KEY_REPORT_BY = "report_by";
+
     private static final String KEY_DATE_CREATED = "created_date";
     private static final String KEY_FILE_PATH = "file_path";
     private static final String KEY_LOCATION_LAT = "location_lat";
@@ -169,6 +171,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 + KEY_REPORT_DESCRIPTION + " TEXT,"
                 + KEY_CLIENT_NAME + " TEXT,"
                 + KEY_CLAIM_NUMBER + " TEXT,"
+                + KEY_REPORT_BY + " TEXT,"
                 + KEY_DATE_CREATED + " TEXT,"
                 + KEY_FILE_PATH + " TEXT,"
                 + KEY_LOCATION_LAT + " TEXT,"
@@ -767,6 +770,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         values.put(KEY_REPORT_DESCRIPTION, reportItemPOJO.getReportDescription());
         values.put(KEY_CLIENT_NAME, reportItemPOJO.getInsuredName());
         values.put(KEY_CLAIM_NUMBER, reportItemPOJO.getClaimNumber());
+        values.put(KEY_REPORT_BY, reportItemPOJO.getReportBy());
         values.put(KEY_DATE_CREATED, reportItemPOJO.getCreatedDate());
         values.put(KEY_FILE_PATH, reportItemPOJO.getFilePath());
         values.put(KEY_LOCATION_LAT, reportItemPOJO.getLocationLat());
@@ -853,8 +857,9 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 reportItemPOJO.setReportDescription(cursor.getString(2));
                 reportItemPOJO.setInsuredName(cursor.getString(3));
                 reportItemPOJO.setClaimNumber(cursor.getString(4));
-                reportItemPOJO.setCreatedDate(cursor.getString(5));
-                reportItemPOJO.setFilePath(cursor.getString(6));
+                reportItemPOJO.setReportBy(cursor.getString(5));
+                reportItemPOJO.setCreatedDate(cursor.getString(6));
+                reportItemPOJO.setFilePath(cursor.getString(7));
 
                 tempList.add(reportItemPOJO);
             } while (cursor.moveToNext());
@@ -889,15 +894,16 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 reportPOJO.setReportDescription(c.getString(2));
                 reportPOJO.setInsuredName(c.getString(3));
                 reportPOJO.setClaimNumber(c.getString(4));
-                reportPOJO.setCreatedDate(c.getString(5));
-                reportPOJO.setFilePath(c.getString(6));
-                reportPOJO.setLocationLat(c.getString(7));
-                reportPOJO.setLocationLong(c.getString(8));
-                reportPOJO.setAddressLine(c.getString(9));
+                reportPOJO.setReportBy(c.getString(5));
+                reportPOJO.setCreatedDate(c.getString(6));
+                reportPOJO.setFilePath(c.getString(7));
+                reportPOJO.setLocationLat(c.getString(8));
+                reportPOJO.setLocationLong(c.getString(9));
+                reportPOJO.setAddressLine(c.getString(10));
                 PerilPOJO perilPOJO = new PerilPOJO();
-                perilPOJO.setName(c.getString(10));
+                perilPOJO.setName(c.getString(11));
                 reportPOJO.setPerilPOJO(perilPOJO);
-                reportPOJO.setGoogleMapSnapShotFilePath(c.getString(11));
+                reportPOJO.setGoogleMapSnapShotFilePath(c.getString(12));
             }while (c.moveToNext());
         }
 
@@ -992,6 +998,10 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
     public void updateClaimNumber(String value, String reportId) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("UPDATE generated_reports SET report_claim_number='"+value+"' WHERE report_id='"+reportId+"'");
+    }
+    public void updateReportBy(String value, String reportId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("UPDATE generated_reports SET report_by='"+value+"' WHERE report_id='"+reportId+"'");
     }
     public void updateAddressLine(String value, String reportId) {
         SQLiteDatabase db = this.getWritableDatabase();
