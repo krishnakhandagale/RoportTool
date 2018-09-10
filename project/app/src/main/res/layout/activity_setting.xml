@@ -27,7 +27,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginLeft="20dp"
         android:layout_width="match_parent"
-        android:textSize="18dp"
+        android:textSize="16dp"
         android:layout_height="30dp"
         android:textColor="@color/grayDark"
         android:fontFamily="sans-serif-condensed"
@@ -46,7 +46,7 @@
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:layout_marginTop="5dp"
-        android:textSize="16dp">
+        android:textSize="16sp">
 
         <RadioButton
             android:id="@+id/radioLow"
@@ -83,7 +83,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginLeft="20dp"
         android:layout_width="match_parent"
-        android:textSize="18dp"
+        android:textSize="16sp"
         android:layout_height="30dp"
         android:textColor="@color/grayDark"
         android:fontFamily="sans-serif-condensed"
@@ -102,7 +102,7 @@
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:layout_marginTop="5dp"
-        android:textSize="16dp">
+        android:textSize="16sp">
 
         <RadioButton
             android:id="@+id/radioMapActivate"
@@ -124,7 +124,50 @@
             android:textColor="@drawable/custom_radio_button_text" />
     </RadioGroup>
 
+    <View
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:background="@color/grayLight"/>
 
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/checkBoxTextReportBy"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:fontFamily="sans-serif-condensed"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
+            android:textColor="@color/grayDark"
+            android:layout_centerVertical="true"
+            android:text="@string/report_by_field"
+            android:textSize="16sp" />
+
+        <CheckBox
+            android:id="@+id/checkboxReportBy"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp"
+            android:checked="true"
+            android:fontFamily="sans-serif-condensed"
+            android:textAlignment="center"
+            android:visibility="visible" />
+
+
+    </RelativeLayout>
 
 
 </LinearLayout>
