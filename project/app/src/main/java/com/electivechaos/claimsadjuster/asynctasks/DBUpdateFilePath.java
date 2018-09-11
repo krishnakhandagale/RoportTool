@@ -682,7 +682,6 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
                     footer,
                     (document.right()),
                     document.bottom() - 10, 0);
-            
 
         }
     }
