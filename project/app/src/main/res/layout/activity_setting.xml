@@ -17,6 +17,9 @@
             app:popupTheme="@style/ThemeOverlay.AppCompat.ActionBar">
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 <LinearLayout
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     android:layout_width="match_parent"
@@ -27,7 +30,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginLeft="20dp"
         android:layout_width="match_parent"
-        android:textSize="16dp"
+        android:textSize="15sp"
         android:layout_height="30dp"
         android:textColor="@color/grayDark"
         android:fontFamily="sans-serif-condensed"
@@ -46,7 +49,7 @@
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:layout_marginTop="5dp"
-        android:textSize="16sp">
+        android:textSize="15sp">
 
         <RadioButton
             android:id="@+id/radioLow"
@@ -83,7 +86,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginLeft="20dp"
         android:layout_width="match_parent"
-        android:textSize="16sp"
+        android:textSize="15sp"
         android:layout_height="30dp"
         android:textColor="@color/grayDark"
         android:fontFamily="sans-serif-condensed"
@@ -102,7 +105,7 @@
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:layout_marginTop="5dp"
-        android:textSize="16sp">
+        android:textSize="15sp">
 
         <RadioButton
             android:id="@+id/radioMapActivate"
@@ -149,7 +152,7 @@
             android:textColor="@color/grayDark"
             android:layout_centerVertical="true"
             android:text="@string/report_by_field"
-            android:textSize="16sp" />
+            android:textSize="15sp" />
 
         <CheckBox
             android:id="@+id/checkboxReportBy"
@@ -171,5 +174,6 @@
 
 
 </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>
