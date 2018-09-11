@@ -25,6 +25,12 @@ public class PdfViewerActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pdf_viewer_layout);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Pdf Viewer");
+
         ImageView shareBottomButton = findViewById(R.id.shareBottomButton);
 
         final PDFView pdfView = findViewById(R.id.pdfView);
@@ -44,6 +50,9 @@ public class PdfViewerActivity extends AppCompatActivity {
                 startActivity(share);
             }
         });
+
+
+
         pdfView.fromFile(file).spacing(5).onLoad(new OnLoadCompleteListener() {
             @Override
             public void loadComplete(int nbPages) {

@@ -522,6 +522,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
         }else {
             cell.addElement(new Paragraph(propertyDetailsPOJO.getBuildingType()));
         }
+
         return cell;
     }
 
@@ -681,6 +682,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
                     footer,
                     (document.right()),
                     document.bottom() - 10, 0);
+            
 
         }
     }
