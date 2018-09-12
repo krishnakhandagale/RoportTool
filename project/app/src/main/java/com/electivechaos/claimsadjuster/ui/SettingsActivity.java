@@ -4,8 +4,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
@@ -14,10 +17,15 @@ import com.electivechaos.claimsadjuster.utils.CommonUtils;
 
 public class SettingsActivity extends AppCompatActivity {
 
+    private View parentLayoutForMessages;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
+
+        parentLayoutForMessages = findViewById(R.id.parentLayoutForMessages);
+
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -37,17 +45,13 @@ public class SettingsActivity extends AppCompatActivity {
         radioMapActivate = findViewById(R.id.radioMapActivate);
         radioMapDeactivate = findViewById(R.id.radioMapDeactivate);
 
+        final EditText reportByEditText = findViewById(R.id.reportBy);
+        final ImageButton editReportByBtn = findViewById(R.id.editBtn);
+        final ImageButton doneReportByBtn = findViewById(R.id.doneBtn);
 
-        final CheckBox checkBoxReportBy = findViewById(R.id.checkboxReportBy);
-
-
-           if(CommonUtils.getReportQuality(SettingsActivity.this).equals("low")){
-               radioLow.setChecked(true);
-           }else if(CommonUtils.getReportQuality(SettingsActivity.this).equals("high")){
-               radioHigh.setChecked(true);
-           }else {
-               radioMedium.setChecked(true);
-           }
+        if(!CommonUtils.getReportByField(this).isEmpty()){
+            reportByEditText.setText(CommonUtils.getReportByField(this));
+        }
 
         radioQuality.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -80,25 +84,35 @@ public class SettingsActivity extends AppCompatActivity {
         });
 
 
-        if(CommonUtils.getReportByField(SettingsActivity.this).equals("enable")){
-            checkBoxReportBy.setChecked(true);
-        }else {
-            checkBoxReportBy.setChecked(false);
-        }
+        reportByEditText.setEnabled(false);
 
-
-        checkBoxReportBy.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-                    checkBoxReportBy.setChecked(isChecked);
-                    if(isChecked){
-                        CommonUtils.setReportByField("enable",SettingsActivity.this);
-                    }else {
-                        CommonUtils.setReportByField("disable",SettingsActivity.this);
-
-                    }
+        editReportByBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                reportByEditText.setEnabled(true);
+                editReportByBtn.setVisibility(View.GONE);
+                doneReportByBtn.setVisibility(View.VISIBLE);
             }
         });
+
+        doneReportByBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String reportBy = reportByEditText.getText().toString();
+                if(!reportBy.isEmpty()) {
+                    reportByEditText.setEnabled(false);
+                    doneReportByBtn.setVisibility(View.GONE);
+                    editReportByBtn.setVisibility(View.VISIBLE);
+
+                    CommonUtils.setReportByField(reportBy, SettingsActivity.this);
+                }else {
+                    CommonUtils.showSnackbarMessage(getString(R.string.please_enter_report_by), true, true,parentLayoutForMessages, SettingsActivity.this);
+                }
+            }
+        });
+
+
 
 
     }
