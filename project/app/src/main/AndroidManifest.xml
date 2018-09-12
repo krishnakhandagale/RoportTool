@@ -40,7 +40,7 @@
         <activity
             android:name=".ui.AddEditReportActivity"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".ui.MainTabsActivity"></activity>
+        <activity android:name=".ui.MainTabsActivity" />
         <activity android:name=".ui.ImagePickerActivity" />
         <activity
             android:name=".ui.SingleImageDetailsActivity"
@@ -74,7 +74,8 @@
         <activity android:name=".ui.PerilDetailsActivity" />
         <activity android:name=".ui.CoverageDetailsActivity" />
         <activity android:name=".ui.AddEditCoverageActivity" />
-        <activity android:name=".ui.SettingsActivity"></activity>
+        <activity android:name=".ui.SettingsActivity" />
+        <activity android:name=".ui.RegistrationActivity"></activity>
     </application>
 
 </manifest>

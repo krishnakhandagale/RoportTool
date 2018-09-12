@@ -372,5 +372,26 @@ public class CommonUtils {
         editor.apply();
     }
 
+    public static void setEmailId(String emailId, Context context) {
+        SharedPreferences sharedPref = context.getSharedPreferences("emailId",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("EmailId", emailId);
+        editor.apply();
+    }
+
+
+    public static String getEmailId(Context context){
+        SharedPreferences sharedPref = context.getSharedPreferences("emailId",Context.MODE_PRIVATE);
+        String emailId = sharedPref.getString("EmailId", "");
+        return emailId;
+    }
+
+    public static void clearEmailId(Context context){
+        SharedPreferences sharedPref = context.getSharedPreferences("emailId",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.clear();
+        editor.apply();
+    }
+
 
 }
