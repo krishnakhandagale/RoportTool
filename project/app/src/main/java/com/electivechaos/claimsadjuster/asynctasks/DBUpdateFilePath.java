@@ -133,6 +133,9 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
             document.newPage();
 
 
+
+
+
             // Now read property details
             event.setHeader("Property Details");
             PdfPTable propertyTable = new PdfPTable(1);
@@ -149,57 +152,6 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
             elevationTable.addCell(getCellForElevationImages(PdfPCell.ALIGN_LEFT, document,pdfWriter,labels));
             document.add(elevationTable);
             document.newPage();
-
-
-
-//            //Risk overview images
-//            ArrayList<Label> labels = originalReportPojo.getLabelArrayList();
-//
-//            for(int p=0;p <labels.size() ;p++) {
-//
-//                Label label = labels.get(p);
-//                event.setHeader("Overview");
-//
-//                ArrayList<ImageDetailsPOJO> selectedElevationImagesList = label.getSelectedElevationImages();
-//                int j = 0, k = 0;
-//                    while (j < selectedElevationImagesList.size()) {
-//                        if (!selectedElevationImagesList.get(j).getImageUrl().isEmpty()) {
-//                            try {
-//                                PdfPTable table = new PdfPTable(3);
-//                                byte[] imageBytesResized;
-//                                table.setWidths(new float[]{1, 5, 4});
-//                                imageBytesResized = resizeImage(selectedElevationImagesList.get(j).getImageUrl(), (int) ((document.getPageSize().getWidth() / 2) - 100), (int) ((document.getPageSize().getHeight() / numberOfImagesPerPage) - 100));
-//                                com.itextpdf.text.Image img = com.itextpdf.text.Image.getInstance(imageBytesResized);
-//                                table.setHorizontalAlignment(Element.ALIGN_LEFT);
-//                                table.setWidthPercentage(100);
-//                                table.addCell(getImageNumberPdfPCell("", PdfPCell.ALIGN_LEFT));
-//                                table.addCell(getCellImageCell(img, PdfPCell.ALIGN_LEFT, document, numberOfImagesPerPage));
-//                                table.addCell(getCell(selectedElevationImagesList.get(j).getTitle(), selectedElevationImagesList.get(j).getDescription(), PdfPCell.LEFT, document, numberOfImagesPerPage));
-//
-//                                document.add(table);
-//                                document.add(new Paragraph(" "));
-//
-//                                if ((k + 1) % numberOfImagesPerPage == 0) {
-//                                    document.newPage();
-//                                }
-//                            } catch (Exception e) {
-//                                e.printStackTrace();
-//                            }
-//                            k++;
-//                        }
-//                        j++;
-//                    }
-//
-//                    if (k + 1 <= selectedElevationImagesList.size()) {
-//                        document.newPage();
-//                    }
-//                    break;
-//
-//            }
-//
-
-
-
 
 
             //Now read labels and show images accordingly.
@@ -464,6 +416,8 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
         return cell;
     }
 
+
+
     private PdfPCell getCellPropertyDetails(int alignment, Document document) throws DocumentException {
         PdfPCell cell = new PdfPCell();
         cell.setPaddingBottom(10f);
@@ -530,7 +484,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
         PdfPCell cell = new PdfPCell();
         cell.setPadding(0);
         double remainingHeight = Math.abs(document.bottom() -  pdfWriter.getVerticalPosition(false));
-        cell.setFixedHeight((float) (remainingHeight));
+        cell.setFixedHeight((float) remainingHeight);
         cell.setHorizontalAlignment(Element.ALIGN_LEFT);
         cell.setBorder(Rectangle.NO_BORDER);
 
