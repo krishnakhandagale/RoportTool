@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.electivechaos.claimsadjuster.R;
+import com.electivechaos.claimsadjuster.utils.CommonUtils;
 import com.github.barteksc.pdfviewer.PDFView;
 import com.github.barteksc.pdfviewer.listener.OnLoadCompleteListener;
 import com.github.barteksc.pdfviewer.listener.OnPageChangeListener;
@@ -29,7 +30,7 @@ public class PdfViewerActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Pdf Viewer");
+        getSupportActionBar().setTitle(CommonUtils.getReportByField(PdfViewerActivity.this));
 
         ImageView shareBottomButton = findViewById(R.id.shareBottomButton);
 
