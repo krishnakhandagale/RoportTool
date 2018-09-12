@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 
 import com.electivechaos.claimsadjuster.R;
+import com.electivechaos.claimsadjuster.utils.CommonUtils;
 
 /**
  * Created by krishna on 11/25/17.
@@ -31,9 +32,16 @@ public class SplashScreenActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent i = new Intent(SplashScreenActivity.this,MainTabsActivity.class);
-                startActivity(i);
-                finish();
+                if(!CommonUtils.getReportByField(SplashScreenActivity.this).isEmpty() && !CommonUtils.getEmailId(SplashScreenActivity.this).isEmpty()) {
+                    Intent i = new Intent(SplashScreenActivity.this,MainTabsActivity.class);
+                    startActivity(i);
+                    finish();
+                }else {
+                    Intent i = new Intent(SplashScreenActivity.this,RegistrationActivity.class);
+                    startActivity(i);
+                    finish();
+                }
+
             }
         }, 4000);
     }
