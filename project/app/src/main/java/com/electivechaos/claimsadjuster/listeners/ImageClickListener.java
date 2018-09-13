@@ -9,5 +9,5 @@ import java.util.List;
  */
 
 public interface ImageClickListener
-{    void onImageSelectionChanged(List<Image> selcteImages);
+{    void onImageSelectionChanged(List<Image> selectedImages);
 }
