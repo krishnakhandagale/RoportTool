@@ -181,6 +181,7 @@ public class ReportListFragment extends Fragment {
                                     if(reportItemPOJO.getFilePath() != null && reportItemPOJO.getFilePath().isEmpty() == false){
                                         Intent pdfViewerIntent = new Intent(getContext(), PdfViewerActivity.class);
                                         pdfViewerIntent.putExtra("report_path", reportItemPOJO.getFilePath());
+                                        pdfViewerIntent.putExtra("report_title", reportItemPOJO.getReportTitle());
                                         startActivity(pdfViewerIntent);
                                     }else{
                                         Toast.makeText(getContext(),"Seems no pdf report was generated, please generate report and view again.",Toast.LENGTH_LONG).show();

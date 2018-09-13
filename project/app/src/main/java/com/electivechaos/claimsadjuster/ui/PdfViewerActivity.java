@@ -30,12 +30,15 @@ public class PdfViewerActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(CommonUtils.getReportByField(PdfViewerActivity.this));
+
 
         ImageView shareBottomButton = findViewById(R.id.shareBottomButton);
 
         final PDFView pdfView = findViewById(R.id.pdfView);
         String filePath = getIntent().getExtras().getString("report_path");
+        String pdfViewerTiltle = getIntent().getExtras().getString("report_title");
+
+        getSupportActionBar().setTitle(pdfViewerTiltle);
         final File file = new File(filePath);
 
         shareBottomButton.setOnClickListener(new View.OnClickListener() {

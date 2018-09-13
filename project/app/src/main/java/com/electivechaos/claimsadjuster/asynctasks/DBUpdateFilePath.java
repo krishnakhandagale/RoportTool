@@ -8,10 +8,12 @@ import android.graphics.Matrix;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.support.media.ExifInterface;
+import android.text.Layout;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 
+import com.electivechaos.claimsadjuster.Constants;
 import com.electivechaos.claimsadjuster.R;
 import com.electivechaos.claimsadjuster.database.CategoryListDBHelper;
 import com.electivechaos.claimsadjuster.pojo.ImageDetailsPOJO;
@@ -102,15 +104,12 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
         String dateString = simpleDateFormat.format(new Date());
         File destination = new File(Environment.getExternalStorageDirectory(), dateString + ".pdf");
 
-       // File destination = new File(Environment.getExternalStorageDirectory(), reportPOJO.getInsuredName() + ".pdf");
-
         FileOutputStream fo;
-        Font fontTitles = new Font(Font.FontFamily.TIMES_ROMAN, 16, Font.BOLD);
 
 
         int numberOfImagesPerPage = integers[0];
 
-        PDFDocHeader event = new PDFDocHeader(reportPOJO.getReportTitle());
+        PDFDocHeader event = new PDFDocHeader("");
         try{
             destination.createNewFile();
             fo = new FileOutputStream(destination);
@@ -119,48 +118,62 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
             PdfWriter pdfWriter = PdfWriter.getInstance(document, fo);
             document.open();
             pdfWriter.setPageEvent(event);
+            Font fontForReportTitle = new Font(Font.FontFamily.TIMES_ROMAN, Constants.FONT_SIZE_FIRST_HEADER, Font.BOLD);
 
-            PdfPTable firstTable = new PdfPTable(1);
-            firstTable.setHorizontalAlignment(Element.ALIGN_LEFT);
-            firstTable.setWidthPercentage(100);
+            Paragraph reportTitleParagraph = new Paragraph(reportPOJO.getReportTitle(),fontForReportTitle);
+            reportTitleParagraph.setAlignment(Element.ALIGN_CENTER);
+            document.add(reportTitleParagraph);
 
-            firstTable.addCell(getCellReportDetails(PdfPCell.ALIGN_LEFT, document));
-            if(CommonUtils.getGoogleMap(mContext).equals("true")) {
-                firstTable.addCell(getCellGoogleMapCell(PdfPCell.ALIGN_LEFT, document, pdfWriter));
-            }
-            document.add(firstTable);
-            document.add(new Paragraph(" "));
-            document.newPage();
+            PdfPTable propertyTable = new PdfPTable(2);
 
+            PdfPCell defaultCell1 = propertyTable.getDefaultCell();
+            defaultCell1.setBorder(PdfPCell.NO_BORDER);
 
-
-
-
-            // Now read property details
-            event.setHeader("Property Details");
-            PdfPTable propertyTable = new PdfPTable(1);
             propertyTable.setHorizontalAlignment(Element.ALIGN_LEFT);
             propertyTable.setWidthPercentage(100);
-            propertyTable.addCell(getCellPropertyDetails(PdfPCell.ALIGN_LEFT, document));
+
+
+            propertyTable.addCell(getCellReportDetails(Element.ALIGN_LEFT,document));
+            propertyTable.addCell(getCellReportAddressAndMap(Element.ALIGN_LEFT,document,pdfWriter));
+            propertyTable.addCell(getCellPropertyDetails(Element.ALIGN_LEFT,document));
+            propertyTable.addCell(getCellHouseNumber(Element.ALIGN_LEFT,document,pdfWriter,originalReportPojo));
+
+            propertyTable.completeRow();
             document.add(propertyTable);
 
             ArrayList<Label> labels = originalReportPojo.getLabelArrayList();
-            PdfPTable elevationTable = new PdfPTable(1);
-            elevationTable.setHorizontalAlignment(Element.ALIGN_LEFT);
-            elevationTable.setWidthPercentage(100);
+            boolean newPage = false;
 
-            elevationTable.addCell(getCellForElevationImages(PdfPCell.ALIGN_LEFT, document,pdfWriter,labels));
-            document.add(elevationTable);
-            document.newPage();
+            for(int i = 0 ; i< labels.get(0).getSelectedElevationImages().size(); i++){
+                if(!labels.get(0).getSelectedElevationImages().get(i).getImageUrl().isEmpty()){
+                    newPage = true;
+                    break;
+                }
+            }
 
+            if(newPage){
+                document.newPage();
+                event.setHeader("Elevation Images");
+                PdfPTable elevationTable = new PdfPTable(1);
+
+                elevationTable.setHorizontalAlignment(Element.ALIGN_LEFT);
+                elevationTable.setWidthPercentage(100);
+
+                elevationTable.addCell(getCellForElevationImages(Element.ALIGN_LEFT,document,pdfWriter,labels,event));
+                document.add(elevationTable);
+                document.newPage();
+
+            }
 
             //Now read labels and show images accordingly.
 
             ArrayList<Label> mLabels = reportPOJO.getLabelArrayList();
             for(int p=0;p <mLabels.size() ;p++) {
 
-               Label label = mLabels.get(p);
-                event.setHeader(label.getName());
+                Label label = mLabels.get(p);
+                if(!label.getName().equalsIgnoreCase("Risk Overview")){
+                    event.setHeader(label.getName());
+                }
 
                 ArrayList<ImageDetailsPOJO> selectedElevationImagesList = label.getSelectedElevationImages();
                 ArrayList<ImageDetailsPOJO> selectedImageList = label.getSelectedImages();
@@ -228,26 +241,6 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
 
                 document.newPage();
             }
-            else {
-                    if (!TextUtils.isEmpty(label.getHouseNumber())) {
-                        event.setHeader("Risk Overview");
-
-                        PdfPTable table = new PdfPTable(3);
-                        byte[] imageBytesResized;
-                        table.setWidths(new float[]{1, 5, 4});
-                        imageBytesResized = resizeImage(label.getHouseNumber(), (int) ((document.getPageSize().getWidth() / 2) - 100), (int) ((document.getPageSize().getHeight() / 2) - 100));
-                        com.itextpdf.text.Image img = com.itextpdf.text.Image.getInstance(imageBytesResized);
-                        table.setHorizontalAlignment(Element.ALIGN_LEFT);
-                        table.setWidthPercentage(100);
-                        table.addCell(getImageNumberPdfPCell("", PdfPCell.ALIGN_LEFT));
-                        table.addCell(getCellImageCell(img, PdfPCell.ALIGN_LEFT, document, 2));
-                        table.addCell(getCell("House Number", "House Number Image", PdfPCell.LEFT, document, 2));
-                        document.add(table);
-                        document.add(new Paragraph(" "));
-                        document.newPage();
-                    }
-
-                }
             }
 
             reportPOJO.setFilePath(destination.getAbsolutePath());
@@ -317,7 +310,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
 
     private PdfPCell getCell(String title, String description, int alignment, Document document, int perPage) {
         PdfPCell cell = new PdfPCell();
-        Font font=new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.NORMAL);
+        Font font=new Font(Font.FontFamily.TIMES_ROMAN, Constants.LABEL_FONT_VALUE_SIZE, Font.NORMAL);
         cell.addElement(new Phrase(title,font));
         cell.addElement(new Phrase(description,font));
         cell.setPaddingLeft(25f);
@@ -328,8 +321,8 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
     }
     private PdfPCell getCell(String title, String description, boolean isPointOfOrigin, boolean isOverview, boolean isDamage, int alignment, Document document, int perPage) {
         PdfPCell cell = new PdfPCell();
-        Font font=new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.NORMAL);
-        Font boldFont=new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD);
+        Font font=new Font(Font.FontFamily.TIMES_ROMAN, Constants.LABEL_FONT_VALUE_SIZE, Font.NORMAL);
+        Font boldFont=new Font(Font.FontFamily.TIMES_ROMAN, Constants.LABEL_FONT_SIZE, Font.BOLD);
         if(isPointOfOrigin){
             cell.addElement(new Phrase("Point Of Origin",boldFont));
         }
@@ -386,32 +379,114 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
         cell.setPadding(0);
         cell.setHorizontalAlignment(alignment);
         cell.setBorder(Rectangle.NO_BORDER);
-        cell.setFixedHeight(document.getPageSize().getHeight()/ 2 - 100);
-        Font fontTitles = new Font(Font.FontFamily.TIMES_ROMAN, 16, Font.BOLD);
+
+
+        Font fontTitles = new Font(Font.FontFamily.TIMES_ROMAN, Constants.LABEL_FONT_SIZE, Font.BOLD);
+        Font fontForValue = new Font(Font.FontFamily.TIMES_ROMAN, Constants.LABEL_FONT_VALUE_SIZE, Font.NORMAL);
+
+        cell.addElement(new Paragraph(""));
         cell.addElement(new Paragraph("Report Description", fontTitles));
-        cell.addElement(new Paragraph(reportPOJO.getReportDescription()));
+        cell.addElement(new Paragraph(reportPOJO.getReportDescription(),fontForValue));
         cell.addElement(new Paragraph(""));
         cell.addElement(new Paragraph("Insured Name", fontTitles));
-        cell.addElement(new Paragraph(reportPOJO.getInsuredName()));
+        cell.addElement(new Paragraph(reportPOJO.getInsuredName(),fontForValue));
         cell.addElement(new Paragraph(""));
         cell.addElement(new Paragraph("Claim Number", fontTitles));
-        cell.addElement(new Paragraph(reportPOJO.getClaimNumber()));
+        cell.addElement(new Paragraph(reportPOJO.getClaimNumber(),fontForValue));
         cell.addElement(new Paragraph(""));
 
-        if(CommonUtils.getReportByField(mContext).equals("enable")){
-            if(!reportPOJO.getReportBy().isEmpty()) {
-                cell.addElement(new Paragraph("Report By", fontTitles));
-                cell.addElement(new Paragraph(reportPOJO.getReportBy()));
-                cell.addElement(new Paragraph(""));
+        cell.addElement(new Paragraph("Report By", fontTitles));
+        cell.addElement(new Paragraph(CommonUtils.getReportByField(mContext),fontForValue));
+        cell.addElement(new Paragraph(""));
+
+        cell.setCalculatedHeight(cell.getHeight());
+
+        return cell;
+    }
+
+    private PdfPCell getCellReportAddressAndMap(int alignment, Document document,PdfWriter pdfWriter) throws DocumentException {
+        PdfPCell cell = new PdfPCell();
+        cell.setPaddingLeft(0f);
+        cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+        cell.setVerticalAlignment(Element.ALIGN_BOTTOM);
+         cell.setBorder(Rectangle.NO_BORDER);
+        cell.setFixedHeight((document.getPageSize().getHeight()/ 2) - 100);
+
+        if(CommonUtils.getGoogleMap(mContext).equals("true")){
+            com.itextpdf.text.Image imgMap = null;
+            if(!reportPOJO.getGoogleMapSnapShotFilePath().isEmpty()){
+
+                File file = new File(reportPOJO.getGoogleMapSnapShotFilePath());
+                if (file.exists()) {
+
+                    byte[] imgResized = resizeImage(reportPOJO.getGoogleMapSnapShotFilePath(), (int) document.getPageSize().getWidth() / 2, ((int) document.getPageSize().getHeight() / 2) - 100);
+                    try {
+                        imgMap = com.itextpdf.text.Image.getInstance(imgResized);
+                        PdfPTable imageTable = new PdfPTable(1);
+                        PdfPCell innerCell1 = new PdfPCell(imgMap, true);
+                        innerCell1.setPadding(0);
+                        innerCell1.setHorizontalAlignment(Element.ALIGN_LEFT);
+                        innerCell1.setVerticalAlignment(Element.ALIGN_BOTTOM);
+                        innerCell1.setBorder(Rectangle.NO_BORDER);
+                        innerCell1.setFixedHeight((float) ((document.getPageSize().getHeight() / 2) - 100));
+                        imageTable.addCell(innerCell1);
+                        cell.addElement(imageTable);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
             }
+
+            }
+
         }
 
-        LineSeparator ls = new LineSeparator();
-        ls.setLineColor(new BaseColor(99,100,99));
 
-        cell.addElement(new Chunk(ls));
-        cell.addElement(new Paragraph("Address", fontTitles));
-        cell.addElement(new Paragraph(reportPOJO.getAddressLine()));
+        return cell;
+    }
+
+    private PdfPCell getCellHouseNumber(int alignment, Document document,PdfWriter pdfWriter, ReportPOJO originalReportPojo) throws DocumentException {
+        PdfPCell cell = new PdfPCell();
+        cell.setPaddingLeft(0f);
+        cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+        cell.setVerticalAlignment(Element.ALIGN_BOTTOM);
+        cell.setBorder(Rectangle.NO_BORDER);
+        cell.setFixedHeight((document.getPageSize().getHeight()/4));
+
+        if(!originalReportPojo.getLabelArrayList().get(0).getHouseNumber().isEmpty()){
+
+            PdfPTable table = new PdfPTable(1);
+            byte[] imageBytesResized;
+            double imageCellHeight = (document.getPageSize().getHeight()/2);
+            imageBytesResized = resizeImage(originalReportPojo.getLabelArrayList().get(0).getHouseNumber(), (int) ((document.getPageSize().getWidth() / 3) - 100),(int)((document.getPageSize().getHeight() / 4)));
+            com.itextpdf.text.Image img = null;
+            try {
+                img = com.itextpdf.text.Image.getInstance(imageBytesResized);
+                PdfPCell cell1 = new PdfPCell();
+                cell1.setPadding(0);
+                cell1.setHorizontalAlignment(Element.ALIGN_LEFT);
+                cell1.setVerticalAlignment(Element.ALIGN_BOTTOM);
+                cell1.setBorder(Rectangle.NO_BORDER);
+                cell1.setFixedHeight((float) imageCellHeight);
+
+
+                PdfPTable imageTable = new PdfPTable(1);
+                PdfPCell innerCell1 = new PdfPCell(img, true);
+                innerCell1.setPadding(0);
+                innerCell1.setHorizontalAlignment(Element.ALIGN_LEFT);
+                innerCell1.setVerticalAlignment(Element.ALIGN_BOTTOM);
+                innerCell1.setBorder(Rectangle.NO_BORDER);
+                innerCell1.setFixedHeight((float)( imageCellHeight/4));
+                imageTable.addCell(innerCell1);
+                cell1.addElement(imageTable);
+
+                table.addCell(cell1);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            cell.addElement(table);
+
+        }
 
         return cell;
     }
@@ -423,64 +498,78 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
         cell.setPaddingBottom(10f);
         cell.setHorizontalAlignment(alignment);
         cell.setBorder(Rectangle.NO_BORDER);
-        Font fontTitles = new Font(Font.FontFamily.TIMES_ROMAN, 16, Font.BOLD);
+        Font fontTitles = new Font(Font.FontFamily.TIMES_ROMAN, Constants.LABEL_FONT_SIZE, Font.BOLD);
+        Font fontForValue = new Font(Font.FontFamily.TIMES_ROMAN, Constants.LABEL_FONT_VALUE_SIZE, Font.NORMAL);
 
         PropertyDetailsPOJO propertyDetailsPOJO = reportPOJO.getPropertyDetailsPOJO();
+
+        Chunk propDetailsTitleChunk = new Chunk("Property Details", fontTitles);
+        propDetailsTitleChunk.setUnderline(0.1f, -2f);
+
+        cell.addElement(propDetailsTitleChunk);
+
+        cell.addElement(new Paragraph(""));
+        cell.addElement(new Paragraph(""));
+
+        cell.addElement(new Paragraph("Address", fontTitles));
+        cell.addElement(new Paragraph(reportPOJO.getAddressLine(),fontForValue));
+
+        cell.addElement(new Paragraph(""));
 
         cell.addElement(new Paragraph("Inspection Date", fontTitles));
 
         if(propertyDetailsPOJO.getPropertyDate().isEmpty()) {
-            cell.addElement(new Paragraph("No date specified."));
+            cell.addElement(new Paragraph("No date specified.",fontForValue));
         }else {
-            cell.addElement(new Paragraph(propertyDetailsPOJO.getPropertyDate()));
+            cell.addElement(new Paragraph(propertyDetailsPOJO.getPropertyDate(),fontForValue));
         }
         cell.addElement(new Paragraph(""));
 
 
         cell.addElement(new Paragraph("Square footage", fontTitles));
         if(propertyDetailsPOJO.getSquareFootage().isEmpty()){
-            cell.addElement(new Paragraph("No square footage specified."));
+            cell.addElement(new Paragraph("No square footage specified.",fontForValue));
         }else {
-            cell.addElement(new Paragraph(String.valueOf(propertyDetailsPOJO.getSquareFootage())));
+            cell.addElement(new Paragraph(String.valueOf(propertyDetailsPOJO.getSquareFootage()),fontForValue));
         }
         cell.addElement(new Paragraph(""));
 
         cell.addElement(new Paragraph("Roof System", fontTitles));
         if(propertyDetailsPOJO.getRoofSystem().isEmpty()) {
-            cell.addElement(new Paragraph("No roof system specified."));
+            cell.addElement(new Paragraph("No roof system specified.",fontForValue));
         }else {
-            cell.addElement(new Paragraph(propertyDetailsPOJO.getRoofSystem()));
+            cell.addElement(new Paragraph(propertyDetailsPOJO.getRoofSystem(),fontForValue));
         }
         cell.addElement(new Paragraph(""));
 
         cell.addElement(new Paragraph("Siding", fontTitles));
 
         if(propertyDetailsPOJO.getSiding().isEmpty()) {
-            cell.addElement(new Paragraph("No siding type specified."));
+            cell.addElement(new Paragraph("No siding type specified.",fontForValue));
         }else {
-            cell.addElement(new Paragraph(propertyDetailsPOJO.getSiding()));
+            cell.addElement(new Paragraph(propertyDetailsPOJO.getSiding(),fontForValue));
         }
         cell.addElement(new Paragraph(""));
 
         cell.addElement(new Paragraph("Foundation", fontTitles));
         if(propertyDetailsPOJO.getFoundation().isEmpty()) {
-            cell.addElement(new Paragraph("No foundation type specified."));
+            cell.addElement(new Paragraph("No foundation type specified.",fontForValue));
         }else {
-            cell.addElement(new Paragraph(propertyDetailsPOJO.getFoundation()));
+            cell.addElement(new Paragraph(propertyDetailsPOJO.getFoundation(),fontForValue));
         }
         cell.addElement(new Paragraph(""));
 
         cell.addElement(new Paragraph("Building Type", fontTitles));
         if(propertyDetailsPOJO.getBuildingType().isEmpty()) {
-            cell.addElement(new Paragraph("No building type specified."));
+            cell.addElement(new Paragraph("No building type specified.",fontForValue));
         }else {
-            cell.addElement(new Paragraph(propertyDetailsPOJO.getBuildingType()));
+            cell.addElement(new Paragraph(propertyDetailsPOJO.getBuildingType(),fontForValue));
         }
 
         return cell;
     }
 
-    private PdfPCell getCellForElevationImages(int alignLeft, Document document, PdfWriter pdfWriter, ArrayList<Label> labels) {
+    private PdfPCell getCellForElevationImages(int alignLeft, Document document, PdfWriter pdfWriter, ArrayList<Label> labels, PDFDocHeader event) {
         PdfPCell cell = new PdfPCell();
         cell.setPadding(0);
         double remainingHeight = Math.abs(document.bottom() -  pdfWriter.getVerticalPosition(false));
@@ -497,13 +586,12 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
         defaultCell1.setBorder(PdfPCell.NO_BORDER);
 
         int count  = 0;
-
         for(int i = 0 ; i<selectedElevationImagesList1.size() ; i++){
             if (!selectedElevationImagesList1.get(i).getImageUrl().isEmpty()) {
                 byte[] imageBytesResized;
                 imageBytesResized = resizeImage(selectedElevationImagesList1.get(i).getImageUrl(), (int) ((document.getPageSize().getWidth() / 2 - 100)), (int) ((remainingHeight / 2)));
                 try {
-
+                    event.setHeader("Elevation Images");
                     count++ ;
                     com.itextpdf.text.Image img = null;
                     img = com.itextpdf.text.Image.getInstance(imageBytesResized);
@@ -529,7 +617,17 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
                     innerCell2.setHorizontalAlignment(Element.ALIGN_LEFT);
                     innerCell2.setBorder(Rectangle.NO_BORDER);
                     innerCell2.setFixedHeight(50);
-                    innerCell2.addElement(new Paragraph("Overview " +(i+1)));
+                    if(i == 0)
+                        innerCell2.addElement(new Paragraph("Front"));
+
+                    if(i == 1)
+                        innerCell2.addElement(new Paragraph("Back"));
+
+                    if(i == 2)
+                        innerCell2.addElement(new Paragraph("Left Side"));
+
+                    if(i == 3)
+                        innerCell2.addElement(new Paragraph("Right Side"));
 
                     imageTitleTable.addCell(innerCell2);
                     cell1.addElement(imageTitleTable);
@@ -610,18 +708,15 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
 
 
     class PDFDocHeader extends PdfPageEventHelper {
-        Font footerFont = new Font(Font.FontFamily.TIMES_ROMAN, 18, Font.ITALIC);
-        Font headerFont = new Font(Font.FontFamily.TIMES_ROMAN, 18, Font.BOLD);
+        Font footerFont = new Font(Font.FontFamily.TIMES_ROMAN, Constants.FOOTER_FONT_SIZE, Font.ITALIC);
+        Font headerFont = new Font(Font.FontFamily.TIMES_ROMAN, Constants.HEADER_FONT_SIZE, Font.BOLD,BaseColor.GRAY);
         String reportTitle;
-
         PDFDocHeader(String reportTitle) {
             this.reportTitle = reportTitle;
         }
-        public void setHeader(String reportTitle) {
+        private void setHeader(String reportTitle) {
             this.reportTitle = reportTitle;
         }
-
-
 
         @Override
         public void onEndPage(PdfWriter writer, Document document) {
@@ -630,12 +725,12 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
             ColumnText.showTextAligned(cb, Element.ALIGN_CENTER,
                     header,
                     (document.right() - document.left()) / 2 + document.leftMargin(),
-                    document.top() + 10, 0);
+                    document.top() + 20, 0);
             Phrase footer = new Phrase("Page " + writer.getPageNumber() + "", footerFont);
             ColumnText.showTextAligned(cb, Element.ALIGN_RIGHT,
                     footer,
                     (document.right()),
-                    document.bottom() - 10, 0);
+                    document.bottom() - 20, 0);
 
         }
     }

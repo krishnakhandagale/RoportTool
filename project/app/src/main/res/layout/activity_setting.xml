@@ -126,6 +126,8 @@
             android:paddingLeft="20dp"
             android:text="False"
             android:textColor="@drawable/custom_radio_button_text" />
+
+        
     </RadioGroup>
 
     <View
