@@ -114,6 +114,7 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
             @Override
             public void onMapReady(GoogleMap mMap) {
                 googleMap = mMap;
+                googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
 
                 mGoogleMapMarker = googleMap.addMarker(a);
 
@@ -267,7 +268,7 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
                                 mGoogleMapMarker.setTitle("Location");
                                 mGoogleMapMarker.setSnippet(likelyPlaces.get(0).getPlace().getAddress().toString());
 
-                                CameraPosition cameraPosition = new CameraPosition.Builder().target(currentLocation).zoom(20).build();
+                                CameraPosition cameraPosition = new CameraPosition.Builder().target(currentLocation).zoom(15).build();
                                 googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
                                 googleMap.getUiSettings().setMyLocationButtonEnabled(false);
                                 likelyPlaces.release();

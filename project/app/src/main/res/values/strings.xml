@@ -156,10 +156,10 @@
     <string name="image_quality_setting">Image Quality</string>
     <string name="map_setting">Google Map In Report</string>
     <string name="label_validation_msg">Label with same name already exists.</string>
-    <string name="enter_report_by">Report by</string>
+    <string name="enter_report_by">Name</string>
     <string name="report_by_field">Enable Report By Field</string>
     <string name="register">Register</string>
-    <string name="enter_email_id">Enter email id</string>
-    <string name="please_enter_report_by">Please enter report by.</string>
+    <string name="enter_email_id">Email</string>
+    <string name="please_enter_report_by">Please enter name.</string>
     <string name="please_enter_email_id">Please enter email id.</string>
 </resources>
