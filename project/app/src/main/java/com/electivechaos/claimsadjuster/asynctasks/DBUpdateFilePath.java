@@ -432,7 +432,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
             cell.addElement(new Paragraph(propertyDetailsPOJO.getBuildingType(),fontForValue));
         }
 
-        cell.setFixedHeight(document.getPageSize().getHeight() - 150);
+        cell.setFixedHeight(document.getPageSize().getHeight() - 100);
 
         return cell;
     }
@@ -444,7 +444,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
         cell.setHorizontalAlignment(Element.ALIGN_LEFT);
         cell.setVerticalAlignment(Element.ALIGN_TOP);
         cell.setBorder(Rectangle.NO_BORDER);
-        cell.setFixedHeight((document.getPageSize().getHeight()) - 150);
+        cell.setFixedHeight((document.getPageSize().getHeight()) - 100);
 
         PdfPTable tableForRightSide = new PdfPTable(1);
         tableForRightSide.setWidthPercentage(100f);
@@ -475,7 +475,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
                     cell.setHorizontalAlignment(Element.ALIGN_LEFT);
                     cell.setVerticalAlignment(Element.ALIGN_TOP);
                     cell.setBorder(Rectangle.NO_BORDER);
-                    cell.setFixedHeight((document.getPageSize().getHeight()/2) - 150);
+                    cell.setFixedHeight((document.getPageSize().getHeight()/2) - 100);
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (BadElementException e) {
@@ -507,15 +507,13 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
                 cell.setHorizontalAlignment(Element.ALIGN_LEFT);
                 cell.setVerticalAlignment(Element.ALIGN_BASELINE);
                 cell.setBorder(Rectangle.NO_BORDER);
-                cell.setFixedHeight((document.getPageSize().getHeight()/2) - 150);
+                cell.setFixedHeight((document.getPageSize().getHeight()/2) - 100);
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (BadElementException e) {
                 e.printStackTrace();
             }
-
         }
-
 
         return  cell;
     }
