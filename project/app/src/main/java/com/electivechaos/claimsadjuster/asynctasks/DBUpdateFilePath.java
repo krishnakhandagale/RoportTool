@@ -463,7 +463,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
         cell.addElement(Chunk.NEWLINE);
 
 
-        cell.addElement(new Paragraph("Address", fontTitles));
+        cell.addElement(new Paragraph("Risk Address", fontTitles));
         cell.addElement(new Paragraph(reportPOJO.getAddressLine(),fontForValue));
 
 
@@ -580,7 +580,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
                 cell.setHorizontalAlignment(Element.ALIGN_LEFT);
                 cell.setVerticalAlignment(Element.ALIGN_BASELINE);
                 cell.setBorder(Rectangle.NO_BORDER);
-                cell.setFixedHeight((document.getPageSize().getHeight()/2) - 100);
+                cell.setFixedHeight((document.getPageSize().getHeight()/4) );
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (BadElementException e) {
