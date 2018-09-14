@@ -162,7 +162,13 @@
     <string name="enter_email_id">Email</string>
     <string name="please_enter_report_by">Please enter name.</string>
     <string name="please_enter_email_id">Please enter email id.</string>
-    <string name="enter_report_description_setting">Description</string>
-    <string name="enter_report_title_setting">Title</string>
+    <string name="enter_report_description_setting">Report Description</string>
+    <string name="enter_report_title_setting">Report Title</string>
     <string name="please_enter_report_description">Please enter description.</string>
+    <string name="none">None</string>
+    <string name="satellite_view">Satellite View</string>
+    <string name="normal_view">Normal View</string>
+    <string name="high">High</string>
+    <string name="medium">Medium</string>
+    <string name="low">Low</string>
 </resources>

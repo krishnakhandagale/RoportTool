@@ -18,14 +18,14 @@
             app:popupTheme="@style/ThemeOverlay.AppCompat.ActionBar">
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 <LinearLayout
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     android:layout_width="match_parent"
     android:orientation="vertical"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <TextView
         android:layout_marginTop="20dp"
@@ -35,7 +35,8 @@
         android:layout_height="30dp"
         android:textColor="@color/grayDark"
         android:fontFamily="sans-serif-condensed"
-        android:text="@string/image_quality_setting"/>
+        android:text="@string/image_quality_setting"
+        android:layout_marginStart="20dp" />
     <View
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
@@ -58,8 +59,9 @@
             android:layout_height="40dp"
             android:fontFamily="sans-serif-condensed"
             android:paddingLeft="20dp"
-            android:text="Low"
-            android:textColor="@drawable/custom_radio_button_text" />
+            android:text="@string/low"
+            android:textColor="@drawable/custom_radio_button_text"
+            android:paddingStart="20dp" />
 
         <RadioButton
             android:id="@+id/radioMedium"
@@ -68,7 +70,7 @@
             android:checked="true"
             android:fontFamily="sans-serif-condensed"
             android:paddingLeft="20dp"
-            android:text="Medium"
+            android:text="@string/medium"
             android:textColor="@drawable/custom_radio_button_text" />
 
 
@@ -78,8 +80,9 @@
             android:layout_height="40dp"
             android:fontFamily="sans-serif-condensed"
             android:paddingLeft="20dp"
-            android:text="High"
-            android:textColor="@drawable/custom_radio_button_text" />
+            android:text="@string/high"
+            android:textColor="@drawable/custom_radio_button_text"
+            android:paddingStart="20dp" />
 
     </RadioGroup>
 
@@ -91,7 +94,8 @@
         android:layout_height="30dp"
         android:textColor="@color/grayDark"
         android:fontFamily="sans-serif-condensed"
-        android:text="@string/map_setting"/>
+        android:text="@string/map_setting"
+        android:layout_marginStart="20dp" />
     <View
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
@@ -115,7 +119,7 @@
             android:checked="true"
             android:fontFamily="sans-serif-condensed"
             android:paddingLeft="20dp"
-            android:text="Road Map"
+            android:text="@string/normal_view"
             android:textColor="@drawable/custom_radio_button_text" />
 
         <RadioButton
@@ -124,7 +128,7 @@
             android:layout_height="40dp"
             android:fontFamily="sans-serif-condensed"
             android:paddingLeft="20dp"
-            android:text="Satellite Map"
+            android:text="@string/satellite_view"
             android:textColor="@drawable/custom_radio_button_text" />
 
         <RadioButton
@@ -133,8 +137,9 @@
             android:layout_height="40dp"
             android:fontFamily="sans-serif-condensed"
             android:paddingLeft="20dp"
-            android:text="None"
-            android:textColor="@drawable/custom_radio_button_text" />
+            android:text="@string/none"
+            android:textColor="@drawable/custom_radio_button_text"
+            android:paddingStart="20dp" />
     </RadioGroup>
 
     <View
@@ -158,6 +163,7 @@
             android:layout_marginLeft="30dp">
 
             <EditText
+                android:fontFamily="sans-serif-condensed"
                 android:id="@+id/reportBy"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
@@ -165,6 +171,7 @@
                 android:textSize="16sp" />
         </android.support.design.widget.TextInputLayout>
         <ImageButton
+            android:layout_gravity="bottom"
             android:id="@+id/editBtn"
             android:background="@null"
             android:src="@drawable/ic_edit_black_16"
@@ -173,6 +180,7 @@
             android:layout_height="40dp" />
 
         <ImageButton
+            android:layout_gravity="bottom"
             android:id="@+id/doneBtn"
             android:background="@null"
             android:src="@drawable/ic_done"
@@ -195,16 +203,19 @@
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="3.3"
-            android:layout_marginLeft="30dp">
+            android:layout_marginLeft="30dp"
+            android:layout_marginStart="30dp">
 
             <EditText
+                android:fontFamily="sans-serif-condensed"
                 android:id="@+id/reportTitle"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:hint="@string/enter_report_title_setting"
-                android:textSize="16sp" />
+                android:textSize="14sp" />
         </android.support.design.widget.TextInputLayout>
         <ImageButton
+            android:layout_gravity="bottom"
             android:id="@+id/editReportTitle"
             android:background="@null"
             android:src="@drawable/ic_edit_black_16"
@@ -213,6 +224,7 @@
             android:layout_height="40dp" />
 
         <ImageButton
+            android:layout_gravity="bottom"
             android:id="@+id/doneReportTitle"
             android:background="@null"
             android:src="@drawable/ic_done"
@@ -234,20 +246,23 @@
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="3.3"
-            android:layout_marginLeft="30dp">
+            android:layout_marginLeft="30dp"
+            android:layout_marginStart="30dp">
 
             <EditText
+                android:fontFamily="sans-serif-condensed"
                 android:id="@+id/reportDescription"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:hint="@string/enter_report_description_setting"
-                android:textSize="16sp" />
+                android:textSize="14sp" />
         </android.support.design.widget.TextInputLayout>
         <ImageButton
             android:id="@+id/editReportDescription"
             android:background="@null"
             android:src="@drawable/ic_edit_black_16"
             android:layout_weight="0.7"
+            android:layout_gravity="bottom"
             android:layout_width="0dip"
             android:layout_height="40dp" />
 
@@ -256,6 +271,7 @@
             android:background="@null"
             android:src="@drawable/ic_done"
             android:layout_weight="0.7"
+            android:layout_gravity="bottom"
             android:visibility="invisible"
             android:layout_width="0dip"
             android:layout_height="40dp" />
