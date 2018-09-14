@@ -186,12 +186,15 @@ public class ClaimDetailsTabsFragment extends Fragment {
         }else {
             reportTitleEditText.setText(reportTitle);
         }
+
         if(TextUtils.isEmpty(reportDescription)){
             reportDescriptionEditText.setText(CommonUtils.getReportDescription(getActivity()).toString());
         }else {
             reportDescriptionEditText.setText(reportDescription);
-        } if(TextUtils.isEmpty(reportBy)){
-            reportDescriptionEditText.setText(CommonUtils.getReportByField(getActivity()).toString());
+        }
+
+        if(TextUtils.isEmpty(reportBy)){
+            reportByEditText.setText(CommonUtils.getReportByField(getActivity()).toString());
         }else {
             reportByEditText.setText(reportBy);
         }
