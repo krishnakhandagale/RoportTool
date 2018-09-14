@@ -894,7 +894,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
             CommonUtils.showSnackbarMessage(getString(R.string.enter_description_message), true, true, parentLayoutForMessages, AddEditReportActivity.this);
             return false;
         }else if(reportPOJO.getInsuredName().trim().isEmpty()){
-            CommonUtils.showSnackbarMessage(getString(R.string.enter_client_name_message), true, true, parentLayoutForMessages, AddEditReportActivity.this);
+            CommonUtils.showSnackbarMessage(getString(R.string.enter_insurance_name_message), true, true, parentLayoutForMessages, AddEditReportActivity.this);
             return false;
         }else if(reportPOJO.getClaimNumber().trim().isEmpty()){
             CommonUtils.showSnackbarMessage(getString(R.string.enter_claim_number_message), true, true, parentLayoutForMessages, AddEditReportActivity.this);
