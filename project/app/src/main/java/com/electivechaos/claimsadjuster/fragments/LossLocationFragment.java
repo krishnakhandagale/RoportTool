@@ -60,7 +60,7 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
     private GoogleApiClient mGoogleApiClient;
     private PlaceArrayAdapter mPlaceArrayAdapter;
     private AutoCompleteTextView mAutocompleteTextView;
-    private static final LatLngBounds BOUNDS_MOUNTAIN_VIEW = new LatLngBounds(new LatLng(37.398160, -122.180831), new LatLng(37.430610, -121.972090));
+    private static final LatLngBounds BOUNDS_MOUNTAIN_VIEW = new LatLngBounds(new LatLng(37.398160, -122.180831), new LatLng(37.430620, -121.972090));
     private LossLocationDataInterface lossLocationDataInterface;
 
     private String locationLat = "";
@@ -274,7 +274,7 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
                                 mGoogleMapMarker.setTitle("Location");
                                 mGoogleMapMarker.setSnippet(likelyPlaces.get(0).getPlace().getAddress().toString());
 
-                                CameraPosition cameraPosition = new CameraPosition.Builder().target(currentLocation).zoom(10).build();
+                                CameraPosition cameraPosition = new CameraPosition.Builder().target(currentLocation).zoom(20).build();
                                 if(cameraPosition != null) {
                                     googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
                                 }
