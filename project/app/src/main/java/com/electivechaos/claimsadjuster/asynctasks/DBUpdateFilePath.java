@@ -154,7 +154,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
                 elevationTable.setHorizontalAlignment(Element.ALIGN_LEFT);
                 elevationTable.setWidthPercentage(100);
 
-                elevationTable.addCell(getCellForElevationImages(Element.ALIGN_LEFT,document,pdfWriter,labels,event));
+                elevationTable.addCell(getCellForElevationImages(document,pdfWriter,labels,event));
                 document.add(elevationTable);
                 document.newPage();
 
@@ -522,7 +522,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
 
 
 
-    private PdfPCell getCellForElevationImages(int alignLeft, Document document, PdfWriter pdfWriter, ArrayList<Label> labels, PDFDocHeader event) {
+    private PdfPCell getCellForElevationImages(Document document, PdfWriter pdfWriter, ArrayList<Label> labels, PDFDocHeader event) {
         PdfPCell cell = new PdfPCell();
         cell.setPadding(0);
         double remainingHeight = Math.abs(document.bottom() -  pdfWriter.getVerticalPosition(false));
@@ -546,7 +546,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
                 try {
                     event.setHeader("Elevation Images", -1);
                     count++ ;
-                    com.itextpdf.text.Image img = null;
+                    com.itextpdf.text.Image img;
                     img = com.itextpdf.text.Image.getInstance(imageBytesResized);
                     PdfPCell cell1 = new PdfPCell();
                     cell1.setPadding(0);
