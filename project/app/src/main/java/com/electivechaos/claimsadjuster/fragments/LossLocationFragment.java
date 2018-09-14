@@ -268,8 +268,16 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
                                 mGoogleMapMarker.setTitle("Location");
                                 mGoogleMapMarker.setSnippet(likelyPlaces.get(0).getPlace().getAddress().toString());
 
-                                CameraPosition cameraPosition = new CameraPosition.Builder().target(currentLocation).zoom(15).build();
-                                googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                                CameraPosition cameraPosition = null;
+                                if(CommonUtils.getGoogleMap(getActivity()).equalsIgnoreCase("road")){
+                                    cameraPosition = new CameraPosition.Builder().target(currentLocation).zoom(10).build();
+                                }else if(CommonUtils.getGoogleMap(getActivity()).equalsIgnoreCase("satellite")){
+                                    cameraPosition = new CameraPosition.Builder().target(currentLocation).zoom(15).build();
+                                }
+                                if(cameraPosition != null) {
+                                    googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                                }
+
                                 googleMap.getUiSettings().setMyLocationButtonEnabled(false);
                                 likelyPlaces.release();
 

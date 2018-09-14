@@ -412,8 +412,8 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
          cell.setBorder(Rectangle.NO_BORDER);
         cell.setFixedHeight((document.getPageSize().getHeight()/ 2) - 100);
 
-        if(CommonUtils.getGoogleMap(mContext).equals("true")){
-            com.itextpdf.text.Image imgMap;
+        if(!CommonUtils.getGoogleMap(mContext).equalsIgnoreCase("none")){
+            com.itextpdf.text.Image imgMap = null;
             if(!reportPOJO.getGoogleMapSnapShotFilePath().isEmpty()){
 
                 File file = new File(reportPOJO.getGoogleMapSnapShotFilePath());

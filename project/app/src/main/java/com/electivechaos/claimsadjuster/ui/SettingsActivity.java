@@ -40,10 +40,11 @@ public class SettingsActivity extends AppCompatActivity {
         radioHigh = findViewById(R.id.radioHigh);
 
         RadioGroup radioGoogleMap = findViewById(R.id.radioMap);
-        final RadioButton radioMapActivate, radioMapDeactivate ;
+        final RadioButton radioMapRoad, radioMapSatellite, radioMapNone ;
 
-        radioMapActivate = findViewById(R.id.radioMapActivate);
-        radioMapDeactivate = findViewById(R.id.radioMapDeactivate);
+        radioMapRoad = findViewById(R.id.radioRoadMap);
+        radioMapSatellite = findViewById(R.id.radioSatelliteMap);
+        radioMapNone = findViewById(R.id.radioMapNone);
 
         final EditText reportByEditText = findViewById(R.id.reportBy);
         final ImageButton editReportByBtn = findViewById(R.id.editBtn);
@@ -66,19 +67,23 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
-        if(CommonUtils.getGoogleMap(SettingsActivity.this).equals("true")){
-            radioMapActivate.setChecked(true);
+        if(CommonUtils.getGoogleMap(SettingsActivity.this).equals("road")){
+            radioMapRoad.setChecked(true);
+        }else if(CommonUtils.getGoogleMap(SettingsActivity.this).equals("satellite")){
+            radioMapSatellite.setChecked(true);
         }else {
-            radioMapDeactivate.setChecked(true);
+            radioMapNone.setChecked(true);
         }
 
         radioGoogleMap.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if(radioMapActivate.isChecked()){
-                    CommonUtils.setGoogleMap("true",SettingsActivity.this);
+                if(radioMapNone.isChecked()){
+                    CommonUtils.setGoogleMap("none",SettingsActivity.this);
+                }else if(radioMapSatellite.isChecked()) {
+                    CommonUtils.setGoogleMap("satellite",SettingsActivity.this);
                 }else {
-                    CommonUtils.setGoogleMap("false",SettingsActivity.this);
+                    CommonUtils.setGoogleMap("road",SettingsActivity.this);
                 }
             }
         });
