@@ -413,7 +413,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
         cell.setFixedHeight((document.getPageSize().getHeight()/ 2) - 100);
 
         if(CommonUtils.getGoogleMap(mContext).equals("true")){
-            com.itextpdf.text.Image imgMap = null;
+            com.itextpdf.text.Image imgMap;
             if(!reportPOJO.getGoogleMapSnapShotFilePath().isEmpty()){
 
                 File file = new File(reportPOJO.getGoogleMapSnapShotFilePath());
@@ -624,10 +624,10 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
                         innerCell2.addElement(new Paragraph("Back"));
 
                     if(i == 2)
-                        innerCell2.addElement(new Paragraph("Left Side"));
+                        innerCell2.addElement(new Paragraph("Left"));
 
                     if(i == 3)
-                        innerCell2.addElement(new Paragraph("Right Side"));
+                        innerCell2.addElement(new Paragraph("Right"));
 
                     imageTitleTable.addCell(innerCell2);
                     cell1.addElement(imageTitleTable);
@@ -720,13 +720,14 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
 
         @Override
         public void onEndPage(PdfWriter writer, Document document) {
+
             PdfContentByte cb = writer.getDirectContent();
             Phrase header = new Phrase(reportTitle, headerFont);
             ColumnText.showTextAligned(cb, Element.ALIGN_CENTER,
                     header,
                     (document.right() - document.left()) / 2 + document.leftMargin(),
                     document.top() + 20, 0);
-            Phrase footer = new Phrase("Page " + writer.getPageNumber() + "", footerFont);
+            Phrase footer = new Phrase(reportPOJO.getClaimNumber()+" | "+reportPOJO.getInsuredName(), footerFont);
             ColumnText.showTextAligned(cb, Element.ALIGN_RIGHT,
                     footer,
                     (document.right()),
