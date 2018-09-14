@@ -7,4 +7,8 @@ public interface Constants {
     int HEADER_FONT_SIZE = 12;
     int FOOTER_FONT_SIZE = 9;
     int FONT_SIZE_FIRST_HEADER =  16;
+
+    String MAP_TYPE_ID_ROADMAP = "road";
+    String MAP_TYPE_ID_SATELLITE = "satellite";
+
 }

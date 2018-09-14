@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 
+import com.electivechaos.claimsadjuster.Constants;
 import com.electivechaos.claimsadjuster.R;
 import com.electivechaos.claimsadjuster.adapters.PlaceArrayAdapter;
 import com.electivechaos.claimsadjuster.interfaces.LossLocationDataInterface;
@@ -114,7 +115,12 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
             @Override
             public void onMapReady(GoogleMap mMap) {
                 googleMap = mMap;
-                googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+
+                if(CommonUtils.getGoogleMap(getActivity()).equalsIgnoreCase(Constants.MAP_TYPE_ID_ROADMAP)){
+                    googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+                }else if(CommonUtils.getGoogleMap(getActivity()).equalsIgnoreCase(Constants.MAP_TYPE_ID_SATELLITE)){
+                    googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+                }
 
                 mGoogleMapMarker = googleMap.addMarker(a);
 
@@ -269,10 +275,10 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
                                 mGoogleMapMarker.setSnippet(likelyPlaces.get(0).getPlace().getAddress().toString());
 
                                 CameraPosition cameraPosition = null;
-                                if(CommonUtils.getGoogleMap(getActivity()).equalsIgnoreCase("road")){
+                                if(CommonUtils.getGoogleMap(getActivity()).equalsIgnoreCase(Constants.MAP_TYPE_ID_ROADMAP)){
                                     cameraPosition = new CameraPosition.Builder().target(currentLocation).zoom(10).build();
-                                }else if(CommonUtils.getGoogleMap(getActivity()).equalsIgnoreCase("satellite")){
-                                    cameraPosition = new CameraPosition.Builder().target(currentLocation).zoom(15).build();
+                                }else if(CommonUtils.getGoogleMap(getActivity()).equalsIgnoreCase(Constants.MAP_TYPE_ID_SATELLITE)){
+                                    cameraPosition = new CameraPosition.Builder().target(currentLocation).zoom(10).build();
                                 }
                                 if(cameraPosition != null) {
                                     googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
