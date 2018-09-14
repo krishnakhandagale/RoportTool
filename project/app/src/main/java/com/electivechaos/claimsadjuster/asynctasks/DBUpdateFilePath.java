@@ -169,7 +169,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
                 for(int i = 0 ; i<selectedElevationImagesList1.size() ; i++){
                     if (!selectedElevationImagesList1.get(i).getImageUrl().isEmpty()) {
                         byte[] imageBytesResized;
-                        imageBytesResized = resizeImage(selectedElevationImagesList1.get(i).getImageUrl(), (int) ((document.getPageSize().getWidth() / 2 - 100)), (int) ((remainingHeight / 2)));
+                        imageBytesResized = resizeImage(selectedElevationImagesList1.get(i).getImageUrl(), (int) ((document.getPageSize().getWidth() / 2 - 100)), (int) ((remainingHeight / 2) -50));
                         try {
                             count++ ;
                             com.itextpdf.text.Image img;
@@ -188,6 +188,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
                             PdfPCell innerCell1 = new PdfPCell(img, true);
                             innerCell1.setPadding(0);
                             innerCell1.setHorizontalAlignment(Element.ALIGN_LEFT);
+                            innerCell1.setVerticalAlignment(Element.ALIGN_BOTTOM);
                             innerCell1.setBorder(Rectangle.NO_BORDER);
                             innerCell1.setFixedHeight((float) (remainingHeight / 2) - 50 );
 
@@ -195,6 +196,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
                             PdfPCell innerCell2 = new PdfPCell();
                             innerCell2.setPadding(0);
                             innerCell2.setHorizontalAlignment(Element.ALIGN_LEFT);
+                            innerCell2.setVerticalAlignment(Element.ALIGN_TOP);
                             innerCell2.setBorder(Rectangle.NO_BORDER);
                             innerCell2.setFixedHeight(50);
 
