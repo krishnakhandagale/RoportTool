@@ -149,19 +149,90 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
             if(newPage){
                 document.newPage();
                 event.setHeader("Elevation Images", -1);
-                PdfPTable elevationTable = new PdfPTable(1);
+
+                PdfPTable elevationTable = new PdfPTable(2);
 
                 elevationTable.setHorizontalAlignment(Element.ALIGN_LEFT);
                 elevationTable.setWidthPercentage(100);
 
-                elevationTable.addCell(getCellForElevationImages(document,pdfWriter,labels,event));
+
+                Label label1 = labels.get(0);
+                ArrayList<ImageDetailsPOJO> selectedElevationImagesList1 = label1.getSelectedElevationImages();
+
+                double remainingHeight = Math.abs(document.bottom() -  pdfWriter.getVerticalPosition(false));
+
+                PdfPCell defaultCellEleImages = elevationTable.getDefaultCell();
+                defaultCellEleImages.setBorder(PdfPCell.NO_BORDER);
+
+
+                int count  = 0;
+                for(int i = 0 ; i<selectedElevationImagesList1.size() ; i++){
+                    if (!selectedElevationImagesList1.get(i).getImageUrl().isEmpty()) {
+                        byte[] imageBytesResized;
+                        imageBytesResized = resizeImage(selectedElevationImagesList1.get(i).getImageUrl(), (int) ((document.getPageSize().getWidth() / 2 - 100)), (int) ((remainingHeight / 2)));
+                        try {
+                            count++ ;
+                            com.itextpdf.text.Image img;
+
+                            img = com.itextpdf.text.Image.getInstance(imageBytesResized);
+                            PdfPCell parentCell = new PdfPCell();
+                            parentCell.setPadding(0);
+                            parentCell.setHorizontalAlignment(Element.ALIGN_LEFT);
+                            parentCell.setBorder(Rectangle.NO_BORDER);
+                            parentCell.setFixedHeight((float) (remainingHeight) / 2);
+
+
+                            PdfPTable imageTable = new PdfPTable(1);
+                            imageTable.setWidthPercentage(100f);
+
+                            PdfPCell innerCell1 = new PdfPCell(img, true);
+                            innerCell1.setPadding(0);
+                            innerCell1.setHorizontalAlignment(Element.ALIGN_LEFT);
+                            innerCell1.setBorder(Rectangle.NO_BORDER);
+                            innerCell1.setFixedHeight((float) (remainingHeight / 2) - 50 );
+
+
+                            PdfPCell innerCell2 = new PdfPCell();
+                            innerCell2.setPadding(0);
+                            innerCell2.setHorizontalAlignment(Element.ALIGN_LEFT);
+                            innerCell2.setBorder(Rectangle.NO_BORDER);
+                            innerCell2.setFixedHeight(50);
+
+                            if(i == 0)
+                                innerCell2.addElement(new Paragraph("Front"));
+
+                            if(i == 1)
+                                innerCell2.addElement(new Paragraph("Back"));
+
+                            if(i == 2)
+                                innerCell2.addElement(new Paragraph("Left"));
+
+                            if(i == 3)
+                                innerCell2.addElement(new Paragraph("Right"));
+
+                            imageTable.addCell(innerCell1);
+                            imageTable.addCell(innerCell2);
+
+                            parentCell.addElement(imageTable);
+
+                            elevationTable.addCell(parentCell);
+
+                        } catch (BadElementException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                if(count == 1 || count == 3){
+                    elevationTable.completeRow();
+                }
                 document.add(elevationTable);
                 document.newPage();
 
             }
 
             //Now read labels and show images accordingly.
-
             ArrayList<Label> mLabels = reportPOJO.getLabelArrayList();
             for(int p=0;p <mLabels.size() ;p++) {
 
@@ -517,92 +588,6 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
 
         return  cell;
     }
-
-
-
-
-
-    private PdfPCell getCellForElevationImages(Document document, PdfWriter pdfWriter, ArrayList<Label> labels, PDFDocHeader event) {
-        PdfPCell cell = new PdfPCell();
-        cell.setPadding(0);
-        double remainingHeight = Math.abs(document.bottom() -  pdfWriter.getVerticalPosition(false));
-        cell.setFixedHeight((float) remainingHeight);
-        cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-        cell.setBorder(Rectangle.NO_BORDER);
-
-        Label label1 = labels.get(0);
-        ArrayList<ImageDetailsPOJO> selectedElevationImagesList1 = label1.getSelectedElevationImages();
-
-        PdfPTable elevationTable = new PdfPTable(2);
-
-        PdfPCell defaultCell1 = elevationTable.getDefaultCell();
-        defaultCell1.setBorder(PdfPCell.NO_BORDER);
-
-        int count  = 0;
-        for(int i = 0 ; i<selectedElevationImagesList1.size() ; i++){
-            if (!selectedElevationImagesList1.get(i).getImageUrl().isEmpty()) {
-                byte[] imageBytesResized;
-                imageBytesResized = resizeImage(selectedElevationImagesList1.get(i).getImageUrl(), (int) ((document.getPageSize().getWidth() / 2 - 100)), (int) ((remainingHeight / 2)));
-                try {
-                    event.setHeader("Elevation Images", -1);
-                    count++ ;
-                    com.itextpdf.text.Image img;
-                    img = com.itextpdf.text.Image.getInstance(imageBytesResized);
-                    PdfPCell cell1 = new PdfPCell();
-                    cell1.setPadding(0);
-                    cell1.setHorizontalAlignment(Element.ALIGN_LEFT);
-                    cell1.setBorder(Rectangle.NO_BORDER);
-                    cell1.setFixedHeight((float) (remainingHeight) / 2);
-
-
-                    PdfPTable imageTable = new PdfPTable(1);
-                    PdfPCell innerCell1 = new PdfPCell(img, true);
-                    innerCell1.setPadding(0);
-                    innerCell1.setHorizontalAlignment(Element.ALIGN_LEFT);
-                    innerCell1.setBorder(Rectangle.NO_BORDER);
-                    innerCell1.setFixedHeight((float) (remainingHeight / 2) - 50);
-                    imageTable.addCell(innerCell1);
-                    cell1.addElement(imageTable);
-
-                    PdfPTable imageTitleTable = new PdfPTable(1);
-                    PdfPCell innerCell2 = new PdfPCell();
-                    innerCell2.setPadding(0);
-                    innerCell2.setHorizontalAlignment(Element.ALIGN_LEFT);
-                    innerCell2.setBorder(Rectangle.NO_BORDER);
-                    innerCell2.setFixedHeight(50);
-                    if(i == 0)
-                        innerCell2.addElement(new Paragraph("Front"));
-
-                    if(i == 1)
-                        innerCell2.addElement(new Paragraph("Back"));
-
-                    if(i == 2)
-                        innerCell2.addElement(new Paragraph("Left"));
-
-                    if(i == 3)
-                        innerCell2.addElement(new Paragraph("Right"));
-
-                    imageTitleTable.addCell(innerCell2);
-                    cell1.addElement(imageTitleTable);
-
-                    elevationTable.addCell(cell1);
-
-                } catch (BadElementException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        if(count == 1 || count == 3){
-            elevationTable.completeRow();
-        }
-        cell.addElement(elevationTable);
-
-        return cell;
-
-    }
-
 
     private byte[] resizeImage(Bitmap image, int orientation) {
 

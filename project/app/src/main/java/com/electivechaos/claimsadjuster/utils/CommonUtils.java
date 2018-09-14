@@ -339,9 +339,13 @@ public class CommonUtils {
 
 
     public static String getGoogleMap(Context context){
-        SharedPreferences sharedPref = context.getSharedPreferences("map",Context.MODE_PRIVATE);
-        String googleMap = sharedPref.getString("GoogleMap", "");
-        return googleMap;
+        if(context !=null){
+            SharedPreferences sharedPref = context.getSharedPreferences("map",Context.MODE_PRIVATE);
+            return sharedPref.getString("GoogleMap", "");
+        }else {
+            return  "";
+        }
+
     }
 
     public static void clearGoogleMap(Context context){
