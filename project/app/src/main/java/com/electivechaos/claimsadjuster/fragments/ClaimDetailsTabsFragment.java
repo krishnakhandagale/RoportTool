@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,18 +62,13 @@ public class ClaimDetailsTabsFragment extends Fragment {
         claimNumberEditText = view.findViewById(R.id.claimNumber);
         reportByEditText = view.findViewById(R.id.reportBy);
 
-        if(!CommonUtils.getReportByField(getActivity()).equals("enable")){
-            reportByEditText.setVisibility(View.GONE);
-        }else {
-            reportByEditText.setVisibility(View.VISIBLE);
-            reportByEditText.setText(reportBy);
-        }
 
+        //TODO :: Remove all report by stuff from db, callbacks and from this fragment
 
-        reportTitleEditText.setText(reportTitle);
-        reportDescriptionEditText.setText(reportDescription);
-        clientNameEditText.setText(clientName);
-        claimNumberEditText.setText(claimNumber);
+//        reportTitleEditText.setText(reportTitle);
+//        reportDescriptionEditText.setText(reportDescription);
+//        clientNameEditText.setText(clientName);
+//        claimNumberEditText.setText(claimNumber);
 
 
         reportTitleEditText.addTextChangedListener(new TextWatcher() {
@@ -185,8 +181,20 @@ public class ClaimDetailsTabsFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        reportTitleEditText.setText(reportTitle);
-        reportDescriptionEditText.setText(reportDescription);
+        if(TextUtils.isEmpty(reportTitle)){
+            reportTitleEditText.setText(CommonUtils.getReportTitle(getActivity()).toString());
+        }else {
+            reportTitleEditText.setText(reportTitle);
+        }
+        if(TextUtils.isEmpty(reportDescription)){
+            reportDescriptionEditText.setText(CommonUtils.getReportDescription(getActivity()).toString());
+        }else {
+            reportDescriptionEditText.setText(reportDescription);
+        } if(TextUtils.isEmpty(reportBy)){
+            reportDescriptionEditText.setText(CommonUtils.getReportByField(getActivity()).toString());
+        }else {
+            reportByEditText.setText(reportBy);
+        }
         clientNameEditText.setText(clientName);
         claimNumberEditText.setText(claimNumber);
     }
