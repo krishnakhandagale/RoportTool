@@ -352,53 +352,111 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
         return cell;
     }
 
-    private PdfPCell getCellGoogleMapCell(int alignment, Document document, PdfWriter pdfWriter) throws IOException, DocumentException {
-        com.itextpdf.text.Image imgMap = null;
-        if(!reportPOJO.getGoogleMapSnapShotFilePath().isEmpty()){
-
-            File file = new File(reportPOJO.getGoogleMapSnapShotFilePath());
-            if (file.exists()) {
-                double remainingHeight = Math.abs(document.bottom() -  pdfWriter.getVerticalPosition(true));
-                byte[] imgResized = resizeImage(reportPOJO.getGoogleMapSnapShotFilePath(), (int) document.getPageSize().getWidth()/2, (int) remainingHeight/2);
-                imgMap = com.itextpdf.text.Image.getInstance(imgResized);
-            }
-
-        }
-
-        PdfPCell cell = new PdfPCell(imgMap, true);
-        cell.setPadding(0);
-        cell.setHorizontalAlignment(alignment);
-        cell.setBorder(Rectangle.NO_BORDER);
-        cell.setFixedHeight(document.getPageSize().getHeight()/ 2 - 100);
-
-        return cell;
-    }
-
-    private PdfPCell getCellReportDetails(int alignment, Document document) throws DocumentException {
+    private PdfPCell getCellReportDetails(int alignment, Document document) {
         PdfPCell cell = new PdfPCell();
         cell.setPadding(0);
         cell.setHorizontalAlignment(alignment);
         cell.setBorder(Rectangle.NO_BORDER);
 
 
+        PropertyDetailsPOJO propertyDetailsPOJO = reportPOJO.getPropertyDetailsPOJO();
+
         Font fontTitles = new Font(Font.FontFamily.TIMES_ROMAN, Constants.LABEL_FONT_SIZE, Font.BOLD);
         Font fontForValue = new Font(Font.FontFamily.TIMES_ROMAN, Constants.LABEL_FONT_VALUE_SIZE, Font.NORMAL);
 
-        cell.addElement(new Paragraph(""));
         cell.addElement(new Paragraph("Report Description", fontTitles));
         cell.addElement(new Paragraph(reportPOJO.getReportDescription(),fontForValue));
-        cell.addElement(new Paragraph(""));
+        cell.addElement(Chunk.NEWLINE);
+
+        cell.addElement(new Paragraph("Inspection Date", fontTitles));
+
+        if(propertyDetailsPOJO.getPropertyDate().isEmpty()) {
+            cell.addElement(new Paragraph("No date specified.",fontForValue));
+        }else {
+            cell.addElement(new Paragraph(propertyDetailsPOJO.getPropertyDate(),fontForValue));
+        }
+        cell.addElement(Chunk.NEWLINE);
         cell.addElement(new Paragraph("Insured Name", fontTitles));
         cell.addElement(new Paragraph(reportPOJO.getInsuredName(),fontForValue));
-        cell.addElement(new Paragraph(""));
+        cell.addElement(Chunk.NEWLINE);
         cell.addElement(new Paragraph("Claim Number", fontTitles));
         cell.addElement(new Paragraph(reportPOJO.getClaimNumber(),fontForValue));
-        cell.addElement(new Paragraph(""));
+        cell.addElement(Chunk.NEWLINE);
 
         cell.addElement(new Paragraph("Report By", fontTitles));
         cell.addElement(new Paragraph(CommonUtils.getReportByField(mContext),fontForValue));
-        cell.addElement(new Paragraph(""));
 
+
+        cell.addElement(Chunk.NEWLINE);
+        cell.addElement(Chunk.NEWLINE);
+
+
+        Chunk propDetailsTitleChunk = new Chunk("Property Details", fontTitles);
+        propDetailsTitleChunk.setUnderline(0.1f, -2f);
+
+        cell.addElement(propDetailsTitleChunk);
+
+        cell.addElement(Chunk.NEWLINE);
+        cell.addElement(Chunk.NEWLINE);
+
+
+        cell.addElement(new Paragraph("Address", fontTitles));
+        cell.addElement(new Paragraph(reportPOJO.getAddressLine(),fontForValue));
+
+
+        cell.addElement(Chunk.NEWLINE);
+
+
+        cell.addElement(new Paragraph("Square footage", fontTitles));
+        if(propertyDetailsPOJO.getSquareFootage().isEmpty()){
+            cell.addElement(new Paragraph("No square footage specified.",fontForValue));
+        }else {
+            cell.addElement(new Paragraph(String.valueOf(propertyDetailsPOJO.getSquareFootage()),fontForValue));
+        }
+        cell.addElement(Chunk.NEWLINE);
+
+        cell.addElement(new Paragraph("Roof System", fontTitles));
+        if(propertyDetailsPOJO.getRoofSystem().isEmpty()) {
+            cell.addElement(new Paragraph("No roof system specified.",fontForValue));
+        }else {
+            cell.addElement(new Paragraph(propertyDetailsPOJO.getRoofSystem(),fontForValue));
+        }
+        cell.addElement(Chunk.NEWLINE);
+
+        cell.addElement(new Paragraph("Siding", fontTitles));
+
+        if(propertyDetailsPOJO.getSiding().isEmpty()) {
+            cell.addElement(new Paragraph("No siding type specified.",fontForValue));
+        }else {
+            cell.addElement(new Paragraph(propertyDetailsPOJO.getSiding(),fontForValue));
+        }
+        cell.addElement(Chunk.NEWLINE);
+
+        cell.addElement(new Paragraph("Foundation", fontTitles));
+        if(propertyDetailsPOJO.getFoundation().isEmpty()) {
+            cell.addElement(new Paragraph("No foundation type specified.",fontForValue));
+        }else {
+            cell.addElement(new Paragraph(propertyDetailsPOJO.getFoundation(),fontForValue));
+        }
+        cell.addElement(Chunk.NEWLINE);
+
+        cell.addElement(new Paragraph("Building Type", fontTitles));
+        if(propertyDetailsPOJO.getBuildingType().isEmpty()) {
+            cell.addElement(new Paragraph("No building type specified.",fontForValue));
+        }else {
+            cell.addElement(new Paragraph(propertyDetailsPOJO.getBuildingType(),fontForValue));
+        }
+
+        cell.setCalculatedHeight(cell.getHeight());
+
+        return cell;
+    }
+
+    private PdfPCell getCellPropertyDetails(int alignment, Document document) {
+        PdfPCell cell = new PdfPCell();
+        cell.setPaddingBottom(10f);
+        cell.setBorder(Rectangle.NO_BORDER);
+        cell.setHorizontalAlignment(alignment);
         cell.setCalculatedHeight(cell.getHeight());
 
         return cell;
@@ -408,12 +466,12 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
         PdfPCell cell = new PdfPCell();
         cell.setPaddingLeft(0f);
         cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-        cell.setVerticalAlignment(Element.ALIGN_BOTTOM);
+        cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
          cell.setBorder(Rectangle.NO_BORDER);
         cell.setFixedHeight((document.getPageSize().getHeight()/ 2) - 100);
 
         if(!CommonUtils.getGoogleMap(mContext).equalsIgnoreCase("none")){
-            com.itextpdf.text.Image imgMap = null;
+            com.itextpdf.text.Image imgMap;
             if(!reportPOJO.getGoogleMapSnapShotFilePath().isEmpty()){
 
                 File file = new File(reportPOJO.getGoogleMapSnapShotFilePath());
@@ -426,9 +484,9 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
                         PdfPCell innerCell1 = new PdfPCell(imgMap, true);
                         innerCell1.setPadding(0);
                         innerCell1.setHorizontalAlignment(Element.ALIGN_LEFT);
-                        innerCell1.setVerticalAlignment(Element.ALIGN_BOTTOM);
+                        innerCell1.setVerticalAlignment(Element.ALIGN_MIDDLE);
                         innerCell1.setBorder(Rectangle.NO_BORDER);
-                        innerCell1.setFixedHeight((float) ((document.getPageSize().getHeight() / 2) - 100));
+                        innerCell1.setFixedHeight((document.getPageSize().getHeight() / 2) - 100);
                         imageTable.addCell(innerCell1);
                         cell.addElement(imageTable);
                     } catch (IOException e) {
@@ -448,7 +506,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
         PdfPCell cell = new PdfPCell();
         cell.setPaddingLeft(0f);
         cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-        cell.setVerticalAlignment(Element.ALIGN_BOTTOM);
+        cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
         cell.setBorder(Rectangle.NO_BORDER);
         cell.setFixedHeight((document.getPageSize().getHeight()/4));
 
@@ -458,22 +516,23 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
             byte[] imageBytesResized;
             double imageCellHeight = (document.getPageSize().getHeight()/2);
             imageBytesResized = resizeImage(originalReportPojo.getLabelArrayList().get(0).getHouseNumber(), (int) ((document.getPageSize().getWidth() / 3) - 100),(int)((document.getPageSize().getHeight() / 4)));
-            com.itextpdf.text.Image img = null;
+            com.itextpdf.text.Image img;
             try {
                 img = com.itextpdf.text.Image.getInstance(imageBytesResized);
                 PdfPCell cell1 = new PdfPCell();
                 cell1.setPadding(0);
                 cell1.setHorizontalAlignment(Element.ALIGN_LEFT);
-                cell1.setVerticalAlignment(Element.ALIGN_BOTTOM);
+                cell1.setVerticalAlignment(Element.ALIGN_MIDDLE);
                 cell1.setBorder(Rectangle.NO_BORDER);
                 cell1.setFixedHeight((float) imageCellHeight);
 
 
                 PdfPTable imageTable = new PdfPTable(1);
                 PdfPCell innerCell1 = new PdfPCell(img, true);
+                imageTable.setWidthPercentage(100);
                 innerCell1.setPadding(0);
                 innerCell1.setHorizontalAlignment(Element.ALIGN_LEFT);
-                innerCell1.setVerticalAlignment(Element.ALIGN_BOTTOM);
+                innerCell1.setVerticalAlignment(Element.ALIGN_MIDDLE);
                 innerCell1.setBorder(Rectangle.NO_BORDER);
                 innerCell1.setFixedHeight((float)( imageCellHeight/4));
                 imageTable.addCell(innerCell1);
@@ -493,81 +552,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
 
 
 
-    private PdfPCell getCellPropertyDetails(int alignment, Document document) throws DocumentException {
-        PdfPCell cell = new PdfPCell();
-        cell.setPaddingBottom(10f);
-        cell.setHorizontalAlignment(alignment);
-        cell.setBorder(Rectangle.NO_BORDER);
-        Font fontTitles = new Font(Font.FontFamily.TIMES_ROMAN, Constants.LABEL_FONT_SIZE, Font.BOLD);
-        Font fontForValue = new Font(Font.FontFamily.TIMES_ROMAN, Constants.LABEL_FONT_VALUE_SIZE, Font.NORMAL);
 
-        PropertyDetailsPOJO propertyDetailsPOJO = reportPOJO.getPropertyDetailsPOJO();
-
-        Chunk propDetailsTitleChunk = new Chunk("Property Details", fontTitles);
-        propDetailsTitleChunk.setUnderline(0.1f, -2f);
-
-        cell.addElement(propDetailsTitleChunk);
-
-        cell.addElement(new Paragraph(""));
-        cell.addElement(new Paragraph(""));
-
-        cell.addElement(new Paragraph("Address", fontTitles));
-        cell.addElement(new Paragraph(reportPOJO.getAddressLine(),fontForValue));
-
-        cell.addElement(new Paragraph(""));
-
-        cell.addElement(new Paragraph("Inspection Date", fontTitles));
-
-        if(propertyDetailsPOJO.getPropertyDate().isEmpty()) {
-            cell.addElement(new Paragraph("No date specified.",fontForValue));
-        }else {
-            cell.addElement(new Paragraph(propertyDetailsPOJO.getPropertyDate(),fontForValue));
-        }
-        cell.addElement(new Paragraph(""));
-
-
-        cell.addElement(new Paragraph("Square footage", fontTitles));
-        if(propertyDetailsPOJO.getSquareFootage().isEmpty()){
-            cell.addElement(new Paragraph("No square footage specified.",fontForValue));
-        }else {
-            cell.addElement(new Paragraph(String.valueOf(propertyDetailsPOJO.getSquareFootage()),fontForValue));
-        }
-        cell.addElement(new Paragraph(""));
-
-        cell.addElement(new Paragraph("Roof System", fontTitles));
-        if(propertyDetailsPOJO.getRoofSystem().isEmpty()) {
-            cell.addElement(new Paragraph("No roof system specified.",fontForValue));
-        }else {
-            cell.addElement(new Paragraph(propertyDetailsPOJO.getRoofSystem(),fontForValue));
-        }
-        cell.addElement(new Paragraph(""));
-
-        cell.addElement(new Paragraph("Siding", fontTitles));
-
-        if(propertyDetailsPOJO.getSiding().isEmpty()) {
-            cell.addElement(new Paragraph("No siding type specified.",fontForValue));
-        }else {
-            cell.addElement(new Paragraph(propertyDetailsPOJO.getSiding(),fontForValue));
-        }
-        cell.addElement(new Paragraph(""));
-
-        cell.addElement(new Paragraph("Foundation", fontTitles));
-        if(propertyDetailsPOJO.getFoundation().isEmpty()) {
-            cell.addElement(new Paragraph("No foundation type specified.",fontForValue));
-        }else {
-            cell.addElement(new Paragraph(propertyDetailsPOJO.getFoundation(),fontForValue));
-        }
-        cell.addElement(new Paragraph(""));
-
-        cell.addElement(new Paragraph("Building Type", fontTitles));
-        if(propertyDetailsPOJO.getBuildingType().isEmpty()) {
-            cell.addElement(new Paragraph("No building type specified.",fontForValue));
-        }else {
-            cell.addElement(new Paragraph(propertyDetailsPOJO.getBuildingType(),fontForValue));
-        }
-
-        return cell;
-    }
 
     private PdfPCell getCellForElevationImages(int alignLeft, Document document, PdfWriter pdfWriter, ArrayList<Label> labels, PDFDocHeader event) {
         PdfPCell cell = new PdfPCell();
