@@ -145,7 +145,7 @@
         android:background="@color/grayLight"/>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="15dp"
         android:orientation="horizontal"
         android:weightSum="4"
         android:layout_width="match_parent"
@@ -184,13 +184,6 @@
 
     </LinearLayout>
 
-    <View
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_width="fill_parent"
-        android:layout_height="2dp"
-        android:background="@color/grayLight"/>
-
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_marginTop="10dp"
         android:orientation="horizontal"
@@ -208,7 +201,7 @@
                 android:id="@+id/reportTitle"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:hint="@string/enter_report_title"
+                android:hint="@string/enter_report_title_setting"
                 android:textSize="16sp" />
         </android.support.design.widget.TextInputLayout>
         <ImageButton
@@ -228,6 +221,44 @@
             android:layout_width="0dip"
             android:layout_height="40dp" />
 
+
+    </LinearLayout>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:weightSum="4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="3.3"
+            android:layout_marginLeft="30dp">
+
+            <EditText
+                android:id="@+id/reportDescription"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:hint="@string/enter_report_description_setting"
+                android:textSize="16sp" />
+        </android.support.design.widget.TextInputLayout>
+        <ImageButton
+            android:id="@+id/editReportDescription"
+            android:background="@null"
+            android:src="@drawable/ic_edit_black_16"
+            android:layout_weight="0.7"
+            android:layout_width="0dip"
+            android:layout_height="40dp" />
+
+        <ImageButton
+            android:id="@+id/doneReportDescription"
+            android:background="@null"
+            android:src="@drawable/ic_done"
+            android:layout_weight="0.7"
+            android:visibility="invisible"
+            android:layout_width="0dip"
+            android:layout_height="40dp" />
 
     </LinearLayout>
 

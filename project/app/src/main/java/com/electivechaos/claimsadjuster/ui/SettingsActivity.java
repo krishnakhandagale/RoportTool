@@ -12,7 +12,9 @@ import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.electivechaos.claimsadjuster.Constants;
 import com.electivechaos.claimsadjuster.R;
+import com.electivechaos.claimsadjuster.interfaces.ClaimDetailsDataInterface;
 import com.electivechaos.claimsadjuster.utils.CommonUtils;
 
 public class SettingsActivity extends AppCompatActivity {
@@ -50,8 +52,24 @@ public class SettingsActivity extends AppCompatActivity {
         final ImageButton editReportByBtn = findViewById(R.id.editBtn);
         final ImageButton doneReportByBtn = findViewById(R.id.doneBtn);
 
+        final EditText reportTitleEditText = findViewById(R.id.reportTitle);
+        final ImageButton editReportTitleBtn = findViewById(R.id.editReportTitle);
+        final ImageButton doneReportTitleBtn = findViewById(R.id.doneReportTitle);
+
+        final EditText reportDescriptionEditText = findViewById(R.id.reportDescription);
+        final ImageButton editReportDescriptionBtn = findViewById(R.id.editReportDescription);
+        final ImageButton doneReportDescriptionBtn = findViewById(R.id.doneReportDescription);
+
         if(!CommonUtils.getReportByField(this).isEmpty()){
             reportByEditText.setText(CommonUtils.getReportByField(this));
+        }
+
+        if(!CommonUtils.getReportTitle(this).isEmpty()){
+            reportTitleEditText.setText(CommonUtils.getReportTitle(this));
+        }
+
+        if(!CommonUtils.getReportDescription(this).isEmpty()){
+            reportDescriptionEditText.setText(CommonUtils.getReportDescription(this));
         }
 
         radioQuality.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -67,9 +85,9 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
-        if(CommonUtils.getGoogleMap(SettingsActivity.this).equals("road")){
+        if(CommonUtils.getGoogleMap(SettingsActivity.this).equals(Constants.MAP_TYPE_ID_ROADMAP)){
             radioMapRoad.setChecked(true);
-        }else if(CommonUtils.getGoogleMap(SettingsActivity.this).equals("satellite")){
+        }else if(CommonUtils.getGoogleMap(SettingsActivity.this).equals(Constants.MAP_TYPE_ID_SATELLITE)){
             radioMapSatellite.setChecked(true);
         }else {
             radioMapNone.setChecked(true);
@@ -81,9 +99,9 @@ public class SettingsActivity extends AppCompatActivity {
                 if(radioMapNone.isChecked()){
                     CommonUtils.setGoogleMap("none",SettingsActivity.this);
                 }else if(radioMapSatellite.isChecked()) {
-                    CommonUtils.setGoogleMap("satellite",SettingsActivity.this);
+                    CommonUtils.setGoogleMap(Constants.MAP_TYPE_ID_SATELLITE,SettingsActivity.this);
                 }else {
-                    CommonUtils.setGoogleMap("road",SettingsActivity.this);
+                    CommonUtils.setGoogleMap(Constants.MAP_TYPE_ID_ROADMAP,SettingsActivity.this);
                 }
             }
         });
@@ -113,6 +131,64 @@ public class SettingsActivity extends AppCompatActivity {
                     CommonUtils.setReportByField(reportBy, SettingsActivity.this);
                 }else {
                     CommonUtils.showSnackbarMessage(getString(R.string.please_enter_report_by), true, true,parentLayoutForMessages, SettingsActivity.this);
+                }
+            }
+        });
+
+
+        reportTitleEditText.setEnabled(false);
+
+        editReportTitleBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                reportTitleEditText.setEnabled(true);
+                editReportTitleBtn.setVisibility(View.GONE);
+                doneReportTitleBtn.setVisibility(View.VISIBLE);
+            }
+        });
+
+        doneReportTitleBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String reportTitle = reportTitleEditText.getText().toString();
+                if(!reportTitle.isEmpty()) {
+                    reportTitleEditText.setEnabled(false);
+                    doneReportTitleBtn.setVisibility(View.GONE);
+                    editReportTitleBtn.setVisibility(View.VISIBLE);
+
+                    CommonUtils.setReportTitle(reportTitle, SettingsActivity.this);
+                }else {
+                    CommonUtils.showSnackbarMessage(getString(R.string.please_enter_title), true, true,parentLayoutForMessages, SettingsActivity.this);
+                }
+            }
+        });
+
+
+        reportDescriptionEditText.setEnabled(false);
+
+        editReportDescriptionBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                reportDescriptionEditText.setEnabled(true);
+                editReportDescriptionBtn.setVisibility(View.GONE);
+                doneReportDescriptionBtn.setVisibility(View.VISIBLE);
+            }
+        });
+
+        doneReportDescriptionBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String reportDescription = reportDescriptionEditText.getText().toString();
+                if(!reportDescription.isEmpty()) {
+                    reportDescriptionEditText.setEnabled(false);
+                    doneReportDescriptionBtn.setVisibility(View.GONE);
+                    editReportDescriptionBtn.setVisibility(View.VISIBLE);
+
+                    CommonUtils.setReportDescription(reportDescription, SettingsActivity.this);
+                }else {
+                    CommonUtils.showSnackbarMessage(getString(R.string.please_enter_report_description), true, true,parentLayoutForMessages, SettingsActivity.this);
                 }
             }
         });

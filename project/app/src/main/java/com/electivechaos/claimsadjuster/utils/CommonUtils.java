@@ -393,5 +393,46 @@ public class CommonUtils {
         editor.apply();
     }
 
+    public static void setReportTitle(String title, Context context) {
+        SharedPreferences sharedPref = context.getSharedPreferences("title",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("Title", title);
+        editor.apply();
+    }
+
+
+    public static String getReportTitle(Context context){
+        SharedPreferences sharedPref = context.getSharedPreferences("title",Context.MODE_PRIVATE);
+        String title = sharedPref.getString("Title", "");
+        return title;
+    }
+
+    public static void clearReportTitle(Context context){
+        SharedPreferences sharedPref = context.getSharedPreferences("title",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.clear();
+        editor.apply();
+    }
+
+    public static void setReportDescription(String description, Context context) {
+        SharedPreferences sharedPref = context.getSharedPreferences("description",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("Description", description);
+        editor.apply();
+    }
+
+
+    public static String getReportDescription(Context context){
+        SharedPreferences sharedPref = context.getSharedPreferences("description",Context.MODE_PRIVATE);
+        String description = sharedPref.getString("Description", "");
+        return description;
+    }
+
+    public static void clearReportDescription(Context context){
+        SharedPreferences sharedPref = context.getSharedPreferences("description",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.clear();
+        editor.apply();
+    }
 
 }
