@@ -38,8 +38,8 @@ public class SettingsActivity extends AppCompatActivity {
         final RadioButton radioLow, radioMedium, radioHigh;
 
         radioLow = findViewById(R.id.radioLow);
-        radioMedium = findViewById(R.id.radioMedium);
         radioHigh = findViewById(R.id.radioHigh);
+        radioMedium = findViewById(R.id.radioMedium);
 
         RadioGroup radioGoogleMap = findViewById(R.id.radioMap);
         final RadioButton radioMapRoad, radioMapSatellite, radioMapNone ;
@@ -72,15 +72,23 @@ public class SettingsActivity extends AppCompatActivity {
             reportDescriptionEditText.setText(CommonUtils.getReportDescription(this));
         }
 
+        if(CommonUtils.getReportQuality(SettingsActivity.this).equals(Constants.REPORT_QUALITY_LOW)){
+            radioLow.setChecked(true);
+        }else if(CommonUtils.getReportQuality(SettingsActivity.this).equals(Constants.REPORT_QUALITY_HIGH)){
+            radioHigh.setChecked(true);
+        }else {
+            radioMedium.setChecked(true);
+        }
+
         radioQuality.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if(radioLow.isChecked()){
-                    CommonUtils.setReportQuality("low",SettingsActivity.this);
+                    CommonUtils.setReportQuality(Constants.REPORT_QUALITY_LOW,SettingsActivity.this);
                 }else if(radioHigh.isChecked()){
-                    CommonUtils.setReportQuality("high",SettingsActivity.this);
+                    CommonUtils.setReportQuality(Constants.REPORT_QUALITY_HIGH,SettingsActivity.this);
                 }else {
-                    CommonUtils.setReportQuality("medium",SettingsActivity.this);
+                    CommonUtils.setReportQuality(Constants.REPORT_QUALITY_MEDIUM,SettingsActivity.this);
                 }
             }
         });
