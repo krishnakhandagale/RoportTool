@@ -680,21 +680,25 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
         public void onEndPage(PdfWriter writer, Document document) {
 
             PdfContentByte cb = writer.getDirectContent();
+
             Phrase header = new Phrase(reportTitle, headerFont);
             ColumnText.showTextAligned(cb, Element.ALIGN_CENTER,
                     header,
                     (document.right() - document.left()) / 2 + document.leftMargin(),
                     document.top() + 20, 0);
+
             Phrase footer = new Phrase(reportPOJO.getClaimNumber()+" | "+reportPOJO.getInsuredName(), footerFont);
             ColumnText.showTextAligned(cb, Element.ALIGN_LEFT,
                     footer,
-                    (document.right()),
+                    (document.left()),
                     document.bottom() - 20, 0);
+
+
             Phrase footerPageNumber = new Phrase("Page " + writer.getPageNumber() + "", footerFont);
             ColumnText.showTextAligned(cb, Element.ALIGN_RIGHT,
                     footerPageNumber,
                     (document.right()),
-                    document.bottom() - 10, 0);
+                    document.bottom() - 20, 0);
 
         }
     }
