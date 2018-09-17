@@ -449,7 +449,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
         cell.addElement(new Paragraph(reportPOJO.getClaimNumber(),fontForValue));
 
         cell.addElement(new Paragraph("Report By", fontTitles));
-        cell.addElement(new Paragraph(CommonUtils.getReportByField(mContext),fontForValue));
+        cell.addElement(new Paragraph(reportPOJO.getReportBy(),fontForValue));
 
 
         cell.addElement(Chunk.NEWLINE);
