@@ -1,12 +1,10 @@
 package com.electivechaos.claimsadjuster.ui;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
@@ -14,7 +12,6 @@ import android.widget.RadioGroup;
 
 import com.electivechaos.claimsadjuster.Constants;
 import com.electivechaos.claimsadjuster.R;
-import com.electivechaos.claimsadjuster.interfaces.ClaimDetailsDataInterface;
 import com.electivechaos.claimsadjuster.utils.CommonUtils;
 
 public class SettingsActivity extends AppCompatActivity {
