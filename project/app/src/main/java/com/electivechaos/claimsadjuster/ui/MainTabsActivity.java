@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.electivechaos.claimsadjuster.BaseActivity;
+import com.electivechaos.claimsadjuster.Constants;
 import com.electivechaos.claimsadjuster.R;
 import com.electivechaos.claimsadjuster.maintabs.AlertFragment;
 import com.electivechaos.claimsadjuster.maintabs.CalenderFragment;
@@ -41,13 +42,10 @@ public class MainTabsActivity extends BaseActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         if(CommonUtils.getReportQuality(MainTabsActivity.this).isEmpty()){
-            CommonUtils.setReportQuality("medium",MainTabsActivity.this);
+            CommonUtils.setReportQuality(Constants.REPORT_QUALITY_MEDIUM,MainTabsActivity.this);
         }
         if(CommonUtils.getGoogleMap(MainTabsActivity.this).isEmpty()){
-            CommonUtils.setGoogleMap("road",MainTabsActivity.this);
-        }
-        if(CommonUtils.getReportByField(MainTabsActivity.this).isEmpty()){
-            CommonUtils.setReportByField("enable",MainTabsActivity.this);
+            CommonUtils.setGoogleMap(Constants.MAP_TYPE_ID_SATELLITE,MainTabsActivity.this);
         }
     }
 

@@ -165,7 +165,7 @@
     <string name="enter_report_description_setting">Report Description</string>
     <string name="enter_report_title_setting">Report Title</string>
     <string name="please_enter_report_description">Please enter description.</string>
-    <string name="none">None</string>
+    <string name="none">none</string>
     <string name="satellite_view">Satellite View</string>
     <string name="normal_view">Normal View</string>
     <string name="high">High</string>

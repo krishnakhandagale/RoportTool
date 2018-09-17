@@ -116,7 +116,6 @@
             android:id="@+id/radioRoadMap"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:checked="true"
             android:fontFamily="sans-serif-condensed"
             android:paddingLeft="20dp"
             android:text="@string/normal_view"
@@ -126,6 +125,7 @@
             android:id="@+id/radioSatelliteMap"
             android:layout_width="match_parent"
             android:layout_height="40dp"
+            android:checked="true"
             android:fontFamily="sans-serif-condensed"
             android:paddingLeft="20dp"
             android:text="@string/satellite_view"
@@ -253,7 +253,9 @@
                 android:fontFamily="sans-serif-condensed"
                 android:id="@+id/reportDescription"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:maxLines="3"
+                android:minLines="3"
+                android:layout_height="wrap_content"
                 android:hint="@string/enter_report_description_setting"
                 android:textSize="14sp" />
         </android.support.design.widget.TextInputLayout>

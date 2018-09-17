@@ -130,7 +130,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
 
 
             propertyTable.addCell(getCellReportDetails(Element.ALIGN_LEFT,document));
-            propertyTable.addCell(getCellForRightSide(Element.ALIGN_LEFT,document,pdfWriter));
+            propertyTable.addCell(getCellForRightSide(document));
 
 
             propertyTable.completeRow();
@@ -449,7 +449,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
         cell.addElement(new Paragraph(reportPOJO.getClaimNumber(),fontForValue));
 
         cell.addElement(new Paragraph("Report By", fontTitles));
-        cell.addElement(new Paragraph(CommonUtils.getReportByField(mContext),fontForValue));
+        cell.addElement(new Paragraph(reportPOJO.getReportBy(),fontForValue));
 
 
         cell.addElement(Chunk.NEWLINE);
@@ -511,7 +511,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
     }
 
 
-    private PdfPCell getCellForRightSide(int alignment, Document document,PdfWriter pdfWriter) throws DocumentException {
+    private PdfPCell getCellForRightSide(Document document) {
         PdfPCell cell = new PdfPCell();
         cell.setPadding(0f);
         cell.setHorizontalAlignment(Element.ALIGN_LEFT);
@@ -522,9 +522,17 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
         PdfPTable tableForRightSide = new PdfPTable(1);
         tableForRightSide.setWidthPercentage(100f);
         if(!CommonUtils.getGoogleMap(mContext).equalsIgnoreCase("none")) {
-            tableForRightSide.addCell(getGoogleMapCell(document));
+            PdfPCell googleMapImageCell = getGoogleMapCell(document);
+            if(googleMapImageCell != null){
+                tableForRightSide.addCell(getGoogleMapCell(document));
+            }
         }
-        tableForRightSide.addCell(getHouseNumberCell(document));
+        PdfPCell houseNumberCell = getHouseNumberCell(document);
+
+        if(houseNumberCell != null){
+            tableForRightSide.addCell(houseNumberCell);
+        }
+
         cell.addElement(tableForRightSide);
         return cell;
     }
@@ -569,22 +577,24 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
         PdfPCell cell = null;
         if(!originalReportPojo.getLabelArrayList().get(0).getHouseNumber().isEmpty()){
 
-
-            byte[] imageBytesResized;
-            imageBytesResized = resizeImage(originalReportPojo.getLabelArrayList().get(0).getHouseNumber(), (int) ((document.getPageSize().getWidth() / 4) - 100),(int)((document.getPageSize().getHeight() / 4)));
-            com.itextpdf.text.Image img;
-            try {
-                img = com.itextpdf.text.Image.getInstance(imageBytesResized);
-                cell = new PdfPCell(img,true);
-                cell.setPadding(0f);
-                cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-                cell.setVerticalAlignment(Element.ALIGN_BASELINE);
-                cell.setBorder(Rectangle.NO_BORDER);
-                cell.setFixedHeight((document.getPageSize().getHeight()/4) );
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (BadElementException e) {
-                e.printStackTrace();
+            File file = new File(originalReportPojo.getLabelArrayList().get(0).getHouseNumber());
+            if (file.exists()) {
+                byte[] imageBytesResized;
+                imageBytesResized = resizeImage(originalReportPojo.getLabelArrayList().get(0).getHouseNumber(), (int) ((document.getPageSize().getWidth() / 4) - 100), (int) ((document.getPageSize().getHeight() / 4)));
+                com.itextpdf.text.Image img;
+                try {
+                    img = com.itextpdf.text.Image.getInstance(imageBytesResized);
+                    cell = new PdfPCell(img, true);
+                    cell.setPadding(0f);
+                    cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+                    cell.setVerticalAlignment(Element.ALIGN_BASELINE);
+                    cell.setBorder(Rectangle.NO_BORDER);
+                    cell.setFixedHeight((document.getPageSize().getHeight() / 4));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (BadElementException e) {
+                    e.printStackTrace();
+                }
             }
         }
 
@@ -670,21 +680,25 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
         public void onEndPage(PdfWriter writer, Document document) {
 
             PdfContentByte cb = writer.getDirectContent();
+
             Phrase header = new Phrase(reportTitle, headerFont);
             ColumnText.showTextAligned(cb, Element.ALIGN_CENTER,
                     header,
                     (document.right() - document.left()) / 2 + document.leftMargin(),
                     document.top() + 20, 0);
+
             Phrase footer = new Phrase(reportPOJO.getClaimNumber()+" | "+reportPOJO.getInsuredName(), footerFont);
             ColumnText.showTextAligned(cb, Element.ALIGN_LEFT,
                     footer,
-                    (document.right()),
+                    (document.left()),
                     document.bottom() - 20, 0);
+
+
             Phrase footerPageNumber = new Phrase("Page " + writer.getPageNumber() + "", footerFont);
             ColumnText.showTextAligned(cb, Element.ALIGN_RIGHT,
                     footerPageNumber,
                     (document.right()),
-                    document.bottom() - 10, 0);
+                    document.bottom() - 20, 0);
 
         }
     }

@@ -11,4 +11,8 @@ public interface Constants {
     String MAP_TYPE_ID_ROADMAP = "road";
     String MAP_TYPE_ID_SATELLITE = "satellite";
 
+    String REPORT_QUALITY_LOW = "low";
+    String REPORT_QUALITY_MEDIUM = "medium";
+    String REPORT_QUALITY_HIGH = "high";
+
 }
