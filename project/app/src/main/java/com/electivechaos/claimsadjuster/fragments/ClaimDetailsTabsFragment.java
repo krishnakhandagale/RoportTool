@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.electivechaos.claimsadjuster.R;
 import com.electivechaos.claimsadjuster.interfaces.ClaimDetailsDataInterface;
@@ -62,19 +63,9 @@ public class ClaimDetailsTabsFragment extends Fragment {
         claimNumberEditText = view.findViewById(R.id.claimNumber);
         reportByEditText = view.findViewById(R.id.reportBy);
 
-
-        //TODO :: Remove all report by stuff from db, callbacks and from this fragment
-
-//        reportTitleEditText.setText(reportTitle);
-//        reportDescriptionEditText.setText(reportDescription);
-//        clientNameEditText.setText(clientName);
-//        claimNumberEditText.setText(claimNumber);
-
-
         reportTitleEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
@@ -101,9 +92,11 @@ public class ClaimDetailsTabsFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
+
                 claimDetailsDataInterface.setReportDescription(s.toString().trim());
             }
         });
+
 
 
         clientNameEditText.addTextChangedListener(new TextWatcher() {
@@ -146,7 +139,9 @@ public class ClaimDetailsTabsFragment extends Fragment {
         reportByEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                /*if(isTooLarge(reportDescriptionEditText,s.toString())){
 
+                }*/
             }
 
             @Override
@@ -164,8 +159,13 @@ public class ClaimDetailsTabsFragment extends Fragment {
 
         return view;
     }
+    private boolean isTooLarge (EditText text, String newText) {
+        float textWidth = text.getPaint().measureText(newText);
+        return (textWidth >= text.getMeasuredWidth ());
+    }
 
-   @Override
+
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         try{

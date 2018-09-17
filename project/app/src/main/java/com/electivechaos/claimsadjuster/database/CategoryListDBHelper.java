@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
 
 import com.electivechaos.claimsadjuster.pojo.BuildingTypePOJO;
@@ -22,6 +23,7 @@ import com.electivechaos.claimsadjuster.pojo.RoofSystemPOJO;
 import com.electivechaos.claimsadjuster.pojo.SidingPOJO;
 import com.electivechaos.claimsadjuster.utils.CommonUtils;
 
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -983,76 +985,140 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
 
     public void updateReportTitle(String value, String reportId) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("UPDATE generated_reports SET report_name='"+value+"' WHERE report_id ='"+reportId+"'");
+        String query = "UPDATE generated_reports SET report_name=? WHERE report_id =?";
+        SQLiteStatement stmt = db.compileStatement(query);
+        stmt.bindString(1,value);
+        stmt.bindString(2,reportId);
+        stmt.executeUpdateDelete();
     }
 
     public void updateReportDescription(String value, String reportId) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("UPDATE generated_reports SET report_description='"+value+"' WHERE report_id='"+reportId+"'");
+        String query ="UPDATE generated_reports SET report_description=? WHERE report_id=?";
+        SQLiteStatement stmt = db.compileStatement(query);
+        stmt.bindString(1,value);
+        stmt.bindString(2,reportId);
+        stmt.executeUpdateDelete();
     }
 
     public void updateClientName(String value, String reportId) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("UPDATE generated_reports SET report_client_name='"+value+"' WHERE report_id='"+reportId+"'");
+        String query ="UPDATE generated_reports SET report_client_name=? WHERE report_id=?";
+        SQLiteStatement stmt = db.compileStatement(query);
+        stmt.bindString(1,value);
+        stmt.bindString(2,reportId);
+        stmt.executeUpdateDelete();
     }
     public void updateClaimNumber(String value, String reportId) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("UPDATE generated_reports SET report_claim_number='"+value+"' WHERE report_id='"+reportId+"'");
+        String query ="UPDATE generated_reports SET report_claim_number=? WHERE report_id=?";
+        SQLiteStatement stmt = db.compileStatement(query);
+        stmt.bindString(1,value);
+        stmt.bindString(2,reportId);
+        stmt.executeUpdateDelete();
     }
     public void updateReportBy(String value, String reportId) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("UPDATE generated_reports SET report_by='"+value+"' WHERE report_id='"+reportId+"'");
+        String query ="UPDATE generated_reports SET report_by=? WHERE report_id=?";
+        SQLiteStatement stmt = db.compileStatement(query);
+        stmt.bindString(1,value);
+        stmt.bindString(2,reportId);
+        stmt.executeUpdateDelete();
     }
     public void updateAddressLine(String value, String reportId) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("UPDATE generated_reports SET address_line='"+value+"' WHERE report_id='"+reportId+"'");
+        String query ="UPDATE generated_reports SET address_line=? WHERE report_id=?";
+        SQLiteStatement stmt = db.compileStatement(query);
+        stmt.bindString(1,value);
+        stmt.bindString(2,reportId);
+        stmt.executeUpdateDelete();
     }
     public void updateLocationLat(String value, String reportId) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("UPDATE generated_reports SET location_lat='"+value+"' WHERE report_id='"+reportId+"'");
+        String query ="UPDATE generated_reports SET location_lat=? WHERE report_id=?";
+        SQLiteStatement stmt = db.compileStatement(query);
+        stmt.bindString(1,value);
+        stmt.bindString(2,reportId);
+        stmt.executeUpdateDelete();
     }
     public void updateLocationLong(String value, String reportId) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("UPDATE generated_reports SET location_lang='"+value+"' WHERE report_id='"+reportId+"'");
+        String query ="UPDATE generated_reports SET location_lang=? WHERE report_id=?";
+        SQLiteStatement stmt = db.compileStatement(query);
+        stmt.bindString(1,value);
+        stmt.bindString(2,reportId);
+        stmt.executeUpdateDelete();
     }
     public void updateLocationSnapshot(String value, String reportId) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("UPDATE generated_reports SET location_snapshot='"+value+"' WHERE report_id='"+reportId+"'");
+        String query ="UPDATE generated_reports SET location_snapshot=? WHERE report_id=?";
+        SQLiteStatement stmt = db.compileStatement(query);
+        stmt.bindString(1,value);
+        stmt.bindString(2,reportId);
+        stmt.executeUpdateDelete();
     }
 
     public void updatePropertyDate(String value, String reportId) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("UPDATE property_details SET property_date='"+value+"' WHERE report_id_fk='"+reportId+"'");
+        String query ="UPDATE property_details SET property_date=? WHERE report_id_fk=?";
+        SQLiteStatement stmt = db.compileStatement(query);
+        stmt.bindString(1,value);
+        stmt.bindString(2,reportId);
+        stmt.executeUpdateDelete();
     }
 
     public void updateSquareFootage(String value, String reportId) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("UPDATE property_details SET square_footage='"+value+"' WHERE report_id_fk='"+reportId+"'");
+        String query ="UPDATE property_details SET square_footage=? WHERE report_id_fk=?";
+        SQLiteStatement stmt = db.compileStatement(query);
+        stmt.bindString(1,value);
+        stmt.bindString(2,reportId);
+        stmt.executeUpdateDelete();
     }
 
     public void updateRoofSystem(String value, String reportId) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("UPDATE property_details SET roof_system='"+value+"' WHERE report_id_fk='"+reportId+"'");
+        String query ="UPDATE property_details SET roof_system=? WHERE report_id_fk=?";
+        SQLiteStatement stmt = db.compileStatement(query);
+        stmt.bindString(1,value);
+        stmt.bindString(2,reportId);
+        stmt.executeUpdateDelete();
     }
 
     public void updateSiding(String value, String reportId) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("UPDATE property_details SET siding='"+value+"' WHERE report_id_fk='"+reportId+"'");
+        String query ="UPDATE property_details SET siding=? WHERE report_id_fk=?";
+        SQLiteStatement stmt = db.compileStatement(query);
+        stmt.bindString(1,value);
+        stmt.bindString(2,reportId);
+        stmt.executeUpdateDelete();
     }
 
     public void updateFoundation(String value, String reportId) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("UPDATE property_details SET foundation='"+value+"' WHERE report_id_fk='"+reportId+"'");
+        String query ="UPDATE property_details SET foundation=? WHERE report_id_fk=?";
+        SQLiteStatement stmt = db.compileStatement(query);
+        stmt.bindString(1,value);
+        stmt.bindString(2,reportId);
+        stmt.executeUpdateDelete();
     }
 
     public void updateBuildingType(String value, String reportId) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("UPDATE property_details SET building_type='"+value+"' WHERE report_id_fk='"+reportId+"'");
+        String query ="UPDATE property_details SET building_type=? WHERE report_id_fk=?";
+        SQLiteStatement stmt = db.compileStatement(query);
+        stmt.bindString(1,value);
+        stmt.bindString(2,reportId);
+        stmt.executeUpdateDelete();
     }
 
     public void updatePerilName(String value, String reportId) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("UPDATE generated_reports SET peril='"+value+"' WHERE report_id='"+reportId+"'");
+        String query ="UPDATE generated_reports SET peril=? WHERE report_id=?";
+        SQLiteStatement stmt = db.compileStatement(query);
+        stmt.bindString(1,value);
+        stmt.bindString(2,reportId);
+        stmt.executeUpdateDelete();
     }
 
 
