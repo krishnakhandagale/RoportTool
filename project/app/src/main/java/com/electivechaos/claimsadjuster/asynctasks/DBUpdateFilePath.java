@@ -584,12 +584,31 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
                 com.itextpdf.text.Image img;
                 try {
                     img = com.itextpdf.text.Image.getInstance(imageBytesResized);
-                    cell = new PdfPCell(img, true);
+                    cell = new PdfPCell();
                     cell.setPadding(0f);
                     cell.setHorizontalAlignment(Element.ALIGN_LEFT);
                     cell.setVerticalAlignment(Element.ALIGN_BASELINE);
                     cell.setBorder(Rectangle.NO_BORDER);
                     cell.setFixedHeight((document.getPageSize().getHeight() / 4));
+
+                    PdfPTable innerTable = new PdfPTable(2);
+                    innerTable.setWidthPercentage(100);
+
+                    PdfPCell defaultCell = innerTable.getDefaultCell();
+                    defaultCell.setBorder(PdfPCell.NO_BORDER);
+
+                    PdfPCell innerCell = new PdfPCell(img,true);
+                    innerCell.setPaddingLeft(0f);
+                    innerCell.setHorizontalAlignment(Element.ALIGN_LEFT);
+                    innerCell.setVerticalAlignment(Element.ALIGN_BASELINE);
+                    innerCell.setBorder(Rectangle.NO_BORDER);
+                    innerCell.setFixedHeight((document.getPageSize().getHeight() / 4));
+
+                    innerTable.addCell(innerCell);
+                    innerTable.completeRow();
+                    cell.addElement(innerTable);
+
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (BadElementException e) {
