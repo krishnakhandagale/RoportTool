@@ -878,8 +878,11 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
 
     public void updateFilePath(String filePath, String reportId) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("UPDATE generated_reports SET file_path='"+filePath+"' WHERE report_id ='"+reportId+"'");
-
+        String query ="UPDATE generated_reports SET file_path=? WHERE report_id =?";
+        SQLiteStatement stmt = db.compileStatement(query);
+        stmt.bindString(1,filePath);
+        stmt.bindString(2,reportId);
+        stmt.executeUpdateDelete();
     }
 
     public ReportPOJO getReportItem(String id){
