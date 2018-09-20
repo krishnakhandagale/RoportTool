@@ -10,6 +10,7 @@ import android.os.Environment;
 import android.support.media.ExifInterface;
 import android.text.Layout;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -358,7 +359,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
         final BitmapFactory.Options options = new BitmapFactory.Options();
 
         options.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(imagePath, options);
+         BitmapFactory.decodeFile(imagePath, options);
 
         if(CommonUtils.getReportQuality(mContext).equals("low")){
             options.inSampleSize = calculateInSampleSize(options,128,96);
@@ -367,6 +368,33 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
         }else {
             options.inSampleSize = calculateInSampleSize(options,256,192);
         }
+
+
+        options.inJustDecodeBounds = false;
+        Bitmap bmp = BitmapFactory.decodeFile(imagePath, options);
+        return resizeImage(bmp, orientation);
+
+    }
+
+    private byte[] resizeGoogleImage(String imagePath, int maxWidth, int maxHeight) {
+
+        ExifInterface ei = null;
+        try {
+            ei = new ExifInterface(imagePath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION,
+                ExifInterface.ORIENTATION_UNDEFINED);
+
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+
+        BitmapFactory.decodeFile(imagePath, options);
+
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(imagePath, options);
+
+        options.inSampleSize = calculateInSampleSize(options,352,240);
 
         options.inJustDecodeBounds = false;
         Bitmap bmp = BitmapFactory.decodeFile(imagePath, options);
@@ -548,7 +576,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
             File file = new File(reportPOJO.getGoogleMapSnapShotFilePath());
             if (file.exists()) {
 
-                byte[] imgResized = resizeImage(reportPOJO.getGoogleMapSnapShotFilePath(),  (int) ((document.getPageSize().getWidth() / 2) - 100), (int)((document.getPageSize().getHeight() / 2) - 100));
+                byte[] imgResized = resizeGoogleImage(reportPOJO.getGoogleMapSnapShotFilePath(),  (int) ((document.getPageSize().getWidth() / 2) - 100), (int)((document.getPageSize().getHeight() / 2) - 100));
                 try {
                     imgMap = com.itextpdf.text.Image.getInstance(imgResized);
                     cell = new PdfPCell(imgMap,true);
