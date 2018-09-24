@@ -121,6 +121,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
             document.open();
             pdfWriter.setPageEvent(event);
 
+
             PdfPTable propertyTable = new PdfPTable(2);
 
             PdfPCell defaultCell = propertyTable.getDefaultCell();
@@ -132,7 +133,6 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
 
             propertyTable.addCell(getCellReportDetails(Element.ALIGN_LEFT,document));
             propertyTable.addCell(getCellForRightSide(document));
-
 
             propertyTable.completeRow();
             document.add(propertyTable);
@@ -231,7 +231,6 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
                     elevationTable.completeRow();
                 }
                 document.add(elevationTable);
-                document.newPage();
 
             }
 
@@ -240,7 +239,8 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
             for(int p=0;p <mLabels.size() ;p++) {
 
                 Label label = mLabels.get(p);
-                if(!label.getName().equalsIgnoreCase("Risk Overview")){
+                if(!label.getName().equalsIgnoreCase("Risk Overview")) {
+                    document.newPage();
                     event.setHeader(label.getName(), -1);
                 }
 
@@ -308,12 +308,31 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
 
                 }
 
-                document.newPage();
             }
             }
 
+            document.newPage();
+            event.setHeader(reportPOJO.getReportTitle(), 16);
+            Font signatureFont = new Font(Font.FontFamily.TIMES_ROMAN, Constants.FOOTER_FONT_SIZE, Font.ITALIC);
+
+            PdfContentByte cb = pdfWriter.getDirectContent();
+
+            Phrase signature = new Phrase(new Phrase("Signature")+""+new Phrase("____________________________  "), signatureFont);
+            ColumnText.showTextAligned(cb,Element.ALIGN_LEFT,
+                    signature,
+                    (document.left()),
+                    document.bottom() +100, 0);
+            Phrase date = new Phrase(new Phrase("Date")+""+new Phrase("____________________________  "), signatureFont);
+            ColumnText.showTextAligned(cb,Element.ALIGN_RIGHT,
+                    date,
+                    (document.right()),
+                    document.bottom() +100, 0);
+
+            document.newPage();
+
             reportPOJO.setFilePath(destination.getAbsolutePath());
             categoryListDBHelper.updateFilePath(reportPOJO.getFilePath(),reportPOJO.getId());
+
 
             document.close();
         }catch (FileNotFoundException e){
@@ -732,6 +751,14 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
             ColumnText.showTextAligned(cb, Element.ALIGN_CENTER,
                     header,
                     (document.right() - document.left()) / 2 + document.leftMargin(),
+                    document.top() + 20, 0);
+
+            Font headerCompanyNameFont = new Font(Font.FontFamily.TIMES_ROMAN, Constants.FOOTER_FONT_SIZE, Font.ITALIC);
+
+            Phrase headerCompanyName = new Phrase("Checklist Claims", headerCompanyNameFont);
+            ColumnText.showTextAligned(cb, Element.ALIGN_RIGHT,
+                    headerCompanyName,
+                    document.left()  + document.leftMargin(),
                     document.top() + 20, 0);
 
             Phrase footer = new Phrase(reportPOJO.getClaimNumber()+" | "+reportPOJO.getInsuredName(), footerFont);
