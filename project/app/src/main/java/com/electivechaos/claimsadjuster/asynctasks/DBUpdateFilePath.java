@@ -22,6 +22,7 @@ import com.electivechaos.claimsadjuster.pojo.Label;
 import com.electivechaos.claimsadjuster.pojo.PropertyDetailsPOJO;
 import com.electivechaos.claimsadjuster.pojo.ReportPOJO;
 import com.electivechaos.claimsadjuster.utils.CommonUtils;
+import com.google.android.gms.common.util.IOUtils;
 import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
@@ -29,6 +30,7 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
+import com.itextpdf.text.Image;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
@@ -46,6 +48,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -391,6 +394,30 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
 
         options.inJustDecodeBounds = false;
         Bitmap bmp = BitmapFactory.decodeFile(imagePath, options);
+        return resizeImage(bmp, orientation);
+
+    }
+
+
+    private byte[] resizeImageLogo(InputStream imagePath) {
+
+        ExifInterface ei = null;
+        try {
+            ei = new ExifInterface(imagePath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION,
+                ExifInterface.ORIENTATION_UNDEFINED);
+
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeStream(imagePath, null, options);
+
+
+        options.inJustDecodeBounds = false;
+        Bitmap bmp = BitmapFactory.decodeStream(imagePath, null, options);
         return resizeImage(bmp, orientation);
 
     }
@@ -773,6 +800,28 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
                     footerPageNumber,
                     (document.right()),
                     document.bottom() - 20, 0);
+
+            InputStream is = null;
+            byte imagebytes[];
+            com.itextpdf.text.Image img= null;
+            try {
+                is = mContext.getAssets().open("logo.png");
+                imagebytes = resizeImageLogo(is);
+                img = com.itextpdf.text.Image.getInstance(imagebytes);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (BadElementException e) {
+                e.printStackTrace();
+            }
+            img.scalePercent(100);
+            img.scaleToFit(40,40);
+            img.setAbsolutePosition(document.right()  - 10,document.top()+20);
+
+            try {
+                document.add(img);
+            } catch (DocumentException e) {
+                e.printStackTrace();
+            }
 
         }
     }
