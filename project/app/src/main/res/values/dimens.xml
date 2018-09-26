@@ -1,39 +1,19 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
-    <dimen name="tab_max_width">264dp</dimen>
     <dimen name="fab_margin">20dp</dimen>
-    <dimen name="tab_padding_bottom">16dp</dimen>
-    <dimen name="tab_label">14sp</dimen>
-    <dimen name="custom_tab_layout_height">72dp</dimen>
-    <dimen name="item_offset">2dp</dimen>
-    <string name="descr_image">Image</string>
 
-    <dimen name="detail_backdrop_height">250dp</dimen>
-    <dimen name="backdrop_title">30dp</dimen>
-    <dimen name="backdrop_subtitle">18dp</dimen>
     <dimen name="card_margin">5dp</dimen>
     <dimen name="card_album_radius">2dp</dimen>
-    <dimen name="album_cover_height">160dp</dimen>
     <dimen name="album_title_padding">10dp</dimen>
     <dimen name="title_dim">15dp</dimen>
     <dimen name="songs_count_padding_bottom">5dp</dimen>
     <dimen name="description_dim">12dp</dimen>
-    <dimen name="ic_album_overflow_width">20dp</dimen>
-    <dimen name="ic_album_overflow_height">30dp</dimen>
-    <dimen name="ic_album_overflow_margin_top">10dp</dimen>
 
 
     <dimen name="imagepicker_item_padding">1dp</dimen>
 
     <dimen name="imagepicker_padding_small">4dp</dimen>
-    <dimen name="imagepicker_padding_medium">8dp</dimen>
     <dimen name="image_picker_padding_large">16dp</dimen>
 
-    <dimen name="imagepicker_margin_small">4dp</dimen>
-    <dimen name="imagepicker_margin_medium">8dp</dimen>
-    <dimen name="imagepicker_margin_large">16dp</dimen>
-
-    <dimen name="imagepicker_size_toolbar_icon">24dp</dimen>
 </resources>
