@@ -376,7 +376,7 @@ public class ImagePickerActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         AlertDialog.Builder builder = new AlertDialog.Builder(ImagePickerActivity.this);
-        builder.setTitle(R.string.go_back_msg_tiitle)
+        builder.setTitle(R.string.go_back_msg_title)
                 .setMessage(R.string.imagepicker_back_msg)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {

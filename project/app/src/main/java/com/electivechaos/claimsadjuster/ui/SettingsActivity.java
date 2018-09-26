@@ -8,23 +8,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.electivechaos.claimsadjuster.Constants;
 import com.electivechaos.claimsadjuster.PermissionUtilities;
 import com.electivechaos.claimsadjuster.R;
-import com.electivechaos.claimsadjuster.pojo.Image;
-import com.electivechaos.claimsadjuster.pojo.ImageDetailsPOJO;
 import com.electivechaos.claimsadjuster.utils.CommonUtils;
 
 import java.util.ArrayList;
-import java.util.Set;
 
 import static com.electivechaos.claimsadjuster.ui.ImagePickerActivity.options;
 
@@ -79,7 +76,7 @@ public class SettingsActivity extends AppCompatActivity {
         final ImageButton doneCompanyNameBtn = findViewById(R.id.doneCompanyName);
 
 
-        final Button uploadButton = findViewById(R.id.uploadButton);
+        final TextView uploadButton = findViewById(R.id.uploadButton);
         companyNameLogo = findViewById(R.id.companyNameLogo);
         companyNameLogoRemove = findViewById(R.id.companyNameLogoRemove);
 
@@ -205,7 +202,7 @@ public class SettingsActivity extends AppCompatActivity {
 
                     CommonUtils.setReportTitle(reportTitle, SettingsActivity.this);
                 }else {
-                    CommonUtils.showSnackbarMessage(getString(R.string.please_enter_title), true, true,parentLayoutForMessages, SettingsActivity.this);
+                    CommonUtils.showSnackbarMessage(getString(R.string.please_enter_rep_title), true, true,parentLayoutForMessages, SettingsActivity.this);
                 }
             }
         });
