@@ -22,7 +22,6 @@ public class PermissionUtilities {
     public static final int MY_APP_GENERATE_REPORT_PERMISSIONS_TWO = 128;
 
 
-
     public static final int MY_APP_TAKE_FRONT_PHOTO_PERMISSIONS = 129;
     public static final int MY_APP_TAKE_BACK_PHOTO_PERMISSIONS = 130;
     public static final int MY_APP_TAKE_LEFT_PHOTO_PERMISSIONS = 131;
@@ -32,6 +31,8 @@ public class PermissionUtilities {
 
     public static final int MY_APP_GENERATE_REPORT_PERMISSIONS_FOUR = 133;
     public static final int MY_APP_SAVE_SNAPSHOT_PERMISSIONS = 134;
+
+    public static final int MY_APP_TAKE_RIGHT_PHOTO_PERMISSIONS_IMAGE_LOGO = 402;
 
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -103,14 +104,14 @@ public class PermissionUtilities {
                         alertBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
                             public void onClick(DialogInterface dialog, int which) {
-                                ActivityCompat.requestPermissions((Activity) context,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_APP_GENERATE_REPORT_PERMISSIONS_TWO);
+                                ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_APP_GENERATE_REPORT_PERMISSIONS_TWO);
                             }
                         });
                         AlertDialog alert = alertBuilder.create();
                         alert.show();
 
                     } else {
-                        ActivityCompat.requestPermissions((Activity) context,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_APP_GENERATE_REPORT_PERMISSIONS_TWO);
+                        ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_APP_GENERATE_REPORT_PERMISSIONS_TWO);
                     }
                     return false;
                 } else {
@@ -119,8 +120,7 @@ public class PermissionUtilities {
             } else {
                 return true;
             }
-        }
-        else if (type == MY_APP_GENERATE_REPORT_PERMISSIONS_FOUR) {
+        } else if (type == MY_APP_GENERATE_REPORT_PERMISSIONS_FOUR) {
             if (currentAPIVersion >= android.os.Build.VERSION_CODES.M) {
                 if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                     if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) context, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
@@ -131,14 +131,14 @@ public class PermissionUtilities {
                         alertBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
                             public void onClick(DialogInterface dialog, int which) {
-                                ActivityCompat.requestPermissions((Activity) context,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_APP_GENERATE_REPORT_PERMISSIONS_FOUR);
+                                ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_APP_GENERATE_REPORT_PERMISSIONS_FOUR);
                             }
                         });
                         AlertDialog alert = alertBuilder.create();
                         alert.show();
 
                     } else {
-                        ActivityCompat.requestPermissions((Activity) context,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_APP_GENERATE_REPORT_PERMISSIONS_FOUR);
+                        ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_APP_GENERATE_REPORT_PERMISSIONS_FOUR);
                     }
                     return false;
                 } else {
@@ -147,7 +147,7 @@ public class PermissionUtilities {
             } else {
                 return true;
             }
-        }else if (type == MY_APP_SAVE_SNAPSHOT_PERMISSIONS) {
+        } else if (type == MY_APP_SAVE_SNAPSHOT_PERMISSIONS) {
             if (currentAPIVersion >= android.os.Build.VERSION_CODES.M) {
                 if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                     if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) context, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
@@ -158,14 +158,14 @@ public class PermissionUtilities {
                         alertBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
                             public void onClick(DialogInterface dialog, int which) {
-                                ActivityCompat.requestPermissions((Activity) context,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_APP_SAVE_SNAPSHOT_PERMISSIONS);
+                                ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_APP_SAVE_SNAPSHOT_PERMISSIONS);
                             }
                         });
                         AlertDialog alert = alertBuilder.create();
                         alert.show();
 
                     } else {
-                        ActivityCompat.requestPermissions((Activity) context,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_APP_SAVE_SNAPSHOT_PERMISSIONS);
+                        ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_APP_SAVE_SNAPSHOT_PERMISSIONS);
                     }
                     return false;
                 } else {
@@ -177,4 +177,42 @@ public class PermissionUtilities {
         }
         return false;
     }
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    public static boolean checkPermissionImageUpload(final Context context, final Activity
+            activity, final int type) {
+        int currentAPIVersion = Build.VERSION.SDK_INT;
+        if (type == MY_APP_TAKE_RIGHT_PHOTO_PERMISSIONS_IMAGE_LOGO) {
+            if (currentAPIVersion >= android.os.Build.VERSION_CODES.M) {
+                if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) context, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
+                        alertBuilder.setCancelable(true);
+                        alertBuilder.setTitle("Permission Required");
+                        alertBuilder.setMessage("External storage permission is necessary");
+                        alertBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, MY_APP_TAKE_RIGHT_PHOTO_PERMISSIONS_IMAGE_LOGO);
+                            }
+                        });
+                        AlertDialog alert = alertBuilder.create();
+                        alert.show();
+
+                    } else {
+                        ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, MY_APP_TAKE_RIGHT_PHOTO_PERMISSIONS_IMAGE_LOGO);
+                    }
+                    return false;
+                } else {
+                    return true;
+                }
+            } else {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 }
