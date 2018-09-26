@@ -439,4 +439,47 @@ public class CommonUtils {
         editor.apply();
     }
 
+    public static void setCompanyName(String companyName, Context context) {
+        SharedPreferences sharedPref = context.getSharedPreferences("companyName",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("CompanyName", companyName);
+        editor.apply();
+    }
+
+
+    public static String getCompanyName(Context context){
+        SharedPreferences sharedPref = context.getSharedPreferences("companyName",Context.MODE_PRIVATE);
+        String companyName = sharedPref.getString("CompanyName", "");
+        return companyName;
+    }
+
+    public static void clearCompanyName(Context context){
+        SharedPreferences sharedPref = context.getSharedPreferences("companyName",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.clear();
+        editor.apply();
+    }
+
+
+    public static void setImageLogoUrl(String imageUrl, Context context) {
+        SharedPreferences sharedPref = context.getSharedPreferences("imageUrl",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("ImageUrl", imageUrl);
+        editor.apply();
+    }
+
+
+    public static String getImageLogoUrl(Context context){
+        SharedPreferences sharedPref = context.getSharedPreferences("imageUrl",Context.MODE_PRIVATE);
+        String imageUrl = sharedPref.getString("ImageUrl", "");
+        return imageUrl;
+    }
+
+    public static void clearImageLogoUrl(Context context){
+        SharedPreferences sharedPref = context.getSharedPreferences("imageUrl",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.clear();
+        editor.apply();
+    }
+
 }

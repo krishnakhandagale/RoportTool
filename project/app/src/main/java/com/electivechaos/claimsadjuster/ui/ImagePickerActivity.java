@@ -1,6 +1,7 @@
 package com.electivechaos.claimsadjuster.ui;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -8,12 +9,14 @@ import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -372,8 +375,26 @@ public class ImagePickerActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        AlertDialog.Builder builder = new AlertDialog.Builder(ImagePickerActivity.this);
+        builder.setTitle(R.string.go_back_msg_tiitle)
+                .setMessage(R.string.imagepicker_back_msg)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
 
+                        ImagePickerActivity.super.onBackPressed();
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+        Button negativeButton = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
+        negativeButton.setTextColor(ContextCompat.getColor(ImagePickerActivity.this,R.color.colorPrimaryDark));
+        Button positiveButton = alert.getButton(DialogInterface.BUTTON_POSITIVE);
+        positiveButton.setTextColor(ContextCompat.getColor(ImagePickerActivity.this,R.color.colorPrimaryDark));
 
     }
 }
