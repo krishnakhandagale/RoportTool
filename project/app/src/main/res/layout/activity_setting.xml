@@ -149,7 +149,7 @@
         android:layout_height="2dp"
         android:background="@color/grayLight"/>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:layout_marginTop="15dp"
         android:orientation="horizontal"
         android:weightSum="4"
@@ -192,7 +192,7 @@
 
     </LinearLayout>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:layout_marginTop="10dp"
         android:orientation="horizontal"
         android:weightSum="4"
@@ -280,17 +280,10 @@
 
     </LinearLayout>
 
-    <View
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_width="fill_parent"
-        android:layout_height="2dp"
-        android:background="@color/grayLight"/>
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_marginTop="10dp"
+    <LinearLayout
         android:orientation="horizontal"
         android:weightSum="4"
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -305,8 +298,6 @@
                 android:fontFamily="sans-serif-condensed"
                 android:id="@+id/companyName"
                 android:layout_width="match_parent"
-                android:maxLines="3"
-                android:minLines="3"
                 android:layout_height="wrap_content"
                 android:hint="@string/enter_company_name_setting"
                 android:textSize="14sp" />
@@ -332,49 +323,51 @@
 
     </LinearLayout>
     <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp">
 
         <FrameLayout
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_alignParentLeft="true"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:layout_marginLeft="30dp"
             android:background="@color/colorPrimary"
             android:layout_marginBottom="10dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginStart="30dp"
+            android:layout_alignParentStart="true">
 
         <ImageView
             android:id="@+id/companyNameLogo"
-            android:layout_gravity="left"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:background="@color/colorPrimary"
-            android:layout_alignParentLeft="true"
-            />
-
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@color/grayDark" />
             <ImageButton
                 android:id="@+id/companyNameLogoRemove"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
+                android:layout_gravity="right|end"
                 android:background="@drawable/rounded_button"
-                android:src="@drawable/ic_close_black_24dp" />
+                android:src="@drawable/ic_remove_image_12" />
         </FrameLayout>
-           />
-        <Button
+        <TextView
+            android:padding="5dp"
+            android:gravity="center"
+            android:textAllCaps="false"
+            android:textColor="@color/black"
             android:id="@+id/uploadButton"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Upload Logo"
-            android:textSize="10sp"
+            android:layout_height="32dp"
+            android:text="@string/chose_logo"
+            android:textSize="12sp"
             android:layout_alignParentRight="true"
-            android:background="@drawable/circle"
+            android:background="@drawable/btn_shape_drawable"
             android:layout_marginRight="20dp"
             android:layout_centerVertical="true"
-           />
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="20dp" />
     </RelativeLayout>
 
 </LinearLayout>
