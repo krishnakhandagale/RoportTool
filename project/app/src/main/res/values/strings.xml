@@ -91,11 +91,11 @@
     <string name="enter_report_by">Report by</string>
     <string name="register">Register</string>
     <string name="enter_email_id">Email</string>
-    <string name="please_enter_report_by">Please enter name.</string>
+    <string name="please_enter_report_by">Please enter report by.</string>
     <string name="please_enter_email_id">Please enter email id.</string>
     <string name="enter_report_description_setting">Report Description</string>
     <string name="enter_report_title_setting">Report Title</string>
-    <string name="please_enter_report_description">Please enter description.</string>
+    <string name="please_enter_report_description">Please enter report description.</string>
     <string name="none">none</string>
     <string name="satellite_view">Satellite View</string>
     <string name="normal_view">Normal View</string>
@@ -103,8 +103,10 @@
     <string name="medium">Medium</string>
     <string name="low">Low</string>
     <string name="imagepicker_back_msg">Pressing back will lose your image selections if any, are you sure wanna go back ?</string>
-    <string name="go_back_msg_tiitle">Go Back</string>
+    <string name="go_back_msg_title">Go Back</string>
     <string name="back_from_report_act_msg">Pressing back will take you to previous screen, are you sure wanna go back ?</string>
     <string name="enter_company_name_setting">Company Name</string>
     <string name="please_enter_company_name">Please enter company name.</string>
+    <string name="chose_logo">Select Logo</string>
+    <string name="please_enter_rep_title">Please enter report title.</string>
 </resources>
