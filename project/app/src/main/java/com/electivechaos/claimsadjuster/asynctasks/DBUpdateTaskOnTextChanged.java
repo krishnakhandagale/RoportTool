@@ -3,6 +3,7 @@ package com.electivechaos.claimsadjuster.asynctasks;
 import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.view.View;
 
 import com.electivechaos.claimsadjuster.database.CategoryListDBHelper;
