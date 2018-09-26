@@ -21,7 +21,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -562,7 +561,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     public void onBackPressed() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(AddEditReportActivity.this);
-        builder.setTitle(R.string.go_back_msg_tiitle)
+        builder.setTitle(R.string.go_back_msg_title)
                 .setMessage(R.string.back_from_report_act_msg)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
