@@ -399,7 +399,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
     }
 
 
-    private byte[] resizeImageLogo(InputStream imagePath) {
+    private byte[] resizeImageLogo(String imagePath) {
 
         ExifInterface ei = null;
         try {
@@ -413,12 +413,14 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
         final BitmapFactory.Options options = new BitmapFactory.Options();
 
         options.inJustDecodeBounds = true;
-        BitmapFactory.decodeStream(imagePath, null, options);
+        BitmapFactory.decodeFile(imagePath, options);
 
+        options.inSampleSize = calculateInSampleSize(options,256,192);
 
         options.inJustDecodeBounds = false;
-        Bitmap bmp = BitmapFactory.decodeStream(imagePath, null, options);
+        Bitmap bmp = BitmapFactory.decodeFile(imagePath, options);
         return resizeImage(bmp, orientation);
+
 
     }
 
@@ -782,11 +784,14 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
 
             Font headerCompanyNameFont = new Font(Font.FontFamily.TIMES_ROMAN, Constants.FOOTER_FONT_SIZE, Font.ITALIC);
 
-            Phrase headerCompanyName = new Phrase("Checklist Claims", headerCompanyNameFont);
-            ColumnText.showTextAligned(cb, Element.ALIGN_RIGHT,
-                    headerCompanyName,
-                    document.left()  + document.leftMargin(),
-                    document.top() + 20, 0);
+            String companyName = CommonUtils.getCompanyName(mContext);
+            if(!companyName.isEmpty()) {
+                Phrase headerCompanyName = new Phrase(companyName, headerCompanyNameFont);
+                ColumnText.showTextAligned(cb, Element.ALIGN_LEFT,
+                        headerCompanyName,
+                         document.left(),
+                        document.top()+3, 0);
+            }
 
             Phrase footer = new Phrase(reportPOJO.getClaimNumber()+" | "+reportPOJO.getInsuredName(), footerFont);
             ColumnText.showTextAligned(cb, Element.ALIGN_LEFT,
@@ -801,26 +806,27 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
                     (document.right()),
                     document.bottom() - 20, 0);
 
-            InputStream is = null;
-            byte imagebytes[];
-            com.itextpdf.text.Image img= null;
-            try {
-                is = mContext.getAssets().open("logo.png");
-                imagebytes = resizeImageLogo(is);
-                img = com.itextpdf.text.Image.getInstance(imagebytes);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (BadElementException e) {
-                e.printStackTrace();
-            }
-            img.scalePercent(100);
-            img.scaleToFit(40,40);
-            img.setAbsolutePosition(document.right()  - 10,document.top()+20);
 
-            try {
-                document.add(img);
-            } catch (DocumentException e) {
-                e.printStackTrace();
+            com.itextpdf.text.Image img= null;
+
+            String imageUrl = CommonUtils.getImageLogoUrl(mContext);
+            if(!imageUrl.isEmpty()) {
+                try {
+                    img = com.itextpdf.text.Image.getInstance(resizeImageLogo(imageUrl));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (BadElementException e) {
+                    e.printStackTrace();
+                }
+                img.scalePercent(100);
+                img.scaleToFit(35, 35);
+                img.setAbsolutePosition(document.left() , document.top() +10);
+
+                try {
+                    document.add(img);
+                } catch (DocumentException e) {
+                    e.printStackTrace();
+                }
             }
 
         }
