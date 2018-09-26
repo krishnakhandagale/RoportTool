@@ -21,6 +21,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -561,8 +562,8 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     public void onBackPressed() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(AddEditReportActivity.this);
-        builder.setTitle("Go Back")
-                .setMessage("Pressing back will take you to previous screen, are you sure wanna go back ?")
+        builder.setTitle(R.string.go_back_msg_tiitle)
+                .setMessage(R.string.back_from_report_act_msg)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
 
@@ -762,31 +763,36 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
     @Override
     public void setMapSnapshot(final Bitmap bitmap) {
+
         googleMapSnapshotBitmap =  bitmap;
         boolean result = PermissionUtilities.checkPermission(AddEditReportActivity.this,null,PermissionUtilities.MY_APP_SAVE_SNAPSHOT_PERMISSIONS);
 
         if(result){
             File destination = new File(Environment.getExternalStorageDirectory(), reportPOJO.getId() + ".png");
-            ImageHelper.grantAppPermission(this, getIntent(), Uri.fromFile(destination));
+            final FileOutputStream fileOutputStream;
             try {
-                final FileOutputStream fileOutputStream = new FileOutputStream(destination,false);
+                fileOutputStream = new FileOutputStream(destination,false);
+                googleMapSnapshotBitmap.compress(Bitmap.CompressFormat.PNG, 90, fileOutputStream);
+                reportPOJO.setGoogleMapSnapShotFilePath(destination.getPath());
+                categoryListDBHelper.updateLocationSnapshot(destination.getPath(),reportPOJO.getId());
 
-                new SingleMediaScanner(this, destination, new OnMediaScannerListener(){
-
-                    @Override
-                    public void onMediaScanComplete(String path, Uri uri) {
-                        if(path != null){
-                            ImageHelper.revokeAppPermission(AddEditReportActivity.this, uri);
-                            googleMapSnapshotBitmap.compress(Bitmap.CompressFormat.PNG, 90, fileOutputStream);
-                            reportPOJO.setGoogleMapSnapShotFilePath(path);
-                            categoryListDBHelper.updateLocationSnapshot(path,reportPOJO.getId());
-                        }
-
-                    }
-                });
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
+
+            ImageHelper.grantAppPermission(this, getIntent(), Uri.fromFile(destination));
+
+
+            new SingleMediaScanner(this, destination, new OnMediaScannerListener(){
+
+                @Override
+                public void onMediaScanComplete(String path, Uri uri) {
+                    if(path != null){
+                        ImageHelper.revokeAppPermission(AddEditReportActivity.this, uri);
+                    }
+
+                }
+            });
         }
 
     }
@@ -909,23 +915,6 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                 return false;
             }
         }
-
-        //       Label label =  reportPOJO.getLabelArrayList().get(0);
-        //       ArrayList<ImageDetailsPOJO> elevationImages = label.getSelectedElevationImages();
-        //       if(elevationImages != null && elevationImages.size() > 0){
-        //           if(elevationImages.get(0).getImageUrl().isEmpty() || elevationImages.get(1).getImageUrl().isEmpty() || elevationImages.get(2).getImageUrl().isEmpty() || elevationImages.get(3).getImageUrl().isEmpty()){
-        //               CommonUtils.showSnackbarMessage(getString(R.string.please_add_all_starter_photos), true, true, parentLayoutForMessages, AddEditReportActivity.this);
-        //               return false;
-        //           }
-        //       }else{
-        //           CommonUtils.showSnackbarMessage(getString(R.string.please_add_all_starter_photos), true, true, parentLayoutForMessages, AddEditReportActivity.this);
-        //           return false;
-        //       }
-
-        //       if(label.getHouseNumber().trim().isEmpty()){
-        //           CommonUtils.showSnackbarMessage(getString(R.string.please_enter_house_number), true, true, parentLayoutForMessages, AddEditReportActivity.this);
-        //           return false;
-        //       }
 
 
         return true;

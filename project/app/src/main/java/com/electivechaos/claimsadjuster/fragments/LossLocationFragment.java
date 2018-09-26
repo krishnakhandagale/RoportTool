@@ -313,6 +313,20 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
             CameraPosition cameraPosition = new CameraPosition.Builder().target(currentLocation).zoom(15).build();
             googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
             googleMap.getUiSettings().setMyLocationButtonEnabled(false);
+            googleMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+                @Override
+                public void onMapLoaded() {
+                    googleMap.snapshot(new GoogleMap.SnapshotReadyCallback() {
+                        @Override
+                        public void onSnapshotReady(Bitmap bitmap) {
+                            lossLocationDataInterface.setMapSnapshot(bitmap);
+                            googleMap.setOnMapLoadedCallback(null);
+                        }
+                    });
+                }
+
+
+            });
 
         }
 
