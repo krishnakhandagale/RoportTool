@@ -32,7 +32,7 @@ public class PermissionUtilities {
     public static final int MY_APP_GENERATE_REPORT_PERMISSIONS_FOUR = 133;
     public static final int MY_APP_SAVE_SNAPSHOT_PERMISSIONS = 134;
 
-    public static final int MY_APP_TAKE_RIGHT_PHOTO_PERMISSIONS_IMAGE_LOGO = 402;
+    public static final int MY_APP_BROWSE_PHOTO_PERMISSIONS_IMAGE_LOGO = 402;
 
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -182,7 +182,7 @@ public class PermissionUtilities {
     public static boolean checkPermissionImageUpload(final Context context, final Activity
             activity, final int type) {
         int currentAPIVersion = Build.VERSION.SDK_INT;
-        if (type == MY_APP_TAKE_RIGHT_PHOTO_PERMISSIONS_IMAGE_LOGO) {
+        if (type == MY_APP_BROWSE_PHOTO_PERMISSIONS_IMAGE_LOGO) {
             if (currentAPIVersion >= android.os.Build.VERSION_CODES.M) {
                 if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                     if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) context, Manifest.permission.READ_EXTERNAL_STORAGE)) {
@@ -194,14 +194,14 @@ public class PermissionUtilities {
                             @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
                             public void onClick(DialogInterface dialog, int which) {
 
-                                ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, MY_APP_TAKE_RIGHT_PHOTO_PERMISSIONS_IMAGE_LOGO);
+                                ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, MY_APP_BROWSE_PHOTO_PERMISSIONS_IMAGE_LOGO);
                             }
                         });
                         AlertDialog alert = alertBuilder.create();
                         alert.show();
 
                     } else {
-                        ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, MY_APP_TAKE_RIGHT_PHOTO_PERMISSIONS_IMAGE_LOGO);
+                        ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, MY_APP_BROWSE_PHOTO_PERMISSIONS_IMAGE_LOGO);
                     }
                     return false;
                 } else {

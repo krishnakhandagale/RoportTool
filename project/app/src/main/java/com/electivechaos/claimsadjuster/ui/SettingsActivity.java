@@ -1,7 +1,9 @@
 package com.electivechaos.claimsadjuster.ui;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -28,7 +30,7 @@ import static com.electivechaos.claimsadjuster.ui.ImagePickerActivity.options;
 public class SettingsActivity extends AppCompatActivity {
 
     private View parentLayoutForMessages;
-    private  static final int SELECT_FILE_IMAGE_LOGO_REQUEST_CODE= 401;
+    private  static final int SELECT_FILE_IMAGE_LOGO_REQUEST_CODE= 1;
 
     private ImageView companyNameLogo, companyNameLogoRemove;
 
@@ -270,7 +272,7 @@ public class SettingsActivity extends AppCompatActivity {
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean result = PermissionUtilities.checkPermissionImageUpload(SettingsActivity.this, SettingsActivity.this, PermissionUtilities.MY_APP_TAKE_RIGHT_PHOTO_PERMISSIONS_IMAGE_LOGO);
+                boolean result = PermissionUtilities.checkPermissionImageUpload(SettingsActivity.this, SettingsActivity.this, PermissionUtilities.MY_APP_BROWSE_PHOTO_PERMISSIONS_IMAGE_LOGO);
                 if (result){
                      galleryIntent(SELECT_FILE_IMAGE_LOGO_REQUEST_CODE);
                 }
@@ -356,4 +358,16 @@ public class SettingsActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if(requestCode == PermissionUtilities.MY_APP_BROWSE_PHOTO_PERMISSIONS_IMAGE_LOGO) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                galleryIntent(1);
+            } else {
+                PermissionUtilities.checkPermissionImageUpload(this, SettingsActivity.this, PermissionUtilities.MY_APP_BROWSE_PHOTO_PERMISSIONS_IMAGE_LOGO);
+            }
+        }
+    }
 }
