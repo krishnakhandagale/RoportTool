@@ -57,7 +57,7 @@ public class PdfViewerActivity extends AppCompatActivity {
 
 
 
-        pdfView.fromFile(file).spacing(5).onLoad(new OnLoadCompleteListener() {
+        pdfView.fromFile(file).spacing(10).onLoad(new OnLoadCompleteListener() {
             @Override
             public void loadComplete(int nbPages) {
             }
