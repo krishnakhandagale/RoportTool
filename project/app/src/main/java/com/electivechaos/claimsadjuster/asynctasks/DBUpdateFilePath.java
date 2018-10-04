@@ -115,11 +115,11 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
         int numberOfImagesPerPage = integers[0];
 
         PDFDocHeader event = new PDFDocHeader("");
-        event.setHeader(reportPOJO.getReportTitle(), 12);
+        event.setHeader(reportPOJO.getReportTitle(), 14);
         try{
             destination.createNewFile();
             fo = new FileOutputStream(destination);
-            final Document document = new Document(PageSize.A4, 50, 50, 70, 50);
+            final Document document = new Document(PageSize.A4, 50, 50, 80, 50);
             addMetaData(document);
             PdfWriter pdfWriter = PdfWriter.getInstance(document, fo);
             document.open();
@@ -174,7 +174,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
                 for(int i = 0 ; i<selectedElevationImagesList1.size() ; i++){
                     if (!selectedElevationImagesList1.get(i).getImageUrl().isEmpty()) {
                         byte[] imageBytesResized;
-                        imageBytesResized = resizeImage(selectedElevationImagesList1.get(i).getImageUrl(), (int) ((document.getPageSize().getWidth() / 2 - 100)), (int) ((remainingHeight / 2) -70));
+                        imageBytesResized = resizeImage(selectedElevationImagesList1.get(i).getImageUrl(), (int) ((document.getPageSize().getWidth() / 2 - 100)), (int) ((remainingHeight / 2) -80));
                         try {
                             count++ ;
                             com.itextpdf.text.Image img;
@@ -260,7 +260,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
                                 PdfPTable table = new PdfPTable(3);
                                 byte[] imageBytesResized;
                                 table.setWidths(new float[]{1, 5, 4});
-                                imageBytesResized = resizeImage(selectedElevationImagesList.get(j).getImageUrl(), (int) ((document.getPageSize().getWidth() / 2) - 100), (int) ((document.getPageSize().getHeight() / numberOfImagesPerPage) - 120));
+                                imageBytesResized = resizeImage(selectedElevationImagesList.get(j).getImageUrl(), (int) ((document.getPageSize().getWidth() / 2) - 100), (int) ((document.getPageSize().getHeight() / numberOfImagesPerPage) - 130));
                                 com.itextpdf.text.Image img = com.itextpdf.text.Image.getInstance(imageBytesResized);
                                 table.setHorizontalAlignment(Element.ALIGN_LEFT);
                                 table.setWidthPercentage(100);
@@ -291,7 +291,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
                         PdfPTable table = new PdfPTable(3);
                         byte[] imageBytesResized;
                         table.setWidths(new float[]{1, 5, 4});
-                        imageBytesResized = resizeImage(selectedImageList.get(i).getImageUrl(), (int) ((document.getPageSize().getWidth() / 2) - 100), (int) ((document.getPageSize().getHeight() / numberOfImagesPerPage) - 120));
+                        imageBytesResized = resizeImage(selectedImageList.get(i).getImageUrl(), (int) ((document.getPageSize().getWidth() / 2) - 100), (int) ((document.getPageSize().getHeight() / numberOfImagesPerPage) - 130));
                         com.itextpdf.text.Image img = com.itextpdf.text.Image.getInstance(imageBytesResized);
 
                         table.setHorizontalAlignment(Element.ALIGN_LEFT);
@@ -316,7 +316,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
             }
 
             document.newPage();
-            event.setHeader(reportPOJO.getReportTitle(), 12);
+            event.setHeader(reportPOJO.getReportTitle(), 14);
             Font signatureFont = new Font(Font.FontFamily.TIMES_ROMAN, Constants.FOOTER_FONT_SIZE, Font.ITALIC);
 
             PdfContentByte cb = pdfWriter.getDirectContent();
@@ -331,6 +331,21 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
                     date,
                     (document.right()),
                     document.bottom() +100, 0);
+
+
+            if(!CommonUtils.getReportByField(mContext).isEmpty()) {
+                Phrase name = new Phrase(new Phrase("Name") + "" + new Phrase(CommonUtils.getReportByField(mContext)), signatureFont);
+                ColumnText.showTextAligned(cb, Element.ALIGN_LEFT,
+                        name,
+                        (document.left()),
+                        document.bottom() + 80, 0);
+            }
+
+//            Phrase officeAddress = new Phrase(new Phrase("Office address")+""+new Phrase("____________________________  "), signatureFont);
+//            ColumnText.showTextAligned(cb,Element.ALIGN_RIGHT,
+//                    officeAddress,
+//                    (document.right()),
+//                    document.bottom() +80, 0);
 
             document.newPage();
 
@@ -455,12 +470,16 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
 
     private PdfPCell getCell(String title, String description, int alignment, Document document, int perPage) {
         PdfPCell cell = new PdfPCell();
+        cell.setPaddingTop(0f);
+        cell.setVerticalAlignment(Element.ALIGN_TOP);
+        cell.setHorizontalAlignment(Rectangle.ALIGN_LEFT);
         Font font=new Font(Font.FontFamily.TIMES_ROMAN, Constants.LABEL_FONT_VALUE_SIZE, Font.NORMAL);
+
         cell.addElement(new Phrase(title,font));
         cell.addElement(new Phrase(description,font));
         cell.setPaddingLeft(25f);
         cell.setBorder(Rectangle.NO_BORDER);
-        cell.setFixedHeight((document.getPageSize().getHeight() / perPage )- 120);
+        cell.setFixedHeight((document.getPageSize().getHeight()  -220)/perPage);
         return cell;
 
     }
@@ -481,8 +500,10 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
         cell.addElement(new Phrase(title,font));
         cell.addElement(new Phrase(description,font));
         cell.setPaddingLeft(25f);
+        cell.setPaddingTop(0f);
         cell.setBorder(Rectangle.NO_BORDER);
-        cell.setFixedHeight(document.getPageSize().getHeight() / 4 - 50);
+        cell.setFixedHeight((document.getPageSize().getHeight()  -220)/perPage);
+
         return cell;
 
     }
@@ -490,10 +511,13 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
 
     private PdfPCell getCellImageCell(com.itextpdf.text.Image img, int alignment, Document document, int perPage) {
         PdfPCell cell = new PdfPCell(img, true);
+        cell.setHorizontalAlignment(Rectangle.LEFT);
+        cell.setVerticalAlignment(Rectangle.TOP);
         cell.setPadding(0);
         cell.setHorizontalAlignment(alignment);
         cell.setBorder(Rectangle.NO_BORDER);
-        cell.setFixedHeight(document.getPageSize().getHeight()/ perPage - 120);
+        cell.setFixedHeight((document.getPageSize().getHeight() -220)/perPage);
+
         return cell;
     }
 
@@ -528,23 +552,15 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
         cell.addElement(new Paragraph("Report By", fontTitles));
         cell.addElement(new Paragraph(reportPOJO.getReportBy(),fontForValue));
 
-
         cell.addElement(Chunk.NEWLINE);
-
 
         Chunk propDetailsTitleChunk = new Chunk("Property Details", fontTitles);
         propDetailsTitleChunk.setUnderline(0.1f, -2f);
 
         cell.addElement(propDetailsTitleChunk);
 
-        cell.addElement(Chunk.NEWLINE);
-
-
         cell.addElement(new Paragraph("Risk Address", fontTitles));
         cell.addElement(new Paragraph(reportPOJO.getAddressLine(),fontForValue));
-
-
-
 
         cell.addElement(new Paragraph("Square footage", fontTitles));
         if(propertyDetailsPOJO.getSquareFootage().isEmpty()){
@@ -582,7 +598,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
             cell.addElement(new Paragraph(propertyDetailsPOJO.getBuildingType(),fontForValue));
         }
 
-        cell.setFixedHeight(document.getPageSize().getHeight() - 120);
+        cell.setFixedHeight(document.getPageSize().getHeight() - 130);
 
         return cell;
     }
@@ -594,7 +610,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
         cell.setHorizontalAlignment(Element.ALIGN_LEFT);
         cell.setVerticalAlignment(Element.ALIGN_TOP);
         cell.setBorder(Rectangle.NO_BORDER);
-        cell.setFixedHeight((document.getPageSize().getHeight()) - 120);
+        cell.setFixedHeight((document.getPageSize().getHeight()) - 130);
 
         PdfPTable tableForRightSide = new PdfPTable(1);
         tableForRightSide.setWidthPercentage(100f);
@@ -625,7 +641,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
             File file = new File(reportPOJO.getGoogleMapSnapShotFilePath());
             if (file.exists()) {
 
-                byte[] imgResized = resizeGoogleImage(reportPOJO.getGoogleMapSnapShotFilePath(),  (int) ((document.getPageSize().getWidth() / 2) - 100), (int)((document.getPageSize().getHeight() / 2) - 120));
+                byte[] imgResized = resizeGoogleImage(reportPOJO.getGoogleMapSnapShotFilePath(),  (int) ((document.getPageSize().getWidth() / 2) - 100), (int)((document.getPageSize().getHeight() / 2) - 130));
                 try {
                     imgMap = com.itextpdf.text.Image.getInstance(imgResized);
                     cell = new PdfPCell(imgMap,true);
@@ -633,7 +649,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
                     cell.setHorizontalAlignment(Element.ALIGN_LEFT);
                     cell.setVerticalAlignment(Element.ALIGN_TOP);
                     cell.setBorder(Rectangle.NO_BORDER);
-                    cell.setFixedHeight((document.getPageSize().getHeight()/2) - 120);
+                    cell.setFixedHeight((document.getPageSize().getHeight()/2) - 130);
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (BadElementException e) {
@@ -657,7 +673,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
             File file = new File(originalReportPojo.getLabelArrayList().get(0).getHouseNumber());
             if (file.exists()) {
                 byte[] imageBytesResized;
-                imageBytesResized = resizeImage(originalReportPojo.getLabelArrayList().get(0).getHouseNumber(), (int) ((document.getPageSize().getWidth() / 4) - 100), (int) ((document.getPageSize().getHeight() / 4)-120));
+                imageBytesResized = resizeImage(originalReportPojo.getLabelArrayList().get(0).getHouseNumber(), (int) ((document.getPageSize().getWidth() / 4) - 100), (int) ((document.getPageSize().getHeight() / 4)-130));
                 com.itextpdf.text.Image img;
                 try {
                     img = com.itextpdf.text.Image.getInstance(imageBytesResized);
@@ -666,7 +682,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
                     cell.setHorizontalAlignment(Element.ALIGN_LEFT);
                     cell.setVerticalAlignment(Element.ALIGN_BASELINE);
                     cell.setBorder(Rectangle.NO_BORDER);
-                    cell.setFixedHeight((document.getPageSize().getHeight() / 4)-20);
+                    cell.setFixedHeight((document.getPageSize().getHeight() / 4)-30);
 
                     PdfPTable innerTable = new PdfPTable(2);
                     innerTable.setWidthPercentage(100);
@@ -679,7 +695,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
                     innerCell.setHorizontalAlignment(Element.ALIGN_LEFT);
                     innerCell.setVerticalAlignment(Element.ALIGN_BASELINE);
                     innerCell.setBorder(Rectangle.NO_BORDER);
-                    innerCell.setFixedHeight((document.getPageSize().getHeight() / 4)-20);
+                    innerCell.setFixedHeight((document.getPageSize().getHeight() / 4)-30);
 
                     innerTable.addCell(innerCell);
                     innerTable.completeRow();
