@@ -30,7 +30,7 @@ import static com.electivechaos.claimsadjuster.ui.ImagePickerActivity.options;
 public class SettingsActivity extends AppCompatActivity {
 
     private View parentLayoutForMessages;
-    private  static final int SELECT_FILE_IMAGE_LOGO_REQUEST_CODE= 1;
+    private  static final int SELECT_FILE_IMAGE_LOGO_REQUEST_CODE= 444;
 
     private ImageView companyNameLogo, companyNameLogoRemove;
 
@@ -325,15 +325,17 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void onSelectFromGalleryResult(Intent data, int requestId) {
         ArrayList<com.electivechaos.claimsadjuster.pojo.Image> selectedImages = data.getParcelableArrayListExtra("ImageUrls");
-        Glide.with(this)
-                    .load("file://" +selectedImages.get(0).getPath())
+        if (requestId ==SELECT_FILE_IMAGE_LOGO_REQUEST_CODE ) {
+            Glide.with(this)
+                    .load("file://" + selectedImages.get(0).getPath())
                     .thumbnail(0.1f)
                     .apply(options)
                     .into(companyNameLogo);
 
-        CommonUtils.setImageLogoUrl(selectedImages.get(0).getPath(),this);
-        companyNameLogoRemove.setVisibility(View.VISIBLE);
+            CommonUtils.setImageLogoUrl(selectedImages.get(0).getPath(), this);
+            companyNameLogoRemove.setVisibility(View.VISIBLE);
         }
+    }
 
 
 
@@ -364,7 +366,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         if(requestCode == PermissionUtilities.MY_APP_BROWSE_PHOTO_PERMISSIONS_IMAGE_LOGO) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                galleryIntent(1);
+                galleryIntent(SELECT_FILE_IMAGE_LOGO_REQUEST_CODE);
             } else {
                 PermissionUtilities.checkPermissionImageUpload(this, SettingsActivity.this, PermissionUtilities.MY_APP_BROWSE_PHOTO_PERMISSIONS_IMAGE_LOGO);
             }
