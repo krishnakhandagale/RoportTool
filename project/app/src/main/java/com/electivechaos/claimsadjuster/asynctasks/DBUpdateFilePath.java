@@ -319,33 +319,54 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
             event.setHeader(reportPOJO.getReportTitle(), 14);
             Font signatureFont = new Font(Font.FontFamily.TIMES_ROMAN, Constants.FOOTER_FONT_SIZE, Font.ITALIC);
 
+            PdfPTable signatureTable = new PdfPTable(2);
+            signatureTable.setTotalWidth(500f);
+            signatureTable.setWidthPercentage(100);
+
             PdfContentByte cb = pdfWriter.getDirectContent();
 
             Phrase signature = new Phrase(new Phrase("Signature")+""+new Phrase("____________________________  "), signatureFont);
-            ColumnText.showTextAligned(cb,Element.ALIGN_LEFT,
-                    signature,
-                    (document.left()),
-                    document.bottom() +100, 0);
+
             Phrase date = new Phrase(new Phrase("Date")+""+new Phrase("____________________________  "), signatureFont);
-            ColumnText.showTextAligned(cb,Element.ALIGN_RIGHT,
-                    date,
-                    (document.right()),
-                    document.bottom() +100, 0);
 
-
+            Phrase name = null;
             if(!CommonUtils.getReportByField(mContext).isEmpty()) {
-                Phrase name = new Phrase(new Phrase("Name") + "" + new Phrase(CommonUtils.getReportByField(mContext)), signatureFont);
-                ColumnText.showTextAligned(cb, Element.ALIGN_LEFT,
-                        name,
-                        (document.left()),
-                        document.bottom() + 80, 0);
+                name = new Phrase(new Phrase("Name") + "" + new Phrase(CommonUtils.getReportByField(mContext)), signatureFont);
+             }
+
+            Phrase officeAddress = null;
+            if(!CommonUtils.getAddress(mContext).isEmpty()) {
+                officeAddress = new Phrase(new Phrase("Office address") + "" + new Phrase(CommonUtils.getAddress(mContext)), signatureFont);
             }
 
-            Phrase officeAddress = new Phrase(new Phrase("Office address")+""+new Phrase(CommonUtils.getAddress(mContext)), signatureFont);
-            ColumnText.showTextAligned(cb,Element.ALIGN_RIGHT,
-                    officeAddress,
-                    (document.right()),
-                    document.bottom() +80, 0);
+            PdfPCell signCell = new PdfPCell();
+            signCell.setFixedHeight(20f);
+            signCell.setBorder(Rectangle.NO_BORDER);
+            signCell.addElement(signature);
+
+            PdfPCell dateCell = new PdfPCell();
+            dateCell.setFixedHeight(20f);
+            dateCell.setBorder(Rectangle.NO_BORDER);
+            dateCell.addElement(date);
+
+            PdfPCell nameCell = new PdfPCell();
+            nameCell.setFixedHeight(50f);
+            nameCell.setBorder(Rectangle.NO_BORDER);
+            nameCell.addElement(name);
+
+            PdfPCell addressCell = new PdfPCell();
+            addressCell.setFixedHeight(50f);
+            addressCell.setBorder(Rectangle.NO_BORDER);
+            addressCell.addElement(officeAddress);
+
+            signatureTable.addCell(signCell);
+            signatureTable.addCell(dateCell);
+            signatureTable.addCell(nameCell);
+            signatureTable.addCell(addressCell);
+
+
+            signatureTable.completeRow();
+            signatureTable.writeSelectedRows(0, -1, document.getPageSize().getLeft()+50, signatureTable.getTotalHeight() + 100, cb);
 
             document.newPage();
 
