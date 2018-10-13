@@ -109,4 +109,6 @@
     <string name="please_enter_company_name">Please enter company name.</string>
     <string name="chose_logo">Select Logo</string>
     <string name="please_enter_rep_title">Please enter report title.</string>
+    <string name="please_enter_address">Please enter address.</string>
+    <string name="enter_address_setting">Office address</string>
 </resources>

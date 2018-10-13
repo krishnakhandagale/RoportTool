@@ -322,6 +322,48 @@
             android:layout_height="40dp" />
 
     </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:weightSum="4"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="3.3"
+            android:layout_marginLeft="30dp"
+            android:layout_marginStart="30dp">
+
+            <EditText
+                android:fontFamily="sans-serif-condensed"
+                android:id="@+id/address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/enter_address_setting"
+                android:textSize="14sp" />
+        </android.support.design.widget.TextInputLayout>
+        <ImageButton
+            android:id="@+id/editAddress"
+            android:background="@null"
+            android:src="@drawable/ic_edit_black_16"
+            android:layout_weight="0.7"
+            android:layout_gravity="bottom"
+            android:layout_width="0dip"
+            android:layout_height="40dp" />
+
+        <ImageButton
+            android:id="@+id/doneAddress"
+            android:background="@null"
+            android:src="@drawable/ic_done"
+            android:layout_weight="0.7"
+            android:layout_gravity="bottom"
+            android:visibility="invisible"
+            android:layout_width="0dip"
+            android:layout_height="40dp" />
+
+    </LinearLayout>
     <RelativeLayout
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"

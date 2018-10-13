@@ -77,6 +77,12 @@ public class SettingsActivity extends AppCompatActivity {
         final ImageButton editCompanyNameBtn = findViewById(R.id.editCompanyName);
         final ImageButton doneCompanyNameBtn = findViewById(R.id.doneCompanyName);
 
+        final EditText addressEditText = findViewById(R.id.address);
+        final ImageButton editAddressBtn = findViewById(R.id.editAddress);
+        final ImageButton doneAddressBtn = findViewById(R.id.doneAddress);
+
+
+
 
         final TextView uploadButton = findViewById(R.id.uploadButton);
         companyNameLogo = findViewById(R.id.companyNameLogo);
@@ -96,6 +102,10 @@ public class SettingsActivity extends AppCompatActivity {
 
         if(!CommonUtils.getCompanyName(this).isEmpty()){
             companyNameEditText.setText(CommonUtils.getCompanyName(this));
+        }
+
+        if(!CommonUtils.getAddress(this).isEmpty()){
+            addressEditText.setText(CommonUtils.getAddress(this));
         }
 
         if(!CommonUtils.getImageLogoUrl(this).isEmpty()){
@@ -263,6 +273,35 @@ public class SettingsActivity extends AppCompatActivity {
                     CommonUtils.setCompanyName(companyName, SettingsActivity.this);
                 }else {
                     CommonUtils.showSnackbarMessage(getString(R.string.please_enter_company_name), true, true,parentLayoutForMessages, SettingsActivity.this);
+                }
+            }
+        });
+
+
+        addressEditText.setEnabled(false);
+
+        editAddressBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addressEditText.setEnabled(true);
+                editAddressBtn.setVisibility(View.GONE);
+                doneAddressBtn.setVisibility(View.VISIBLE);
+            }
+        });
+
+        doneAddressBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String address = addressEditText.getText().toString();
+                if(!address.isEmpty()) {
+                    addressEditText.setEnabled(false);
+                    doneAddressBtn.setVisibility(View.GONE);
+                    editAddressBtn.setVisibility(View.VISIBLE);
+
+                    CommonUtils.setAddress(address, SettingsActivity.this);
+                }else {
+                    CommonUtils.showSnackbarMessage(getString(R.string.please_enter_address), true, true,parentLayoutForMessages, SettingsActivity.this);
                 }
             }
         });
