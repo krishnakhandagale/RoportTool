@@ -5,12 +5,15 @@ package com.electivechaos.claimsadjuster.ui;
  * Created by krishna on 11/7/17.
  */
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -318,6 +322,31 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
                 ((ImageFragment) mAdapter.getCurrentFragment()).setCoverageType(b.getString("name"));
             }
         }
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(ImageSliderActivity.this);
+        builder.setTitle(R.string.go_back_msg_title)
+                .setMessage(R.string.imagepicker_back_msg)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        ImageSliderActivity.super.onBackPressed();
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+        Button negativeButton = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
+        negativeButton.setTextColor(ContextCompat.getColor(ImageSliderActivity.this,R.color.colorPrimaryDark));
+        Button positiveButton = alert.getButton(DialogInterface.BUTTON_POSITIVE);
+        positiveButton.setTextColor(ContextCompat.getColor(ImageSliderActivity.this,R.color.colorPrimaryDark));
 
     }
 
