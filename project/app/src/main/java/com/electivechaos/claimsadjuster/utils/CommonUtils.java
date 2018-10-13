@@ -482,4 +482,26 @@ public class CommonUtils {
         editor.apply();
     }
 
+
+    public static void setAddress(String address, Context context) {
+        SharedPreferences sharedPref = context.getSharedPreferences("address",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("Address", address);
+        editor.apply();
+    }
+
+
+    public static String getAddress(Context context){
+        SharedPreferences sharedPref = context.getSharedPreferences("address",Context.MODE_PRIVATE);
+        String address = sharedPref.getString("Address", "");
+        return address;
+    }
+
+    public static void clearAddress(Context context){
+        SharedPreferences sharedPref = context.getSharedPreferences("address",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.clear();
+        editor.apply();
+    }
+
 }
