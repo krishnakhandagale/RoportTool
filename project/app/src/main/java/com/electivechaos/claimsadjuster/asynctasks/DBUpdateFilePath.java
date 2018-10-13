@@ -341,11 +341,11 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
                         document.bottom() + 80, 0);
             }
 
-//            Phrase officeAddress = new Phrase(new Phrase("Office address")+""+new Phrase("____________________________  "), signatureFont);
-//            ColumnText.showTextAligned(cb,Element.ALIGN_RIGHT,
-//                    officeAddress,
-//                    (document.right()),
-//                    document.bottom() +80, 0);
+            Phrase officeAddress = new Phrase(new Phrase("Office address")+""+new Phrase(CommonUtils.getAddress(mContext)), signatureFont);
+            ColumnText.showTextAligned(cb,Element.ALIGN_RIGHT,
+                    officeAddress,
+                    (document.right()),
+                    document.bottom() +80, 0);
 
             document.newPage();
 
@@ -818,10 +818,19 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
             String companyName = CommonUtils.getCompanyName(mContext);
             if(!companyName.isEmpty()) {
                 Phrase headerCompanyName = new Phrase(companyName, headerCompanyNameFont);
-                ColumnText.showTextAligned(cb, Element.ALIGN_LEFT,
-                        headerCompanyName,
-                         document.left(),
-                        document.top()+23, 0);
+
+                if(!CommonUtils.getImageLogoUrl(mContext).isEmpty()) {
+                    ColumnText.showTextAligned(cb, Element.ALIGN_LEFT,
+                            headerCompanyName,
+                            document.left() + 36,
+                            document.top() + 45, 0);
+                }
+                else {
+                    ColumnText.showTextAligned(cb, Element.ALIGN_LEFT,
+                            headerCompanyName,
+                            document.left() ,
+                            document.top() + 45, 0);
+                }
             }
 
 
