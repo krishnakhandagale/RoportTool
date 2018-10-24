@@ -28,11 +28,13 @@ public class SplashScreenActivity extends AppCompatActivity {
         if (animation instanceof Animatable) {
             ((Animatable) animation).start();
         }
+
+
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if(!CommonUtils.getReportByField(SplashScreenActivity.this).isEmpty() && !CommonUtils.getEmailId(SplashScreenActivity.this).isEmpty()) {
+                if(!CommonUtils.getReportByField(SplashScreenActivity.this).isEmpty() && !CommonUtils.getEmailId(SplashScreenActivity.this).isEmpty() && !CommonUtils.getSession(SplashScreenActivity.this).isEmpty()) {
                     Intent i = new Intent(SplashScreenActivity.this,MainTabsActivity.class);
                     startActivity(i);
                     finish();

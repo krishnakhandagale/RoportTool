@@ -59,11 +59,6 @@
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".ui.SplashScreenActivity">
-            <intent-filter>
-                <category android:name="android.intent.category.LAUNCHER" />
-
-                <action android:name="android.intent.action.MAIN" />
-            </intent-filter>
         </activity>
         <activity android:name=".ui.CustomisationActivity" />
         <activity android:name=".ui.RoofSystemActivity" />
@@ -75,7 +70,14 @@
         <activity android:name=".ui.CoverageDetailsActivity" />
         <activity android:name=".ui.AddEditCoverageActivity" />
         <activity android:name=".ui.SettingsActivity" />
-        <activity android:name=".ui.RegistrationActivity"></activity>
+        <activity android:name=".ui.RegistrationActivity" />
+        <activity android:name=".ui.TermsOfServicesActivity">
+            <intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

@@ -15,4 +15,7 @@ public interface Constants {
     String REPORT_QUALITY_MEDIUM = "medium";
     String REPORT_QUALITY_HIGH = "high";
 
+    String SERVICE_URL = "http://aa362ac6.ngrok.io/api/";
+    String USER_ID = "UserID";
+
 }

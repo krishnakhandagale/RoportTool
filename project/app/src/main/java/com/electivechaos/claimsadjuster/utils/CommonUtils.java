@@ -15,6 +15,14 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
+import com.android.volley.VolleyError;
+import com.electivechaos.claimsadjuster.Constants;
 import com.electivechaos.claimsadjuster.R;
 
 import java.util.Date;
@@ -502,6 +510,65 @@ public class CommonUtils {
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.clear();
         editor.apply();
+    }
+
+    public static void setTermsAndConditions(String tc, Context context) {
+        SharedPreferences sharedPref = context.getSharedPreferences("termsAndConditions",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("TC", tc);
+        editor.apply();
+    }
+
+
+    public static String getTermsAndConditions(Context context){
+        SharedPreferences sharedPref = context.getSharedPreferences("termsAndConditions",Context.MODE_PRIVATE);
+        String tc = sharedPref.getString("TC", "");
+        return tc;
+    }
+
+    public static void clearTermsAndConditions(Context context){
+        SharedPreferences sharedPref = context.getSharedPreferences("termsAndConditions",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.clear();
+        editor.apply();
+    }
+
+    public static void setSession(String userId,Context context) {
+        SharedPreferences sharedPref = context.getSharedPreferences("login",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(Constants.USER_ID, userId);
+        editor.apply();
+    }
+
+    public static String getSession(Context context){
+        SharedPreferences sharedPref = context.getSharedPreferences("login",Context.MODE_PRIVATE);
+        String userId = sharedPref.getString(Constants.USER_ID , "");
+        return userId;
+    }
+
+    public static void clearSession(Context context){
+        SharedPreferences sharedPref = context.getSharedPreferences("login",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.clear();
+        editor.apply();
+    }
+
+    public static String getRequestError(VolleyError volleyError){
+        String message = null;
+        if (volleyError instanceof NetworkError) {
+            message = "Cannot connect to Internet.Please check your connection!";
+        } else if (volleyError instanceof ServerError) {
+            message = "The server could not be found. Please try again after some time!";
+        } else if (volleyError instanceof AuthFailureError) {
+            message = "Cannot connect to Internet.Please check your connection!";
+        } else if (volleyError instanceof ParseError) {
+            message = "Parsing error! Please try again after some time!!";
+        } else if (volleyError instanceof NoConnectionError) {
+            message = "Cannot connect to Internet.Please check your connection!";
+        } else if (volleyError instanceof TimeoutError) {
+            message = "Connection TimeOut! Please check your internet connection.";
+        }
+        return  message;
     }
 
 }

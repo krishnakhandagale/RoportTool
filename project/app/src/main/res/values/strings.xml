@@ -111,4 +111,15 @@
     <string name="please_enter_rep_title">Please enter report title.</string>
     <string name="please_enter_address">Please enter address.</string>
     <string name="enter_address_setting">Office address</string>
+    <string name="enter_token">Enter token</string>
+    <string name="terms_of_services">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio et ante tincidunt tempus. Donec vitae sapien ut libero venenatis faucibus. Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed fringilla mauris sit amet nibh. Donec sodales sagittis magna. Sed consequat, leo eget bibendum sodales, augue velit cursus nunc,
+       </string>
+    <string name="please_check_terms_of_services">Accept terms of services.</string>
+    <string name="disagreement_title">Disagree</string>
+    <string name="disagreement_msg">Are you sure, you want to disagree?</string>
+    <string name="i_agree">Agree</string>
+    <string name="don_t_agree">Disagree</string>
+    <string name="i_have_read_and_accept_the_terms_of_services">I have read and accept the Terms Of Services.</string>
+    <string name="please_enter_valid_email_id">Please enter valid email address.</string>
+
 </resources>
