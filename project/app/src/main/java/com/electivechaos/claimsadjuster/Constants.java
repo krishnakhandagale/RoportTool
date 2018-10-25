@@ -15,7 +15,9 @@ public interface Constants {
     String REPORT_QUALITY_MEDIUM = "medium";
     String REPORT_QUALITY_HIGH = "high";
 
-    String SERVICE_URL = "http://aa362ac6.ngrok.io/api/";
+    String SERVICE_URL = "http://0c39024f.ngrok.io/api/";
+    String SERVICE_URL_STAGING = "https://staging.electivechaos.com/api/";
+    String SERVICE_URL_PRODUCTION= "https://www.electivechaos.com/api/";
     String USER_ID = "UserID";
 
 }
