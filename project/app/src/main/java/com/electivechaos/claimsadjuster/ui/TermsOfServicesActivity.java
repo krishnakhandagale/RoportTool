@@ -10,9 +10,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.TextView;
 
 import com.electivechaos.claimsadjuster.R;
 import com.electivechaos.claimsadjuster.utils.CommonUtils;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 public class TermsOfServicesActivity extends AppCompatActivity {
 
@@ -31,6 +37,7 @@ public class TermsOfServicesActivity extends AppCompatActivity {
             startActivity(intentSplash);
         }
 
+
         termsOfServices = findViewById(R.id.termsAndCondition);
         acceptBtn = findViewById(R.id.acceptBtn);
         dontAcceptBtn = findViewById(R.id.dontAcceptBtn);
@@ -38,7 +45,25 @@ public class TermsOfServicesActivity extends AppCompatActivity {
         parentLayoutForMessages = findViewById(R.id.parentLayoutForMessages);
         toolbar = findViewById(R.id.toolbar);
 
+        TextView txtTos = findViewById(R.id.txtTos);
         toolbar.setTitle("Terms Of Services");
+
+        //TODO:: Uncomment after confirmation
+
+        InputStream is = getResources().openRawResource(R.raw.tos);
+        BufferedReader br = new BufferedReader(new InputStreamReader(is));
+        String line;
+        String entireFile = "";
+        try {
+            while((line = br.readLine()) != null) { // <--------- place readLine() inside loop
+                entireFile += (line + "\n"); // <---------- add each line to entireFile
+            }
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        txtTos.setText(entireFile); // <------- assign entireFile to TextView
+
 
         acceptBtn.setOnClickListener(new View.OnClickListener() {
             @Override
