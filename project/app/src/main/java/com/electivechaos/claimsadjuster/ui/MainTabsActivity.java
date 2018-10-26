@@ -121,4 +121,8 @@ public class MainTabsActivity extends BaseActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+
+    }
 }

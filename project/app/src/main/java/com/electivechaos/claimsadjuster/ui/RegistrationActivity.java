@@ -130,7 +130,7 @@ public class RegistrationActivity extends AppCompatActivity {
         jsonObject.put("params", jsonArray);
 
         final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
-                Constants.SERVICE_URL,jsonObject,
+                Constants.SERVICE_URL_STAGING,jsonObject,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -180,4 +180,8 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onBackPressed() {
+
+    }
 }

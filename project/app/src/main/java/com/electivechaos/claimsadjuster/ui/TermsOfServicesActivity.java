@@ -59,7 +59,6 @@ public class TermsOfServicesActivity extends AppCompatActivity {
                 entireFile += (line + "\n"); // <---------- add each line to entireFile
             }
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         txtTos.setText(entireFile); // <------- assign entireFile to TextView
