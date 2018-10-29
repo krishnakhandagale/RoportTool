@@ -27,7 +27,7 @@
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:layout_weight="3.5"
+            android:layout_weight="3.3"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             android:id="@+id/linearLayout1"
             android:layout_width="match_parent"
@@ -51,9 +51,9 @@
         </LinearLayout>
 
             <LinearLayout
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="20dp"
                 android:gravity="bottom|center"
-                android:layout_weight="0.5"
+                android:layout_weight="0.7"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:orientation="horizontal">
@@ -71,7 +71,7 @@
                     android:text="@string/i_have_read_and_accept_the_terms_of_services"
                     android:textColor="@color/grayDark"/>
                 <RelativeLayout
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="10dp"
                     android:gravity="bottom"
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
