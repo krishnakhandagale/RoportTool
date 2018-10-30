@@ -96,6 +96,12 @@ public class CommonUtils {
         int number = 100000 + random.nextInt(900000);
         return  new Date().getTime() +"" + number;
     }
+    public static String generateIdString(){
+        long timeInMillisecond = System.currentTimeMillis();
+        Random random = new Random();
+        int number = 100000 + random.nextInt(900000);
+        return  new Date().getTime() +""+timeInMillisecond + number;
+    }
 
     public static Bitmap fastblur(Bitmap sentBitmap, int radius) {
         Bitmap bitmap = sentBitmap.copy(sentBitmap.getConfig(), true);

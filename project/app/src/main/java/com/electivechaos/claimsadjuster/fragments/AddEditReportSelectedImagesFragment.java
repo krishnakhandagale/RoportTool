@@ -5,9 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,6 +15,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
@@ -25,6 +23,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,7 +44,10 @@ import com.electivechaos.claimsadjuster.PermissionUtilities;
 import com.electivechaos.claimsadjuster.R;
 import com.electivechaos.claimsadjuster.SingleMediaScanner;
 import com.electivechaos.claimsadjuster.adapters.DrawerMenuListAdapter;
+import com.electivechaos.claimsadjuster.asynctasks.DBSelectedImagesListTsk;
+import com.electivechaos.claimsadjuster.database.CategoryListDBHelper;
 import com.electivechaos.claimsadjuster.dialog.ImageDetailsFragment;
+import com.electivechaos.claimsadjuster.interfaces.AsyncTaskStatusCallback;
 import com.electivechaos.claimsadjuster.interfaces.BackButtonClickListener;
 import com.electivechaos.claimsadjuster.interfaces.NextButtonClickListener;
 import com.electivechaos.claimsadjuster.interfaces.OnGenerateReportClickListener;
@@ -56,6 +58,7 @@ import com.electivechaos.claimsadjuster.listeners.OnImageRemovalListener;
 import com.electivechaos.claimsadjuster.listeners.OnMediaScannerListener;
 import com.electivechaos.claimsadjuster.pojo.Image;
 import com.electivechaos.claimsadjuster.pojo.ImageDetailsPOJO;
+import com.electivechaos.claimsadjuster.pojo.Label;
 import com.electivechaos.claimsadjuster.ui.ImagePickerActivity;
 import com.electivechaos.claimsadjuster.ui.ImageSliderActivity;
 import com.electivechaos.claimsadjuster.ui.SingleImageDetailsActivity;
@@ -73,7 +76,7 @@ import java.util.List;
  */
 
 public class AddEditReportSelectedImagesFragment extends Fragment {
-
+    static CategoryListDBHelper categoryListDBHelper;
     private  static final int REQUEST_CAMERA = 0;
     private  static final int IMAGE_ONE_REQUEST = 100;
     private  static final int IMAGE_TWO_REQUEST = 200;
@@ -120,6 +123,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
     private ArrayList<ImageDetailsPOJO> selectedElevationImagesList = new ArrayList<>();
     private int labelPosition;
     private String labelDefaultCoverageType;
+    private Label label;
 
 
     private OnImageRemovalListener onImageRemovalListener = null;
@@ -140,7 +144,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
 
     private PopupWindow popupWindow;
 
-    public static AddEditReportSelectedImagesFragment initFragment(ArrayList<ImageDetailsPOJO> selectedImageList, ArrayList<ImageDetailsPOJO> selectedElevationImagesList, int position, String fileUri, String labelDefaultCoverageType) {
+    public static AddEditReportSelectedImagesFragment initFragment(ArrayList<ImageDetailsPOJO> selectedImageList, ArrayList<ImageDetailsPOJO> selectedElevationImagesList, int position, Label label, String fileUri, String labelDefaultCoverageType) {
         AddEditReportSelectedImagesFragment fragment = new AddEditReportSelectedImagesFragment();
         Bundle args = new Bundle();
 
@@ -156,6 +160,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
         args.putSerializable("selectedImagesList", selectedImageList);
         args.putSerializable("selectedElevationImagesList", selectedElevationImagesList);
         args.putInt("position", position);
+        args.putParcelable("label",label);
         args.putString("fileUri", fileUri);
         args.putString("labelDefaultCoverageType",labelDefaultCoverageType);
         fragment.setArguments(args);
@@ -165,10 +170,12 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        categoryListDBHelper = CategoryListDBHelper.getInstance(getActivity());
         if (getArguments() != null) {
             selectedElevationImagesList = (ArrayList<ImageDetailsPOJO>) getArguments().get("selectedElevationImagesList");
             selectedImageList = (ArrayList<ImageDetailsPOJO>) getArguments().get("selectedImagesList");
             labelPosition = (int) getArguments().get("position");
+            label = getArguments().getParcelable("label");
             labelDefaultCoverageType = (String) getArguments().get("labelDefaultCoverageType");
 
             mCurrentPhotoPath = getArguments().getString("fileUri");
@@ -816,12 +823,54 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                     .into(imageFourPreview);
             selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList, labelPosition);
         }else if(requestId == SELECT_FILE){
-            Intent intent = new Intent(getActivity(), ImageSliderActivity.class);
-            intent.putExtra("ImageList", selectedImages);
+            // add call &
 
-            intent.putExtra("labelPosition", labelPosition);
-            intent.putExtra("labelDefaultCoverageType", labelDefaultCoverageType);
-            getActivity().startActivityForResult(intent, ADD_IMAGE_DETAILS);
+            ArrayList<ImageDetailsPOJO> imagesInformation = new ArrayList<>();
+            for(int i =0; i< selectedImages.size();i++){
+                ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
+                imgObj.setImageUrl(selectedImages.get(i).getPath());
+                imgObj.setTitle("");
+                imgObj.setDescription("");
+                imgObj.setCoverageTye(labelDefaultCoverageType);
+                File file = new File(selectedImages.get(i).getPath());
+                if (file.exists()){
+                    imgObj.setImageName(file.getName());
+                    Date date = new Date(file.lastModified());
+                    String dateString = new SimpleDateFormat("dd/MM/yyyy").format(date);
+                    String timeString = new SimpleDateFormat("HH:mm:ss a").format(date);
+                    imgObj.setImageDateTime(dateString+" at "+timeString);
+                }
+                imgObj.setImageGeoTag("");
+                imagesInformation.add(imgObj);
+
+            }
+
+            selectedImagesDataInterface.setSelectedImages(imagesInformation,labelPosition);
+
+            new DBSelectedImagesListTsk(categoryListDBHelper,"insert_selected_images",label,imagesInformation,new AsyncTaskStatusCallback(){
+
+                @Override
+                public void onPostExecute(Object object, String type) {
+                    Log.d("FUCK",label.getId());
+                    ArrayList<ImageDetailsPOJO> returnedImagesList = (ArrayList<ImageDetailsPOJO>) object;
+                    Intent intent = new Intent(getActivity(), ImageSliderActivity.class);
+                    intent.putExtra("ImageList", returnedImagesList);
+                    intent.putExtra("labelPosition", labelPosition);
+                    intent.putExtra("labelDefaultCoverageType", labelDefaultCoverageType);
+                    getActivity().startActivityForResult(intent, ADD_IMAGE_DETAILS);
+                }
+
+                @Override
+                public void onPreExecute() {
+
+                }
+
+                @Override
+                public void onProgress(int progress) {
+
+                }
+            }).execute();
+
         }
     }
 
@@ -1039,7 +1088,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
 
     public void onShowPopup(ImageDetailsPOJO imageDetails){
 
-       FragmentTransaction ft = getFragmentManager().beginTransaction();
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
         Fragment prev = getFragmentManager().findFragmentByTag("dialog");
         if (prev != null) {
             ft.remove(prev);
@@ -1088,6 +1137,30 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
             isFabOpen = true;
         }
 
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        CategoryListDBHelper categoryListDBHelper = CategoryListDBHelper.getInstance(getActivity());
+
+        ArrayList<ImageDetailsPOJO> imageList = categoryListDBHelper.getLabelImages(label.getId());
+        try {
+            FragmentManager fm = getActivity().getSupportFragmentManager();
+            if(fm.getFragments() != null && fm.getFragments().size() >0){
+                for(int i=0;i<fm.getFragments().size();i++){
+
+                    if(fm.getFragments().get(i) instanceof  AddEditReportSelectedImagesFragment){
+                        AddEditReportSelectedImagesFragment fragment = (AddEditReportSelectedImagesFragment) fm.getFragments().get(i);
+                        fragment.setDataAndAdapter(imageList);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Log.d("FUCK","ONRESUME IMAGES"+label.getId());
     }
 
 

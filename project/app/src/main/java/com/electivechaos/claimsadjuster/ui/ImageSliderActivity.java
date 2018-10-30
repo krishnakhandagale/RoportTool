@@ -51,7 +51,7 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
     ImageButton selectImagesBtn;
 
     private ArrayList<ImageDetailsPOJO> imagesInformation;
-    private ArrayList<Image> imageList;
+    private ArrayList<ImageDetailsPOJO> imageList;
     private int lastSelectedPosition = -1;
     private int labelPosition = -1;
     private String labelDefaultCoverageType = "";
@@ -63,17 +63,18 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
         setContentView(R.layout.image_slider_layout);
 
 
-        imageList = (ArrayList<Image>) getIntent().getExtras().get("ImageList");
+        imageList = (ArrayList<ImageDetailsPOJO>) getIntent().getExtras().get("ImageList");
         labelPosition = getIntent().getExtras().getInt("labelPosition");
         labelDefaultCoverageType = getIntent().getExtras().getString("labelDefaultCoverageType");
         imagesInformation = new ArrayList<>();
         for(int i =0; i< imageList.size();i++){
             ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
-            imgObj.setImageUrl(imageList.get(i).getPath());
+            imgObj.setImageId(imageList.get(i).getImageId());
+            imgObj.setImageUrl(imageList.get(i).getImageUrl());
             imgObj.setTitle("");
             imgObj.setDescription("");
             imgObj.setCoverageTye(labelDefaultCoverageType);
-            File file = new File(imageList.get(i).getPath());
+            File file = new File(imageList.get(i).getImageUrl());
             if (file.exists()){
                 imgObj.setImageName(file.getName());
                 Date date = new Date(file.lastModified());
@@ -121,7 +122,6 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
             public void onClick(View v) {
                 Intent intent = new Intent();
                 Bundle imagesObj = new Bundle();
-
                 imagesObj.putSerializable("selected_images",imagesInformation);
                 imagesObj.putInt("labelPosition",labelPosition);
                 intent.putExtras(imagesObj);

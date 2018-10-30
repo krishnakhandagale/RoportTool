@@ -3,6 +3,7 @@ package com.electivechaos.claimsadjuster.database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -32,7 +33,7 @@ import java.util.Iterator;
  */
 
 public class CategoryListDBHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 184;
+    private static final int DATABASE_VERSION = 186;
 
 
     // Database Name
@@ -1174,6 +1175,90 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         }
 
     }
+
+    public ArrayList<ImageDetailsPOJO> getLabelImages(String labelId){
+        ArrayList<ImageDetailsPOJO> selectedImagesList = new ArrayList();
+        String query= "SELECT * FROM report_image_details WHERE label_id_fk = '"+labelId+"'";
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cSelectedImages = db.rawQuery(query, null);
+
+        if (cSelectedImages.moveToFirst()) {
+            do {
+                ImageDetailsPOJO sImageDetailsPOJO = new ImageDetailsPOJO();
+                sImageDetailsPOJO.setImageId(cSelectedImages.getString(0));
+                sImageDetailsPOJO.setTitle(cSelectedImages.getString(1));
+                sImageDetailsPOJO.setDescription(cSelectedImages.getString(2));
+                sImageDetailsPOJO.setImageUrl(cSelectedImages.getString(3));
+                sImageDetailsPOJO.setIsDamage(cSelectedImages.getString(4).equals("1"));
+                sImageDetailsPOJO.setOverview(cSelectedImages.getString(5).equals("1"));
+                sImageDetailsPOJO.setPointOfOrigin(cSelectedImages.getString(7).equals("1"));
+                sImageDetailsPOJO.setCoverageTye(cSelectedImages.getString(8));
+                sImageDetailsPOJO.setImageName(cSelectedImages.getString(9));
+                sImageDetailsPOJO.setImageDateTime(cSelectedImages.getString(10));
+                sImageDetailsPOJO.setImageGeoTag(cSelectedImages.getString(11));
+                selectedImagesList.add(sImageDetailsPOJO);
+            } while (cSelectedImages.moveToNext());
+        }
+        return selectedImagesList;
+    }
+
+    public int editImageDetails(ImageDetailsPOJO imageDetailsPOJO){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+//        String query ="UPDATE report_image_details SET image_title = ?, image_description = ?, is_damage = ?, is_overview = ?, is_point_of_origin = ?, image_coverage_type = ? WHERE image_id = ?";
+
+        ContentValues cv = new ContentValues();
+        cv.put(KEY_IMAGE_TITLE,imageDetailsPOJO.getTitle());
+        cv.put(KEY_IMAGE_DESCRIPTION,imageDetailsPOJO.getDescription());
+        cv.put(KEY_IS_DAMAGE,imageDetailsPOJO.isDamage());
+        cv.put(KEY_IS_OVERVIEW,imageDetailsPOJO.isOverview());
+        cv.put(KEY_IS_POINT_OF_ORIGIN,imageDetailsPOJO.isPointOfOrigin());
+        cv.put(KEY_IMAGE_COVERAGE_TYPE,imageDetailsPOJO.getCoverageTye());
+
+        return db.update(TABLE_REPORTS_IMAGE_DETAILS, cv, KEY_IMAGE_ID+"=" +"'"+ imageDetailsPOJO.getImageId()+"'", null);
+
+    }
+
+
+    public ArrayList<ImageDetailsPOJO> appendSelectedImages(Label label,ArrayList<ImageDetailsPOJO> imageList) throws SQLException {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ArrayList<ImageDetailsPOJO> labelSelectedImages = imageList;
+        ArrayList<ImageDetailsPOJO> returnSelectedImages = new ArrayList<>();
+
+        if (labelSelectedImages != null && labelSelectedImages.size() > 0) {
+            for (int index = 0; index < labelSelectedImages.size(); index++) {
+                ImageDetailsPOJO imageItem = labelSelectedImages.get(index);
+
+                String imageId = CommonUtils.generateIdString();
+
+                ContentValues imageEntry = new ContentValues();
+
+                imageItem.setImageId(String.valueOf(imageId));
+                imageEntry.put(KEY_IMAGE_ID, imageId);
+                imageEntry.put(KEY_IMAGE_TITLE, imageItem.getTitle());
+                imageEntry.put(KEY_IMAGE_DESCRIPTION, imageItem.getDescription());
+                imageEntry.put(KEY_IMAGE_URL, imageItem.getImageUrl());
+                imageEntry.put(KEY_IS_DAMAGE, imageItem.isDamage());
+                imageEntry.put(KEY_IS_OVERVIEW, imageItem.isOverview());
+                imageEntry.put(KEY_FK_LABEL_ID, label.getId());
+                imageEntry.put(KEY_IS_POINT_OF_ORIGIN, imageItem.isPointOfOrigin());
+                imageEntry.put(KEY_IMAGE_COVERAGE_TYPE, imageItem.getCoverageTye());
+                imageEntry.put(KEY_IMAGE_NAME, imageItem.getImageName());
+                imageEntry.put(KEY_IMAGE_DATE_TIME, imageItem.getImageDateTime());
+                imageEntry.put(KEY_IMAGE_GEO_TAG, imageItem.getImageGeoTag());
+                db.insertOrThrow(TABLE_REPORTS_IMAGE_DETAILS, null, imageEntry);
+
+                returnSelectedImages.add(imageItem);
+
+            }
+        }
+
+        return returnSelectedImages;
+
+    }
+
 
 
     @Override

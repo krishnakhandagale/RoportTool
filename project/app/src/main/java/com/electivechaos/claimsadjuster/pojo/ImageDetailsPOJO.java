@@ -10,6 +10,8 @@ import java.io.Serializable;
  */
 
 public class ImageDetailsPOJO implements Parcelable {
+
+    private String imageId;
     private String imageUrl;
     private String title;
     private String description;
@@ -24,6 +26,7 @@ public class ImageDetailsPOJO implements Parcelable {
     private String imageGeoTag;
 
     protected ImageDetailsPOJO(Parcel in) {
+        imageId = in.readString();
         imageUrl = in.readString();
         title = in.readString();
         description = in.readString();
@@ -66,6 +69,7 @@ public class ImageDetailsPOJO implements Parcelable {
     }
 
     public ImageDetailsPOJO(){
+        this.imageId = "";
         this.imageUrl = "";
         this.title = "";
         this.description = "";
@@ -73,6 +77,14 @@ public class ImageDetailsPOJO implements Parcelable {
         this.imageName = "";
         this.imageDateTime = "";
         this.imageGeoTag = "";
+    }
+
+    public String getImageId() {
+        return imageId;
+    }
+
+    public void setImageId(String imageId) {
+        this.imageId = imageId;
     }
     public String getImageUrl() {
         return imageUrl;
@@ -150,6 +162,7 @@ public class ImageDetailsPOJO implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(imageId);
         dest.writeString(imageUrl);
         dest.writeString(title);
         dest.writeString(description);

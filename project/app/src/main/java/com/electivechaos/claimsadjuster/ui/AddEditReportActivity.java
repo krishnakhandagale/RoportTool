@@ -264,7 +264,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                 }
             }
         }else{
-           putClaimDetailsFragment();
+            putClaimDetailsFragment();
         }
 
 
@@ -401,7 +401,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         if( labelArrayList!= null && labelArrayList.size() > selectedFragmentPosition - 4 && labelArrayList.get(selectedFragmentPosition - 4) != null){
             FragmentManager transactionManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
-            AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment = AddEditReportSelectedImagesFragment.initFragment(labelArrayList.get(selectedFragmentPosition - 4).getSelectedImages(),labelArrayList.get(selectedFragmentPosition - 4).getSelectedElevationImages(), selectedFragmentPosition - 4,fileUri, labelArrayList.get(selectedFragmentPosition - 4).getCoverageType());
+            AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment = AddEditReportSelectedImagesFragment.initFragment(labelArrayList.get(selectedFragmentPosition - 4).getSelectedImages(),labelArrayList.get(selectedFragmentPosition - 4).getSelectedElevationImages(), selectedFragmentPosition - 4,labelArrayList.get(selectedFragmentPosition - 4), fileUri, labelArrayList.get(selectedFragmentPosition - 4).getCoverageType());
             fragmentTransaction.replace(R.id.content_frame, addEditReportSelectedImagesFragment,LABEL_FRAGMENT_TAG);
             fragmentTransaction.commit();
 
@@ -467,16 +467,16 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         activityActionBar.setTitle("Peril");
     }
 
-     private void putPointOfOriginFragment(){
-         FragmentManager transactionManager = getSupportFragmentManager();
-         FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
+    private void putPointOfOriginFragment(){
+        FragmentManager transactionManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
 
-         fragmentTransaction.replace(R.id.content_frame,new PointOfOriginFragment(),POINT_OF_ORIGIN_FRAGMENT_TAG);
-         fragmentTransaction.commit();
+        fragmentTransaction.replace(R.id.content_frame,new PointOfOriginFragment(),POINT_OF_ORIGIN_FRAGMENT_TAG);
+        fragmentTransaction.commit();
 
-         selectedFragmentPosition = 3;
-         activityActionBar.setTitle("Point Of Origin");
-        }
+        selectedFragmentPosition = 3;
+        activityActionBar.setTitle("Point Of Origin");
+    }
 
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
@@ -515,17 +515,17 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                             Toast.makeText(AddEditReportActivity.this, R.string.label_validation_msg, Toast.LENGTH_SHORT).show();
                             return;
                         }
-                            label.setName(editLabel.getText().toString());
-                            activityActionBar.setTitle(editLabel.getText().toString());
-                            drawerMenuListAdapter.notifyDataSetChanged();
+                        label.setName(editLabel.getText().toString());
+                        activityActionBar.setTitle(editLabel.getText().toString());
+                        drawerMenuListAdapter.notifyDataSetChanged();
 
-                            categoryListDBHelper.updateLabel(label);
+                        categoryListDBHelper.updateLabel(label);
 
-                            activityActionBar.setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP);
-                            activityActionBar.setDisplayShowTitleEnabled(true);
-                            activityActionBar.setDisplayShowCustomEnabled(false);
-                            item.setVisible(true);
-                            CommonUtils.hideKeyboard(AddEditReportActivity.this);
+                        activityActionBar.setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP);
+                        activityActionBar.setDisplayShowTitleEnabled(true);
+                        activityActionBar.setDisplayShowCustomEnabled(false);
+                        item.setVisible(true);
+                        CommonUtils.hideKeyboard(AddEditReportActivity.this);
 
                     }
                 });
@@ -566,7 +566,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
 
-                      AddEditReportActivity.super.onBackPressed();
+                        AddEditReportActivity.super.onBackPressed();
                     }
                 })
                 .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -599,48 +599,48 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
         final CustomCategoryPopUpAdapter adapter = new CustomCategoryPopUpAdapter(this, categories);
 
-                final android.app.AlertDialog.Builder ad = new android.app.AlertDialog.Builder(AddEditReportActivity.this);
-                ad.setCancelable(true);
-                ad.setPositiveButton("Add New", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(AddEditReportActivity.this, AddEditCategoryActivity.class);
-                        startActivityForResult(intent, ADD_CATEGORY_REQUEST);
+        final android.app.AlertDialog.Builder ad = new android.app.AlertDialog.Builder(AddEditReportActivity.this);
+        ad.setCancelable(true);
+        ad.setPositiveButton("Add New", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(AddEditReportActivity.this, AddEditCategoryActivity.class);
+                startActivityForResult(intent, ADD_CATEGORY_REQUEST);
+            }
+        });
+        ad.setTitle("Select Category");
+
+        ad.setSingleChoiceItems(adapter, -1,  new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(final DialogInterface dialogInterface, int pos) {
+                final Label label = new Label();
+                label.setCategoryID(categories.get(pos).getCategoryId());
+                label.setName(categories.get(pos).getCategoryName());
+                label.setReportId(reportPOJO.getId());
+                label.setDescription(categories.get(pos).getCategoryDescription());
+                label.setCoverageType(categories.get(pos).getCoverageType());
+                String id = "";
+                try {
+                    if(!validateLabelName(reportPOJO.getLabelArrayList(),label.getName())){
+                        Toast.makeText(AddEditReportActivity.this, R.string.label_validation_msg, Toast.LENGTH_SHORT).show();
+                        return;
                     }
-                });
-                ad.setTitle("Select Category");
+                    id = new DatabaseTaskHelper(AddEditReportActivity.this, label).execute().get();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
 
-                ad.setSingleChoiceItems(adapter, -1,  new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(final DialogInterface dialogInterface, int pos) {
-                                    final Label label = new Label();
-                                    label.setCategoryID(categories.get(pos).getCategoryId());
-                                    label.setName(categories.get(pos).getCategoryName());
-                                    label.setReportId(reportPOJO.getId());
-                                    label.setDescription(categories.get(pos).getCategoryDescription());
-                                    label.setCoverageType(categories.get(pos).getCoverageType());
-                                    String id = "";
-                                    try {
-                                        if(!validateLabelName(reportPOJO.getLabelArrayList(),label.getName())){
-                                            Toast.makeText(AddEditReportActivity.this, R.string.label_validation_msg, Toast.LENGTH_SHORT).show();
-                                            return;
-                                        }
-                                        id = new DatabaseTaskHelper(AddEditReportActivity.this, label).execute().get();
-                                    } catch (InterruptedException e) {
-                                        e.printStackTrace();
-                                    } catch (ExecutionException e) {
-                                        e.printStackTrace();
-                                    }
+                label.setId(id);
 
-                                    label.setId(id);
+                onLabelAdded(label);
 
-                                    onLabelAdded(label);
+                dialogInterface.dismiss();
+            }
+        });
 
-                                dialogInterface.dismiss();
-                            }
-                        });
-
-                ad.show();
+        ad.show();
 
     }
 
@@ -661,7 +661,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment = AddEditReportSelectedImagesFragment.initFragment(new ArrayList<ImageDetailsPOJO>(),new ArrayList<ImageDetailsPOJO>(),labelList.size()-1, fileUri,labelList.get(selectedFragmentPosition - 4).getCoverageType());
+        AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment = AddEditReportSelectedImagesFragment.initFragment(new ArrayList<ImageDetailsPOJO>(),new ArrayList<ImageDetailsPOJO>(),labelList.size()-1,label, fileUri,labelList.get(selectedFragmentPosition - 4).getCoverageType());
         fragmentTransaction.replace(R.id.content_frame, addEditReportSelectedImagesFragment);
         fragmentTransaction.commit();
         activityActionBar.setTitle(label.getName());
@@ -687,7 +687,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
             if( labelArrayList!= null && labelArrayList.size() > selectedFragmentPosition - 4 && labelArrayList.get(selectedFragmentPosition - 4) != null) {
                 FragmentManager transactionManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
-                AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment = AddEditReportSelectedImagesFragment.initFragment(labelArrayList.get(selectedFragmentPosition - 4).getSelectedImages(), labelArrayList.get(selectedFragmentPosition - 4).getSelectedElevationImages(), selectedFragmentPosition - 4, fileUri,labelArrayList.get(selectedFragmentPosition - 4).getCoverageType());
+                AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment = AddEditReportSelectedImagesFragment.initFragment(labelArrayList.get(selectedFragmentPosition - 4).getSelectedImages(), labelArrayList.get(selectedFragmentPosition - 4).getSelectedElevationImages(), selectedFragmentPosition - 4, labelArrayList.get(selectedFragmentPosition - 4),fileUri,labelArrayList.get(selectedFragmentPosition - 4).getCoverageType());
                 fragmentTransaction.replace(R.id.content_frame, addEditReportSelectedImagesFragment);
                 fragmentTransaction.commit();
 
@@ -807,8 +807,10 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
     @Override
     public void setSelectedImages(ArrayList<ImageDetailsPOJO> imagesList , int labelPosition) {
-        reportPOJO.getLabelArrayList().get(labelPosition).setSelectedImages(imagesList);
-        new DBSelectedImagesTask(AddEditReportActivity.this, progressBarLayout, reportPOJO.getLabelArrayList().get(labelPosition),false,categoryListDBHelper,"selected_images").execute();
+        ArrayList<ImageDetailsPOJO> imageDetailsList = reportPOJO.getLabelArrayList().get(labelPosition).getSelectedImages();
+        imageDetailsList.addAll(imagesList);
+        reportPOJO.getLabelArrayList().get(labelPosition).setSelectedImages(imageDetailsList);
+        //new DBSelectedImagesTask(AddEditReportActivity.this, progressBarLayout, reportPOJO.getLabelArrayList().get(labelPosition),false,categoryListDBHelper,"selected_images").execute();
 
     }
     @Override
@@ -816,39 +818,39 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         selectedFragmentPosition = selectedFragmentPosition -1;
         if(selectedFragmentPosition >=0){
 
-        if(selectedFragmentPosition == 0) {
-            mDrawerLayout.closeDrawer(Gravity.LEFT);
-            putClaimDetailsFragment();
-            actionBarEditBtn.setVisible(false);
+            if(selectedFragmentPosition == 0) {
+                mDrawerLayout.closeDrawer(Gravity.LEFT);
+                putClaimDetailsFragment();
+                actionBarEditBtn.setVisible(false);
 
-        }
-
-        if(selectedFragmentPosition == 1) {
-            mDrawerLayout.closeDrawer(Gravity.LEFT);
-            putPropertyDetails();
-            actionBarEditBtn.setVisible(false);
-
-        }
-        else if(selectedFragmentPosition == 2) {
-            mDrawerLayout.closeDrawer(Gravity.LEFT);
-            putPerilDetails();
-            activityActionBar.setTitle("Peril");
-            actionBarEditBtn.setVisible(false);
-
-        }
-        else if(selectedFragmentPosition == 3) {
-            mDrawerLayout.closeDrawer(Gravity.LEFT);
-            putPointOfOriginFragment();
-            activityActionBar.setTitle("Point Of Origin");
-            actionBarEditBtn.setVisible(false);
-
-        }else if(selectedFragmentPosition > 3){
-            if(selectedFragmentPosition == 4){
-                putDefaultFragment();
-            }else {
-                putLabelFragment();
             }
-        }
+
+            if(selectedFragmentPosition == 1) {
+                mDrawerLayout.closeDrawer(Gravity.LEFT);
+                putPropertyDetails();
+                actionBarEditBtn.setVisible(false);
+
+            }
+            else if(selectedFragmentPosition == 2) {
+                mDrawerLayout.closeDrawer(Gravity.LEFT);
+                putPerilDetails();
+                activityActionBar.setTitle("Peril");
+                actionBarEditBtn.setVisible(false);
+
+            }
+            else if(selectedFragmentPosition == 3) {
+                mDrawerLayout.closeDrawer(Gravity.LEFT);
+                putPointOfOriginFragment();
+                activityActionBar.setTitle("Point Of Origin");
+                actionBarEditBtn.setVisible(false);
+
+            }else if(selectedFragmentPosition > 3){
+                if(selectedFragmentPosition == 4){
+                    putDefaultFragment();
+                }else {
+                    putLabelFragment();
+                }
+            }
         }else{
             selectedFragmentPosition = 4 + reportPOJO.getLabelArrayList().size() -1 ;
             putLabelFragment();
@@ -860,12 +862,12 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     public void onNextButtonClick() {
 
         selectedFragmentPosition = selectedFragmentPosition + 1;
-         if(selectedFragmentPosition == 1) {
-             mDrawerLayout.closeDrawer(Gravity.LEFT);
-             putPropertyDetails();
-             actionBarEditBtn.setVisible(false);
+        if(selectedFragmentPosition == 1) {
+            mDrawerLayout.closeDrawer(Gravity.LEFT);
+            putPropertyDetails();
+            actionBarEditBtn.setVisible(false);
 
-         }
+        }
         else if(selectedFragmentPosition == 2) {
             mDrawerLayout.closeDrawer(Gravity.LEFT);
             putPerilDetails();
@@ -1024,7 +1026,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     @Override
     public void update(Observable o, Object arg) {
         if(o instanceof ReportPOJO){
-           enableDisableCheckList(reportPOJO);
+            enableDisableCheckList(reportPOJO);
         }
     }
 
@@ -1135,7 +1137,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         @Override
         protected ArrayList<Category> doInBackground(String... strings) {
 
-          ArrayList<Category> categories= categoryListDBHelper.getCategoryList();
+            ArrayList<Category> categories= categoryListDBHelper.getCategoryList();
             return categories;
         }
 
@@ -1295,15 +1297,23 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
             case  ADD_IMAGE_DETAILS:
                 ArrayList<ImageDetailsPOJO> selectedImageListReturned = (ArrayList<ImageDetailsPOJO>) data.getExtras().getSerializable("selected_images");
                 int labelPositionForAddImageDetails = data.getExtras().getInt("labelPosition");
+                ArrayList<ImageDetailsPOJO> imagesInformation = (ArrayList<ImageDetailsPOJO>) data.getExtras().getSerializable("selected_images");
                 Label label = reportPOJO.getLabelArrayList().get(labelPositionForAddImageDetails);
 
-                ArrayList<ImageDetailsPOJO> selectedImageList = (ArrayList<ImageDetailsPOJO>) label.getSelectedImages().clone();
+                ArrayList<ImageDetailsPOJO> selectedImageList = imagesInformation;
+                
+                if(selectedImageList!=null) {
+                    for (int i = 0; i < selectedImageList.size(); i++) {
+                        categoryListDBHelper.editImageDetails(selectedImageList.get(i));
+                    }
+                }
                 if (selectedImageList == null) {
                     selectedImageList = new ArrayList<>();
                 }
 
-                selectedImageList.addAll(selectedImageListReturned);
-                setSelectedImages(selectedImageList,labelPositionForAddImageDetails);
+                //selectedImageList.addAll(selectedImageListReturned);
+                //setSelectedImages(selectedImageList,labelPositionForAddImageDetails);
+
 
 
 
@@ -1522,7 +1532,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                     e.printStackTrace();
                 }
                 break;
-                case HOUSE_NUMBER_REQUEST_STARTER :
+            case HOUSE_NUMBER_REQUEST_STARTER :
 
                 try {
                     FragmentManager fm = getSupportFragmentManager();
@@ -1587,5 +1597,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                 }
         }
     }
+
+
 
 }
