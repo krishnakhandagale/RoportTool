@@ -1028,8 +1028,9 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                                 .setMessage("Are you sure wanna remove this image ?")
                                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
+                                        categoryListDBHelper.deleteImage(imageList.get(position).getImageId());
                                         imageList.remove(position);
-                                        onImageRemovalListener.onImageSelectionChanged(imageList);
+                                        //onImageRemovalListener.onImageSelectionChanged(imageList);
                                         notifyDataSetChanged();
                                         dialog.cancel();
                                     }

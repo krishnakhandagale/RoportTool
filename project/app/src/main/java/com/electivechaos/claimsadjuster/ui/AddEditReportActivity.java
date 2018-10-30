@@ -1258,9 +1258,10 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                 ImageDetailsPOJO imageDetailsPOJO =  data.getExtras().getParcelable("image_entered_details");
                 int labelPosition = data.getExtras().getInt("labelPosition");
                 ArrayList<ImageDetailsPOJO> imageDetailsPOJOArrayList = (ArrayList<ImageDetailsPOJO>) reportPOJO.getLabelArrayList().get(labelPosition).getSelectedImages().clone();
+                ImageDetailsPOJO selectedImage = null;
                 if (data.getExtras().getBoolean("isEdit")) {
                     int position = data.getExtras().getInt("position");
-                    ImageDetailsPOJO selectedImage = imageDetailsPOJOArrayList.get(position);
+                    selectedImage= imageDetailsPOJOArrayList.get(position);
                     selectedImage.setTitle(imageDetailsPOJO.getTitle());
                     selectedImage.setDescription(imageDetailsPOJO.getDescription());
                     selectedImage.setImageUrl(imageDetailsPOJO.getImageUrl());
@@ -1269,14 +1270,11 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                     selectedImage.setPointOfOrigin(imageDetailsPOJO.isPointOfOrigin());
                     selectedImage.setCoverageTye(imageDetailsPOJO.getCoverageTye());
 
-                }else{
-                    if (imageDetailsPOJOArrayList == null) {
-                        imageDetailsPOJOArrayList = new ArrayList<>();
-                    }
-                    imageDetailsPOJOArrayList.add(imageDetailsPOJO);
                 }
-
-                setSelectedImages(imageDetailsPOJOArrayList,labelPosition);
+                if(selectedImage != null) {
+                    categoryListDBHelper.updateImageDetails(selectedImage);
+                }
+             //   setSelectedImages(imageDetailsPOJOArrayList,labelPosition);
                 try {
                     FragmentManager fm = getSupportFragmentManager();
                     if(fm.getFragments() != null && fm.getFragments().size() >0){
@@ -1301,7 +1299,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                 Label label = reportPOJO.getLabelArrayList().get(labelPositionForAddImageDetails);
 
                 ArrayList<ImageDetailsPOJO> selectedImageList = imagesInformation;
-                
+
                 if(selectedImageList!=null) {
                     for (int i = 0; i < selectedImageList.size(); i++) {
                         categoryListDBHelper.editImageDetails(selectedImageList.get(i));

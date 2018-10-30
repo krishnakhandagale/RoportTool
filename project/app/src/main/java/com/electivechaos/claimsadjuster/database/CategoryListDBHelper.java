@@ -1221,6 +1221,27 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
     }
 
 
+    public int deleteImage(String imageId){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String whereClause = KEY_IMAGE_ID + "=?";
+        return  db.delete(TABLE_REPORTS_IMAGE_DETAILS,whereClause,new String[]{imageId});
+
+    }
+
+    public int updateImageDetails(ImageDetailsPOJO imageDetailsPOJO){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(KEY_IMAGE_TITLE, imageDetailsPOJO.getTitle());
+        contentValues.put(KEY_IMAGE_DESCRIPTION, imageDetailsPOJO.getDescription());
+        contentValues.put(KEY_IS_DAMAGE, imageDetailsPOJO.isDamage());
+        contentValues.put(KEY_IS_OVERVIEW, imageDetailsPOJO.isOverview());
+        contentValues.put(KEY_IS_POINT_OF_ORIGIN, imageDetailsPOJO.isPointOfOrigin());
+        contentValues.put(KEY_IMAGE_COVERAGE_TYPE, imageDetailsPOJO.getCoverageTye());
+
+        return  db.update(TABLE_REPORTS_IMAGE_DETAILS, contentValues,KEY_IMAGE_ID+"='"+ imageDetailsPOJO.getImageId()+"'",null);
+
+
+    }
     public ArrayList<ImageDetailsPOJO> appendSelectedImages(Label label,ArrayList<ImageDetailsPOJO> imageList) throws SQLException {
         SQLiteDatabase db = this.getWritableDatabase();
 
