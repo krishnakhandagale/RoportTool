@@ -8,5 +8,7 @@ public  interface SelectedImagesDataInterface {
 
      void setSelectedElevationImages(ArrayList<ImageDetailsPOJO> imagesList,int labelPosition) ;
      void setSelectedImages(ArrayList<ImageDetailsPOJO> elevationImagesList, int labelPosition);
+     void setSwapedSelectedImages(ArrayList<ImageDetailsPOJO> imagesList, int labelPosition);
+
 
 }

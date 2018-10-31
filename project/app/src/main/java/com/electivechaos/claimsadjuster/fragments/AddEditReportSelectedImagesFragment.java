@@ -91,6 +91,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
     private  static final int SELECT_FILE = 1;
     private  static final int ADD_IMAGE_DETAILS = 2;
     private  static final int SET_CLICKED_IMAGE_DETAILS = 3;
+    private static final int SET_CLICKED_CAPTURED_DETAILS = 4 ;
 
 
     private LinearLayout parentLayout;
@@ -216,13 +217,13 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                 animateFAB();
             }
         });
-        onImageRemovalListener = new OnImageRemovalListener() {
-            @Override
-            public void onImageSelectionChanged(List<ImageDetailsPOJO> selectedImgs) {
-                selectedImageList = (ArrayList<ImageDetailsPOJO>) selectedImgs;
-                selectedImagesDataInterface.setSelectedImages(selectedImageList, labelPosition);
-            }
-        };
+//        onImageRemovalListener = new OnImageRemovalListener() {
+//            @Override
+//            public void onImageSelectionChanged(List<ImageDetailsPOJO> selectedImgs) {
+//                selectedImageList = (ArrayList<ImageDetailsPOJO>) selectedImgs;
+//                selectedImagesDataInterface.setSelectedImages(selectedImageList, labelPosition);
+//            }
+//        };
 
         fabAddLabelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -256,7 +257,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
         ItemTouchHelper.Callback _ithCallback = new ItemTouchHelper.Callback() {
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
                 Collections.swap(selectedImageList, viewHolder.getAdapterPosition(), target.getAdapterPosition());
-                selectedImagesDataInterface.setSelectedImages(selectedImageList, labelPosition);
+                selectedImagesDataInterface.setSwapedSelectedImages(selectedImageList, labelPosition);
                 selectedImagesAdapter.notifyItemMoved(viewHolder.getAdapterPosition(), target.getAdapterPosition());
                 return true;
             }
@@ -758,12 +759,41 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                         imgObj.setImageDateTime(dateString+" at "+timeString);
                         imgObj.setImageGeoTag("");
                     }
+                    final ArrayList<ImageDetailsPOJO> capturedImage = new ArrayList<ImageDetailsPOJO>();
+                    capturedImage.add(imgObj);
 
-                    ImageHelper.revokeAppPermission(getActivity(), fileUri);
-                    Intent intent = new Intent(getActivity(), SingleImageDetailsActivity.class);
-                    intent.putExtra("image_details", imgObj);
-                    intent.putExtra("labelPosition",labelPosition);
-                    getActivity().startActivityForResult(intent, SET_CLICKED_IMAGE_DETAILS);
+                    selectedImagesDataInterface.setSelectedImages(capturedImage,labelPosition);
+
+                    new DBSelectedImagesListTsk(categoryListDBHelper,"insert_captured_image",label,capturedImage,new AsyncTaskStatusCallback(){
+
+                        @Override
+                        public void onPostExecute(Object object, String type) {
+
+                            ImageHelper.revokeAppPermission(getActivity(), fileUri);
+
+                            ArrayList<ImageDetailsPOJO> returnedImageItem = (ArrayList<ImageDetailsPOJO>) object;
+                            Intent intent = new Intent(getActivity(), SingleImageDetailsActivity.class);
+                            if(returnedImageItem != null) {
+                                intent.putExtra("image_details", returnedImageItem.get(0));
+                            }
+                            intent.putExtra("labelPosition",labelPosition);
+                            intent.putExtra("labelDefaultCoverageType", labelDefaultCoverageType);
+                            getActivity().startActivityForResult(intent, SET_CLICKED_CAPTURED_DETAILS);
+
+                        }
+
+                        @Override
+                        public void onPreExecute() {
+
+                        }
+
+                        @Override
+                        public void onProgress(int progress) {
+
+                        }
+                    }).execute();
+
+
                 }
             }
         });
@@ -1145,25 +1175,9 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
     public void onResume() {
         super.onResume();
         CategoryListDBHelper categoryListDBHelper = CategoryListDBHelper.getInstance(getActivity());
-
         ArrayList<ImageDetailsPOJO> imageList = categoryListDBHelper.getLabelImages(label.getId());
-        try {
-            FragmentManager fm = getActivity().getSupportFragmentManager();
-            if(fm.getFragments() != null && fm.getFragments().size() >0){
-                for(int i=0;i<fm.getFragments().size();i++){
-
-                    if(fm.getFragments().get(i) instanceof  AddEditReportSelectedImagesFragment){
-                        AddEditReportSelectedImagesFragment fragment = (AddEditReportSelectedImagesFragment) fm.getFragments().get(i);
-                        fragment.setDataAndAdapter(imageList);
-                    }
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        Log.d("FUCK","ONRESUME IMAGES"+label.getId());
+        setDataAndAdapter(imageList);
     }
-
 
 }
 

@@ -42,6 +42,7 @@ public class SingleImageDetailsActivity extends BaseActivity {
 
     private TextView imageCoverageType;
     private CategoryListDBHelper categoryListDBHelper;
+    private String labelDefaultCoverageType = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,6 +61,7 @@ public class SingleImageDetailsActivity extends BaseActivity {
 
 
         imageDetails = getIntent().getExtras().getParcelable("image_details");
+        labelDefaultCoverageType = getIntent().getExtras().getString("labelDefaultCoverageType");
         isEdit = getIntent().getExtras().getBoolean("isEdit", false);
         position = getIntent().getExtras().getInt("position", -1);
         labelPosition = getIntent().getExtras().getInt("labelPosition",-1);
@@ -260,6 +262,7 @@ public class SingleImageDetailsActivity extends BaseActivity {
             public void onClick(View v) {
                 ImageDetailsPOJO shareImageDetails = new ImageDetailsPOJO();
                 shareImageDetails.setDescription(description.getText().toString());
+                shareImageDetails.setImageId(imageDetails.getImageId());
                 shareImageDetails.setImageUrl(imageDetails.getImageUrl());
                 shareImageDetails.setIsDamage(imageDetails.isDamage());
                 shareImageDetails.setOverview(imageDetails.isOverview());
@@ -268,8 +271,11 @@ public class SingleImageDetailsActivity extends BaseActivity {
                 shareImageDetails.setImageName(imageDetails.getImageName());
                 shareImageDetails.setImageDateTime(imageDetails.getImageDateTime());
                 shareImageDetails.setImageGeoTag(imageDetails.getImageGeoTag());
+
+
+
                 Intent intent = new Intent();
-                intent.putExtra("image_entered_details", shareImageDetails);
+                intent.putExtra("selected_images", shareImageDetails);
                 intent.putExtra("isEdit", isEdit);
                 intent.putExtra("position",position);
                 intent.putExtra("labelPosition", labelPosition);
@@ -301,6 +307,7 @@ public class SingleImageDetailsActivity extends BaseActivity {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelable("image_details",imageDetails);
+        outState.putString("labelDefaultCoverageType",labelDefaultCoverageType);
     }
 
     @Override

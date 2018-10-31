@@ -1280,6 +1280,41 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
 
     }
 
+    public ImageDetailsPOJO appendCapturedImages(Label label,ArrayList<ImageDetailsPOJO> imageList) throws SQLException {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ArrayList<ImageDetailsPOJO> labelSelectedImages = imageList;
+        ImageDetailsPOJO imageItem = null;
+        if (labelSelectedImages != null && labelSelectedImages.size() > 0) {
+            for (int index = 0; index < labelSelectedImages.size(); index++) {
+                 imageItem = labelSelectedImages.get(index);
+
+                String imageId = CommonUtils.generateIdString();
+
+                ContentValues imageEntry = new ContentValues();
+
+                imageItem.setImageId(String.valueOf(imageId));
+                imageEntry.put(KEY_IMAGE_ID, imageId);
+                imageEntry.put(KEY_IMAGE_TITLE, imageItem.getTitle());
+                imageEntry.put(KEY_IMAGE_DESCRIPTION, imageItem.getDescription());
+                imageEntry.put(KEY_IMAGE_URL, imageItem.getImageUrl());
+                imageEntry.put(KEY_IS_DAMAGE, imageItem.isDamage());
+                imageEntry.put(KEY_IS_OVERVIEW, imageItem.isOverview());
+                imageEntry.put(KEY_FK_LABEL_ID, label.getId());
+                imageEntry.put(KEY_IS_POINT_OF_ORIGIN, imageItem.isPointOfOrigin());
+                imageEntry.put(KEY_IMAGE_COVERAGE_TYPE, imageItem.getCoverageTye());
+                imageEntry.put(KEY_IMAGE_NAME, imageItem.getImageName());
+                imageEntry.put(KEY_IMAGE_DATE_TIME, imageItem.getImageDateTime());
+                imageEntry.put(KEY_IMAGE_GEO_TAG, imageItem.getImageGeoTag());
+                db.insertOrThrow(TABLE_REPORTS_IMAGE_DETAILS, null, imageEntry);
+
+
+            }
+        }
+
+        return imageItem;
+
+    }
 
 
     @Override

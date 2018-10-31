@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 
 import com.electivechaos.claimsadjuster.database.CategoryListDBHelper;
 import com.electivechaos.claimsadjuster.interfaces.AsyncTaskStatusCallback;
+import com.electivechaos.claimsadjuster.pojo.Image;
 import com.electivechaos.claimsadjuster.pojo.ImageDetailsPOJO;
 import com.electivechaos.claimsadjuster.pojo.Label;
 
@@ -46,6 +47,13 @@ public class DBSelectedImagesListTsk extends AsyncTask<String,Integer,ArrayList>
 
         if(type.equalsIgnoreCase("insert_selected_images")) {
             return categoryListDBHelper.appendSelectedImages(label, imageList);
+        } if(type.equalsIgnoreCase("insert_captured_image")) {
+
+            ImageDetailsPOJO imgObj = categoryListDBHelper.appendCapturedImages(label, imageList);
+            ArrayList<ImageDetailsPOJO> imageList = new ArrayList<>();
+            imageList.add(imgObj);
+
+            return imageList;
         }
         return null;
     }
