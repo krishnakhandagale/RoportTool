@@ -760,8 +760,6 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
     public void addReportEntry(ReportPOJO reportItemPOJO) {
 
         SQLiteDatabase db = this.getWritableDatabase();
-
-
         ContentValues values = new ContentValues();
         String reportId = reportItemPOJO.getId();
 

@@ -259,9 +259,25 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                 Collections.swap(selectedImageList, viewHolder.getAdapterPosition(), target.getAdapterPosition());
 
                 selectedImagesAdapter.notifyItemMoved(viewHolder.getAdapterPosition(), target.getAdapterPosition());
-                categoryListDBHelper.updateSelectedImages(label,selectedImageList);
-                ArrayList<ImageDetailsPOJO> imageDetailsList = categoryListDBHelper.getLabelImages(label.getId());
+                new DBSelectedImagesListTsk(categoryListDBHelper,"insert_rearranged_image",label,selectedImageList,new AsyncTaskStatusCallback(){
+
+                    @Override
+                    public void onPostExecute(Object object, String type) {
+                        ArrayList<ImageDetailsPOJO> imageDetailsList = (ArrayList<ImageDetailsPOJO>) object;
                         selectedImagesDataInterface.setSwapedSelectedImages(imageDetailsList, labelPosition);
+
+                    }
+
+                    @Override
+                    public void onPreExecute() {
+
+                    }
+
+                    @Override
+                    public void onProgress(int progress) {
+
+                    }
+                }).execute();
                 return true;
             }
 
