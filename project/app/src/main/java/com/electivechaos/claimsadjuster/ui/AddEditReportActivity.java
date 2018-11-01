@@ -822,7 +822,6 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     @Override
     public void setSwapedSelectedImages(ArrayList<ImageDetailsPOJO> imagesList , int labelPosition) {
         reportPOJO.getLabelArrayList().get(labelPosition).setSelectedImages(imagesList);
-
     }
     @Override
     public void onBackButtonClick() {

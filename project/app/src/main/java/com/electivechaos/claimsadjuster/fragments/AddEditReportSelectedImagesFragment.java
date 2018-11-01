@@ -257,8 +257,11 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
         ItemTouchHelper.Callback _ithCallback = new ItemTouchHelper.Callback() {
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
                 Collections.swap(selectedImageList, viewHolder.getAdapterPosition(), target.getAdapterPosition());
-                selectedImagesDataInterface.setSwapedSelectedImages(selectedImageList, labelPosition);
+
                 selectedImagesAdapter.notifyItemMoved(viewHolder.getAdapterPosition(), target.getAdapterPosition());
+                categoryListDBHelper.updateSelectedImages(label,selectedImageList);
+                ArrayList<ImageDetailsPOJO> imageDetailsList = categoryListDBHelper.getLabelImages(label.getId());
+                        selectedImagesDataInterface.setSwapedSelectedImages(imageDetailsList, labelPosition);
                 return true;
             }
 
@@ -273,7 +276,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
             }
         };
         ItemTouchHelper ith = new ItemTouchHelper(_ithCallback);
-        ith.attachToRecyclerView(selectedImagesRecyclerView);
+            ith.attachToRecyclerView(selectedImagesRecyclerView);
 
 
         ImageView imageViewOne = selectImageView.findViewById(R.id.imageViewOne);
@@ -1013,7 +1016,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
         @Override
         public void onBindViewHolder(final AddEditReportSelectedImagesFragment.SelectedImagesAdapter.MyViewHolder holder, final int position) {
 
-            final ImageDetailsPOJO imgDetails = imageList.get(position);
+            final ImageDetailsPOJO imgDetails = imageList.get(holder.getAdapterPosition());
             holder.title.setText(imgDetails.getTitle());
             holder.description.setText(imgDetails.getDescription());
 
@@ -1042,7 +1045,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                     Intent intent = new Intent(context, SingleImageDetailsActivity.class);
                     intent.putExtra("image_details", imgDetails);
                     intent.putExtra("isEdit", true);
-                    intent.putExtra("position", position);
+                    intent.putExtra("position", holder.getAdapterPosition());
                     intent.putExtra("labelPosition",labelPosition);
                     getActivity().startActivityForResult(intent, SET_CLICKED_IMAGE_DETAILS);
                 }
@@ -1058,8 +1061,8 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                                 .setMessage("Are you sure wanna remove this image ?")
                                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
-                                        categoryListDBHelper.deleteImage(imageList.get(position).getImageId());
-                                        imageList.remove(position);
+                                        categoryListDBHelper.deleteImage(imageList.get(holder.getAdapterPosition()).getImageId());
+                                        imageList.remove(holder.getAdapterPosition());
                                         //onImageRemovalListener.onImageSelectionChanged(imageList);
                                         notifyDataSetChanged();
                                         dialog.cancel();
@@ -1177,6 +1180,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
         CategoryListDBHelper categoryListDBHelper = CategoryListDBHelper.getInstance(getActivity());
         ArrayList<ImageDetailsPOJO> imageList = categoryListDBHelper.getLabelImages(label.getId());
         setDataAndAdapter(imageList);
+        Log.d("FUCK","ON RESUME");
     }
 
 }

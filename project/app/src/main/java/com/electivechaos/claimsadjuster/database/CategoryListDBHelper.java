@@ -887,8 +887,6 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
     }
 
     public ReportPOJO getReportItem(String id){
-
-
         ReportPOJO reportPOJO = new ReportPOJO();
 
         SQLiteDatabase db = this.getReadableDatabase();
@@ -1146,16 +1144,17 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void updateSelectedImages(Label label){
+    public ArrayList<ImageDetailsPOJO> updateSelectedImages(Label label,ArrayList<ImageDetailsPOJO> newImageList){
         SQLiteDatabase db = this.getWritableDatabase();
 
         db.delete(TABLE_REPORTS_IMAGE_DETAILS, KEY_FK_LABEL_ID + "=" + label.getId(), null);
-        ArrayList<ImageDetailsPOJO> labelSelectedImages = label.getSelectedImages();
+        ArrayList<ImageDetailsPOJO> labelSelectedImages = newImageList;
+        ArrayList<ImageDetailsPOJO> imageList = new ArrayList<>();
         if (labelSelectedImages != null && labelSelectedImages.size() > 0) {
             for (int index = 0; index < labelSelectedImages.size(); index++) {
                 ImageDetailsPOJO imageItem = labelSelectedImages.get(index);
                 ContentValues imageEntry = new ContentValues();
-                imageEntry.put(KEY_IMAGE_ID, CommonUtils.generateId());
+                imageEntry.put(KEY_IMAGE_ID, CommonUtils.generateIdString());
                 imageEntry.put(KEY_IMAGE_TITLE, imageItem.getTitle());
                 imageEntry.put(KEY_IMAGE_DESCRIPTION, imageItem.getDescription());
                 imageEntry.put(KEY_IMAGE_URL, imageItem.getImageUrl());
@@ -1168,11 +1167,14 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 imageEntry.put(KEY_IMAGE_DATE_TIME, imageItem.getImageDateTime());
                 imageEntry.put(KEY_IMAGE_GEO_TAG, imageItem.getImageGeoTag());
                 long count = db.insert(TABLE_REPORTS_IMAGE_DETAILS, null, imageEntry);
+                imageList.add(imageItem);
                 if (count != -1) {
                     Log.d("Error in insertion", String.valueOf(count));
                 }
             }
         }
+
+        return imageList;
 
     }
 

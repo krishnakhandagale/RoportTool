@@ -262,6 +262,7 @@ public class SingleImageDetailsActivity extends BaseActivity {
             public void onClick(View v) {
                 ImageDetailsPOJO shareImageDetails = new ImageDetailsPOJO();
                 shareImageDetails.setDescription(description.getText().toString());
+                imageDetails.setDescription(description.getText().toString());
                 shareImageDetails.setImageId(imageDetails.getImageId());
                 shareImageDetails.setImageUrl(imageDetails.getImageUrl());
                 shareImageDetails.setIsDamage(imageDetails.isDamage());
