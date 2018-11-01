@@ -1327,7 +1327,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                 break;
             case  ADD_IMAGE_DETAILS:
                 ArrayList<ImageDetailsPOJO> imagesInformation = (ArrayList<ImageDetailsPOJO>) data.getExtras().getSerializable("selected_images");
-
+                int labelPos = data.getExtras().getInt("labelPosition");
                 ArrayList<ImageDetailsPOJO> selectedImageList = imagesInformation;
 
                 if(selectedImageList!=null) {
@@ -1335,6 +1335,9 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                         categoryListDBHelper.editImageDetails(selectedImageList.get(i));
                     }
                 }
+
+                ArrayList<ImageDetailsPOJO> updatedImageList = categoryListDBHelper.getLabelImages( reportPOJO.getLabelArrayList().get(labelPos).getId());
+                setSelectedImages(updatedImageList, labelPos);
                 if (selectedImageList == null) {
                     selectedImageList = new ArrayList<>();
                 }
