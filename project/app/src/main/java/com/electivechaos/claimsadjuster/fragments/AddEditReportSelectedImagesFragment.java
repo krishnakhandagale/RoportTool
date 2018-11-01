@@ -1025,7 +1025,6 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
         public AddEditReportSelectedImagesFragment.SelectedImagesAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View itemView = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.selected_image_item, parent, false);
-
             return new AddEditReportSelectedImagesFragment.SelectedImagesAdapter.MyViewHolder(itemView);
         }
 
@@ -1196,7 +1195,6 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
         CategoryListDBHelper categoryListDBHelper = CategoryListDBHelper.getInstance(getActivity());
         ArrayList<ImageDetailsPOJO> imageList = categoryListDBHelper.getLabelImages(label.getId());
         setDataAndAdapter(imageList);
-        Log.d("FUCK","ON RESUME");
     }
 
 }
