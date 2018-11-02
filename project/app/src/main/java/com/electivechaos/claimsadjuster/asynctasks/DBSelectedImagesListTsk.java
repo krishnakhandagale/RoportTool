@@ -57,7 +57,12 @@ public class DBSelectedImagesListTsk extends AsyncTask<String,Integer,ArrayList>
         } else if(type.equalsIgnoreCase("insert_rearranged_image")) {
             categoryListDBHelper.updateSelectedImages(label, imageList);
             return categoryListDBHelper.getLabelImages(label.getId());
+
+        }else if(type.equalsIgnoreCase("get_images_for_label")) {
+            return categoryListDBHelper.getLabelImages(label.getId());
+
         }
+
         return null;
     }
 

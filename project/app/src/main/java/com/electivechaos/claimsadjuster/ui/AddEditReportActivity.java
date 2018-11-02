@@ -37,6 +37,7 @@ import com.electivechaos.claimsadjuster.R;
 import com.electivechaos.claimsadjuster.SingleMediaScanner;
 import com.electivechaos.claimsadjuster.adapters.CustomCategoryPopUpAdapter;
 import com.electivechaos.claimsadjuster.adapters.DrawerMenuListAdapter;
+import com.electivechaos.claimsadjuster.asynctasks.DBSelectedImagesListTsk;
 import com.electivechaos.claimsadjuster.asynctasks.DBSelectedImagesTask;
 import com.electivechaos.claimsadjuster.asynctasks.DBUpdateFilePath;
 import com.electivechaos.claimsadjuster.asynctasks.DBUpdateTaskOnTextChanged;
@@ -1327,7 +1328,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                 break;
             case  ADD_IMAGE_DETAILS:
                 ArrayList<ImageDetailsPOJO> imagesInformation = (ArrayList<ImageDetailsPOJO>) data.getExtras().getSerializable("selected_images");
-                int labelPos = data.getExtras().getInt("labelPosition");
+                final int labelPos = data.getExtras().getInt("labelPosition");
                 ArrayList<ImageDetailsPOJO> selectedImageList = imagesInformation;
 
                 if(selectedImageList!=null) {
@@ -1336,8 +1337,25 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                     }
                 }
 
-                ArrayList<ImageDetailsPOJO> updatedImageList = categoryListDBHelper.getLabelImages( reportPOJO.getLabelArrayList().get(labelPos).getId());
-                setSelectedImages(updatedImageList, labelPos);
+                new DBSelectedImagesListTsk(categoryListDBHelper,"get_images_for_label",reportPOJO.getLabelArrayList().get(labelPos),selectedImageList,new AsyncTaskStatusCallback(){
+
+                    @Override
+                    public void onPostExecute(Object object, String type) {
+                        ArrayList<ImageDetailsPOJO> returnedImageItem = (ArrayList<ImageDetailsPOJO>) object;
+                        setSwapedSelectedImages(returnedImageItem, labelPos);
+                    }
+
+                    @Override
+                    public void onPreExecute() {
+
+                    }
+
+                    @Override
+                    public void onProgress(int progress) {
+
+                    }
+                }).execute();
+
                 if (selectedImageList == null) {
                     selectedImageList = new ArrayList<>();
                 }
