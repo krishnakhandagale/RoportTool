@@ -325,18 +325,18 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
 
             PdfContentByte cb = pdfWriter.getDirectContent();
 
-            Phrase signature = new Phrase(new Phrase("Signature")+""+new Phrase("____________________________  "), signatureFont);
+            Phrase signature = new Phrase("Signature" +"  "+"____________________________  ", signatureFont);
 
-            Phrase date = new Phrase(new Phrase("Date")+""+new Phrase("____________________________  "), signatureFont);
+            Phrase date = new Phrase("Date"+"  "+"____________________________  ", signatureFont);
 
             Phrase name = null;
             if(!CommonUtils.getReportByField(mContext).isEmpty()) {
-                name = new Phrase(new Phrase("Name") + "" + new Phrase(CommonUtils.getReportByField(mContext)), signatureFont);
+                name = new Phrase("Name" + "  " + CommonUtils.getReportByField(mContext), signatureFont);
              }
 
             Phrase officeAddress = null;
             if(!CommonUtils.getAddress(mContext).isEmpty()) {
-                officeAddress = new Phrase(new Phrase("Office address") + "" + new Phrase(CommonUtils.getAddress(mContext)), signatureFont);
+                officeAddress = new Phrase("Office address" + "" + CommonUtils.getAddress(mContext), signatureFont);
             }
 
             PdfPCell signCell = new PdfPCell();
