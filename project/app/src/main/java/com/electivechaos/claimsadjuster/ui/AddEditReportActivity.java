@@ -1327,9 +1327,8 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                 }
                 break;
             case  ADD_IMAGE_DETAILS:
-                ArrayList<ImageDetailsPOJO> imagesInformation = (ArrayList<ImageDetailsPOJO>) data.getExtras().getSerializable("selected_images");
+                ArrayList<ImageDetailsPOJO> selectedImageList = (ArrayList<ImageDetailsPOJO>) data.getExtras().getSerializable("selected_images");
                 final int labelPos = data.getExtras().getInt("labelPosition");
-                ArrayList<ImageDetailsPOJO> selectedImageList = imagesInformation;
 
                 if(selectedImageList!=null) {
                     for (int i = 0; i < selectedImageList.size(); i++) {
