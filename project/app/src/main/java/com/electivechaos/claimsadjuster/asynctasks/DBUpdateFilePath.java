@@ -331,12 +331,12 @@ public class DBUpdateFilePath extends AsyncTask<Integer,Void,Void> {
 
             Phrase name = null;
             if(!CommonUtils.getReportByField(mContext).isEmpty()) {
-                name = new Phrase("Name" + "  " + CommonUtils.getReportByField(mContext), signatureFont);
+                name = new Phrase("Name" + "    " + CommonUtils.getReportByField(mContext), signatureFont);
              }
 
             Phrase officeAddress = null;
             if(!CommonUtils.getAddress(mContext).isEmpty()) {
-                officeAddress = new Phrase("Office address" + "  " + CommonUtils.getAddress(mContext), signatureFont);
+                officeAddress = new Phrase("Office address" + "    " + CommonUtils.getAddress(mContext), signatureFont);
             }
 
             PdfPCell signCell = new PdfPCell();
