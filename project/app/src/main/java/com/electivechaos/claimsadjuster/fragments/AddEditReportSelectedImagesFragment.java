@@ -872,7 +872,6 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                     .into(imageFourPreview);
             selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList, labelPosition);
         }else if(requestId == SELECT_FILE){
-            // add call &
 
             ArrayList<ImageDetailsPOJO> imagesInformation = new ArrayList<>();
             for(int i =0; i< selectedImages.size();i++){
@@ -900,7 +899,6 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
 
                 @Override
                 public void onPostExecute(Object object, String type) {
-                    Log.d("FUCK",label.getId());
                     ArrayList<ImageDetailsPOJO> returnedImagesList = (ArrayList<ImageDetailsPOJO>) object;
                     Intent intent = new Intent(getActivity(), ImageSliderActivity.class);
                     intent.putExtra("ImageList", returnedImagesList);

@@ -4,7 +4,6 @@ import android.os.AsyncTask;
 
 import com.electivechaos.claimsadjuster.database.CategoryListDBHelper;
 import com.electivechaos.claimsadjuster.interfaces.AsyncTaskStatusCallback;
-import com.electivechaos.claimsadjuster.pojo.Image;
 import com.electivechaos.claimsadjuster.pojo.ImageDetailsPOJO;
 import com.electivechaos.claimsadjuster.pojo.Label;
 
@@ -69,7 +68,6 @@ public class DBSelectedImagesListTsk extends AsyncTask<String,Integer,ArrayList>
     @Override
     protected void onPostExecute(ArrayList result) {
         taskCompleteCallback.onPostExecute(result,type);
-
     }
 }
 

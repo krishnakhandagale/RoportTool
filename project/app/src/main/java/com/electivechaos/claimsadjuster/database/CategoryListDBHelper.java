@@ -1206,8 +1206,6 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
     public int editImageDetails(ImageDetailsPOJO imageDetailsPOJO){
 
         SQLiteDatabase db = this.getWritableDatabase();
-//        String query ="UPDATE report_image_details SET image_title = ?, image_description = ?, is_damage = ?, is_overview = ?, is_point_of_origin = ?, image_coverage_type = ? WHERE image_id = ?";
-
         ContentValues cv = new ContentValues();
         cv.put(KEY_IMAGE_TITLE,imageDetailsPOJO.getTitle());
         cv.put(KEY_IMAGE_DESCRIPTION,imageDetailsPOJO.getDescription());
