@@ -39,6 +39,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.electivechaos.claimsadjuster.CameraActivity;
 import com.electivechaos.claimsadjuster.ImageHelper;
 import com.electivechaos.claimsadjuster.PermissionUtilities;
 import com.electivechaos.claimsadjuster.R;
@@ -495,8 +496,8 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
     }
 
     private void cameraIntent(int requestId) {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
+        Intent intent = new Intent(getContext(),CameraActivity.class);
         if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
 
             photoFile = getOutputMediaFile();
@@ -504,6 +505,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
                     fileUri = Uri.fromFile(photoFile);
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+
                 } else {
                     fileUri = FileProvider.getUriForFile(getContext().getApplicationContext(),
                             getContext().getApplicationContext().getPackageName() + ".fileprovider",
@@ -519,6 +521,31 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                 getActivity().startActivityForResult(intent, requestId);
             }
         }
+
+//        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+//
+//            photoFile = getOutputMediaFile();
+//            if (photoFile != null) {
+//                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+//                    fileUri = Uri.fromFile(photoFile);
+//                    intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+//
+//                } else {
+//                    fileUri = FileProvider.getUriForFile(getContext().getApplicationContext(),
+//                            getContext().getApplicationContext().getPackageName() + ".fileprovider",
+//                            photoFile);
+//                    intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+//                }
+//
+//
+//                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//                intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+//                ImageHelper.grantAppPermission(getContext(), intent, fileUri);
+//                onSetImageFileUriListener.onSetImageFileUri(mCurrentPhotoPath);
+//                getActivity().startActivityForResult(intent, requestId);
+//            }
+//        }
     }
 
     public void onElevationImageFourCapture(Intent data, int requestCode){

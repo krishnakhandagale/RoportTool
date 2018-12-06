@@ -34,6 +34,7 @@ import android.widget.LinearLayout;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.electivechaos.claimsadjuster.CameraActivity;
 import com.electivechaos.claimsadjuster.ImageHelper;
 import com.electivechaos.claimsadjuster.PermissionUtilities;
 import com.electivechaos.claimsadjuster.R;
@@ -482,8 +483,7 @@ public class StarterPhotosFragment extends Fragment {
 
 
     private void cameraIntent(int requestId) {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
+        Intent intent = new Intent(getContext(),CameraActivity.class);
         if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
 
             photoFile = getOutputMediaFile();
