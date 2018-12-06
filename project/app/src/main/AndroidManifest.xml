@@ -58,8 +58,7 @@
             android:name=".ui.PdfViewerActivity"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".ui.SplashScreenActivity">
-        </activity>
+        <activity android:name=".ui.SplashScreenActivity"></activity>
         <activity android:name=".ui.CustomisationActivity" />
         <activity android:name=".ui.RoofSystemActivity" />
         <activity android:name=".ui.SidingActivity" />
@@ -78,6 +77,7 @@
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
+        <activity android:name=".CameraActivity" android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>
