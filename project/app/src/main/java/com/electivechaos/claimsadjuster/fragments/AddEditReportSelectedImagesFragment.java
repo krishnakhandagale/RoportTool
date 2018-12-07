@@ -66,6 +66,7 @@ import com.electivechaos.claimsadjuster.ui.SingleImageDetailsActivity;
 import com.electivechaos.claimsadjuster.utils.CommonUtils;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -504,18 +505,16 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
             if (photoFile != null) {
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
                     fileUri = Uri.fromFile(photoFile);
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
 
                 } else {
                     fileUri = FileProvider.getUriForFile(getContext().getApplicationContext(),
                             getContext().getApplicationContext().getPackageName() + ".fileprovider",
                             photoFile);
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
                 }
 
 
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, mCurrentPhotoPath);
                 ImageHelper.grantAppPermission(getContext(), intent, fileUri);
                 onSetImageFileUriListener.onSetImageFileUri(mCurrentPhotoPath);
                 getActivity().startActivityForResult(intent, requestId);
@@ -701,6 +700,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         File imageFile = new File(mediaStorageDir.getPath() + File.separator +
                 "IMG_" + timeStamp + ".jpg");
+
         mCurrentPhotoPath = imageFile.getAbsolutePath();
         return imageFile;
     }

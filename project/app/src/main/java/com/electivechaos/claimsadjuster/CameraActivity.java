@@ -22,6 +22,7 @@ import com.camerakit.type.CameraFlash;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 
 
 public class CameraActivity extends AppCompatActivity {
@@ -53,10 +54,22 @@ public class CameraActivity extends AppCompatActivity {
                 cameraKitView.captureImage(new CameraKitView.ImageCallback() {
                     @Override
                     public void onImage(CameraKitView cameraKitView, final byte[] capturedImage) {
+                        String fileUri =  getIntent().getExtras().getString(MediaStore.EXTRA_OUTPUT);
+                        if(fileUri == null){
+                            return;
+                        }
+                        File file =  new File(fileUri);
 
-                        Uri fileUri = getIntent().getExtras().getParcelable(MediaStore.EXTRA_OUTPUT);
+                        if(!file.exists()){
+                            try {
+                                 file.createNewFile();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
                         try {
-                            FileOutputStream outputStream = new FileOutputStream(fileUri.getPath());
+                            FileOutputStream outputStream = new FileOutputStream(fileUri);
                             outputStream.write(capturedImage);
                             outputStream.close();
                         } catch (java.io.IOException e) {
@@ -152,6 +165,12 @@ public class CameraActivity extends AppCompatActivity {
     protected void onStop() {
         cameraKitView.onStop();
         super.onStop();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        cameraKitView.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
 }
