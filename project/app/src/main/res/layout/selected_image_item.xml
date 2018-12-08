@@ -64,7 +64,6 @@
                 android:maxLines="1"
                 android:ellipsize="end"
                 android:id="@+id/title"
-                android:text="@string/address_hint_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/selectedImagePreviewLayout"
@@ -86,7 +85,6 @@
                 android:paddingBottom="@dimen/songs_count_padding_bottom"
                 android:paddingLeft="@dimen/album_title_padding"
                 android:paddingRight="@dimen/album_title_padding"
-                android:text="@string/address_hint_text"
                 android:textSize="@dimen/description_dim" />
             <ImageButton
                 android:background="?attr/selectableItemBackgroundBorderless"

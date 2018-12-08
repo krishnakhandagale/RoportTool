@@ -5,6 +5,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.AssetManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -67,6 +70,7 @@ import com.electivechaos.claimsadjuster.utils.CommonUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -249,7 +253,8 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                 .placeholder(R.drawable.imagepicker_image_placeholder)
                 .error(R.drawable.imagepicker_image_placeholder)
                 .centerCrop()
-                .diskCacheStrategy(DiskCacheStrategy.RESOURCE);
+                .skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.NONE);
         parentLayout = selectImageView.findViewById(R.id.parentLinearLayout);
         selectedImagesRecyclerView = selectImageView.findViewById(R.id.selectedImagesRecyclerView);
 
@@ -421,34 +426,71 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
 
         if (selectedElevationImagesList != null && selectedElevationImagesList.size() > 0) {
             if (selectedElevationImagesList.get(0).getImageUrl() != null && !selectedElevationImagesList.get(0).getImageUrl().isEmpty()) {
-                Glide.with(getActivity())
-                        .load("file://" + selectedElevationImagesList.get(0).getImageUrl())
-                        .thumbnail(0.1f)
-                        .apply(options)
-                        .into(imageOnePreview);
+                File file = new File(selectedElevationImagesList.get(0).getImageUrl());
+                if(!file.exists()){
+                    Glide.with(getActivity())
+                            .load("file:///android_asset/NoImageFound.jpg")
+                            .thumbnail(0.1f)
+                            .apply(options)
+                            .into(imageOnePreview);
+
+                }else {
+                    Glide.with(getActivity())
+                            .load("file://" + selectedElevationImagesList.get(0).getImageUrl())
+                            .thumbnail(0.1f)
+                            .apply(options)
+                            .into(imageOnePreview);
+                }
 
             }
             if (selectedElevationImagesList.get(1).getImageUrl() != null && !selectedElevationImagesList.get(1).getImageUrl().isEmpty()) {
-                Glide.with(getActivity())
-                        .load("file://" + selectedElevationImagesList.get(1).getImageUrl())
-                        .thumbnail(0.1f)
-                        .apply(options)
-                        .into(imageTwoPreview);
+                File file = new File(selectedElevationImagesList.get(1).getImageUrl());
+                if(!file.exists()){
+                    Glide.with(getActivity())
+                            .load("file:///android_asset/NoImageFound.jpg")
+                            .thumbnail(0.1f)
+                            .apply(options)
+                            .into(imageTwoPreview);
+                }else {
+                    Glide.with(getActivity())
+                            .load("file://" + selectedElevationImagesList.get(1).getImageUrl())
+                            .thumbnail(0.1f)
+                            .apply(options)
+                            .into(imageTwoPreview);
+                }
             }
             if (selectedElevationImagesList.get(2).getImageUrl() != null && !selectedElevationImagesList.get(2).getImageUrl().isEmpty()) {
-                Glide.with(getActivity())
-                        .load("file://" + selectedElevationImagesList.get(2).getImageUrl())
-                        .thumbnail(0.1f)
-                        .apply(options)
-                        .into(imageThreePreview);
+                File file = new File(selectedElevationImagesList.get(2).getImageUrl());
+                if(!file.exists()){
+                    Glide.with(getActivity())
+                            .load("file:///android_asset/NoImageFound.jpg")
+                            .thumbnail(0.1f)
+                            .apply(options)
+                            .into(imageThreePreview);
+                }else {
+                    Glide.with(getActivity())
+                            .load("file://" + selectedElevationImagesList.get(2).getImageUrl())
+                            .thumbnail(0.1f)
+                            .apply(options)
+                            .into(imageThreePreview);
+                }
 
             }
             if (selectedElevationImagesList.get(3).getImageUrl() != null && !selectedElevationImagesList.get(3).getImageUrl().isEmpty()) {
-                Glide.with(getActivity())
-                        .load("file://" + selectedElevationImagesList.get(3).getImageUrl())
-                        .thumbnail(0.1f)
-                        .apply(options)
-                        .into(imageFourPreview);
+                File file = new File(selectedElevationImagesList.get(3).getImageUrl());
+                if(!file.exists()){
+                    Glide.with(getActivity())
+                            .load("file:///android_asset/NoImageFound.jpg")
+                            .thumbnail(0.1f)
+                            .apply(options)
+                            .into(imageFourPreview);
+                }else {
+                    Glide.with(getActivity())
+                            .load("file://" + selectedElevationImagesList.get(3).getImageUrl())
+                            .thumbnail(0.1f)
+                            .apply(options)
+                            .into(imageFourPreview);
+                }
             }
         }
     }
@@ -521,30 +563,6 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
             }
         }
 
-//        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
-//
-//            photoFile = getOutputMediaFile();
-//            if (photoFile != null) {
-//                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-//                    fileUri = Uri.fromFile(photoFile);
-//                    intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-//
-//                } else {
-//                    fileUri = FileProvider.getUriForFile(getContext().getApplicationContext(),
-//                            getContext().getApplicationContext().getPackageName() + ".fileprovider",
-//                            photoFile);
-//                    intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-//                }
-//
-//
-//                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-//                intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-//                ImageHelper.grantAppPermission(getContext(), intent, fileUri);
-//                onSetImageFileUriListener.onSetImageFileUri(mCurrentPhotoPath);
-//                getActivity().startActivityForResult(intent, requestId);
-//            }
-//        }
     }
 
     public void onElevationImageFourCapture(Intent data, int requestCode){
@@ -1055,80 +1073,98 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(final AddEditReportSelectedImagesFragment.SelectedImagesAdapter.MyViewHolder holder, final int position) {
-
             final ImageDetailsPOJO imgDetails = imageList.get(holder.getAdapterPosition());
-            holder.title.setText(imgDetails.getTitle());
-            holder.description.setText(imgDetails.getDescription());
 
-            if (imgDetails.isOverview()) {
-                holder.imageType.setText("Overview");
-                holder.imageType.setVisibility(View.VISIBLE);
-            } else if (imgDetails.isDamage()) {
-                holder.imageType.setText("Damage");
-                holder.imageType.setVisibility(View.VISIBLE);
-            } else {
+            File file = new File(imgDetails.getImageUrl());
+            if(!file.exists()) {
+                Glide.with(context)
+                        .load("file:///android_asset/NoImageFound.jpg")
+                        .apply(options)
+                        .into(holder.imageView);
                 holder.imageType.setVisibility(View.GONE);
-            }
-
-            if(imgDetails.isPointOfOrigin()){
-                holder.isPointOfOrigin.setVisibility(View.VISIBLE);
-            }else{
                 holder.isPointOfOrigin.setVisibility(View.GONE);
+
+
+            }else {
+                holder.title.setText(imgDetails.getTitle());
+                holder.description.setText(imgDetails.getDescription());
+
+                if (imgDetails.isOverview()) {
+                    holder.imageType.setText("Overview");
+                    holder.imageType.setVisibility(View.VISIBLE);
+                } else if (imgDetails.isDamage()) {
+                    holder.imageType.setText("Damage");
+                    holder.imageType.setVisibility(View.VISIBLE);
+                } else {
+                    holder.imageType.setVisibility(View.GONE);
+                }
+
+                if (imgDetails.isPointOfOrigin()) {
+                    holder.isPointOfOrigin.setVisibility(View.VISIBLE);
+                } else {
+                    holder.isPointOfOrigin.setVisibility(View.GONE);
+                }
+
+                Glide.with(context)
+                        .load("file://" + imgDetails.getImageUrl())
+                        .apply(options)
+                        .into(holder.imageView);
             }
-            Glide.with(context)
-                    .load("file://" + imgDetails.getImageUrl())
-                    .apply(options)
-                    .into(holder.imageView);
-            holder.editBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(context, SingleImageDetailsActivity.class);
-                    intent.putExtra("image_details", imgDetails);
-                    intent.putExtra("isEdit", true);
-                    intent.putExtra("position", holder.getAdapterPosition());
-                    intent.putExtra("labelPosition",labelPosition);
-                    getActivity().startActivityForResult(intent, SET_CLICKED_IMAGE_DETAILS);
-                }
-            });
 
-            holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
 
-                    if (getActivity() != null) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                        builder.setTitle("Remove Image")
-                                .setMessage("Are you sure wanna remove this image ?")
-                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        categoryListDBHelper.deleteImage(imageList.get(holder.getAdapterPosition()).getImageId());
-                                        imageList.remove(holder.getAdapterPosition());
-                                        //onImageRemovalListener.onImageSelectionChanged(imageList);
-                                        notifyDataSetChanged();
-                                        dialog.cancel();
-                                    }
-                                })
-                                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.cancel();
-                                    }
-                                });
-                        AlertDialog alert = builder.create();
-                        alert.show();
-                        Button negativeButton = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
-                        negativeButton.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorPrimaryDark));
-                        Button positiveButton = alert.getButton(DialogInterface.BUTTON_POSITIVE);
-                        positiveButton.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorPrimaryDark));
+                holder.editBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(context, SingleImageDetailsActivity.class);
+                        intent.putExtra("image_details", imgDetails);
+                        intent.putExtra("isEdit", true);
+                        intent.putExtra("position", holder.getAdapterPosition());
+                        intent.putExtra("labelPosition", labelPosition);
+                        getActivity().startActivityForResult(intent, SET_CLICKED_IMAGE_DETAILS);
                     }
-                }
-            });
+                });
 
-            holder.imageInfoBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onShowPopup(imgDetails);
-                }
-            });
+
+                holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        if (getActivity() != null) {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                            builder.setTitle("Remove Image")
+                                    .setMessage("Are you sure wanna remove this image ?")
+                                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            categoryListDBHelper.deleteImage(imageList.get(holder.getAdapterPosition()).getImageId());
+                                            imageList.remove(holder.getAdapterPosition());
+                                            //onImageRemovalListener.onImageSelectionChanged(imageList);
+                                            notifyDataSetChanged();
+                                            dialog.cancel();
+                                        }
+                                    })
+                                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.cancel();
+                                        }
+                                    });
+                            AlertDialog alert = builder.create();
+                            alert.show();
+                            Button negativeButton = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
+                            negativeButton.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorPrimaryDark));
+                            Button positiveButton = alert.getButton(DialogInterface.BUTTON_POSITIVE);
+                            positiveButton.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorPrimaryDark));
+                        }
+                    }
+                });
+
+                holder.imageInfoBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onShowPopup(imgDetails);
+                    }
+                });
+
+
         }
 
         @Override
@@ -1136,6 +1172,9 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
             return imageList.size();
         }
     }
+
+
+
 
 
     @Override
