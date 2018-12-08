@@ -322,43 +322,88 @@ public class StarterPhotosFragment extends Fragment {
 
         if (selectedElevationImagesList != null && selectedElevationImagesList.size() > 0) {
             if (selectedElevationImagesList.get(0).getImageUrl() != null && !selectedElevationImagesList.get(0).getImageUrl().isEmpty()) {
-                Glide.with(getActivity())
-                        .load("file://" + selectedElevationImagesList.get(0).getImageUrl())
-                        .thumbnail(0.1f)
-                        .apply(options)
-                        .into(imageOnePreview);
+                File file = new File(selectedElevationImagesList.get(0).getImageUrl());
+                if(!file.exists()){
+                    Glide.with(getActivity())
+                            .load("file:///android_asset/NoImageFound.jpg")
+                            .thumbnail(0.1f)
+                            .apply(options)
+                            .into(imageOnePreview);
+                }else {
+                    Glide.with(getActivity())
+                            .load("file://" + selectedElevationImagesList.get(0).getImageUrl())
+                            .thumbnail(0.1f)
+                            .apply(options)
+                            .into(imageOnePreview);
+                }
 
             }
             if (selectedElevationImagesList.get(1).getImageUrl() != null && !selectedElevationImagesList.get(1).getImageUrl().isEmpty()) {
-                Glide.with(getActivity())
-                        .load("file://" + selectedElevationImagesList.get(1).getImageUrl())
-                        .thumbnail(0.1f)
-                        .apply(options)
-                        .into(imageTwoPreview);
+                File file = new File(selectedElevationImagesList.get(1).getImageUrl());
+                if(!file.exists()){
+                    Glide.with(getActivity())
+                            .load("file:///android_asset/NoImageFound.jpg")
+                            .thumbnail(0.1f)
+                            .apply(options)
+                            .into(imageTwoPreview);
+                }else {
+                    Glide.with(getActivity())
+                            .load("file://" + selectedElevationImagesList.get(1).getImageUrl())
+                            .thumbnail(0.1f)
+                            .apply(options)
+                            .into(imageTwoPreview);
+                }
             }
             if (selectedElevationImagesList.get(2).getImageUrl() != null && !selectedElevationImagesList.get(2).getImageUrl().isEmpty()) {
-                Glide.with(getActivity())
-                        .load("file://" + selectedElevationImagesList.get(2).getImageUrl())
-                        .thumbnail(0.1f)
-                        .apply(options)
-                        .into(imageThreePreview);
+                File file = new File(selectedElevationImagesList.get(2).getImageUrl());
+                if(!file.exists()){
+                    Glide.with(getActivity())
+                            .load("file:///android_asset/NoImageFound.jpg")
+                            .thumbnail(0.1f)
+                            .apply(options)
+                            .into(imageThreePreview);
+                }else {
+                    Glide.with(getActivity())
+                            .load("file://" + selectedElevationImagesList.get(2).getImageUrl())
+                            .thumbnail(0.1f)
+                            .apply(options)
+                            .into(imageThreePreview);
+                }
 
             }
             if (selectedElevationImagesList.get(3).getImageUrl() != null && !selectedElevationImagesList.get(3).getImageUrl().isEmpty()) {
-                Glide.with(getActivity())
-                        .load("file://" + selectedElevationImagesList.get(3).getImageUrl())
-                        .thumbnail(0.1f)
-                        .apply(options)
-                        .into(imageFourPreview);
+                File file = new File(selectedElevationImagesList.get(3).getImageUrl());
+                if(!file.exists()){
+                    Glide.with(getActivity())
+                            .load("file:///android_asset/NoImageFound.jpg")
+                            .thumbnail(0.1f)
+                            .apply(options)
+                            .into(imageFourPreview);
+                }else {
+                    Glide.with(getActivity())
+                            .load("file://" + selectedElevationImagesList.get(3).getImageUrl())
+                            .thumbnail(0.1f)
+                            .apply(options)
+                            .into(imageFourPreview);
+                }
             }
         }
 
         if (!TextUtils.isEmpty(houseNumber)) {
-            Glide.with(getActivity())
-                    .load("file://" + houseNumber)
-                    .thumbnail(0.1f)
-                    .apply(options)
-                    .into(imageHouseNumberPreview);
+            File file = new File(houseNumber);
+            if(!file.exists()){
+                Glide.with(getActivity())
+                        .load("file:///android_asset/NoImageFound.jpg")
+                        .thumbnail(0.1f)
+                        .apply(options)
+                        .into(imageHouseNumberPreview);
+            }else {
+                Glide.with(getActivity())
+                        .load("file://" + houseNumber)
+                        .thumbnail(0.1f)
+                        .apply(options)
+                        .into(imageHouseNumberPreview);
+            }
         }
     }
 
