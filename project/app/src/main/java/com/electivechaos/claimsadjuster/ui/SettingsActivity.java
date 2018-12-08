@@ -23,6 +23,7 @@ import com.electivechaos.claimsadjuster.PermissionUtilities;
 import com.electivechaos.claimsadjuster.R;
 import com.electivechaos.claimsadjuster.utils.CommonUtils;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import static com.electivechaos.claimsadjuster.ui.ImagePickerActivity.options;
@@ -109,11 +110,20 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
         if(!CommonUtils.getImageLogoUrl(this).isEmpty()){
-            Glide.with(this)
-                    .load("file://" +CommonUtils.getImageLogoUrl(this))
-                    .thumbnail(0.1f)
-                    .apply(options)
-                    .into(companyNameLogo);
+            File file = new File(CommonUtils.getImageLogoUrl(this));
+            if(file.exists()) {
+                Glide.with(this)
+                        .load("file://" + CommonUtils.getImageLogoUrl(this))
+                        .thumbnail(0.1f)
+                        .apply(options)
+                        .into(companyNameLogo);
+            }else {
+                Glide.with(this)
+                        .load("file:///android_asset/NoImageFound.jpg")
+                        .thumbnail(0.1f)
+                        .apply(options)
+                        .into(companyNameLogo);
+            }
             companyNameLogoRemove.setVisibility(View.VISIBLE);
         }else {
             companyNameLogoRemove.setVisibility(View.INVISIBLE);

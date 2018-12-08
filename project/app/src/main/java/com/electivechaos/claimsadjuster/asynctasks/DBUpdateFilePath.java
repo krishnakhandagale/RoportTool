@@ -878,27 +878,41 @@ public class DBUpdateFilePath extends AsyncTask<Integer, Void, Void> {
             PdfPCell imageLogoCell = null;
 
             if (!imageUrl.isEmpty()) {
-                try {
-                    img = com.itextpdf.text.Image.getInstance(resizeImageLogo(imageUrl));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (BadElementException e) {
-                    e.printStackTrace();
-                }catch (NullPointerException e){
-                    e.printStackTrace();
+                File logoFile = new File(imageUrl);
+                if(logoFile.exists()) {
+                    try {
+                        img = com.itextpdf.text.Image.getInstance(resizeImageLogo(imageUrl));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (BadElementException e) {
+                        e.printStackTrace();
+                    } catch (NullPointerException e) {
+                        e.printStackTrace();
+                    }
+
+
+                    img.scaleToFit(35, 35);
+
+                    imageLogoCell = new PdfPCell(img, true);
+                    imageLogoCell.setPaddingTop(10f);
+                    imageLogoCell.setPaddingBottom(5f);
+                    imageLogoCell.setBorderWidthLeft(0);
+                    imageLogoCell.setBorderWidthRight(0);
+                    imageLogoCell.setBorderWidthTop(0);
+                    imageLogoCell.setBorderColor(BaseColor.GRAY);
+                    imageLogoCell.setFixedHeight(50f);
+                }else {
+                    imageLogoCell = new PdfPCell();
+                    try {
+                        table.setWidths(new float[]{0.0f, 2.3f, 2.7f});
+                    } catch (DocumentException e) {
+                        e.printStackTrace();
+                    }
+                    imageLogoCell.setBorderWidthLeft(0);
+                    imageLogoCell.setBorderWidthRight(0);
+                    imageLogoCell.setBorderWidthTop(0);
+                    imageLogoCell.setFixedHeight(50f);
                 }
-
-
-                img.scaleToFit(35, 35);
-
-                imageLogoCell = new PdfPCell(img, true);
-                imageLogoCell.setPaddingTop(10f);
-                imageLogoCell.setPaddingBottom(5f);
-                imageLogoCell.setBorderWidthLeft(0);
-                imageLogoCell.setBorderWidthRight(0);
-                imageLogoCell.setBorderWidthTop(0);
-                imageLogoCell.setBorderColor(BaseColor.GRAY);
-                imageLogoCell.setFixedHeight(50f);
 
             }
 
@@ -1009,46 +1023,6 @@ public class DBUpdateFilePath extends AsyncTask<Integer, Void, Void> {
             table.writeSelectedRows(0, -1, 50, 842, cb);
 
 
-//
-//            Phrase header = new Phrase(reportTitle, headerFont);
-//            ColumnText.showTextAligned(cb, Element.ALIGN_CENTER,
-//                    header,
-//                    (document.right() - document.left()) / 2 + document.leftMargin(),
-//                    document.top() +5, 0);
-//
-//            Font headerCompanyNameFont = new Font(Font.FontFamily.TIMES_ROMAN, Constants.FOOTER_FONT_SIZE, Font.ITALIC);
-//
-//            String companyName = CommonUtils.getCompanyName(mContext);
-//            if(!companyName.isEmpty()) {
-//                Phrase headerCompanyName = new Phrase(companyName, headerCompanyNameFont);
-//
-//                if(!CommonUtils.getImageLogoUrl(mContext).isEmpty()) {
-//                    ColumnText.showTextAligned(cb, Element.ALIGN_LEFT,
-//                            headerCompanyName,
-//                            document.left() + 36,
-//                            document.top() + 45, 0);
-//                }
-//                else {
-//                    ColumnText.showTextAligned(cb, Element.ALIGN_LEFT,
-//                            headerCompanyName,
-//                            document.left() ,
-//                            document.top() + 45, 0);
-//                }
-//            }
-//
-//            String companyAddress = CommonUtils.getAddress(mContext);
-//            if(!companyAddress.isEmpty()) {
-//
-//                Phrase headerCompanyName = new Phrase(companyAddress, headerCompanyNameFont);
-//
-//                ColumnText.showTextAligned(cb, Element.ALIGN_RIGHT,
-//                        headerCompanyName,
-//                        document.right() ,
-//                        document.top() + 45, 0);
-//            }
-//
-//
-//
 
 
             cb.setColorStroke(BaseColor.LIGHT_GRAY);
@@ -1069,28 +1043,6 @@ public class DBUpdateFilePath extends AsyncTask<Integer, Void, Void> {
                     (document.right()),
                     document.bottom() - 20, 0);
 
-//
-//            com.itextpdf.text.Image img= null;
-//
-//            String imageUrl = CommonUtils.getImageLogoUrl(mContext);
-//            if(!imageUrl.isEmpty()) {
-//                try {
-//                    img = com.itextpdf.text.Image.getInstance(resizeImageLogo(imageUrl));
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                } catch (BadElementException e) {
-//                    e.printStackTrace();
-//                }
-//                img.scalePercent(100);
-//                img.scaleToFit(35, 35);
-//                img.setAbsolutePosition(document.left() , document.top() +30);
-//
-//                try {
-//                    document.add(img);
-//                } catch (DocumentException e) {
-//                    e.printStackTrace();
-//                }
-//            }
 
         }
     }
