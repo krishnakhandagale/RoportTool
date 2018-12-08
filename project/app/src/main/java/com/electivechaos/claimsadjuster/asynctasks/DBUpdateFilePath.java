@@ -165,6 +165,8 @@ public class DBUpdateFilePath extends AsyncTask<Integer, Void, Void> {
                 int count = 0;
                 for (int i = 0; i < selectedElevationImagesList1.size(); i++) {
                     if (!selectedElevationImagesList1.get(i).getImageUrl().isEmpty()) {
+                        File file = new File(selectedElevationImagesList1.get(i).getImageUrl());
+                        if(file.exists()){
                         byte[] imageBytesResized;
                         imageBytesResized = resizeImage(selectedElevationImagesList1.get(i).getImageUrl(), (int) ((document.getPageSize().getWidth() / 2 - 100)), (int) ((remainingHeight / 2) - 80));
                         try {
@@ -223,6 +225,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer, Void, Void> {
                         }
                     }
                 }
+                }
                 if (count == 1 || count == 3) {
                     elevationTable.completeRow();
                 }
@@ -248,6 +251,8 @@ public class DBUpdateFilePath extends AsyncTask<Integer, Void, Void> {
 
                     while (j < selectedElevationImagesList.size()) {
                         if (!selectedElevationImagesList.get(j).getImageUrl().isEmpty()) {
+                            File file = new File(selectedElevationImagesList.get(j).getImageUrl());
+                            if(file.exists()){
                             try {
                                 PdfPTable table = new PdfPTable(3);
                                 byte[] imageBytesResized;
@@ -271,6 +276,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer, Void, Void> {
                             }
                             k++;
                         }
+                        }
                         j++;
                     }
 
@@ -279,6 +285,8 @@ public class DBUpdateFilePath extends AsyncTask<Integer, Void, Void> {
                     }
 
                     for (int i = 0; i < selectedImageList.size(); i++) {
+                        File file = new File(selectedImageList.get(i).getImageUrl());
+                        if(file.exists()){
                         try {
                             PdfPTable table = new PdfPTable(3);
                             byte[] imageBytesResized;
@@ -301,6 +309,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer, Void, Void> {
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
+                    }
 
                     }
 
@@ -328,7 +337,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer, Void, Void> {
 
             Phrase officeAddress = null;
             if (!CommonUtils.getAddress(mContext).isEmpty()) {
-                officeAddress = new Phrase("Office address" + "   :  " + CommonUtils.getAddress(mContext), signatureFont);
+                officeAddress = new Phrase(CommonUtils.getAddress(mContext), signatureFont);
             }
 
             PdfPCell signCell = new PdfPCell();
@@ -337,12 +346,13 @@ public class DBUpdateFilePath extends AsyncTask<Integer, Void, Void> {
             signCell.addElement(signature);
 
             PdfPCell dateCell = new PdfPCell();
+            dateCell.setRowspan(3);
             dateCell.setFixedHeight(20f);
             dateCell.setBorder(Rectangle.NO_BORDER);
             dateCell.addElement(date);
 
             PdfPCell nameCell = new PdfPCell();
-            nameCell.setFixedHeight(50f);
+            nameCell.setFixedHeight(20f);
             nameCell.setBorder(Rectangle.NO_BORDER);
             nameCell.addElement(name);
 
@@ -649,10 +659,8 @@ public class DBUpdateFilePath extends AsyncTask<Integer, Void, Void> {
 
         com.itextpdf.text.Image imgMap;
         if (!reportPOJO.getGoogleMapSnapShotFilePath().isEmpty()) {
-
             File file = new File(reportPOJO.getGoogleMapSnapShotFilePath());
             if (file.exists()) {
-
                 byte[] imgResized = resizeGoogleImage(reportPOJO.getGoogleMapSnapShotFilePath(), (int) ((document.getPageSize().getWidth() / 2) - 100), (int) ((document.getPageSize().getHeight() / 2) - 130));
                 try {
                     imgMap = com.itextpdf.text.Image.getInstance(imgResized);
