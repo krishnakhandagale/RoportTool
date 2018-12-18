@@ -132,9 +132,7 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
                 if(result){
                 buildGoogleAPIClient();
 
-
                 mPlaceDetectionClient = Places.getPlaceDetectionClient(getActivity());
-
 
                 showCurrentPlace();
 
@@ -168,12 +166,10 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
 
             @Override
             public void afterTextChanged(Editable s) {
-                lossLocationDataInterface.setLocationLat("");
-                lossLocationDataInterface.setLocationLong("");
-                lossLocationDataInterface.setAddressLine("");
-                txtSetLocation.setText("Pin Location");
-               // txtSetLocation.setTextColor(Color.parseColor("#616060"));
-                //lossLocationDataInterface.setAddressLine(s.toString());
+//                lossLocationDataInterface.setLocationLat("");
+//                lossLocationDataInterface.setLocationLong("");
+//                lossLocationDataInterface.setAddressLine("");
+//                txtSetLocation.setText("Pin Location");
             }
         });
 
@@ -255,11 +251,6 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
 
             LatLng currentLocation = places.get(0).getLatLng();
 
-//            lossLocationDataInterface.setLocationLat(String.valueOf(currentLocation.latitude));
-//
-//            lossLocationDataInterface.setLocationLong(String.valueOf(currentLocation.longitude));
-
-//            lossLocationDataInterface.setAddressLine(places.get(0).getAddress().toString());
             locationLat = String.valueOf(currentLocation.latitude);
             locationLong = String.valueOf(currentLocation.longitude);
             addressLine = places.get(0).getAddress().toString();
@@ -325,12 +316,6 @@ private void setCurrentLocation(){
 
                             LatLng currentLocation = likelyPlaces.get(0).getPlace().getLatLng();
 
-//                            lossLocationDataInterface.setLocationLat(String.valueOf(currentLocation.latitude));
-//
-//                            lossLocationDataInterface.setLocationLong(String.valueOf(currentLocation.longitude));
-
-//                            lossLocationDataInterface.setAddressLine(likelyPlaces.get(0).getPlace().getAddress().toString());
-
                             locationLat = String.valueOf(currentLocation.latitude);
                             locationLong = String.valueOf(currentLocation.longitude);
                             addressLine = likelyPlaces.get(0).getPlace().getAddress().toString();
@@ -366,7 +351,6 @@ private void setCurrentLocation(){
 
                         txtSetLocation.setChecked(false);
                         txtSetLocation.setText("Pin Location");
-                       // txtSetLocation.setTextColor(Color.parseColor("#616060"));
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -395,11 +379,6 @@ private void setCurrentLocation(){
 
                                 LatLng currentLocation = likelyPlaces.get(0).getPlace().getLatLng();
 
-//                                lossLocationDataInterface.setLocationLat(String.valueOf(currentLocation.latitude));
-//
-//                                lossLocationDataInterface.setLocationLong(String.valueOf(currentLocation.longitude));
-
-//                                lossLocationDataInterface.setAddressLine(likelyPlaces.get(0).getPlace().getAddress().toString());
                                 locationLat = String.valueOf(currentLocation.latitude);
                                 locationLong = String.valueOf(currentLocation.longitude);
                                 addressLine = likelyPlaces.get(0).getPlace().getAddress().toString();
@@ -432,9 +411,6 @@ private void setCurrentLocation(){
 
                                 txtSetLocation.setChecked(false);
                                 txtSetLocation.setText("Pin Location");
-                                //txtSetLocation.setTextColor(Color.parseColor("#616060"));
-
-
                             }
                         }
                     }).addOnFailureListener(new OnFailureListener() {
