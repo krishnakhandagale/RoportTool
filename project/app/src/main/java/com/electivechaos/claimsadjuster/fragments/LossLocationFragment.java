@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
+import android.widget.CheckBox;
 
 import com.electivechaos.claimsadjuster.Constants;
 import com.electivechaos.claimsadjuster.R;
@@ -70,6 +71,8 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
     private MarkerOptions a = new MarkerOptions().position(new LatLng(50,6));
     private Marker mGoogleMapMarker = null;
 
+    private CheckBox txtCurrentLocation, txtSetLocation;
+
     @Override
     public void onStart() {
         super.onStart();
@@ -122,6 +125,7 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
                     googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
                 }
 
+                googleMap.clear();
                 mGoogleMapMarker = googleMap.addMarker(a);
 
                 boolean result= PermissionUtilities.checkPermission(getActivity(),LossLocationFragment.this,PermissionUtilities.MY_APP_LOCATION_PERMISSIONS);
@@ -141,7 +145,8 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
             }
         });
 
-
+        txtCurrentLocation = rootView.findViewById(R.id.txtCurrentLocation);
+        txtSetLocation = rootView.findViewById(R.id.txtSetLocation);
 
         mAutocompleteTextView = rootView.findViewById(R.id.place_autocomplete_text_view);
         mAutocompleteTextView.setText(addressLine);
@@ -165,7 +170,63 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
             public void afterTextChanged(Editable s) {
                 lossLocationDataInterface.setLocationLat("");
                 lossLocationDataInterface.setLocationLong("");
-                lossLocationDataInterface.setAddressLine(s.toString());
+                lossLocationDataInterface.setAddressLine("");
+                txtSetLocation.setText("Pin Location");
+               // txtSetLocation.setTextColor(Color.parseColor("#616060"));
+                //lossLocationDataInterface.setAddressLine(s.toString());
+            }
+        });
+
+        txtCurrentLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mMapView.getMapAsync(new OnMapReadyCallback() {
+                    @Override
+                    public void onMapReady(GoogleMap mMap) {
+                        googleMap = mMap;
+
+                        if(CommonUtils.getGoogleMap(getActivity()).equalsIgnoreCase(Constants.MAP_TYPE_ID_ROADMAP)){
+                            googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+                        }else if(CommonUtils.getGoogleMap(getActivity()).equalsIgnoreCase(Constants.MAP_TYPE_ID_SATELLITE)){
+                            googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+                        }
+                        googleMap.clear();
+                        mGoogleMapMarker = googleMap.addMarker(a);
+
+                        boolean result= PermissionUtilities.checkPermission(getActivity(),LossLocationFragment.this,PermissionUtilities.MY_APP_LOCATION_PERMISSIONS);
+                        if(result){
+                            buildGoogleAPIClient();
+
+
+                            mPlaceDetectionClient = Places.getPlaceDetectionClient(getActivity());
+
+                            setCurrentLocation();
+                            }else{
+                            PermissionUtilities.checkPermission(getActivity(),LossLocationFragment.this,PermissionUtilities.MY_APP_LOCATION_PERMISSIONS);
+                        }
+
+                    }
+                });
+            }
+        });
+
+
+
+        txtSetLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(txtSetLocation.isChecked()){
+                    lossLocationDataInterface.setLocationLat(locationLat);
+                    lossLocationDataInterface.setLocationLong(locationLong);
+                    lossLocationDataInterface.setAddressLine(addressLine);
+                    txtSetLocation.setText("Unpin Location");
+                }else  {
+                    lossLocationDataInterface.setLocationLat("");
+                    lossLocationDataInterface.setLocationLong("");
+                    lossLocationDataInterface.setAddressLine("");
+                    txtSetLocation.setText("Pin Location");
+                }
+
             }
         });
 
@@ -194,11 +255,14 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
 
             LatLng currentLocation = places.get(0).getLatLng();
 
-            lossLocationDataInterface.setLocationLat(String.valueOf(currentLocation.latitude));
+//            lossLocationDataInterface.setLocationLat(String.valueOf(currentLocation.latitude));
+//
+//            lossLocationDataInterface.setLocationLong(String.valueOf(currentLocation.longitude));
 
-            lossLocationDataInterface.setLocationLong(String.valueOf(currentLocation.longitude));
-
-            lossLocationDataInterface.setAddressLine(places.get(0).getAddress().toString());
+//            lossLocationDataInterface.setAddressLine(places.get(0).getAddress().toString());
+            locationLat = String.valueOf(currentLocation.latitude);
+            locationLong = String.valueOf(currentLocation.longitude);
+            addressLine = places.get(0).getAddress().toString();
 
             mGoogleMapMarker.setPosition(currentLocation);
             mGoogleMapMarker.setTitle("Location");
@@ -244,7 +308,74 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
 
     }
 
+private void setCurrentLocation(){
 
+    if (googleMap == null) {
+        return;
+    }
+
+        @SuppressLint("MissingPermission") final Task<PlaceLikelihoodBufferResponse> placeResult =
+                mPlaceDetectionClient.getCurrentPlace(null);
+        placeResult.addOnCompleteListener
+                (new OnCompleteListener<PlaceLikelihoodBufferResponse>() {
+                    @Override
+                    public void onComplete(@NonNull Task<PlaceLikelihoodBufferResponse> task) {
+                        if (task.isSuccessful() && task.getResult() != null) {
+                            PlaceLikelihoodBufferResponse likelyPlaces = task.getResult();
+
+                            LatLng currentLocation = likelyPlaces.get(0).getPlace().getLatLng();
+
+//                            lossLocationDataInterface.setLocationLat(String.valueOf(currentLocation.latitude));
+//
+//                            lossLocationDataInterface.setLocationLong(String.valueOf(currentLocation.longitude));
+
+//                            lossLocationDataInterface.setAddressLine(likelyPlaces.get(0).getPlace().getAddress().toString());
+
+                            locationLat = String.valueOf(currentLocation.latitude);
+                            locationLong = String.valueOf(currentLocation.longitude);
+                            addressLine = likelyPlaces.get(0).getPlace().getAddress().toString();
+
+                            mAutocompleteTextView.setText(likelyPlaces.get(0).getPlace().getAddress().toString());
+                            mGoogleMapMarker.setPosition(currentLocation);
+                            mGoogleMapMarker.setTitle("Location");
+                            mGoogleMapMarker.setSnippet(likelyPlaces.get(0).getPlace().getAddress().toString());
+
+                            CameraPosition cameraPosition = new CameraPosition.Builder().target(currentLocation).zoom(15).build();
+                            if(cameraPosition != null) {
+                                googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                            }
+
+                            googleMap.getUiSettings().setMyLocationButtonEnabled(false);
+                            likelyPlaces.release();
+
+                            googleMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+                                @Override
+                                public void onMapLoaded() {
+                                    googleMap.snapshot(new GoogleMap.SnapshotReadyCallback() {
+                                        @Override
+                                        public void onSnapshotReady(Bitmap bitmap) {
+                                            lossLocationDataInterface.setMapSnapshot(bitmap);
+                                            googleMap.setOnMapLoadedCallback(null);
+                                        }
+                                    });
+                                }
+                            });
+
+
+                        }
+
+                        txtSetLocation.setChecked(false);
+                        txtSetLocation.setText("Pin Location");
+                       // txtSetLocation.setTextColor(Color.parseColor("#616060"));
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                e.printStackTrace();
+            }
+        });
+
+}
 
     private void showCurrentPlace() {
 
@@ -264,11 +395,15 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
 
                                 LatLng currentLocation = likelyPlaces.get(0).getPlace().getLatLng();
 
-                                lossLocationDataInterface.setLocationLat(String.valueOf(currentLocation.latitude));
+//                                lossLocationDataInterface.setLocationLat(String.valueOf(currentLocation.latitude));
+//
+//                                lossLocationDataInterface.setLocationLong(String.valueOf(currentLocation.longitude));
 
-                                lossLocationDataInterface.setLocationLong(String.valueOf(currentLocation.longitude));
+//                                lossLocationDataInterface.setAddressLine(likelyPlaces.get(0).getPlace().getAddress().toString());
+                                locationLat = String.valueOf(currentLocation.latitude);
+                                locationLong = String.valueOf(currentLocation.longitude);
+                                addressLine = likelyPlaces.get(0).getPlace().getAddress().toString();
 
-                                lossLocationDataInterface.setAddressLine(likelyPlaces.get(0).getPlace().getAddress().toString());
                                 mAutocompleteTextView.setText(likelyPlaces.get(0).getPlace().getAddress().toString());
                                 mGoogleMapMarker.setPosition(currentLocation);
                                 mGoogleMapMarker.setTitle("Location");
@@ -294,6 +429,10 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
                                         });
                                     }
                                 });
+
+                                txtSetLocation.setChecked(false);
+                                txtSetLocation.setText("Pin Location");
+                                //txtSetLocation.setTextColor(Color.parseColor("#616060"));
 
 
                             }
@@ -327,6 +466,11 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
 
 
             });
+
+            lossLocationDataInterface.setLocationLat(locationLat);
+            lossLocationDataInterface.setLocationLong(locationLong);
+            lossLocationDataInterface.setAddressLine(addressLine);
+            txtSetLocation.setChecked(true);
 
         }
 

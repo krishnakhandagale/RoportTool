@@ -284,7 +284,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer, Void, Void> {
                         document.newPage();
                     }
 
-                    for (int i = 0; i < selectedImageList.size(); i++) {
+                    for (int i = 0, m = 0; i < selectedImageList.size(); i++, m++) {
                         File file = new File(selectedImageList.get(i).getImageUrl());
                         if(file.exists()){
                         try {
@@ -297,19 +297,21 @@ public class DBUpdateFilePath extends AsyncTask<Integer, Void, Void> {
                             table.setHorizontalAlignment(Element.ALIGN_LEFT);
                             table.setWidthPercentage(100);
 
-                            table.addCell(getImageNumberPdfPCell((i + 1) + ".", PdfPCell.ALIGN_LEFT));
+                            table.addCell(getImageNumberPdfPCell((m + 1) + ".", PdfPCell.ALIGN_LEFT));
                             table.addCell(getCellImageCell(img, PdfPCell.ALIGN_LEFT, document, numberOfImagesPerPage));
                             table.addCell(getCell(selectedImageList.get(i).getTitle(), selectedImageList.get(i).getDescription(), selectedImageList.get(i).isPointOfOrigin(), selectedImageList.get(i).isOverview(), selectedImageList.get(i).isDamage(), PdfPCell.LEFT, document, numberOfImagesPerPage));
                             document.add(table);
                             document.add(new Paragraph(" "));
 
-                            if ((i + 1) % numberOfImagesPerPage == 0) {
+                            if ((m + 1) % numberOfImagesPerPage == 0) {
                                 document.newPage();
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                    }
+                    }else {
+                            m--;
+                        }
 
                     }
 
