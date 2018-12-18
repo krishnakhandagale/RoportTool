@@ -21,5 +21,6 @@
 
     <color name="drawerBackgroundColor">#FAFAFA</color>
     <color name="parentMenuDivider">#EEEEEE</color>
+    <color name="colorCurrentLocation">#4376e6</color>
 
 </resources>
