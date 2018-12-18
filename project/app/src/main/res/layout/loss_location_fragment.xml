@@ -5,6 +5,46 @@
     android:orientation="vertical"
     android:weightSum="5"
     xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.2"
+        android:weightSum="2"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp">
+        <CheckBox
+            android:id="@+id/txtSetLocation"
+            android:clickable="true"
+            android:background="?attr/selectableItemBackground"
+            android:layout_marginLeft="20dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:drawablePadding="10dp"
+            android:button="@android:color/transparent"
+            android:drawableLeft="@drawable/ic_location_pin"
+            android:text="@string/pin_location"
+            android:textColor="#4376e6"
+            android:textStyle="bold"
+            />
+        <CheckBox
+            android:id="@+id/txtCurrentLocation"
+            android:clickable="true"
+            android:background="?attr/selectableItemBackground"
+            android:layout_marginLeft="20dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:drawablePadding="10dp"
+            android:drawableLeft="@drawable/ic_my_location"
+            android:text="@string/current_location"
+            android:button="@android:color/transparent"
+            android:textColor="#4376e6"
+            android:textStyle="bold"
+            />
+
+    </LinearLayout>
     <AutoCompleteTextView
         android:textSize="16sp"
         android:hint="@string/search_place"
@@ -12,9 +52,10 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.8"/>
+
     <com.google.android.gms.maps.MapView
         android:id="@+id/mapView"
         android:layout_width="match_parent"
-        android:layout_weight="4.2"
+        android:layout_weight="4"
         android:layout_height="0dp" />
 </LinearLayout>

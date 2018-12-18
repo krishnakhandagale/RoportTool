@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:id="@+id/lossLocationParentLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="5"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:weightSum="2"
+        android:orientation="horizontal"
+        android:layout_marginTop="2dp">
+        <AutoCompleteTextView
+            android:textSize="14sp"
+            android:hint="@string/search_place"
+            android:id="@+id/place_autocomplete_text_view"
+            android:layout_width="0dp"
+            android:layout_weight="1.5"
+            android:layout_height="match_parent" />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:layout_height="match_parent"
+            android:weightSum="2"
+            android:orientation="vertical"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="5dp">
+        <CheckBox
+            android:checked="false"
+            android:id="@+id/txtSetLocation"
+            android:clickable="true"
+            android:background="?attr/selectableItemBackground"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:textColor="#4376e6"
+            android:drawablePadding="10dp"
+            android:drawableLeft="@drawable/ic_location_pin"
+            android:button="@android:color/transparent"
+            android:text="@string/pin_location"
+            android:focusable="true" />
+        <CheckBox
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:textSize="12sp"
+            android:drawablePadding="10dp"
+            android:drawableLeft="@drawable/ic_my_location"
+            android:text="@string/current_location"
+            android:textColor="#4376e6"
+            android:id="@+id/txtCurrentLocation"
+            android:clickable="true"
+            android:textStyle="bold"
+            android:button="@android:color/transparent"
+            android:background="?attr/selectableItemBackground"
+            android:focusable="true" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/mapView"
+        android:layout_width="match_parent"
+        android:layout_weight="4"
+        android:layout_height="0dp" />
+</LinearLayout>
