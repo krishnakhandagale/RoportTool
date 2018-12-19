@@ -3,6 +3,7 @@ package com.electivechaos.claimsadjuster.pojo;
 /**
  * Created by nafeea on 4/24/18.
  */
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -82,6 +83,6 @@ public class Image implements Parcelable {
 
     @Override
     public int hashCode() {
-        return (int)this.id;
+        return (int) this.id;
     }
 }

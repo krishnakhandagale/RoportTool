@@ -1,7 +1,6 @@
 package com.electivechaos.claimsadjuster.listeners;
 
 
-
 import com.electivechaos.claimsadjuster.pojo.ImageDetailsPOJO;
 
 import java.util.List;

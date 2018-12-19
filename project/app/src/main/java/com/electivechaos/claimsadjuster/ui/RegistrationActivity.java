@@ -1,8 +1,8 @@
 package com.electivechaos.claimsadjuster.ui;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -34,16 +34,16 @@ import java.util.regex.Pattern;
 
 public class RegistrationActivity extends AppCompatActivity {
 
+    private static final Object REGISTRATION_REQUEST_TAG = "REGISTRATION_REQUEST_TAG";
     private View parentLayoutForMessages;
     private RequestQueue requestQueue;
-    private static final Object REGISTRATION_REQUEST_TAG = "REGISTRATION_REQUEST_TAG";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
 
-        if(!TextUtils.isEmpty(CommonUtils.getSession(getApplicationContext()))){
+        if (!TextUtils.isEmpty(CommonUtils.getSession(getApplicationContext()))) {
             Intent intent = new Intent(RegistrationActivity.this, MainTabsActivity.class);
             startActivity(intent);
             finish();
@@ -61,16 +61,16 @@ public class RegistrationActivity extends AppCompatActivity {
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 String reportByString = reportByEditText.getText().toString();
-                 String emailIdString = emailIdEditText.getText().toString();
-                 String tokenString = tokenEditText.getText().toString().trim();
+                String reportByString = reportByEditText.getText().toString();
+                String emailIdString = emailIdEditText.getText().toString();
+                String tokenString = tokenEditText.getText().toString().trim();
 
-                if(validate(reportByString, emailIdString)){
+                if (validate(reportByString, emailIdString)) {
                     CommonUtils.setEmailId(emailIdString, RegistrationActivity.this);
                     CommonUtils.setReportByField(reportByString, RegistrationActivity.this);
 
                     try {
-                        sendTokenEmailId(tokenString,emailIdString);
+                        sendTokenEmailId(tokenString, emailIdString);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -86,26 +86,24 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     private boolean validate(String reportBy, String emailId) {
-        if(reportBy.trim().isEmpty()){
-            CommonUtils.showSnackbarMessage(getString(R.string.please_enter_report_by), true, true,parentLayoutForMessages, RegistrationActivity.this);
+        if (reportBy.trim().isEmpty()) {
+            CommonUtils.showSnackbarMessage(getString(R.string.please_enter_report_by), true, true, parentLayoutForMessages, RegistrationActivity.this);
             return false;
-        }
-        else if(emailId.trim().isEmpty()) {
-            CommonUtils.showSnackbarMessage(getString(R.string.please_enter_email_id), true, true,parentLayoutForMessages, RegistrationActivity.this);
+        } else if (emailId.trim().isEmpty()) {
+            CommonUtils.showSnackbarMessage(getString(R.string.please_enter_email_id), true, true, parentLayoutForMessages, RegistrationActivity.this);
             return false;
-        }else if (!validateEmailId(emailId)){
-            CommonUtils.showSnackbarMessage(getString(R.string.please_enter_valid_email_id), true, true,parentLayoutForMessages, RegistrationActivity.this);
+        } else if (!validateEmailId(emailId)) {
+            CommonUtils.showSnackbarMessage(getString(R.string.please_enter_valid_email_id), true, true, parentLayoutForMessages, RegistrationActivity.this);
             return false;
-        }
-        else {
+        } else {
             return true;
         }
     }
 
     private boolean validateEmailId(String emailId) {
-         final Pattern VALID_EMAIL_ADDRESS_REGEX =
+        final Pattern VALID_EMAIL_ADDRESS_REGEX =
                 Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
-        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX .matcher(emailId);
+        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailId);
         return matcher.find();
     }
 
@@ -116,10 +114,10 @@ public class RegistrationActivity extends AppCompatActivity {
         requestQueue = Volley.newRequestQueue(this);
 
         JSONObject obj = new JSONObject();
-        obj.put("EmailId",emailId);
-        obj.put("Token",token);
-        obj.put("DeviceType","android");
-        obj.put("DomainID","electivechaos");
+        obj.put("EmailId", emailId);
+        obj.put("Token", token);
+        obj.put("DeviceType", "android");
+        obj.put("DomainID", "electivechaos");
         JSONArray jsonArray = new JSONArray();
 
         jsonArray.put(obj);
@@ -130,19 +128,19 @@ public class RegistrationActivity extends AppCompatActivity {
         jsonObject.put("params", jsonArray);
 
         final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
-                Constants.SERVICE_URL_STAGING,jsonObject,
+                Constants.SERVICE_URL_STAGING, jsonObject,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
 
-                        Gson gson =  new GsonBuilder().setPrettyPrinting().create();
-                        RegistrationResponse registrationResponse =  gson.fromJson(response.toString(), RegistrationResponse.class);
+                        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+                        RegistrationResponse registrationResponse = gson.fromJson(response.toString(), RegistrationResponse.class);
 
-                        if(TextUtils.isEmpty(registrationResponse.getError())){
-                            if(registrationResponse.getResult() != null){
-                                if(registrationResponse.getResult().getAppID().isEmpty()){
-                                    Toast.makeText(RegistrationActivity.this, "Please enter valid Token & Email.",Toast.LENGTH_SHORT).show();
-                                }else {
+                        if (TextUtils.isEmpty(registrationResponse.getError())) {
+                            if (registrationResponse.getResult() != null) {
+                                if (registrationResponse.getResult().getAppID().isEmpty()) {
+                                    Toast.makeText(RegistrationActivity.this, "Please enter valid Token & Email.", Toast.LENGTH_SHORT).show();
+                                } else {
                                     CommonUtils.setSession(registrationResponse.getResult().getAppID(), RegistrationActivity.this);
                                     Toast.makeText(RegistrationActivity.this, "Registered successfully.", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(RegistrationActivity.this, MainTabsActivity.class);
@@ -150,16 +148,16 @@ public class RegistrationActivity extends AppCompatActivity {
                                     finish();
                                 }
                             }
-                        }else{
-                            Toast.makeText(RegistrationActivity.this,registrationResponse.getError(),Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(RegistrationActivity.this, registrationResponse.getError(), Toast.LENGTH_SHORT).show();
                         }
 
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
-                if(CommonUtils.getRequestError(volleyError)!= null){
-                    Toast.makeText(RegistrationActivity.this,CommonUtils.getRequestError(volleyError),Toast.LENGTH_SHORT).show();
+                if (CommonUtils.getRequestError(volleyError) != null) {
+                    Toast.makeText(RegistrationActivity.this, CommonUtils.getRequestError(volleyError), Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -173,7 +171,7 @@ public class RegistrationActivity extends AppCompatActivity {
         };
 
         jsonObjectRequest.setTag(REGISTRATION_REQUEST_TAG);
-        jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(0,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(0, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         requestQueue.add(jsonObjectRequest);
 

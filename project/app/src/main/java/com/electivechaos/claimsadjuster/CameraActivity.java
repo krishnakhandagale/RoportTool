@@ -1,24 +1,16 @@
 package com.electivechaos.claimsadjuster;
 
 import android.content.Intent;
-import android.hardware.Camera;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.Toast;
-
 
 import com.camerakit.CameraKit;
 import com.camerakit.CameraKitView;
-import com.camerakit.CameraPreview;
-import com.camerakit.type.CameraFlash;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -32,7 +24,6 @@ public class CameraActivity extends AppCompatActivity {
     private ImageButton btnFrontBack;
     private ImageView btnFlashOn;
     private ImageView btnFlashOff;
-
 
 
     @Override
@@ -54,15 +45,15 @@ public class CameraActivity extends AppCompatActivity {
                 cameraKitView.captureImage(new CameraKitView.ImageCallback() {
                     @Override
                     public void onImage(CameraKitView cameraKitView, final byte[] capturedImage) {
-                        String fileUri =  getIntent().getExtras().getString(MediaStore.EXTRA_OUTPUT);
-                        if(fileUri == null){
+                        String fileUri = getIntent().getExtras().getString(MediaStore.EXTRA_OUTPUT);
+                        if (fileUri == null) {
                             return;
                         }
-                        File file =  new File(fileUri);
+                        File file = new File(fileUri);
 
-                        if(!file.exists()){
+                        if (!file.exists()) {
                             try {
-                                 file.createNewFile();
+                                file.createNewFile();
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -70,14 +61,14 @@ public class CameraActivity extends AppCompatActivity {
 
                         FileOutputStream outputStream = null;
                         try {
-                            outputStream = new FileOutputStream(fileUri,false);
+                            outputStream = new FileOutputStream(fileUri, false);
                             outputStream.write(capturedImage);
 
                         } catch (java.io.IOException e) {
                             e.printStackTrace();
-                        }finally {
+                        } finally {
                             try {
-                                if(outputStream!= null) {
+                                if (outputStream != null) {
                                     outputStream.close();
                                 }
                             } catch (IOException e) {
@@ -87,7 +78,7 @@ public class CameraActivity extends AppCompatActivity {
 
 
                         Intent intent = new Intent();
-                        setResult(RESULT_OK,intent);
+                        setResult(RESULT_OK, intent);
                         finish();
                     }
                 });
@@ -95,14 +86,12 @@ public class CameraActivity extends AppCompatActivity {
         });
 
 
-
-
         btnFrontBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(cameraKitView.getFacing() ==CameraKit.FACING_BACK) {
+                if (cameraKitView.getFacing() == CameraKit.FACING_BACK) {
                     cameraKitView.setFacing(CameraKit.FACING_FRONT);
-                }else {
+                } else {
                     cameraKitView.setFacing(CameraKit.FACING_BACK);
                 }
             }
@@ -149,7 +138,6 @@ public class CameraActivity extends AppCompatActivity {
 
         });
     }
-
 
 
     @Override

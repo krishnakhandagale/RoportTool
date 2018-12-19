@@ -33,7 +33,7 @@ public class SingleMediaScanner implements MediaScannerConnectionClient {
 
     @Override
     public void onScanCompleted(String path, Uri uri) {
-        onMediaScannerListener.onMediaScanComplete(path,uri);
+        onMediaScannerListener.onMediaScanComplete(path, uri);
         mMs.disconnect();
     }
 

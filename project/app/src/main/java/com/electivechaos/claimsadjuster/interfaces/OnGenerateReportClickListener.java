@@ -1,7 +1,7 @@
 package com.electivechaos.claimsadjuster.interfaces;
 
 
-public  interface OnGenerateReportClickListener {
+public interface OnGenerateReportClickListener {
 
     void onReportGenerateClicked();
 }

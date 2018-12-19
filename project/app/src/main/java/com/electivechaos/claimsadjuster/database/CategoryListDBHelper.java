@@ -24,7 +24,6 @@ import com.electivechaos.claimsadjuster.pojo.RoofSystemPOJO;
 import com.electivechaos.claimsadjuster.pojo.SidingPOJO;
 import com.electivechaos.claimsadjuster.utils.CommonUtils;
 
-import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -54,28 +53,27 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
     private static final String TABLE_BUILDING_TYPE = "building_type_details";
 
 
-
     //Roof system columns names
     private static final String KEY_ROOF_SYSTEM_ID = "roof_system_id";
-    private static final String KEY_ROOF_SYSTEM_NAME= "name";
+    private static final String KEY_ROOF_SYSTEM_NAME = "name";
 
     //Siding columns names
     private static final String KEY_SIDING_ID = "siding_id";
-    private static final String KEY_SIDING_NAME= "name";
+    private static final String KEY_SIDING_NAME = "name";
 
     //Foundation columns names
     private static final String KEY_FOUNDATION_ID = "foundation_id";
-    private static final String KEY_FOUNDATION_NAME= "name";
+    private static final String KEY_FOUNDATION_NAME = "name";
 
     //Building type columns names
     private static final String KEY_BUILDING_TYPE_ID = "building_type_id";
-    private static final String KEY_BUILDING_NAME= "name";
+    private static final String KEY_BUILDING_NAME = "name";
 
 
     // Reports list Table Columns names
     private static final String KEY_REPORT_ID = "report_id";
     private static final String KEY_REPORT_NAME = "report_name";
-    private static final String KEY_REPORT_DESCRIPTION  = "report_description";
+    private static final String KEY_REPORT_DESCRIPTION = "report_description";
     private static final String KEY_CLIENT_NAME = "report_client_name";
     private static final String KEY_CLAIM_NUMBER = "report_claim_number";
     private static final String KEY_REPORT_BY = "report_by";
@@ -86,42 +84,38 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
     private static final String KEY_LOCATION_LONG = "location_lang";
     private static final String KEY_ADDRESS_LINE = "address_line";
     private static final String KEY_PERIL = "peril";
-    private static final String KEY_LOCATION_SNAPSHOT ="location_snapshot";
-
+    private static final String KEY_LOCATION_SNAPSHOT = "location_snapshot";
 
 
     // Master Category list Table Columns names
     private static final String KEY_CATEGORY_ID = "_id";
     private static final String KEY_CATEGORY_NAME = "name";
-    private static final String KEY_CATEGORY_DESCRIPTION  = "description";
-    private static final String KEY_CATEGORY_COVERAGE_TYPE  = "coverage_type";
+    private static final String KEY_CATEGORY_DESCRIPTION = "description";
+    private static final String KEY_CATEGORY_COVERAGE_TYPE = "coverage_type";
 
 
     // Label Table Column Names
     private static final String KEY_LABEL_ID = "label_id";
     private static final String KEY_LABEL_NAME = "name";
-    private static final String KEY_LABEL_DESCRIPTION  = "description";
-    private static final String KEY_LABEL_COVERAGE_TYPE  = "coverage_type";
+    private static final String KEY_LABEL_DESCRIPTION = "description";
+    private static final String KEY_LABEL_COVERAGE_TYPE = "coverage_type";
 
-    private static final String KEY_FK_LABEL_REPORT_ID  = "report_id_fk";
-    private static final String KEY_LABEL_HOUSE_NUMBER  = "house_number";
-
-
+    private static final String KEY_FK_LABEL_REPORT_ID = "report_id_fk";
+    private static final String KEY_LABEL_HOUSE_NUMBER = "house_number";
 
 
     // Image Table Column Names
-    private static final String KEY_IMAGE_ID= "image_id";
+    private static final String KEY_IMAGE_ID = "image_id";
     private static final String KEY_IMAGE_TITLE = "image_title";
     private static final String KEY_IMAGE_DESCRIPTION = "image_description";
     private static final String KEY_IMAGE_URL = "image_url";
     private static final String KEY_IS_DAMAGE = "is_damage";
     private static final String KEY_IS_OVERVIEW = "is_overview";
-    private static final String KEY_IS_POINT_OF_ORIGIN= "is_point_of_origin";
-    private static final String KEY_IMAGE_COVERAGE_TYPE= "image_coverage_type";
-    private static final String KEY_IMAGE_NAME= "image_name";
-    private static final String KEY_IMAGE_DATE_TIME= "image_date_time";
-    private static final String KEY_IMAGE_GEO_TAG= "image_geo_tag";
-
+    private static final String KEY_IS_POINT_OF_ORIGIN = "is_point_of_origin";
+    private static final String KEY_IMAGE_COVERAGE_TYPE = "image_coverage_type";
+    private static final String KEY_IMAGE_NAME = "image_name";
+    private static final String KEY_IMAGE_DATE_TIME = "image_date_time";
+    private static final String KEY_IMAGE_GEO_TAG = "image_geo_tag";
 
 
     //Elevation image table columns name
@@ -150,6 +144,10 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
 
     private static CategoryListDBHelper categoryListDBHelperInstance;
 
+    public CategoryListDBHelper(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
+
     public static synchronized CategoryListDBHelper getInstance(Context context) {
 
         // don't accidentally leak an Activity's context.
@@ -157,12 +155,6 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
             categoryListDBHelperInstance = new CategoryListDBHelper(context.getApplicationContext());
         }
         return categoryListDBHelperInstance;
-    }
-
-
-
-    public CategoryListDBHelper(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override
@@ -181,15 +173,15 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 + KEY_LOCATION_LONG + " TEXT,"
                 + KEY_ADDRESS_LINE + " TEXT,"
                 + KEY_PERIL + " TEXT,"
-                + KEY_LOCATION_SNAPSHOT + " TEXT"+")";
+                + KEY_LOCATION_SNAPSHOT + " TEXT" + ")";
 
 
         String CREATE_CATEGORY_DETAILS_TABLE = "CREATE TABLE " + TABLE_MASTER_CATEGORY + "("
-                +KEY_CATEGORY_ID +" INTEGER PRIMARY KEY AUTOINCREMENT DEFAULT 0,"
+                + KEY_CATEGORY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT DEFAULT 0,"
                 + KEY_CATEGORY_NAME + " TEXT,"
                 + KEY_CATEGORY_COVERAGE_TYPE + " TEXT,"
-                + KEY_CATEGORY_DESCRIPTION +" TEXT, "
-                + " CONSTRAINT uc_category UNIQUE ("+KEY_CATEGORY_NAME+" COLLATE NOCASE), CHECK("+KEY_CATEGORY_NAME+"<> '')"+")";
+                + KEY_CATEGORY_DESCRIPTION + " TEXT, "
+                + " CONSTRAINT uc_category UNIQUE (" + KEY_CATEGORY_NAME + " COLLATE NOCASE), CHECK(" + KEY_CATEGORY_NAME + "<> '')" + ")";
 
         String CATEGORY_LABELS_TABLE = "CREATE TABLE " + TABLE_CATEGORY_LABELS + "("
                 + KEY_LABEL_ID + " TEXT PRIMARY KEY,"
@@ -198,22 +190,22 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
 
                 + KEY_FK_LABEL_REPORT_ID + " TEXT,"
 
-                +KEY_LABEL_HOUSE_NUMBER + " TEXT,"
-                +KEY_LABEL_COVERAGE_TYPE + " TEXT,"
-                + "FOREIGN KEY("+ KEY_FK_LABEL_REPORT_ID +") REFERENCES "+TABLE_REPORTS_LIST+"("+ KEY_REPORT_ID +")"+ " ON DELETE CASCADE)";
+                + KEY_LABEL_HOUSE_NUMBER + " TEXT,"
+                + KEY_LABEL_COVERAGE_TYPE + " TEXT,"
+                + "FOREIGN KEY(" + KEY_FK_LABEL_REPORT_ID + ") REFERENCES " + TABLE_REPORTS_LIST + "(" + KEY_REPORT_ID + ")" + " ON DELETE CASCADE)";
 
         String CREATE_PERIL_TABLE = "CREATE TABLE "
                 + TABLE_PERIL + "("
                 + KEY_PERIL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT DEFAULT 0,"
                 + KEY_PERIL_NAME + " TEXT,"
-                + KEY_PERIL_DESCRIPTION + " TEXT,"+ " CONSTRAINT uc_peril UNIQUE ("+KEY_PERIL_NAME+" COLLATE NOCASE), CHECK("+KEY_PERIL_NAME+"<> '')"+")";
+                + KEY_PERIL_DESCRIPTION + " TEXT," + " CONSTRAINT uc_peril UNIQUE (" + KEY_PERIL_NAME + " COLLATE NOCASE), CHECK(" + KEY_PERIL_NAME + "<> '')" + ")";
 
 
         String CREATE_COVERAGE_TABLE = "CREATE TABLE "
                 + TABLE_COVERAGE + "("
                 + KEY_COVERAGE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT DEFAULT 0,"
                 + KEY_COVERAGE_NAME + " TEXT,"
-                + KEY_COVERAGE_DESCRIPTION + " TEXT,"+ " CONSTRAINT uc_coverage UNIQUE ("+KEY_COVERAGE_NAME+" COLLATE NOCASE), CHECK("+KEY_COVERAGE_NAME+"<> '')"+")";
+                + KEY_COVERAGE_DESCRIPTION + " TEXT," + " CONSTRAINT uc_coverage UNIQUE (" + KEY_COVERAGE_NAME + " COLLATE NOCASE), CHECK(" + KEY_COVERAGE_NAME + "<> '')" + ")";
 
 
         String CREATE_IMAGE_DETAILS_TABLE = "CREATE TABLE " + TABLE_REPORTS_IMAGE_DETAILS + "("
@@ -221,57 +213,57 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 + KEY_IMAGE_TITLE + " TEXT,"
                 + KEY_IMAGE_DESCRIPTION + " TEXT,"
 
-                + KEY_IMAGE_URL+ " TEXT,"
-                + KEY_IS_DAMAGE+ " BOOLEAN,"
-                + KEY_IS_OVERVIEW+ " BOOLEAN,"
-                + KEY_FK_LABEL_ID+ " TEXT,"
-                + KEY_IS_POINT_OF_ORIGIN+ " BOOLEAN,"
-                + KEY_IMAGE_COVERAGE_TYPE+ " TEXT,"
-                + KEY_IMAGE_NAME+ " TEXT,"
-                + KEY_IMAGE_DATE_TIME+ " TEXT,"
-                + KEY_IMAGE_GEO_TAG+ " TEXT,"
-                + "FOREIGN KEY("+ KEY_FK_LABEL_ID +") REFERENCES "+TABLE_CATEGORY_LABELS+"("+KEY_LABEL_ID+ ")"+ " ON DELETE CASCADE )";
+                + KEY_IMAGE_URL + " TEXT,"
+                + KEY_IS_DAMAGE + " BOOLEAN,"
+                + KEY_IS_OVERVIEW + " BOOLEAN,"
+                + KEY_FK_LABEL_ID + " TEXT,"
+                + KEY_IS_POINT_OF_ORIGIN + " BOOLEAN,"
+                + KEY_IMAGE_COVERAGE_TYPE + " TEXT,"
+                + KEY_IMAGE_NAME + " TEXT,"
+                + KEY_IMAGE_DATE_TIME + " TEXT,"
+                + KEY_IMAGE_GEO_TAG + " TEXT,"
+                + "FOREIGN KEY(" + KEY_FK_LABEL_ID + ") REFERENCES " + TABLE_CATEGORY_LABELS + "(" + KEY_LABEL_ID + ")" + " ON DELETE CASCADE )";
 
 
         String CREATE_ELEVATION_IMAGE_DETAILS_TABLE = "CREATE TABLE " + TABLE_REPORTS_ELEVATION_IMAGE_DETAILS + "("
                 + KEY_ELEVATION_IMAGE_ID + " TEXT PRIMARY KEY,"
                 + KEY_IMAGE_TITLE + " TEXT,"
                 + KEY_IMAGE_DESCRIPTION + " TEXT,"
-                + KEY_IMAGE_URL+ " TEXT,"
-                + KEY_FK_LABEL_ID+ " TEXT,"
+                + KEY_IMAGE_URL + " TEXT,"
+                + KEY_FK_LABEL_ID + " TEXT,"
 
-                + "FOREIGN KEY("+ KEY_FK_LABEL_ID +") REFERENCES "+TABLE_CATEGORY_LABELS+"("+KEY_LABEL_ID+ ")"+ " ON DELETE CASCADE )";
+                + "FOREIGN KEY(" + KEY_FK_LABEL_ID + ") REFERENCES " + TABLE_CATEGORY_LABELS + "(" + KEY_LABEL_ID + ")" + " ON DELETE CASCADE )";
 
         String CREATE_PROPERTY_DETAILS_TABLE = "CREATE TABLE " + TABLE_PROPERTY_DETAILS + "("
                 + KEY_PROPERTY_DATE + " TEXT,"
-                + KEY_SQUARE_FOOTAGE+ " TEXT,"
-                + KEY_ROOF_SYSTEM+ " TEXT,"
-                + KEY_SIDING+ " TEXT,"
-                + KEY_FOUNDATION+ " TEXT,"
-                + KEY_BUILDING_TYPE+ " TEXT,"
-                + KEY_FK_PROPERTY_REPORT_ID+ " TEXT,"
-                + "FOREIGN KEY("+ KEY_FK_PROPERTY_REPORT_ID +") REFERENCES "+TABLE_REPORTS_LIST+"("+ KEY_REPORT_ID +")"+ " ON DELETE CASCADE)";
+                + KEY_SQUARE_FOOTAGE + " TEXT,"
+                + KEY_ROOF_SYSTEM + " TEXT,"
+                + KEY_SIDING + " TEXT,"
+                + KEY_FOUNDATION + " TEXT,"
+                + KEY_BUILDING_TYPE + " TEXT,"
+                + KEY_FK_PROPERTY_REPORT_ID + " TEXT,"
+                + "FOREIGN KEY(" + KEY_FK_PROPERTY_REPORT_ID + ") REFERENCES " + TABLE_REPORTS_LIST + "(" + KEY_REPORT_ID + ")" + " ON DELETE CASCADE)";
 
 
         String CREATE_ROOF_SYSTEM_TABLE = "CREATE TABLE "
                 + TABLE_ROOF_SYSTEM + "("
                 + KEY_ROOF_SYSTEM_ID + " INTEGER PRIMARY KEY AUTOINCREMENT DEFAULT 0,"
-                + KEY_ROOF_SYSTEM_NAME + " TEXT, CONSTRAINT uc_roof UNIQUE ("+KEY_ROOF_SYSTEM_NAME+" COLLATE NOCASE), CHECK("+KEY_ROOF_SYSTEM_NAME+"<> '')"+")";
+                + KEY_ROOF_SYSTEM_NAME + " TEXT, CONSTRAINT uc_roof UNIQUE (" + KEY_ROOF_SYSTEM_NAME + " COLLATE NOCASE), CHECK(" + KEY_ROOF_SYSTEM_NAME + "<> '')" + ")";
 
         String CREATE_SIDING_TABLE = "CREATE TABLE "
                 + TABLE_SIDING + "("
                 + KEY_SIDING_ID + " INTEGER PRIMARY KEY AUTOINCREMENT DEFAULT 0,"
-                + KEY_SIDING_NAME + " TEXT, CONSTRAINT uc_siding UNIQUE ("+KEY_SIDING_NAME+" COLLATE NOCASE), CHECK("+KEY_SIDING_NAME+"<> '')"+")";
+                + KEY_SIDING_NAME + " TEXT, CONSTRAINT uc_siding UNIQUE (" + KEY_SIDING_NAME + " COLLATE NOCASE), CHECK(" + KEY_SIDING_NAME + "<> '')" + ")";
 
         String CREATE_FOUNDATION_TABLE = "CREATE TABLE "
                 + TABLE_FOUNDATION + "("
                 + KEY_FOUNDATION_ID + " INTEGER PRIMARY KEY AUTOINCREMENT DEFAULT 0,"
-                + KEY_FOUNDATION_NAME + " TEXT, CONSTRAINT uc_foundation UNIQUE ("+KEY_FOUNDATION_NAME+" COLLATE NOCASE), CHECK("+KEY_FOUNDATION_NAME+"<> '')"+")";
+                + KEY_FOUNDATION_NAME + " TEXT, CONSTRAINT uc_foundation UNIQUE (" + KEY_FOUNDATION_NAME + " COLLATE NOCASE), CHECK(" + KEY_FOUNDATION_NAME + "<> '')" + ")";
 
         String CREATE_BUILDING_TYPE_TABLE = "CREATE TABLE "
                 + TABLE_BUILDING_TYPE + "("
                 + KEY_BUILDING_TYPE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT DEFAULT 0,"
-                + KEY_BUILDING_NAME+ " TEXT, CONSTRAINT uc_building UNIQUE ("+KEY_BUILDING_NAME+" COLLATE NOCASE), CHECK("+KEY_BUILDING_NAME+"<> '')"+")";
+                + KEY_BUILDING_NAME + " TEXT, CONSTRAINT uc_building UNIQUE (" + KEY_BUILDING_NAME + " COLLATE NOCASE), CHECK(" + KEY_BUILDING_NAME + "<> '')" + ")";
 
 
         final String categories[] = {
@@ -340,7 +332,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 "None"
         };
 
-        final String  buildingType[] = {
+        final String buildingType[] = {
                 "Detached Single Family",
                 "Attached Single Family",
                 "Single-Wide",
@@ -420,13 +412,13 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
     }
 
 
-    public int deleteCategoryEntry(String categoryId){
+    public int deleteCategoryEntry(String categoryId) {
         SQLiteDatabase db = this.getWritableDatabase();
         String whereClause = KEY_CATEGORY_ID + "=?";
-        return  db.delete(TABLE_MASTER_CATEGORY,whereClause,new String[]{categoryId});
+        return db.delete(TABLE_MASTER_CATEGORY, whereClause, new String[]{categoryId});
     }
 
-    public long addCategory(Category category){
+    public long addCategory(Category category) {
         SQLiteDatabase db = this.getWritableDatabase();
         try {
             ContentValues contentValues = new ContentValues();
@@ -434,26 +426,25 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
             contentValues.put(KEY_CATEGORY_DESCRIPTION, category.getCategoryDescription());
             contentValues.put(KEY_CATEGORY_COVERAGE_TYPE, category.getCoverageType());
             return db.insertOrThrow(TABLE_MASTER_CATEGORY, null, contentValues);
-        }
-        catch (SQLiteConstraintException exception){
+        } catch (SQLiteConstraintException exception) {
             return -111;
         }
     }
 
-    public int updateCategory(Category category){
+    public int updateCategory(Category category) {
         try {
             SQLiteDatabase db = this.getWritableDatabase();
             ContentValues contentValues = new ContentValues();
             contentValues.put(KEY_CATEGORY_NAME, category.getCategoryName());
             contentValues.put(KEY_CATEGORY_DESCRIPTION, category.getCategoryDescription());
             contentValues.put(KEY_CATEGORY_COVERAGE_TYPE, category.getCoverageType());
-            return  db.update(TABLE_MASTER_CATEGORY, contentValues,KEY_CATEGORY_ID+"="+category.getCategoryId(),null);
-        }catch (SQLiteConstraintException ex){
+            return db.update(TABLE_MASTER_CATEGORY, contentValues, KEY_CATEGORY_ID + "=" + category.getCategoryId(), null);
+        } catch (SQLiteConstraintException ex) {
             return -111;
         }
     }
 
-    public ArrayList<Category> getCategoryList(){
+    public ArrayList<Category> getCategoryList() {
 
         ArrayList<Category> tempList = new ArrayList<>();
         String selectQueryReportTable = "SELECT  * FROM " + TABLE_MASTER_CATEGORY;
@@ -462,7 +453,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
 
         if (cursor.moveToFirst()) {
             do {
-                if(!cursor.getString(1).equals("Risk Overview")){
+                if (!cursor.getString(1).equals("Risk Overview")) {
                     Category category = new Category();
                     category.setCategoryId(cursor.getInt(0));
                     category.setCategoryName(cursor.getString(1));
@@ -472,22 +463,22 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 }
             } while (cursor.moveToNext());
         }
-        return  tempList;
+        return tempList;
     }
 
 
-    public long addRoofSystem(RoofSystemPOJO roofSystemPOJO){
+    public long addRoofSystem(RoofSystemPOJO roofSystemPOJO) {
         try {
             SQLiteDatabase db = this.getWritableDatabase();
             ContentValues contentValues = new ContentValues();
             contentValues.put(KEY_ROOF_SYSTEM_NAME, roofSystemPOJO.getName());
-            return db.insertOrThrow(TABLE_ROOF_SYSTEM,null,contentValues);
-        }catch (SQLiteConstraintException e) {
+            return db.insertOrThrow(TABLE_ROOF_SYSTEM, null, contentValues);
+        } catch (SQLiteConstraintException e) {
             return -111;
         }
     }
 
-    public ArrayList<RoofSystemPOJO> getRoofSystemList(){
+    public ArrayList<RoofSystemPOJO> getRoofSystemList() {
 
         ArrayList<RoofSystemPOJO> tempList = new ArrayList<>();
         String selectQueryReportTable = "SELECT  * FROM " + TABLE_ROOF_SYSTEM;
@@ -503,23 +494,22 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 tempList.add(roofSystemPOJO);
             } while (cursor.moveToNext());
         }
-        return  tempList;
+        return tempList;
     }
 
-    public long addSiding(SidingPOJO sidingPOJO){
+    public long addSiding(SidingPOJO sidingPOJO) {
 
         try {
             SQLiteDatabase db = this.getWritableDatabase();
             ContentValues contentValues = new ContentValues();
             contentValues.put(KEY_SIDING_NAME, sidingPOJO.getName());
-            return db.insertOrThrow(TABLE_SIDING,null,contentValues);
-        }
-        catch (SQLiteConstraintException e){
+            return db.insertOrThrow(TABLE_SIDING, null, contentValues);
+        } catch (SQLiteConstraintException e) {
             return -111;
         }
     }
 
-    public ArrayList<SidingPOJO> getSidingList(){
+    public ArrayList<SidingPOJO> getSidingList() {
 
         ArrayList<SidingPOJO> tempList = new ArrayList<>();
         String selectQueryReportTable = "SELECT  * FROM " + TABLE_SIDING;
@@ -535,24 +525,23 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 tempList.add(sidingPOJO);
             } while (cursor.moveToNext());
         }
-        return  tempList;
+        return tempList;
     }
 
 
-    public long addFoundation(FoundationPOJO foundationPOJO){
+    public long addFoundation(FoundationPOJO foundationPOJO) {
 
         try {
             SQLiteDatabase db = this.getWritableDatabase();
             ContentValues contentValues = new ContentValues();
             contentValues.put(KEY_FOUNDATION_NAME, foundationPOJO.getName());
-            return db.insertOrThrow(TABLE_FOUNDATION,null,contentValues);
-        }
-        catch (SQLiteConstraintException e) {
+            return db.insertOrThrow(TABLE_FOUNDATION, null, contentValues);
+        } catch (SQLiteConstraintException e) {
             return -111;
         }
     }
 
-    public ArrayList<FoundationPOJO> getFoundationList(){
+    public ArrayList<FoundationPOJO> getFoundationList() {
 
         ArrayList<FoundationPOJO> tempList = new ArrayList<>();
         String selectQueryReportTable = "SELECT  * FROM " + TABLE_FOUNDATION;
@@ -568,22 +557,21 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 tempList.add(foundationPOJO);
             } while (cursor.moveToNext());
         }
-        return  tempList;
+        return tempList;
     }
 
-    public long addBuildingType(BuildingTypePOJO buildingTypePOJO){
+    public long addBuildingType(BuildingTypePOJO buildingTypePOJO) {
         try {
             SQLiteDatabase db = this.getWritableDatabase();
             ContentValues contentValues = new ContentValues();
             contentValues.put(KEY_BUILDING_NAME, buildingTypePOJO.getName());
-            return db.insertOrThrow(TABLE_BUILDING_TYPE,null,contentValues);
-        }
-        catch (SQLiteConstraintException e) {
+            return db.insertOrThrow(TABLE_BUILDING_TYPE, null, contentValues);
+        } catch (SQLiteConstraintException e) {
             return -111;
         }
     }
 
-    public ArrayList<BuildingTypePOJO> getBuildingTypeList(){
+    public ArrayList<BuildingTypePOJO> getBuildingTypeList() {
 
         ArrayList<BuildingTypePOJO> tempList = new ArrayList<>();
         String selectQueryReportTable = "SELECT  * FROM " + TABLE_BUILDING_TYPE;
@@ -599,34 +587,34 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 tempList.add(buildingTypePOJO);
             } while (cursor.moveToNext());
         }
-        return  tempList;
+        return tempList;
     }
 
 
-    public int deleteLabel(String labelID){
+    public int deleteLabel(String labelID) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String whereClause = KEY_LABEL_ID+"=?";
-        return  db.delete(TABLE_CATEGORY_LABELS, whereClause,new String[]{labelID});
+        String whereClause = KEY_LABEL_ID + "=?";
+        return db.delete(TABLE_CATEGORY_LABELS, whereClause, new String[]{labelID});
     }
 
-    public String addLabel(Label label){
+    public String addLabel(Label label) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String id =  CommonUtils.generateId();
+        String id = CommonUtils.generateId();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(KEY_LABEL_ID,id);
+        contentValues.put(KEY_LABEL_ID, id);
         contentValues.put(KEY_LABEL_NAME, label.getName());
         contentValues.put(KEY_LABEL_DESCRIPTION, label.getDescription());
         contentValues.put(KEY_FK_LABEL_REPORT_ID, label.getReportId());
-        contentValues.put(KEY_LABEL_HOUSE_NUMBER,label.getHouseNumber());
-        contentValues.put(KEY_LABEL_COVERAGE_TYPE,label.getCoverageType());
-        db.insertOrThrow(TABLE_CATEGORY_LABELS,null,contentValues);
-        return  id;
+        contentValues.put(KEY_LABEL_HOUSE_NUMBER, label.getHouseNumber());
+        contentValues.put(KEY_LABEL_COVERAGE_TYPE, label.getCoverageType());
+        db.insertOrThrow(TABLE_CATEGORY_LABELS, null, contentValues);
+        return id;
     }
 
-    public Label getLabelFromCategoryDetails(String categoryLabel){
+    public Label getLabelFromCategoryDetails(String categoryLabel) {
 
         Label label = new Label();
-        String selectLabelDetailsQuery = "SELECT * FROM master_category WHERE name = '"+categoryLabel+"'";
+        String selectLabelDetailsQuery = "SELECT * FROM master_category WHERE name = '" + categoryLabel + "'";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectLabelDetailsQuery, null);
         if (cursor.moveToFirst()) {
@@ -637,53 +625,52 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 label.setCoverageType(cursor.getString(2));
             } while (cursor.moveToNext());
         }
-        return  label;
+        return label;
     }
 
 
-
-    public int updateLabel(Label label){
-                SQLiteDatabase db = this.getWritableDatabase();
-                ContentValues contentValues = new ContentValues();
-                contentValues.put(KEY_LABEL_NAME, label.getName());
-                contentValues.put(KEY_LABEL_DESCRIPTION, label.getDescription());
-                contentValues.put(KEY_LABEL_HOUSE_NUMBER, label.getHouseNumber());
-                contentValues.put(KEY_LABEL_COVERAGE_TYPE, label.getCoverageType());
-                return db.update(TABLE_CATEGORY_LABELS, contentValues, KEY_LABEL_ID + "=" + label.getId(), null);
-    }
-
-    public int deletePeril(String id){
+    public int updateLabel(Label label) {
         SQLiteDatabase db = this.getWritableDatabase();
-        return  db.delete(TABLE_PERIL,"_id=?",new String[]{id});
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(KEY_LABEL_NAME, label.getName());
+        contentValues.put(KEY_LABEL_DESCRIPTION, label.getDescription());
+        contentValues.put(KEY_LABEL_HOUSE_NUMBER, label.getHouseNumber());
+        contentValues.put(KEY_LABEL_COVERAGE_TYPE, label.getCoverageType());
+        return db.update(TABLE_CATEGORY_LABELS, contentValues, KEY_LABEL_ID + "=" + label.getId(), null);
     }
 
-    public long addPeril(PerilPOJO perilPOJO){
+    public int deletePeril(String id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.delete(TABLE_PERIL, "_id=?", new String[]{id});
+    }
+
+    public long addPeril(PerilPOJO perilPOJO) {
         try {
             SQLiteDatabase db = this.getWritableDatabase();
             ContentValues contentValues = new ContentValues();
             contentValues.put(KEY_PERIL_NAME, perilPOJO.getName());
             contentValues.put(KEY_PERIL_DESCRIPTION, perilPOJO.getDescription());
-            return  db.insertOrThrow(TABLE_PERIL,null,contentValues);
-        }catch (SQLiteConstraintException exception){
+            return db.insertOrThrow(TABLE_PERIL, null, contentValues);
+        } catch (SQLiteConstraintException exception) {
             return -100;
         }
 
     }
 
-    public int updatePeril(PerilPOJO perilPOJO){
+    public int updatePeril(PerilPOJO perilPOJO) {
         try {
             SQLiteDatabase db = this.getWritableDatabase();
             ContentValues contentValues = new ContentValues();
             contentValues.put(KEY_PERIL_NAME, perilPOJO.getName());
             contentValues.put(KEY_PERIL_DESCRIPTION, perilPOJO.getDescription());
-            return  db.update(TABLE_PERIL, contentValues,KEY_PERIL_ID+"="+ perilPOJO.getID(),null);
+            return db.update(TABLE_PERIL, contentValues, KEY_PERIL_ID + "=" + perilPOJO.getID(), null);
 
-        }catch (SQLiteConstraintException ex){
+        } catch (SQLiteConstraintException ex) {
             return -100;
         }
     }
 
-    public ArrayList<PerilPOJO> getPeril(){
+    public ArrayList<PerilPOJO> getPeril() {
 
         ArrayList<PerilPOJO> tempList = new ArrayList<>();
         String selectQueryReportTable = "SELECT  * FROM " + TABLE_PERIL;
@@ -698,44 +685,42 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 tempList.add(perilPOJO);
             } while (cursor.moveToNext());
         }
-        return  tempList;
+        return tempList;
     }
 
 
-
-
-    public int deleteCoverage(String id){
+    public int deleteCoverage(String id) {
         SQLiteDatabase db = this.getWritableDatabase();
-        return  db.delete(TABLE_COVERAGE,"_id=?",new String[]{id});
+        return db.delete(TABLE_COVERAGE, "_id=?", new String[]{id});
     }
 
-    public long addCoverage(CoveragePOJO coveragePOJO){
+    public long addCoverage(CoveragePOJO coveragePOJO) {
         try {
             SQLiteDatabase db = this.getWritableDatabase();
             ContentValues contentValues = new ContentValues();
             contentValues.put(KEY_COVERAGE_NAME, coveragePOJO.getName());
             contentValues.put(KEY_COVERAGE_DESCRIPTION, coveragePOJO.getDescription());
-            return  db.insertOrThrow(TABLE_COVERAGE,null,contentValues);
-        }catch (SQLiteConstraintException exception){
+            return db.insertOrThrow(TABLE_COVERAGE, null, contentValues);
+        } catch (SQLiteConstraintException exception) {
             return -100;
         }
 
     }
 
-    public int updateCoverage(CoveragePOJO coveragePOJO){
+    public int updateCoverage(CoveragePOJO coveragePOJO) {
         try {
             SQLiteDatabase db = this.getWritableDatabase();
             ContentValues contentValues = new ContentValues();
             contentValues.put(KEY_COVERAGE_NAME, coveragePOJO.getName());
             contentValues.put(KEY_COVERAGE_DESCRIPTION, coveragePOJO.getDescription());
-            return  db.update(TABLE_COVERAGE, contentValues,KEY_COVERAGE_ID+"="+ coveragePOJO.getID(),null);
+            return db.update(TABLE_COVERAGE, contentValues, KEY_COVERAGE_ID + "=" + coveragePOJO.getID(), null);
 
-        }catch (SQLiteConstraintException ex){
+        } catch (SQLiteConstraintException ex) {
             return -100;
         }
     }
 
-    public ArrayList<CoveragePOJO> getCoverageList(){
+    public ArrayList<CoveragePOJO> getCoverageList() {
 
         ArrayList<CoveragePOJO> tempList = new ArrayList<>();
         String selectQueryCoverageTable = "SELECT  * FROM " + TABLE_COVERAGE;
@@ -750,11 +735,8 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 tempList.add(coveragePOJO);
             } while (cursor.moveToNext());
         }
-        return  tempList;
+        return tempList;
     }
-
-
-
 
 
     public void addReportEntry(ReportPOJO reportItemPOJO) {
@@ -786,7 +768,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
             while (itr.hasNext()) {
                 Label label = (Label) itr.next();
 
-                String labelId= addLabel(label);
+                String labelId = addLabel(label);
                 ArrayList<ImageDetailsPOJO> reportsImageList = label.getSelectedImages();
 
                 if (reportsImageList != null && reportsImageList.size() > 0) {
@@ -806,8 +788,8 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                         imageEntry.put(KEY_IMAGE_NAME, imageItem.getImageName());
                         imageEntry.put(KEY_IMAGE_DATE_TIME, imageItem.getImageDateTime());
                         imageEntry.put(KEY_IMAGE_GEO_TAG, imageItem.getImageGeoTag());
-                        long count=  db.insert(TABLE_REPORTS_IMAGE_DETAILS, null, imageEntry);
-                        if(count!=-1) {
+                        long count = db.insert(TABLE_REPORTS_IMAGE_DETAILS, null, imageEntry);
+                        if (count != -1) {
                             Log.d("Error in insertion", String.valueOf(count));
                         }
                     }
@@ -829,7 +811,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 }
             }
 
-            PropertyDetailsPOJO propertyDetailsPOJO =reportItemPOJO.getPropertyDetailsPOJO();
+            PropertyDetailsPOJO propertyDetailsPOJO = reportItemPOJO.getPropertyDetailsPOJO();
             ContentValues propertyEntry = new ContentValues();
             propertyEntry.put(KEY_PROPERTY_DATE, propertyDetailsPOJO.getPropertyDate());
             propertyEntry.put(KEY_SQUARE_FOOTAGE, propertyDetailsPOJO.getSquareFootage());
@@ -844,7 +826,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         }
     }
 
-    public ArrayList<ReportItemPOJO> getReports(){
+    public ArrayList<ReportItemPOJO> getReports() {
 
         ArrayList<ReportItemPOJO> tempList = new ArrayList<>();
         String selectQueryReportTable = "SELECT  * FROM " + TABLE_REPORTS_LIST;
@@ -866,29 +848,29 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
 
-        return  tempList;
+        return tempList;
     }
 
 
-    public int deleteReportEntry(String id){
+    public int deleteReportEntry(String id) {
         SQLiteDatabase db = this.getWritableDatabase();
-        return  db.delete(TABLE_REPORTS_LIST,KEY_REPORT_ID+"=?",new String[]{id});
+        return db.delete(TABLE_REPORTS_LIST, KEY_REPORT_ID + "=?", new String[]{id});
     }
 
     public void updateFilePath(String filePath, String reportId) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String query ="UPDATE generated_reports SET file_path=? WHERE report_id =?";
+        String query = "UPDATE generated_reports SET file_path=? WHERE report_id =?";
         SQLiteStatement stmt = db.compileStatement(query);
-        stmt.bindString(1,filePath);
-        stmt.bindString(2,reportId);
+        stmt.bindString(1, filePath);
+        stmt.bindString(2, reportId);
         stmt.executeUpdateDelete();
     }
 
-    public ReportPOJO getReportItem(String id){
+    public ReportPOJO getReportItem(String id) {
         ReportPOJO reportPOJO = new ReportPOJO();
 
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor c = db.rawQuery("SELECT * FROM generated_reports WHERE report_id = '"+id+"'", null);
+        Cursor c = db.rawQuery("SELECT * FROM generated_reports WHERE report_id = '" + id + "'", null);
         if (c.moveToFirst()) {
             do {
                 reportPOJO.setId(c.getString(0));
@@ -906,10 +888,10 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 perilPOJO.setName(c.getString(11));
                 reportPOJO.setPerilPOJO(perilPOJO);
                 reportPOJO.setGoogleMapSnapShotFilePath(c.getString(12));
-            }while (c.moveToNext());
+            } while (c.moveToNext());
         }
 
-        Cursor cProperty = db.rawQuery("SELECT * FROM property_details WHERE report_id_fk= '"+id+"'", null);
+        Cursor cProperty = db.rawQuery("SELECT * FROM property_details WHERE report_id_fk= '" + id + "'", null);
         PropertyDetailsPOJO propertyPOJO = new PropertyDetailsPOJO();
 
         if (cProperty.moveToFirst()) {
@@ -922,25 +904,25 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 propertyPOJO.setBuildingType(cProperty.getString(5));
                 propertyPOJO.setReportId(cProperty.getString(6));
 
-            }while (cProperty.moveToNext());
+            } while (cProperty.moveToNext());
         }
 
         reportPOJO.setPropertyDetailsPOJO(propertyPOJO);
 
-        Cursor cLabelList = db.rawQuery("SELECT * FROM category_label WHERE report_id_fk = '"+id+"'", null);
-        ArrayList<Label> labelList=new ArrayList<>();
+        Cursor cLabelList = db.rawQuery("SELECT * FROM category_label WHERE report_id_fk = '" + id + "'", null);
+        ArrayList<Label> labelList = new ArrayList<>();
 
         if (cLabelList.moveToFirst()) {
             do {
-                Label label =new Label();
+                Label label = new Label();
                 label.setId(cLabelList.getString(0));
                 label.setName(cLabelList.getString(1));
                 label.setDescription(cLabelList.getString(2));
                 label.setReportId(cLabelList.getString(3));
                 label.setHouseNumber(cLabelList.getString(4));
                 label.setCoverageType(cLabelList.getString(5));
-                Cursor cElevationImages = db.rawQuery("SELECT * FROM report_elevation_image_details  WHERE  label_id_fk = '"+cLabelList.getString(0)+"'", null);
-                ArrayList<ImageDetailsPOJO> elevationImagesList=new ArrayList<>();
+                Cursor cElevationImages = db.rawQuery("SELECT * FROM report_elevation_image_details  WHERE  label_id_fk = '" + cLabelList.getString(0) + "'", null);
+                ArrayList<ImageDetailsPOJO> elevationImagesList = new ArrayList<>();
 
                 if (cElevationImages.moveToFirst()) {
                     do {
@@ -980,144 +962,150 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         }
         reportPOJO.setLabelArrayList(labelList);
 
-        return  reportPOJO;
+        return reportPOJO;
     }
 
     public void updateReportTitle(String value, String reportId) {
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "UPDATE generated_reports SET report_name=? WHERE report_id =?";
         SQLiteStatement stmt = db.compileStatement(query);
-        stmt.bindString(1,value);
-        stmt.bindString(2,reportId);
+        stmt.bindString(1, value);
+        stmt.bindString(2, reportId);
         stmt.executeUpdateDelete();
     }
 
     public void updateReportDescription(String value, String reportId) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String query ="UPDATE generated_reports SET report_description=? WHERE report_id=?";
+        String query = "UPDATE generated_reports SET report_description=? WHERE report_id=?";
         SQLiteStatement stmt = db.compileStatement(query);
-        stmt.bindString(1,value);
-        stmt.bindString(2,reportId);
+        stmt.bindString(1, value);
+        stmt.bindString(2, reportId);
         stmt.executeUpdateDelete();
     }
 
     public void updateClientName(String value, String reportId) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String query ="UPDATE generated_reports SET report_client_name=? WHERE report_id=?";
+        String query = "UPDATE generated_reports SET report_client_name=? WHERE report_id=?";
         SQLiteStatement stmt = db.compileStatement(query);
-        stmt.bindString(1,value);
-        stmt.bindString(2,reportId);
+        stmt.bindString(1, value);
+        stmt.bindString(2, reportId);
         stmt.executeUpdateDelete();
     }
+
     public void updateClaimNumber(String value, String reportId) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String query ="UPDATE generated_reports SET report_claim_number=? WHERE report_id=?";
+        String query = "UPDATE generated_reports SET report_claim_number=? WHERE report_id=?";
         SQLiteStatement stmt = db.compileStatement(query);
-        stmt.bindString(1,value);
-        stmt.bindString(2,reportId);
+        stmt.bindString(1, value);
+        stmt.bindString(2, reportId);
         stmt.executeUpdateDelete();
     }
+
     public void updateReportBy(String value, String reportId) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String query ="UPDATE generated_reports SET report_by=? WHERE report_id=?";
+        String query = "UPDATE generated_reports SET report_by=? WHERE report_id=?";
         SQLiteStatement stmt = db.compileStatement(query);
-        stmt.bindString(1,value);
-        stmt.bindString(2,reportId);
+        stmt.bindString(1, value);
+        stmt.bindString(2, reportId);
         stmt.executeUpdateDelete();
     }
+
     public void updateAddressLine(String value, String reportId) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String query ="UPDATE generated_reports SET address_line=? WHERE report_id=?";
+        String query = "UPDATE generated_reports SET address_line=? WHERE report_id=?";
         SQLiteStatement stmt = db.compileStatement(query);
-        stmt.bindString(1,value);
-        stmt.bindString(2,reportId);
+        stmt.bindString(1, value);
+        stmt.bindString(2, reportId);
         stmt.executeUpdateDelete();
     }
+
     public void updateLocationLat(String value, String reportId) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String query ="UPDATE generated_reports SET location_lat=? WHERE report_id=?";
+        String query = "UPDATE generated_reports SET location_lat=? WHERE report_id=?";
         SQLiteStatement stmt = db.compileStatement(query);
-        stmt.bindString(1,value);
-        stmt.bindString(2,reportId);
+        stmt.bindString(1, value);
+        stmt.bindString(2, reportId);
         stmt.executeUpdateDelete();
     }
+
     public void updateLocationLong(String value, String reportId) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String query ="UPDATE generated_reports SET location_lang=? WHERE report_id=?";
+        String query = "UPDATE generated_reports SET location_lang=? WHERE report_id=?";
         SQLiteStatement stmt = db.compileStatement(query);
-        stmt.bindString(1,value);
-        stmt.bindString(2,reportId);
+        stmt.bindString(1, value);
+        stmt.bindString(2, reportId);
         stmt.executeUpdateDelete();
     }
+
     public void updateLocationSnapshot(String value, String reportId) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String query ="UPDATE generated_reports SET location_snapshot=? WHERE report_id=?";
+        String query = "UPDATE generated_reports SET location_snapshot=? WHERE report_id=?";
         SQLiteStatement stmt = db.compileStatement(query);
-        stmt.bindString(1,value);
-        stmt.bindString(2,reportId);
+        stmt.bindString(1, value);
+        stmt.bindString(2, reportId);
         stmt.executeUpdateDelete();
     }
 
     public void updatePropertyDate(String value, String reportId) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String query ="UPDATE property_details SET property_date=? WHERE report_id_fk=?";
+        String query = "UPDATE property_details SET property_date=? WHERE report_id_fk=?";
         SQLiteStatement stmt = db.compileStatement(query);
-        stmt.bindString(1,value);
-        stmt.bindString(2,reportId);
+        stmt.bindString(1, value);
+        stmt.bindString(2, reportId);
         stmt.executeUpdateDelete();
     }
 
     public void updateSquareFootage(String value, String reportId) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String query ="UPDATE property_details SET square_footage=? WHERE report_id_fk=?";
+        String query = "UPDATE property_details SET square_footage=? WHERE report_id_fk=?";
         SQLiteStatement stmt = db.compileStatement(query);
-        stmt.bindString(1,value);
-        stmt.bindString(2,reportId);
+        stmt.bindString(1, value);
+        stmt.bindString(2, reportId);
         stmt.executeUpdateDelete();
     }
 
     public void updateRoofSystem(String value, String reportId) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String query ="UPDATE property_details SET roof_system=? WHERE report_id_fk=?";
+        String query = "UPDATE property_details SET roof_system=? WHERE report_id_fk=?";
         SQLiteStatement stmt = db.compileStatement(query);
-        stmt.bindString(1,value);
-        stmt.bindString(2,reportId);
+        stmt.bindString(1, value);
+        stmt.bindString(2, reportId);
         stmt.executeUpdateDelete();
     }
 
     public void updateSiding(String value, String reportId) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String query ="UPDATE property_details SET siding=? WHERE report_id_fk=?";
+        String query = "UPDATE property_details SET siding=? WHERE report_id_fk=?";
         SQLiteStatement stmt = db.compileStatement(query);
-        stmt.bindString(1,value);
-        stmt.bindString(2,reportId);
+        stmt.bindString(1, value);
+        stmt.bindString(2, reportId);
         stmt.executeUpdateDelete();
     }
 
     public void updateFoundation(String value, String reportId) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String query ="UPDATE property_details SET foundation=? WHERE report_id_fk=?";
+        String query = "UPDATE property_details SET foundation=? WHERE report_id_fk=?";
         SQLiteStatement stmt = db.compileStatement(query);
-        stmt.bindString(1,value);
-        stmt.bindString(2,reportId);
+        stmt.bindString(1, value);
+        stmt.bindString(2, reportId);
         stmt.executeUpdateDelete();
     }
 
     public void updateBuildingType(String value, String reportId) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String query ="UPDATE property_details SET building_type=? WHERE report_id_fk=?";
+        String query = "UPDATE property_details SET building_type=? WHERE report_id_fk=?";
         SQLiteStatement stmt = db.compileStatement(query);
-        stmt.bindString(1,value);
-        stmt.bindString(2,reportId);
+        stmt.bindString(1, value);
+        stmt.bindString(2, reportId);
         stmt.executeUpdateDelete();
     }
 
     public void updatePerilName(String value, String reportId) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String query ="UPDATE generated_reports SET peril=? WHERE report_id=?";
+        String query = "UPDATE generated_reports SET peril=? WHERE report_id=?";
         SQLiteStatement stmt = db.compileStatement(query);
-        stmt.bindString(1,value);
-        stmt.bindString(2,reportId);
+        stmt.bindString(1, value);
+        stmt.bindString(2, reportId);
         stmt.executeUpdateDelete();
     }
 
@@ -1142,7 +1130,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         }
     }
 
-    public ArrayList<ImageDetailsPOJO> updateSelectedImages(Label label,ArrayList<ImageDetailsPOJO> newImageList){
+    public ArrayList<ImageDetailsPOJO> updateSelectedImages(Label label, ArrayList<ImageDetailsPOJO> newImageList) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         db.delete(TABLE_REPORTS_IMAGE_DETAILS, KEY_FK_LABEL_ID + "=" + label.getId(), null);
@@ -1176,9 +1164,9 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
 
     }
 
-    public ArrayList<ImageDetailsPOJO> getLabelImages(String labelId){
+    public ArrayList<ImageDetailsPOJO> getLabelImages(String labelId) {
         ArrayList<ImageDetailsPOJO> selectedImagesList = new ArrayList();
-        String query= "SELECT * FROM report_image_details WHERE label_id_fk = '"+labelId+"'";
+        String query = "SELECT * FROM report_image_details WHERE label_id_fk = '" + labelId + "'";
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cSelectedImages = db.rawQuery(query, null);
@@ -1203,30 +1191,30 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         return selectedImagesList;
     }
 
-    public int editImageDetails(ImageDetailsPOJO imageDetailsPOJO){
+    public int editImageDetails(ImageDetailsPOJO imageDetailsPOJO) {
 
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
-        cv.put(KEY_IMAGE_TITLE,imageDetailsPOJO.getTitle());
-        cv.put(KEY_IMAGE_DESCRIPTION,imageDetailsPOJO.getDescription());
-        cv.put(KEY_IS_DAMAGE,imageDetailsPOJO.isDamage());
-        cv.put(KEY_IS_OVERVIEW,imageDetailsPOJO.isOverview());
-        cv.put(KEY_IS_POINT_OF_ORIGIN,imageDetailsPOJO.isPointOfOrigin());
-        cv.put(KEY_IMAGE_COVERAGE_TYPE,imageDetailsPOJO.getCoverageTye());
+        cv.put(KEY_IMAGE_TITLE, imageDetailsPOJO.getTitle());
+        cv.put(KEY_IMAGE_DESCRIPTION, imageDetailsPOJO.getDescription());
+        cv.put(KEY_IS_DAMAGE, imageDetailsPOJO.isDamage());
+        cv.put(KEY_IS_OVERVIEW, imageDetailsPOJO.isOverview());
+        cv.put(KEY_IS_POINT_OF_ORIGIN, imageDetailsPOJO.isPointOfOrigin());
+        cv.put(KEY_IMAGE_COVERAGE_TYPE, imageDetailsPOJO.getCoverageTye());
 
-        return db.update(TABLE_REPORTS_IMAGE_DETAILS, cv, KEY_IMAGE_ID+"=" +"'"+ imageDetailsPOJO.getImageId()+"'", null);
+        return db.update(TABLE_REPORTS_IMAGE_DETAILS, cv, KEY_IMAGE_ID + "=" + "'" + imageDetailsPOJO.getImageId() + "'", null);
 
     }
 
 
-    public int deleteImage(String imageId){
+    public int deleteImage(String imageId) {
         SQLiteDatabase db = this.getWritableDatabase();
         String whereClause = KEY_IMAGE_ID + "=?";
-        return  db.delete(TABLE_REPORTS_IMAGE_DETAILS,whereClause,new String[]{imageId});
+        return db.delete(TABLE_REPORTS_IMAGE_DETAILS, whereClause, new String[]{imageId});
 
     }
 
-    public int updateImageDetails(ImageDetailsPOJO imageDetailsPOJO){
+    public int updateImageDetails(ImageDetailsPOJO imageDetailsPOJO) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(KEY_IMAGE_TITLE, imageDetailsPOJO.getTitle());
@@ -1236,11 +1224,12 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         contentValues.put(KEY_IS_POINT_OF_ORIGIN, imageDetailsPOJO.isPointOfOrigin());
         contentValues.put(KEY_IMAGE_COVERAGE_TYPE, imageDetailsPOJO.getCoverageTye());
 
-        return  db.update(TABLE_REPORTS_IMAGE_DETAILS, contentValues,KEY_IMAGE_ID+"='"+ imageDetailsPOJO.getImageId()+"'",null);
+        return db.update(TABLE_REPORTS_IMAGE_DETAILS, contentValues, KEY_IMAGE_ID + "='" + imageDetailsPOJO.getImageId() + "'", null);
 
 
     }
-    public ArrayList<ImageDetailsPOJO> appendSelectedImages(Label label,ArrayList<ImageDetailsPOJO> imageList) throws SQLException {
+
+    public ArrayList<ImageDetailsPOJO> appendSelectedImages(Label label, ArrayList<ImageDetailsPOJO> imageList) throws SQLException {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ArrayList<ImageDetailsPOJO> labelSelectedImages = imageList;
@@ -1278,14 +1267,14 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
 
     }
 
-    public ImageDetailsPOJO appendCapturedImages(Label label,ArrayList<ImageDetailsPOJO> imageList) throws SQLException {
+    public ImageDetailsPOJO appendCapturedImages(Label label, ArrayList<ImageDetailsPOJO> imageList) throws SQLException {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ArrayList<ImageDetailsPOJO> labelSelectedImages = imageList;
         ImageDetailsPOJO imageItem = null;
         if (labelSelectedImages != null && labelSelectedImages.size() > 0) {
             for (int index = 0; index < labelSelectedImages.size(); index++) {
-                 imageItem = labelSelectedImages.get(index);
+                imageItem = labelSelectedImages.get(index);
 
                 String imageId = CommonUtils.generateIdString();
 
@@ -1316,7 +1305,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
 
 
     @Override
-    public void onOpen(SQLiteDatabase db){
+    public void onOpen(SQLiteDatabase db) {
         super.onOpen(db);
         db.execSQL("PRAGMA foreign_keys=ON");
     }

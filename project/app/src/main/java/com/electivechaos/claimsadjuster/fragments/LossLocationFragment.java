@@ -50,39 +50,83 @@ import com.google.android.gms.tasks.Task;
 
 public class LossLocationFragment extends Fragment implements GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks {
 
+    private static final LatLngBounds BOUNDS_MOUNTAIN_VIEW = new LatLngBounds(new LatLng(37.398160, -122.180831), new LatLng(37.430620, -121.972090));
     private MapView mMapView;
     private GoogleMap googleMap;
-    private View  lossLocationParentLayout;
-
-
+    private View lossLocationParentLayout;
     private PlaceDetectionClient mPlaceDetectionClient;
-
-
     private GoogleApiClient mGoogleApiClient;
     private PlaceArrayAdapter mPlaceArrayAdapter;
     private AutoCompleteTextView mAutocompleteTextView;
-    private static final LatLngBounds BOUNDS_MOUNTAIN_VIEW = new LatLngBounds(new LatLng(37.398160, -122.180831), new LatLng(37.430620, -121.972090));
     private LossLocationDataInterface lossLocationDataInterface;
 
     private String locationLat = "";
     private String locationLong = "";
     private String addressLine = "";
 
-    private MarkerOptions a = new MarkerOptions().position(new LatLng(50,6));
+    private MarkerOptions a = new MarkerOptions().position(new LatLng(50, 6));
     private Marker mGoogleMapMarker = null;
 
     private CheckBox txtCurrentLocation, txtSetLocation;
+    private ResultCallback<PlaceBuffer> mUpdatePlaceDetailsCallback
+            = new ResultCallback<PlaceBuffer>() {
+        @Override
+        public void onResult(PlaceBuffer places) {
+            if (!places.getStatus().isSuccess()) {
+                return;
+            }
+
+            LatLng currentLocation = places.get(0).getLatLng();
+
+            locationLat = String.valueOf(currentLocation.latitude);
+            locationLong = String.valueOf(currentLocation.longitude);
+            addressLine = places.get(0).getAddress().toString();
+
+            mGoogleMapMarker.setPosition(currentLocation);
+            mGoogleMapMarker.setTitle("Location");
+            mGoogleMapMarker.setSnippet(places.get(0).getAddress().toString());
+
+            CameraPosition cameraPosition = new CameraPosition.Builder().target(currentLocation).zoom(15).build();
+            googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+            googleMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+                @Override
+                public void onMapLoaded() {
+                    googleMap.snapshot(new GoogleMap.SnapshotReadyCallback() {
+                        @Override
+                        public void onSnapshotReady(Bitmap bitmap) {
+                            lossLocationDataInterface.setMapSnapshot(bitmap);
+                            googleMap.setOnMapLoadedCallback(null);
+                        }
+                    });
+                }
+            });
+            googleMap.getUiSettings().setMyLocationButtonEnabled(false);
+
+
+        }
+    };
+    private AdapterView.OnItemClickListener mAutocompleteClickListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            final PlaceArrayAdapter.PlaceAutocomplete item = mPlaceArrayAdapter.getItem(position);
+            final String placeId = String.valueOf(item.placeId);
+            PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi
+                    .getPlaceById(mGoogleApiClient, placeId);
+            placeResult.setResultCallback(mUpdatePlaceDetailsCallback);
+        }
+    };
 
     @Override
     public void onStart() {
         super.onStart();
 
-        if(mGoogleApiClient != null && !mGoogleApiClient.isConnected()){
+        if (mGoogleApiClient != null && !mGoogleApiClient.isConnected()) {
             mGoogleApiClient.connect();
         }
     }
 
-    private synchronized void buildGoogleAPIClient(){
+    private synchronized void buildGoogleAPIClient() {
         mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -91,14 +135,13 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
         mGoogleApiClient.connect();
     }
 
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         Bundle bundle = getArguments();
 
-        if(bundle != null){
+        if (bundle != null) {
             locationLat = bundle.get("locationLat").toString();
             locationLong = bundle.get("locationLong").toString();
             addressLine = bundle.get("addressLine").toString();
@@ -119,25 +162,25 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
             public void onMapReady(GoogleMap mMap) {
                 googleMap = mMap;
 
-                if(CommonUtils.getGoogleMap(getActivity()).equalsIgnoreCase(Constants.MAP_TYPE_ID_ROADMAP)){
+                if (CommonUtils.getGoogleMap(getActivity()).equalsIgnoreCase(Constants.MAP_TYPE_ID_ROADMAP)) {
                     googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-                }else if(CommonUtils.getGoogleMap(getActivity()).equalsIgnoreCase(Constants.MAP_TYPE_ID_SATELLITE)){
+                } else if (CommonUtils.getGoogleMap(getActivity()).equalsIgnoreCase(Constants.MAP_TYPE_ID_SATELLITE)) {
                     googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
                 }
 
                 googleMap.clear();
                 mGoogleMapMarker = googleMap.addMarker(a);
 
-                boolean result= PermissionUtilities.checkPermission(getActivity(),LossLocationFragment.this,PermissionUtilities.MY_APP_LOCATION_PERMISSIONS);
-                if(result){
-                buildGoogleAPIClient();
+                boolean result = PermissionUtilities.checkPermission(getActivity(), LossLocationFragment.this, PermissionUtilities.MY_APP_LOCATION_PERMISSIONS);
+                if (result) {
+                    buildGoogleAPIClient();
 
-                mPlaceDetectionClient = Places.getPlaceDetectionClient(getActivity());
+                    mPlaceDetectionClient = Places.getPlaceDetectionClient(getActivity());
 
-                showCurrentPlace();
+                    showCurrentPlace();
 
-                }else{
-                    PermissionUtilities.checkPermission(getActivity(),LossLocationFragment.this,PermissionUtilities.MY_APP_LOCATION_PERMISSIONS);
+                } else {
+                    PermissionUtilities.checkPermission(getActivity(), LossLocationFragment.this, PermissionUtilities.MY_APP_LOCATION_PERMISSIONS);
                 }
 
             }
@@ -181,24 +224,24 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
                     public void onMapReady(GoogleMap mMap) {
                         googleMap = mMap;
 
-                        if(CommonUtils.getGoogleMap(getActivity()).equalsIgnoreCase(Constants.MAP_TYPE_ID_ROADMAP)){
+                        if (CommonUtils.getGoogleMap(getActivity()).equalsIgnoreCase(Constants.MAP_TYPE_ID_ROADMAP)) {
                             googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-                        }else if(CommonUtils.getGoogleMap(getActivity()).equalsIgnoreCase(Constants.MAP_TYPE_ID_SATELLITE)){
+                        } else if (CommonUtils.getGoogleMap(getActivity()).equalsIgnoreCase(Constants.MAP_TYPE_ID_SATELLITE)) {
                             googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
                         }
                         googleMap.clear();
                         mGoogleMapMarker = googleMap.addMarker(a);
 
-                        boolean result= PermissionUtilities.checkPermission(getActivity(),LossLocationFragment.this,PermissionUtilities.MY_APP_LOCATION_PERMISSIONS);
-                        if(result){
+                        boolean result = PermissionUtilities.checkPermission(getActivity(), LossLocationFragment.this, PermissionUtilities.MY_APP_LOCATION_PERMISSIONS);
+                        if (result) {
                             buildGoogleAPIClient();
 
 
                             mPlaceDetectionClient = Places.getPlaceDetectionClient(getActivity());
 
                             setCurrentLocation();
-                            }else{
-                            PermissionUtilities.checkPermission(getActivity(),LossLocationFragment.this,PermissionUtilities.MY_APP_LOCATION_PERMISSIONS);
+                        } else {
+                            PermissionUtilities.checkPermission(getActivity(), LossLocationFragment.this, PermissionUtilities.MY_APP_LOCATION_PERMISSIONS);
                         }
 
                     }
@@ -207,16 +250,15 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
         });
 
 
-
         txtSetLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(txtSetLocation.isChecked()){
+                if (txtSetLocation.isChecked()) {
                     lossLocationDataInterface.setLocationLat(locationLat);
                     lossLocationDataInterface.setLocationLong(locationLong);
                     lossLocationDataInterface.setAddressLine(addressLine);
                     txtSetLocation.setText("Unpin Location");
-                }else  {
+                } else {
                     lossLocationDataInterface.setLocationLat("");
                     lossLocationDataInterface.setLocationLong("");
                     lossLocationDataInterface.setAddressLine("");
@@ -229,57 +271,6 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
 
         return rootView;
     }
-
-    private AdapterView.OnItemClickListener mAutocompleteClickListener = new AdapterView.OnItemClickListener() {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            final PlaceArrayAdapter.PlaceAutocomplete item = mPlaceArrayAdapter.getItem(position);
-            final String placeId = String.valueOf(item.placeId);
-            PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi
-                    .getPlaceById(mGoogleApiClient, placeId);
-            placeResult.setResultCallback(mUpdatePlaceDetailsCallback);
-        }
-    };
-
-    private ResultCallback<PlaceBuffer> mUpdatePlaceDetailsCallback
-            = new ResultCallback<PlaceBuffer>() {
-        @Override
-        public void onResult(PlaceBuffer places) {
-            if (!places.getStatus().isSuccess()) {
-                return;
-            }
-
-            LatLng currentLocation = places.get(0).getLatLng();
-
-            locationLat = String.valueOf(currentLocation.latitude);
-            locationLong = String.valueOf(currentLocation.longitude);
-            addressLine = places.get(0).getAddress().toString();
-
-            mGoogleMapMarker.setPosition(currentLocation);
-            mGoogleMapMarker.setTitle("Location");
-            mGoogleMapMarker.setSnippet(places.get(0).getAddress().toString());
-
-            CameraPosition cameraPosition = new CameraPosition.Builder().target(currentLocation).zoom(15).build();
-            googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-
-            googleMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
-                @Override
-                public void onMapLoaded() {
-                    googleMap.snapshot(new GoogleMap.SnapshotReadyCallback() {
-                        @Override
-                        public void onSnapshotReady(Bitmap bitmap) {
-                            lossLocationDataInterface.setMapSnapshot(bitmap);
-                            googleMap.setOnMapLoadedCallback(null);
-                        }
-                    });
-                }
-            });
-            googleMap.getUiSettings().setMyLocationButtonEnabled(false);
-
-
-        }
-    };
-
 
     /**
      * Prompts the user for permission to use the device location.
@@ -301,11 +292,11 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
 
     }
 
-private void setCurrentLocation(){
+    private void setCurrentLocation() {
 
-    if (googleMap == null) {
-        return;
-    }
+        if (googleMap == null) {
+            return;
+        }
 
         @SuppressLint("MissingPermission") final Task<PlaceLikelihoodBufferResponse> placeResult =
                 mPlaceDetectionClient.getCurrentPlace(null);
@@ -328,7 +319,7 @@ private void setCurrentLocation(){
                             mGoogleMapMarker.setSnippet(likelyPlaces.get(0).getPlace().getAddress().toString());
 
                             CameraPosition cameraPosition = new CameraPosition.Builder().target(currentLocation).zoom(15).build();
-                            if(cameraPosition != null) {
+                            if (cameraPosition != null) {
                                 googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
                             }
 
@@ -361,7 +352,7 @@ private void setCurrentLocation(){
             }
         });
 
-}
+    }
 
     private void showCurrentPlace() {
 
@@ -369,7 +360,7 @@ private void setCurrentLocation(){
             return;
         }
 
-        if(locationLat.isEmpty()){
+        if (locationLat.isEmpty()) {
             @SuppressLint("MissingPermission") final Task<PlaceLikelihoodBufferResponse> placeResult =
                     mPlaceDetectionClient.getCurrentPlace(null);
             placeResult.addOnCompleteListener
@@ -391,7 +382,7 @@ private void setCurrentLocation(){
                                 mGoogleMapMarker.setSnippet(likelyPlaces.get(0).getPlace().getAddress().toString());
 
                                 CameraPosition cameraPosition = new CameraPosition.Builder().target(currentLocation).zoom(15).build();
-                                if(cameraPosition != null) {
+                                if (cameraPosition != null) {
                                     googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
                                 }
 
@@ -421,7 +412,7 @@ private void setCurrentLocation(){
                     e.printStackTrace();
                 }
             });
-        }else{
+        } else {
             LatLng currentLocation = new LatLng(Double.parseDouble(locationLat), Double.parseDouble(locationLong));
             mGoogleMapMarker.setPosition(currentLocation);
             mGoogleMapMarker.setTitle("Location");
@@ -457,13 +448,13 @@ private void setCurrentLocation(){
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-        CommonUtils.showSnackbarMessage("Failed to connect to google api.", true, true,lossLocationParentLayout,getActivity());
+        CommonUtils.showSnackbarMessage("Failed to connect to google api.", true, true, lossLocationParentLayout, getActivity());
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        if(mGoogleApiClient != null){
+        if (mGoogleApiClient != null) {
             mGoogleApiClient.disconnect();
         }
     }
@@ -471,7 +462,7 @@ private void setCurrentLocation(){
     @Override
     public void onStop() {
         super.onStop();
-        if(mGoogleApiClient != null){
+        if (mGoogleApiClient != null) {
             mGoogleApiClient.disconnect();
         }
     }
@@ -487,7 +478,7 @@ private void setCurrentLocation(){
     public void onPause() {
         super.onPause();
         mMapView.onPause();
-        if(mGoogleApiClient != null){
+        if (mGoogleApiClient != null) {
             mGoogleApiClient.disconnect();
         }
 
@@ -498,7 +489,7 @@ private void setCurrentLocation(){
     public void onDestroy() {
         super.onDestroy();
         mMapView.onDestroy();
-        if(mGoogleApiClient != null){
+        if (mGoogleApiClient != null) {
             mGoogleApiClient.disconnect();
         }
     }
@@ -523,11 +514,11 @@ private void setCurrentLocation(){
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-            try {
-                lossLocationDataInterface = (LossLocationDataInterface)getActivity();
-            }catch (ClassCastException exception){
-                exception.printStackTrace();
-            }
+        try {
+            lossLocationDataInterface = (LossLocationDataInterface) getActivity();
+        } catch (ClassCastException exception) {
+            exception.printStackTrace();
+        }
 
     }
 }

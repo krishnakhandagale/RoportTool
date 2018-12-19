@@ -4,10 +4,11 @@ public class ParentMenuItem {
     String title;
     boolean isChecked;
 
-    public ParentMenuItem(String title, boolean isChecked){
+    public ParentMenuItem(String title, boolean isChecked) {
         this.title = title;
         this.isChecked = isChecked;
     }
+
     public String getTitle() {
         return title;
     }

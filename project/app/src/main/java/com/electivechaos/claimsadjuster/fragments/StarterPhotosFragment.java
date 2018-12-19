@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,20 +13,16 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -49,7 +44,6 @@ import com.electivechaos.claimsadjuster.interfaces.SelectedImagesDataInterface;
 import com.electivechaos.claimsadjuster.listeners.OnMediaScannerListener;
 import com.electivechaos.claimsadjuster.listeners.OnStarterFragmentDataChangeListener;
 import com.electivechaos.claimsadjuster.pojo.ImageDetailsPOJO;
-import com.electivechaos.claimsadjuster.ui.AddEditReportActivity;
 import com.electivechaos.claimsadjuster.ui.ImagePickerActivity;
 
 import java.io.File;
@@ -57,36 +51,32 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import static android.app.Activity.RESULT_OK;
-
 /**
  * Created by krishna on 11/23/17.
  */
 
 public class StarterPhotosFragment extends Fragment {
 
-    private  static final int IMAGE_ONE_REQUEST_STARTER = 500;
-    private  static final int IMAGE_TWO_REQUEST_STARTER = 600;
-    private  static final int IMAGE_THREE_REQUEST_STARTER = 700;
-    private  static final int IMAGE_FOUR_REQUEST_STARTER = 800;
-    private  static final int HOUSE_NUMBER_REQUEST_STARTER = 900;
+    private static final int IMAGE_ONE_REQUEST_STARTER = 500;
+    private static final int IMAGE_TWO_REQUEST_STARTER = 600;
+    private static final int IMAGE_THREE_REQUEST_STARTER = 700;
+    private static final int IMAGE_FOUR_REQUEST_STARTER = 800;
+    private static final int HOUSE_NUMBER_REQUEST_STARTER = 900;
 
 
-    private  static final int SELECT_FILE_IMAGE_ONE_STARTER = 201;
-    private  static final int SELECT_FILE_IMAGE_TWO_STARTER = 202;
-    private  static final int SELECT_FILE_IMAGE_THREE_STARTER = 203;
-    private  static final int SELECT_FILE_IMAGE_FOUR_STARTER = 204;
-    private  static final int SELECT_FILE_IMAGE_HOUSE_NUMBER_STARTER = 205;
+    private static final int SELECT_FILE_IMAGE_ONE_STARTER = 201;
+    private static final int SELECT_FILE_IMAGE_TWO_STARTER = 202;
+    private static final int SELECT_FILE_IMAGE_THREE_STARTER = 203;
+    private static final int SELECT_FILE_IMAGE_FOUR_STARTER = 204;
+    private static final int SELECT_FILE_IMAGE_HOUSE_NUMBER_STARTER = 205;
 
-    private  static final String OVERVIEW_IMAGE_ONE = "Overview 1";
-    private  static final String OVERVIEW_IMAGE_TWO = "Overview 2";
-    private  static final String OVERVIEW_IMAGE_THREE = "Overview 3";
-    private  static final String OVERVIEW_IMAGE_FOUR = "Overview 4";
-
-
-
+    private static final String OVERVIEW_IMAGE_ONE = "Overview 1";
+    private static final String OVERVIEW_IMAGE_TWO = "Overview 2";
+    private static final String OVERVIEW_IMAGE_THREE = "Overview 3";
+    private static final String OVERVIEW_IMAGE_FOUR = "Overview 4";
+    private static final int SELECT_FILE = 1;
+    RequestOptions options = null;
     private LinearLayout parentLayout;
-
     private Boolean isFabOpen = false;
     private FloatingActionButton showFabBtn;
     private FloatingActionButton fabGoNextBtn;
@@ -95,43 +85,25 @@ public class StarterPhotosFragment extends Fragment {
     private FloatingActionButton fabGenerateReportBtn;
     private FloatingActionButton fabSaveReportBtn;
     private Animation fab_open, fab_close;
-
-
     private ImageView imageOnePreview;
     private ImageView imageTwoPreview;
     private ImageView imageThreePreview;
     private ImageView imageFourPreview;
     private ImageView imageHouseNumberPreview;
-
-
     private Uri fileUri;
     private String mCurrentPhotoPath;
     private File photoFile;
-
-
     private ArrayList<ImageDetailsPOJO> selectedElevationImagesList = new ArrayList<>();
     private int labelPosition;
-
-
-    RequestOptions options = null;
-
     private SelectedImagesDataInterface selectedImagesDataInterface;
-
     private NextButtonClickListener nextButtonClickListener;
-
     private BackButtonClickListener backButtonClickListener;
-
     private DrawerMenuListAdapter.OnLabelAddClickListener onLabelAddClickListener;
-
     private OnSaveReportClickListener onSaveReportClickListener;
-
     private OnGenerateReportClickListener onGenerateReportClickListener;
     private OnSetImageFileUriListener onSetImageFileUriListener;
     private OnStarterFragmentDataChangeListener onStarterFragmentDataChangeListener;
-
-    private  String houseNumber = "";
-
-    private  static final int SELECT_FILE = 1;
+    private String houseNumber = "";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -150,7 +122,7 @@ public class StarterPhotosFragment extends Fragment {
             labelPosition = (int) getArguments().get("position");
             houseNumber = (String) getArguments().get("houseNumber");
             mCurrentPhotoPath = getArguments().getString("fileUri");
-            if(mCurrentPhotoPath != null){
+            if (mCurrentPhotoPath != null) {
                 photoFile = new File(mCurrentPhotoPath);
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
                     fileUri = Uri.fromFile(photoFile);
@@ -278,8 +250,6 @@ public class StarterPhotosFragment extends Fragment {
         });
 
 
-
-
         fabGoNextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -306,7 +276,7 @@ public class StarterPhotosFragment extends Fragment {
         });
 
 
-        if(savedInstanceState != null){
+        if (savedInstanceState != null) {
             fileUri = savedInstanceState.getParcelable("fileUri");
         }
         return selectImageView;
@@ -323,13 +293,13 @@ public class StarterPhotosFragment extends Fragment {
         if (selectedElevationImagesList != null && selectedElevationImagesList.size() > 0) {
             if (selectedElevationImagesList.get(0).getImageUrl() != null && !selectedElevationImagesList.get(0).getImageUrl().isEmpty()) {
                 File file = new File(selectedElevationImagesList.get(0).getImageUrl());
-                if(!file.exists()){
+                if (!file.exists()) {
                     Glide.with(getActivity())
                             .load("file:///android_asset/NoImageFound.jpg")
                             .thumbnail(0.1f)
                             .apply(options)
                             .into(imageOnePreview);
-                }else {
+                } else {
                     Glide.with(getActivity())
                             .load("file://" + selectedElevationImagesList.get(0).getImageUrl())
                             .thumbnail(0.1f)
@@ -340,13 +310,13 @@ public class StarterPhotosFragment extends Fragment {
             }
             if (selectedElevationImagesList.get(1).getImageUrl() != null && !selectedElevationImagesList.get(1).getImageUrl().isEmpty()) {
                 File file = new File(selectedElevationImagesList.get(1).getImageUrl());
-                if(!file.exists()){
+                if (!file.exists()) {
                     Glide.with(getActivity())
                             .load("file:///android_asset/NoImageFound.jpg")
                             .thumbnail(0.1f)
                             .apply(options)
                             .into(imageTwoPreview);
-                }else {
+                } else {
                     Glide.with(getActivity())
                             .load("file://" + selectedElevationImagesList.get(1).getImageUrl())
                             .thumbnail(0.1f)
@@ -356,13 +326,13 @@ public class StarterPhotosFragment extends Fragment {
             }
             if (selectedElevationImagesList.get(2).getImageUrl() != null && !selectedElevationImagesList.get(2).getImageUrl().isEmpty()) {
                 File file = new File(selectedElevationImagesList.get(2).getImageUrl());
-                if(!file.exists()){
+                if (!file.exists()) {
                     Glide.with(getActivity())
                             .load("file:///android_asset/NoImageFound.jpg")
                             .thumbnail(0.1f)
                             .apply(options)
                             .into(imageThreePreview);
-                }else {
+                } else {
                     Glide.with(getActivity())
                             .load("file://" + selectedElevationImagesList.get(2).getImageUrl())
                             .thumbnail(0.1f)
@@ -373,13 +343,13 @@ public class StarterPhotosFragment extends Fragment {
             }
             if (selectedElevationImagesList.get(3).getImageUrl() != null && !selectedElevationImagesList.get(3).getImageUrl().isEmpty()) {
                 File file = new File(selectedElevationImagesList.get(3).getImageUrl());
-                if(!file.exists()){
+                if (!file.exists()) {
                     Glide.with(getActivity())
                             .load("file:///android_asset/NoImageFound.jpg")
                             .thumbnail(0.1f)
                             .apply(options)
                             .into(imageFourPreview);
-                }else {
+                } else {
                     Glide.with(getActivity())
                             .load("file://" + selectedElevationImagesList.get(3).getImageUrl())
                             .thumbnail(0.1f)
@@ -391,13 +361,13 @@ public class StarterPhotosFragment extends Fragment {
 
         if (!TextUtils.isEmpty(houseNumber)) {
             File file = new File(houseNumber);
-            if(!file.exists()){
+            if (!file.exists()) {
                 Glide.with(getActivity())
                         .load("file:///android_asset/NoImageFound.jpg")
                         .thumbnail(0.1f)
                         .apply(options)
                         .into(imageHouseNumberPreview);
-            }else {
+            } else {
                 Glide.with(getActivity())
                         .load("file://" + houseNumber)
                         .thumbnail(0.1f)
@@ -434,7 +404,7 @@ public class StarterPhotosFragment extends Fragment {
 
     private void galleryIntent(int requestCode) {
         Intent intent = new Intent(getActivity(), ImagePickerActivity.class);
-        intent.putExtra("number_of_images_allowed",1 );
+        intent.putExtra("number_of_images_allowed", 1);
         intent.setAction(Intent.ACTION_GET_CONTENT);
         getActivity().startActivityForResult(intent, requestCode);
 
@@ -442,14 +412,14 @@ public class StarterPhotosFragment extends Fragment {
 
     public void onSelectImagesFromGallery(Intent data, final int requestId) {
         if (data != null) {
-            onSelectFromGalleryResult(data,requestId);
+            onSelectFromGalleryResult(data, requestId);
         } else {
             Snackbar snackbar = Snackbar
                     .make(parentLayout, "Something went wrong.Please try again.", Snackbar.LENGTH_INDEFINITE);
             snackbar.setAction("RETRY", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    selectImage(requestId,requestId);
+                    selectImage(requestId, requestId);
                     v.setVisibility(View.GONE);
                 }
             });
@@ -510,8 +480,7 @@ public class StarterPhotosFragment extends Fragment {
                     .thumbnail(0.1f)
                     .into(imageFourPreview);
             selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList, labelPosition);
-        }
-        else if (requestId == SELECT_FILE_IMAGE_HOUSE_NUMBER_STARTER) {
+        } else if (requestId == SELECT_FILE_IMAGE_HOUSE_NUMBER_STARTER) {
 
             houseNumber = selectedImages.get(0).getPath();
 
@@ -525,10 +494,8 @@ public class StarterPhotosFragment extends Fragment {
     }
 
 
-
-
     private void cameraIntent(int requestId) {
-        Intent intent = new Intent(getContext(),CameraActivity.class);
+        Intent intent = new Intent(getContext(), CameraActivity.class);
         if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
 
             photoFile = getOutputMediaFile();
@@ -550,7 +517,7 @@ public class StarterPhotosFragment extends Fragment {
         }
     }
 
-    public void onElevationImageFourCapture(Intent data, int requestCode){
+    public void onElevationImageFourCapture(Intent data, int requestCode) {
         if (fileUri != null) {
             onElevationImageCaptureResult(data, requestCode);
         } else {
@@ -733,8 +700,7 @@ public class StarterPhotosFragment extends Fragment {
                                         .thumbnail(0.1f)
                                         .into(imageFourPreview);
                                 selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList, labelPosition);
-                            }
-                            else if (requestId == HOUSE_NUMBER_REQUEST_STARTER) {
+                            } else if (requestId == HOUSE_NUMBER_REQUEST_STARTER) {
 
                                 houseNumber = finalPath1;
 

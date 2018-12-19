@@ -2,8 +2,8 @@ package com.electivechaos.claimsadjuster.ui;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -34,10 +34,9 @@ public class BuildingTypeActivity extends AppCompatActivity {
         addBuildingBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(buildingName.getText().toString().isEmpty())
-                {
+                if (buildingName.getText().toString().isEmpty()) {
                     CommonUtils.showSnackbarMessage(getString(R.string.please_enter_name), true, true, parentLayoutForMessages, BuildingTypeActivity.this);
-                }else {
+                } else {
 
                     BuildingTypePOJO buildingTypePOJO = new BuildingTypePOJO();
                     buildingTypePOJO.setName(buildingName.getText().toString());
@@ -45,8 +44,7 @@ public class BuildingTypeActivity extends AppCompatActivity {
                     long buildingTypeId = categoryListDBHelper.addBuildingType(buildingTypePOJO);
                     if (buildingTypeId == UNIQUE_CONSTRAINT_FAIL_ERROR_CODE) {
                         Toast.makeText(BuildingTypeActivity.this, "Building type with same name already exists.", Toast.LENGTH_SHORT).show();
-                    }
-                    else {
+                    } else {
                         Bundle data = new Bundle();
                         data.putString("buildingName", buildingName.getText().toString());
                         Intent intent = new Intent();

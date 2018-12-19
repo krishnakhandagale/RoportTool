@@ -2,8 +2,8 @@ package com.electivechaos.claimsadjuster.ui;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,9 +16,8 @@ import com.electivechaos.claimsadjuster.utils.CommonUtils;
 
 public class RoofSystemActivity extends AppCompatActivity {
 
-    private CategoryListDBHelper categoryListDBHelper;
     private static final int UNIQUE_CONSTRAINT_FAIL_ERROR_CODE = -111;
-
+    private CategoryListDBHelper categoryListDBHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -64,8 +64,8 @@ public class PlaceArrayAdapter extends ArrayAdapter<PlaceArrayAdapter.PlaceAutoc
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        try{
-            if(convertView==null){
+        try {
+            if (convertView == null) {
                 LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 convertView = inflater.inflate(mLayoutResourceId, parent, false);
             }
@@ -106,7 +106,7 @@ public class PlaceArrayAdapter extends ArrayAdapter<PlaceArrayAdapter.PlaceAutoc
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(mContext,status.getStatusMessage() , Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, status.getStatusMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
                 autocompletePredictions.release();
@@ -117,7 +117,7 @@ public class PlaceArrayAdapter extends ArrayAdapter<PlaceArrayAdapter.PlaceAutoc
             while (iterator.hasNext()) {
                 AutocompletePrediction prediction = iterator.next();
                 resultList.add(new PlaceAutocomplete(prediction.getPlaceId(),
-                        prediction.getFullText(new StyleSpan(Typeface.BOLD)),prediction.getPrimaryText(new StyleSpan(Typeface.BOLD))));
+                        prediction.getFullText(new StyleSpan(Typeface.BOLD)), prediction.getPrimaryText(new StyleSpan(Typeface.BOLD))));
             }
             autocompletePredictions.release();
             return resultList;
@@ -153,13 +153,13 @@ public class PlaceArrayAdapter extends ArrayAdapter<PlaceArrayAdapter.PlaceAutoc
         return filter;
     }
 
-   static public class PlaceAutocomplete {
+    static public class PlaceAutocomplete {
 
         public CharSequence placeId;
         public CharSequence primaryText;
         public CharSequence fulltext;
 
-        PlaceAutocomplete(CharSequence placeId, CharSequence fulltext,CharSequence primaryText) {
+        PlaceAutocomplete(CharSequence placeId, CharSequence fulltext, CharSequence primaryText) {
             this.placeId = placeId;
             this.primaryText = primaryText;
             this.fulltext = fulltext;

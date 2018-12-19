@@ -22,10 +22,11 @@ public class CustomCategoryPopUpAdapter extends BaseAdapter {
     private Context context;
     private ArrayList<Category> categoryArrayList;
 
-    public CustomCategoryPopUpAdapter(Context context, ArrayList<Category> categoryArrayList){
+    public CustomCategoryPopUpAdapter(Context context, ArrayList<Category> categoryArrayList) {
         this.categoryArrayList = categoryArrayList;
         this.context = context;
     }
+
     @Override
     public int getCount() {
         return categoryArrayList.size();
@@ -45,11 +46,10 @@ public class CustomCategoryPopUpAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
 
 
-
         ViewHolder holder;
 
         if (convertView == null) {
-            LayoutInflater inflater =  LayoutInflater.from(context);
+            LayoutInflater inflater = LayoutInflater.from(context);
             convertView = inflater.inflate(R.layout.custom_category_popup_adapter_layout, parent, false);
             holder = new ViewHolder();
             holder.textView = convertView.findViewById(R.id.category_name);
@@ -58,10 +58,10 @@ public class CustomCategoryPopUpAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
         holder.textView.setText(categoryArrayList.get(position).getCategoryName());
-        if(holder.textView.getText().toString().equals("Add New")){
+        if (holder.textView.getText().toString().equals("Add New")) {
             holder.textView.setGravity(Gravity.CENTER);
-            holder.textView.setBackgroundColor(ContextCompat.getColor(context,R.color.colorPrimary));
-        }else {
+            holder.textView.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimary));
+        } else {
             holder.textView.setGravity(Gravity.LEFT);
             holder.textView.setBackgroundColor(0);
         }

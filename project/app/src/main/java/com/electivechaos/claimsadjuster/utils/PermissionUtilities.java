@@ -15,7 +15,7 @@ import android.support.v7.app.AlertDialog;
 /**
  * Created by krishna on 10/13/17.
  */
- public class PermissionUtilities {
+public class PermissionUtilities {
     public static final int MY_APP_TAKE_PHOTO_PERMISSIONS = 126;
     public static final int MY_APP_BROWSE_PHOTO_PERMISSIONS = 127;
     public static final int MY_APP_GENERATE_REPORT_PERMISSIONS = 128;
@@ -25,19 +25,16 @@ import android.support.v7.app.AlertDialog;
     public static final int MY_APP_TAKE_LEFT_PHOTO_PERMISSIONS = 131;
     public static final int MY_APP_TAKE_RIGHT_PHOTO_PERMISSIONS = 132;
 
-    public static final int MY_APP_LOCATION_PERMISSIONS=133;
-
+    public static final int MY_APP_LOCATION_PERMISSIONS = 133;
 
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    public static boolean checkPermission(final Context context,final Fragment
-            fragment, final int type)
-    {
+    public static boolean checkPermission(final Context context, final Fragment
+            fragment, final int type) {
         int currentAPIVersion = Build.VERSION.SDK_INT;
-        if(type  == MY_APP_TAKE_PHOTO_PERMISSIONS || type  == MY_APP_TAKE_FRONT_PHOTO_PERMISSIONS || type  == MY_APP_TAKE_BACK_PHOTO_PERMISSIONS || type  == MY_APP_TAKE_LEFT_PHOTO_PERMISSIONS || type == MY_APP_TAKE_RIGHT_PHOTO_PERMISSIONS) {
-            if(currentAPIVersion>= Build.VERSION_CODES.M)
-            {
-                if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ) {
+        if (type == MY_APP_TAKE_PHOTO_PERMISSIONS || type == MY_APP_TAKE_FRONT_PHOTO_PERMISSIONS || type == MY_APP_TAKE_BACK_PHOTO_PERMISSIONS || type == MY_APP_TAKE_LEFT_PHOTO_PERMISSIONS || type == MY_APP_TAKE_RIGHT_PHOTO_PERMISSIONS) {
+            if (currentAPIVersion >= Build.VERSION_CODES.M) {
+                if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                     if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) context, Manifest.permission.READ_EXTERNAL_STORAGE) || ActivityCompat.shouldShowRequestPermissionRationale((Activity) context, Manifest.permission.WRITE_EXTERNAL_STORAGE) || ActivityCompat.shouldShowRequestPermissionRationale((Activity) context, Manifest.permission.CAMERA)) {
                         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
                         alertBuilder.setCancelable(true);
@@ -62,10 +59,9 @@ import android.support.v7.app.AlertDialog;
             } else {
                 return true;
             }
-        }else if(type  == MY_APP_BROWSE_PHOTO_PERMISSIONS){
-            if(currentAPIVersion>= Build.VERSION_CODES.M)
-            {
-                if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ) {
+        } else if (type == MY_APP_BROWSE_PHOTO_PERMISSIONS) {
+            if (currentAPIVersion >= Build.VERSION_CODES.M) {
+                if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                     if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) context, Manifest.permission.READ_EXTERNAL_STORAGE)) {
                         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
                         alertBuilder.setCancelable(true);
@@ -90,10 +86,9 @@ import android.support.v7.app.AlertDialog;
             } else {
                 return true;
             }
-        }
-        else if(type  == MY_APP_GENERATE_REPORT_PERMISSIONS){
-            if(currentAPIVersion>= Build.VERSION_CODES.M) {
-                if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ) {
+        } else if (type == MY_APP_GENERATE_REPORT_PERMISSIONS) {
+            if (currentAPIVersion >= Build.VERSION_CODES.M) {
+                if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                     if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) context, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
                         alertBuilder.setCancelable(true);
@@ -109,7 +104,7 @@ import android.support.v7.app.AlertDialog;
                         alert.show();
 
                     } else {
-                        fragment.requestPermissions( new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_APP_GENERATE_REPORT_PERMISSIONS);
+                        fragment.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_APP_GENERATE_REPORT_PERMISSIONS);
                     }
                     return false;
                 } else {
@@ -118,10 +113,9 @@ import android.support.v7.app.AlertDialog;
             } else {
                 return true;
             }
-    }
-        else if(type  == MY_APP_LOCATION_PERMISSIONS){
-            if(currentAPIVersion>= Build.VERSION_CODES.M) {
-                if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
+        } else if (type == MY_APP_LOCATION_PERMISSIONS) {
+            if (currentAPIVersion >= Build.VERSION_CODES.M) {
+                if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                     if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) context, Manifest.permission.ACCESS_FINE_LOCATION)) {
                         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
                         alertBuilder.setCancelable(true);
@@ -137,7 +131,7 @@ import android.support.v7.app.AlertDialog;
                         alert.show();
 
                     } else {
-                        fragment.requestPermissions( new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_APP_LOCATION_PERMISSIONS);
+                        fragment.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_APP_LOCATION_PERMISSIONS);
                     }
                     return false;
                 } else {
@@ -148,6 +142,6 @@ import android.support.v7.app.AlertDialog;
             }
         }
 
-      return  false;
+        return false;
     }
 }

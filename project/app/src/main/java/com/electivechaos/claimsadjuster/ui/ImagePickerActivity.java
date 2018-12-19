@@ -47,17 +47,15 @@ import java.util.Map;
  */
 
 public class ImagePickerActivity extends BaseActivity {
-    private final String[] projection = new String[]{MediaStore.Images.Media._ID
-            , MediaStore.Images.Media.DISPLAY_NAME
-            , MediaStore.Images.Media.DATA
-            , MediaStore.Images.Media.BUCKET_DISPLAY_NAME};
     static RequestOptions options = new RequestOptions()
             .placeholder(R.drawable.imagepicker_image_placeholder)
             .error(R.drawable.imagepicker_image_placeholder)
             .centerCrop()
             .diskCacheStrategy(DiskCacheStrategy.RESOURCE);
-
-
+    private final String[] projection = new String[]{MediaStore.Images.Media._ID
+            , MediaStore.Images.Media.DISPLAY_NAME
+            , MediaStore.Images.Media.DATA
+            , MediaStore.Images.Media.BUCKET_DISPLAY_NAME};
     RecyclerView gridView;
     AppCompatImageView backToFolder;
     TextView imageToolbarTitle;
@@ -66,6 +64,20 @@ public class ImagePickerActivity extends BaseActivity {
 
     List<Image> selectedImages = null;
     private int numberOfAlreadySelectedImages = 0;
+    private ImageClickListener imageClickListener = new ImageClickListener() {
+
+
+        @Override
+        public void onImageSelectionChanged(List<Image> selectedImgs) {
+            selectedImages = selectedImgs;
+            if (selectedImgs != null && selectedImgs.size() > 0) {
+                doneSelection.setVisibility(View.VISIBLE);
+            } else {
+                doneSelection.setVisibility(View.INVISIBLE);
+            }
+        }
+    };
+    private int numberOfImagesAllowed = 300;
     private FolderClickListener folderClickListener = new FolderClickListener() {
 
         @Override
@@ -73,28 +85,25 @@ public class ImagePickerActivity extends BaseActivity {
             setImageAdapter(folder.getImages(), folder.getFolderName());
         }
     };
-    private ImageClickListener imageClickListener = new ImageClickListener() {
 
-
-        @Override
-        public void onImageSelectionChanged(List<Image> selectedImgs) {
-            selectedImages = selectedImgs;
-            if(selectedImgs!= null && selectedImgs.size() > 0){
-                doneSelection.setVisibility(View.VISIBLE);
-            }else{
-                doneSelection.setVisibility(View.INVISIBLE);
-            }
+    private static File makeSafeFile(String path) {
+        if (path == null || path.isEmpty()) {
+            return null;
         }
-    };
-    private int numberOfImagesAllowed = 300;
+        try {
+            return new File(path);
+        } catch (Exception ignored) {
+            return null;
+        }
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        numberOfAlreadySelectedImages =  getIntent().getIntExtra("already_selected_images",0);
+        numberOfAlreadySelectedImages = getIntent().getIntExtra("already_selected_images", 0);
         numberOfImagesAllowed = getIntent().getIntExtra("number_of_images_allowed", 300);
-        if(selectedImages == null){
+        if (selectedImages == null) {
             selectedImages = new ArrayList<>();
         }
 
@@ -109,7 +118,7 @@ public class ImagePickerActivity extends BaseActivity {
             public void onClick(View v) {
                 Intent intent = new Intent();
                 intent.putParcelableArrayListExtra("ImageUrls", (ArrayList<? extends Parcelable>) selectedImages);
-                setResult(RESULT_OK,intent);
+                setResult(RESULT_OK, intent);
                 finish();
             }
         });
@@ -122,7 +131,7 @@ public class ImagePickerActivity extends BaseActivity {
         if (cursor == null) {
             return;
         }
-        Map<String, Folder> folderMap =  new LinkedHashMap<>() ;
+        Map<String, Folder> folderMap = new LinkedHashMap<>();
         if (cursor.moveToLast()) {
             do {
                 long id = cursor.getLong(cursor.getColumnIndex(projection[0]));
@@ -148,9 +157,9 @@ public class ImagePickerActivity extends BaseActivity {
         List<Folder> folders = null;
 
         folders = new ArrayList<>(folderMap.values());
-        FolderPickerAdapter imageAdapter = new ImagePickerActivity.FolderPickerAdapter(this,folders, folderClickListener);
+        FolderPickerAdapter imageAdapter = new ImagePickerActivity.FolderPickerAdapter(this, folders, folderClickListener);
         gridView = findViewById(R.id.gridview);
-        GridLayoutManager mLayoutManager = new GridLayoutManager(getBaseContext(),2);
+        GridLayoutManager mLayoutManager = new GridLayoutManager(getBaseContext(), 2);
         gridView.setLayoutManager(mLayoutManager);
         gridView.setHasFixedSize(true);
         GridSpacingItemDecoration itemOffsetDecoration = new GridSpacingItemDecoration(2,
@@ -174,22 +183,52 @@ public class ImagePickerActivity extends BaseActivity {
         });
 
     }
-    private static File makeSafeFile(String path) {
-        if (path == null || path.isEmpty()) {
-            return null;
-        }
-        try {
-            return new File(path);
-        } catch (Exception ignored) {
-            return null;
-        }
+
+    public void setImageAdapter(List<Image> images, String folderName) {
+        isFolderView = false;
+        backToFolder.setVisibility(View.VISIBLE);
+        imageToolbarTitle.setText(folderName);
+        ImagePickerAdapter adapter = new ImagePickerAdapter(getBaseContext(), images, selectedImages, imageClickListener, numberOfAlreadySelectedImages, numberOfImagesAllowed);
+        gridView.setAdapter(adapter);
     }
 
-    public static class FolderPickerAdapter extends RecyclerView.Adapter<ImagePickerActivity.FolderPickerAdapter.MyViewHolder>{
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(ImagePickerActivity.this);
+        builder.setTitle(R.string.go_back_msg_title)
+                .setMessage(R.string.imagepicker_back_msg)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        ImagePickerActivity.super.onBackPressed();
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+        Button negativeButton = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
+        negativeButton.setTextColor(ContextCompat.getColor(ImagePickerActivity.this, R.color.colorPrimaryDark));
+        Button positiveButton = alert.getButton(DialogInterface.BUTTON_POSITIVE);
+        positiveButton.setTextColor(ContextCompat.getColor(ImagePickerActivity.this, R.color.colorPrimaryDark));
+
+    }
+
+    public static class FolderPickerAdapter extends RecyclerView.Adapter<ImagePickerActivity.FolderPickerAdapter.MyViewHolder> {
         Context context;
         List<Folder> folders;
         FolderClickListener folderClickListener;
 //        LayoutInflater mInflater;
+
+        FolderPickerAdapter(Context context, List<Folder> folders, FolderClickListener folderClickListener) {
+//            mInflater = LayoutInflater.from(context);
+            this.context = context;
+            this.folders = folders;
+            this.folderClickListener = folderClickListener;
+        }
 
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -201,9 +240,9 @@ public class ImagePickerActivity extends BaseActivity {
 
         @Override
         public void onBindViewHolder(MyViewHolder holder, int position) {
-            final  Folder folder = folders.get(position);
+            final Folder folder = folders.get(position);
             Glide.with(context)
-                    .load("file://"+folder.getImages().get(0).getPath())
+                    .load("file://" + folder.getImages().get(0).getPath())
                     .apply(options)
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .into(holder.imageView);
@@ -228,6 +267,7 @@ public class ImagePickerActivity extends BaseActivity {
             public ImageView imageView;
             public TextView photoCount;
             public TextView folderName;
+
             public MyViewHolder(View view) {
                 super(view);
                 imageView = view.findViewById(R.id.image_folder_thumbnail);
@@ -238,24 +278,27 @@ public class ImagePickerActivity extends BaseActivity {
         }
 
 
-        FolderPickerAdapter (Context context, List<Folder> folders, FolderClickListener folderClickListener){
-//            mInflater = LayoutInflater.from(context);
-            this.context = context;
-            this.folders = folders;
-            this.folderClickListener = folderClickListener;
-        }
-
-
     }
 
-
-    public static class ImagePickerAdapter extends RecyclerView.Adapter<ImagePickerActivity.ImagePickerAdapter.MyViewHolder>{
+    public static class ImagePickerAdapter extends RecyclerView.Adapter<ImagePickerActivity.ImagePickerAdapter.MyViewHolder> {
         Context context;
         List<Image> images;
         List<Image> selectedImages;
         int numberOfAlreadySelectedImages;
         ImageClickListener imageClickListener;
         int numberOfImagesAllowed;
+
+        ImagePickerAdapter(Context context, List<Image> images, List<Image> selectedImages, ImageClickListener imageClickListener, int numberOfAlreadySelectedImages, int numberOfImagesAllowed) {
+            this.context = context;
+            this.images = images;
+            this.selectedImages = selectedImages;
+            this.imageClickListener = imageClickListener;
+            this.numberOfAlreadySelectedImages = numberOfAlreadySelectedImages;
+            this.numberOfImagesAllowed = numberOfImagesAllowed;
+            if (this.selectedImages == null) {
+                this.selectedImages = new ArrayList<>();
+            }
+        }
 
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -271,7 +314,7 @@ public class ImagePickerActivity extends BaseActivity {
             final Image image = images.get(position);
             final boolean isSelected = isSelected(image);
             Glide.with(context)
-                    .load("file://"+image.getPath())
+                    .load("file://" + image.getPath())
                     .apply(options)
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .into(holder.imageView);
@@ -285,19 +328,19 @@ public class ImagePickerActivity extends BaseActivity {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(isSelected){
+                    if (isSelected) {
                         selectedImages.remove(image);
                         notifyItemChanged(position);
-                        numberOfAlreadySelectedImages = numberOfAlreadySelectedImages -1;
+                        numberOfAlreadySelectedImages = numberOfAlreadySelectedImages - 1;
                         imageClickListener.onImageSelectionChanged(getSelectedImages());
-                    }else{
-                        if(numberOfAlreadySelectedImages < numberOfImagesAllowed){
+                    } else {
+                        if (numberOfAlreadySelectedImages < numberOfImagesAllowed) {
                             selectedImages.add(image);
                             notifyItemChanged(position);
                             numberOfAlreadySelectedImages = numberOfAlreadySelectedImages + 1;
                             imageClickListener.onImageSelectionChanged(getSelectedImages());
-                        }else{
-                            Toast.makeText(context,"You can not select more than "+numberOfImagesAllowed+" images.",Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(context, "You can not select more than " + numberOfImagesAllowed + " images.", Toast.LENGTH_LONG).show();
                         }
 
                     }
@@ -320,11 +363,16 @@ public class ImagePickerActivity extends BaseActivity {
             return images.size();
         }
 
+        public List<Image> getSelectedImages() {
+            return selectedImages;
+        }
+
         public class MyViewHolder extends RecyclerView.ViewHolder {
             public ImageView imageView;
             public TextView gifIndicator;
             public FrameLayout container;
             public View alphaView;
+
             public MyViewHolder(View view) {
                 super(view);
                 imageView = view.findViewById(R.id.image_thumbnail);
@@ -335,56 +383,6 @@ public class ImagePickerActivity extends BaseActivity {
             }
         }
 
-
-        ImagePickerAdapter (Context context, List<Image> images,  List<Image> selectedImages,ImageClickListener imageClickListener, int numberOfAlreadySelectedImages, int numberOfImagesAllowed){
-            this.context = context;
-            this.images = images;
-            this.selectedImages = selectedImages;
-            this.imageClickListener = imageClickListener;
-            this.numberOfAlreadySelectedImages = numberOfAlreadySelectedImages;
-            this.numberOfImagesAllowed = numberOfImagesAllowed;
-            if(this.selectedImages == null){
-                this.selectedImages = new ArrayList<>();
-            }
-        }
-
-        public List<Image> getSelectedImages() {
-            return selectedImages;
-        }
-
-
-    }
-
-    public void  setImageAdapter (List<Image> images, String folderName){
-        isFolderView = false;
-        backToFolder.setVisibility(View.VISIBLE);
-        imageToolbarTitle.setText(folderName);
-        ImagePickerAdapter adapter = new ImagePickerAdapter(getBaseContext(),images,selectedImages, imageClickListener,numberOfAlreadySelectedImages,numberOfImagesAllowed);
-        gridView.setAdapter(adapter);
-    }
-
-    @Override
-    public void onBackPressed() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(ImagePickerActivity.this);
-        builder.setTitle(R.string.go_back_msg_title)
-                .setMessage(R.string.imagepicker_back_msg)
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        ImagePickerActivity.super.onBackPressed();
-                    }
-                })
-                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-        AlertDialog alert = builder.create();
-        alert.show();
-        Button negativeButton = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
-        negativeButton.setTextColor(ContextCompat.getColor(ImagePickerActivity.this,R.color.colorPrimaryDark));
-        Button positiveButton = alert.getButton(DialogInterface.BUTTON_POSITIVE);
-        positiveButton.setTextColor(ContextCompat.getColor(ImagePickerActivity.this,R.color.colorPrimaryDark));
 
     }
 }

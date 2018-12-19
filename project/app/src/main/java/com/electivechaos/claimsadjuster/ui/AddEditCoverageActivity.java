@@ -14,17 +14,15 @@ import com.electivechaos.claimsadjuster.database.CategoryListDBHelper;
 import com.electivechaos.claimsadjuster.pojo.CoveragePOJO;
 import com.electivechaos.claimsadjuster.utils.CommonUtils;
 
-public class AddEditCoverageActivity extends AppCompatActivity{
-    private  String coverageTitle = null;
-    private  String coverageDescription = null;
-    private  int coverageID = -1;
-
+public class AddEditCoverageActivity extends AppCompatActivity {
+    private static final int UNIQUE_CONSTRAINT_FAIL_ERROR_CODE = -100;
+    private String coverageTitle = null;
+    private String coverageDescription = null;
+    private int coverageID = -1;
     private EditText name;
-    private  EditText description;
+    private EditText description;
     private Button updateCoverageButton;
     private View addEditCoverageParentLayout;
-
-    private static final int UNIQUE_CONSTRAINT_FAIL_ERROR_CODE = -100;
     private CategoryListDBHelper categoryListDBHelper;
 
     @Override
@@ -41,7 +39,7 @@ public class AddEditCoverageActivity extends AppCompatActivity{
         addEditCoverageParentLayout = findViewById(R.id.addEditCoverageParentLayout);
 
 
-        if(getIntent().getExtras()!= null){
+        if (getIntent().getExtras() != null) {
             Bundle dataFromActivity = getIntent().getBundleExtra("coverageDetails");
             coverageTitle = dataFromActivity.get("name").toString();
             coverageDescription = dataFromActivity.get("description").toString();
@@ -68,14 +66,14 @@ public class AddEditCoverageActivity extends AppCompatActivity{
                 Bundle data = new Bundle();
 
 
-                if(nameString.isEmpty()){
+                if (nameString.isEmpty()) {
                     CommonUtils.hideKeyboard(AddEditCoverageActivity.this);
-                    CommonUtils.showSnackbarMessage("Please enter name.", true,true, addEditCoverageParentLayout,AddEditCoverageActivity.this);
-                }else if(descriptionString.isEmpty()){
+                    CommonUtils.showSnackbarMessage("Please enter name.", true, true, addEditCoverageParentLayout, AddEditCoverageActivity.this);
+                } else if (descriptionString.isEmpty()) {
                     CommonUtils.hideKeyboard(AddEditCoverageActivity.this);
-                    CommonUtils.showSnackbarMessage("Please enter description.", true,true, addEditCoverageParentLayout, AddEditCoverageActivity.this);
-                }else {
-                    if(coverageID == -1) {
+                    CommonUtils.showSnackbarMessage("Please enter description.", true, true, addEditCoverageParentLayout, AddEditCoverageActivity.this);
+                } else {
+                    if (coverageID == -1) {
                         CoveragePOJO coveragePOJO = new CoveragePOJO();
                         coveragePOJO.setName(nameString);
                         coveragePOJO.setDescription(descriptionString);
@@ -84,8 +82,7 @@ public class AddEditCoverageActivity extends AppCompatActivity{
 
                         if (resultId == UNIQUE_CONSTRAINT_FAIL_ERROR_CODE) {
                             Toast.makeText(AddEditCoverageActivity.this, "Coverage type with same name already exists.", Toast.LENGTH_SHORT).show();
-                        }
-                        else {
+                        } else {
                             data.putString("name", nameString);
                             data.putString("description", descriptionString);
                             data.putInt("id", resultId);
@@ -95,7 +92,7 @@ public class AddEditCoverageActivity extends AppCompatActivity{
                             finish();
                         }
 
-                    }else {
+                    } else {
                         CoveragePOJO coveragePOJO = new CoveragePOJO();
                         coveragePOJO.setName(nameString);
                         coveragePOJO.setDescription(descriptionString);
@@ -104,8 +101,7 @@ public class AddEditCoverageActivity extends AppCompatActivity{
                         int resultId = categoryListDBHelper.updateCoverage(coveragePOJO);
                         if (resultId == UNIQUE_CONSTRAINT_FAIL_ERROR_CODE) {
                             Toast.makeText(AddEditCoverageActivity.this, "Coverage type with same name already exists.", Toast.LENGTH_SHORT).show();
-                        }
-                        else {
+                        } else {
                             Intent intent = new Intent();
                             data.putString("name", nameString);
                             data.putString("description", descriptionString);

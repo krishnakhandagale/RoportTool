@@ -1,25 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
     android:id="@+id/selectImagesParentLayout"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <ProgressBar
-        android:visibility="gone"
         android:id="@+id/progressBar"
-        android:layout_centerInParent="true"
         style="@style/Widget.AppCompat.ProgressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
         android:layout_gravity="center|center_horizontal"
-        android:theme="@style/CircularProgress" />
+        android:theme="@style/CircularProgress"
+        android:visibility="gone" />
 
     <LinearLayout
-        android:weightSum="6"
+        android:id="@+id/parentLinearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:id="@+id/parentLinearLayout">
+        android:weightSum="6">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -27,140 +28,158 @@
             android:layout_weight="1.5"
             android:orientation="horizontal"
             android:weightSum="4">
+
             <FrameLayout
-                android:layout_margin="5dp"
-                android:background="@color/colorPrimary"
-                android:orientation="vertical"
                 android:layout_width="0dip"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
                 android:layout_weight="1"
-                android:layout_height="match_parent">
+                android:background="@color/colorPrimary"
+                android:orientation="vertical">
+
                 <ImageView
                     android:id="@+id/imageOnePreview"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
+
                 <TextView
-                    android:background="@color/cardview_dark_background"
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
-                    android:text="Front"
-                    android:textColor="@color/white_color"
+                    android:layout_gravity="bottom"
+                    android:background="@color/cardview_dark_background"
                     android:gravity="center"
-                    android:layout_gravity="bottom"/>
+                    android:text="Front"
+                    android:textColor="@color/white_color" />
 
                 <ImageView
-                    android:background="@drawable/rounded_button"
                     android:id="@+id/imageViewOne"
-                    android:src="@drawable/ic_camera_16"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rounded_button"
+                    android:src="@drawable/ic_camera_16" />
 
             </FrameLayout>
 
             <FrameLayout
-                android:layout_margin="5dp"
-                android:background="@color/colorPrimary"
-                android:orientation="vertical"
                 android:layout_width="0dip"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
                 android:layout_weight="1"
-                android:layout_height="match_parent">
+                android:background="@color/colorPrimary"
+                android:orientation="vertical">
+
                 <ImageView
                     android:id="@+id/imageTwoPreview"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
-                    android:text="Back"
+                    android:layout_gravity="bottom"
                     android:background="@color/cardview_dark_background"
-                    android:textColor="@color/white_color"
                     android:gravity="center"
-                    android:layout_gravity="bottom"/>
+                    android:text="Back"
+                    android:textColor="@color/white_color" />
+
                 <ImageView
-                    android:background="@drawable/rounded_button"
                     android:id="@+id/imageViewTwo"
-                    android:src="@drawable/ic_camera_16"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rounded_button"
+                    android:src="@drawable/ic_camera_16" />
             </FrameLayout>
+
             <FrameLayout
-                android:layout_margin="5dp"
-                android:background="@color/colorPrimary"
-                android:orientation="vertical"
                 android:layout_width="0dip"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
                 android:layout_weight="1"
-                android:layout_height="match_parent">
+                android:background="@color/colorPrimary"
+                android:orientation="vertical">
+
                 <ImageView
                     android:id="@+id/imageThreePreview"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
-                    android:text="Left"
+                    android:layout_gravity="bottom"
                     android:background="@color/cardview_dark_background"
-                    android:textColor="@color/white_color"
                     android:gravity="center"
-                    android:layout_gravity="bottom"/>
+                    android:text="Left"
+                    android:textColor="@color/white_color" />
+
                 <ImageView
                     android:id="@+id/imageViewThree"
-                    android:src="@drawable/ic_camera_16"
                     android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:background="@drawable/rounded_button"
-                    android:layout_height="wrap_content" />
+                    android:src="@drawable/ic_camera_16" />
             </FrameLayout>
+
             <FrameLayout
-                android:layout_margin="5dp"
-                android:background="@color/colorPrimary"
-                android:orientation="vertical"
                 android:layout_width="0dip"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
                 android:layout_weight="1"
-                android:layout_height="match_parent">
+                android:background="@color/colorPrimary"
+                android:orientation="vertical">
+
                 <ImageView
                     android:id="@+id/imageFourPreview"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
-                    android:text="Right"
+                    android:layout_gravity="bottom"
                     android:background="@color/cardview_dark_background"
-                    android:textColor="@color/white_color"
                     android:gravity="center"
-                    android:layout_gravity="bottom"/>
+                    android:text="Right"
+                    android:textColor="@color/white_color" />
+
                 <ImageView
-                    android:background="@drawable/rounded_button"
                     android:id="@+id/imageViewFour"
-                    android:src="@drawable/ic_camera_16"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rounded_button"
+                    android:src="@drawable/ic_camera_16" />
             </FrameLayout>
 
         </LinearLayout>
+
         <FrameLayout
-            android:layout_margin="5dp"
-            android:background="@color/colorPrimary"
-            android:orientation="vertical"
             android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_margin="5dp"
             android:layout_weight="2.5"
-            android:layout_height="0dip">
+            android:background="@color/colorPrimary"
+            android:orientation="vertical">
+
             <ImageView
                 android:id="@+id/houseNumberPreview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:text="House Number"
+                android:layout_gravity="bottom"
                 android:background="@color/cardview_dark_background"
-                android:textColor="@color/white_color"
                 android:gravity="center"
-                android:layout_gravity="bottom"/>
+                android:text="House Number"
+                android:textColor="@color/white_color" />
+
             <ImageView
-                android:background="@drawable/rounded_button"
                 android:id="@+id/houseNumberImage"
-                android:src="@drawable/ic_camera_16"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_button"
+                android:src="@drawable/ic_camera_16" />
         </FrameLayout>
 
 
@@ -170,26 +189,27 @@
         android:id="@+id/fabGenerateReport"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
         android:layout_gravity="bottom|end"
+        android:layout_marginBottom="20dp"
+        android:layout_marginEnd="160dp"
         android:layout_marginRight="160dp"
+        android:src="@drawable/pdf_gen"
         android:visibility="invisible"
         app:elevation="6dp"
-        app:pressedTranslationZ="12dp"
-        android:src="@drawable/pdf_gen"
-        android:layout_marginEnd="160dp" />
+        app:pressedTranslationZ="12dp" />
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabAddLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="80dp"
         android:layout_gravity="bottom|end"
+        android:layout_marginBottom="80dp"
+        android:layout_marginEnd="155dp"
         android:layout_marginRight="155dp"
+        android:src="@drawable/label_add"
         android:visibility="invisible"
         app:elevation="6dp"
-        app:pressedTranslationZ="12dp"
-        android:src="@drawable/label_add"
-        android:layout_marginEnd="155dp" />
+        app:pressedTranslationZ="12dp" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabSaveReport"
@@ -197,46 +217,49 @@
         android:layout_height="58dp"
         android:layout_gravity="bottom|end"
         android:layout_marginBottom="135dp"
+        android:layout_marginEnd="130dp"
         android:layout_marginRight="130dp"
         android:src="@drawable/ic_white_save"
         android:visibility="invisible"
         app:elevation="6dp"
-        app:pressedTranslationZ="12dp"
-        android:layout_marginEnd="130dp" />
+        app:pressedTranslationZ="12dp" />
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabGoBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="170dp"
         android:layout_gravity="bottom|end"
+        android:layout_marginBottom="170dp"
+        android:layout_marginEnd="80dp"
         android:layout_marginRight="80dp"
+        android:src="@drawable/back_arrow_white"
         android:visibility="invisible"
         app:elevation="6dp"
-        app:pressedTranslationZ="12dp"
-        android:src="@drawable/back_arrow_white"
-        android:layout_marginEnd="80dp" />
+        app:pressedTranslationZ="12dp" />
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabGoNext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="180dp"
         android:layout_gravity="bottom|end"
+        android:layout_marginBottom="180dp"
+        android:layout_marginEnd="@dimen/fab_margin"
         android:layout_marginRight="@dimen/fab_margin"
+        android:src="@drawable/next_arrow_white"
         android:visibility="invisible"
         app:elevation="6dp"
-        app:pressedTranslationZ="12dp"
-        android:src="@drawable/next_arrow_white"
-        android:layout_marginEnd="@dimen/fab_margin" />
+        app:pressedTranslationZ="12dp" />
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/showFab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        app:elevation="6dp"
-        app:backgroundTint="@color/colorPrimaryDark"
-        app:pressedTranslationZ="12dp"
         android:layout_marginBottom="50dp"
+        android:layout_marginEnd="50dp"
         android:layout_marginRight="50dp"
         android:src="@drawable/ic_more_vertical_white"
-        android:layout_marginEnd="50dp" />
+        app:backgroundTint="@color/colorPrimaryDark"
+        app:elevation="6dp"
+        app:pressedTranslationZ="12dp" />
 </android.support.design.widget.CoordinatorLayout>

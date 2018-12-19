@@ -6,7 +6,18 @@ import android.os.Parcelable;
 import java.util.ArrayList;
 import java.util.Observable;
 
-public class ReportPOJO  extends Observable implements Parcelable  {
+public class ReportPOJO extends Observable implements Parcelable {
+    public static final Creator<ReportPOJO> CREATOR = new Creator<ReportPOJO>() {
+        @Override
+        public ReportPOJO createFromParcel(Parcel in) {
+            return new ReportPOJO(in);
+        }
+
+        @Override
+        public ReportPOJO[] newArray(int size) {
+            return new ReportPOJO[size];
+        }
+    };
     private String id;
     private String reportTitle;
     private String reportDescription;
@@ -16,16 +27,14 @@ public class ReportPOJO  extends Observable implements Parcelable  {
     private String locationLat;
     private String locationLong;
     private String addressLine;
-
     private String createdDate;
     private String filePath;
     private String googleMapSnapShotFilePath;
-
     private ArrayList labelArrayList;
     private PropertyDetailsPOJO propertyDetailsPOJO;
     private PerilPOJO perilPOJO;
 
-    public ReportPOJO(){
+    public ReportPOJO() {
 
         id = "";
         reportTitle = "";
@@ -42,6 +51,26 @@ public class ReportPOJO  extends Observable implements Parcelable  {
         labelArrayList = new ArrayList<>();
         propertyDetailsPOJO = new PropertyDetailsPOJO();
         perilPOJO = new PerilPOJO();
+    }
+
+    protected ReportPOJO(Parcel in) {
+
+        id = in.readString();
+        reportTitle = in.readString();
+        reportDescription = in.readString();
+        insuredName = in.readString();
+        claimNumber = in.readString();
+        reportBy = in.readString();
+        locationLat = in.readString();
+
+        locationLong = in.readString();
+        addressLine = in.readString();
+        createdDate = in.readString();
+        filePath = in.readString();
+        googleMapSnapShotFilePath = in.readString();
+        labelArrayList = in.createTypedArrayList(Label.CREATOR);
+        propertyDetailsPOJO = in.readParcelable(PropertyDetailsPOJO.class.getClassLoader());
+        perilPOJO = in.readParcelable(PerilPOJO.class.getClassLoader());
     }
 
     public PropertyDetailsPOJO getPropertyDetailsPOJO() {
@@ -65,39 +94,6 @@ public class ReportPOJO  extends Observable implements Parcelable  {
         notifyObservers();
     }
 
-    protected ReportPOJO(Parcel in) {
-
-        id = in.readString();
-        reportTitle = in.readString();
-        reportDescription = in.readString();
-        insuredName = in.readString();
-        claimNumber = in.readString();
-        reportBy = in.readString();
-        locationLat = in.readString();
-
-        locationLong = in.readString();
-        addressLine = in.readString();
-        createdDate = in.readString();
-        filePath = in.readString();
-        googleMapSnapShotFilePath = in.readString();
-        labelArrayList = in.createTypedArrayList(Label.CREATOR);
-        propertyDetailsPOJO = in.readParcelable(PropertyDetailsPOJO.class.getClassLoader());
-        perilPOJO = in.readParcelable(PerilPOJO.class.getClassLoader());
-    }
-
-
-    public static final Creator<ReportPOJO> CREATOR = new Creator<ReportPOJO>() {
-        @Override
-        public ReportPOJO createFromParcel(Parcel in) {
-            return new ReportPOJO(in);
-        }
-
-        @Override
-        public ReportPOJO[] newArray(int size) {
-            return new ReportPOJO[size];
-        }
-    };
-
     public String getAddressLine() {
         return addressLine;
     }
@@ -107,7 +103,6 @@ public class ReportPOJO  extends Observable implements Parcelable  {
         setChanged();
         notifyObservers();
     }
-
 
 
     public String getLocationLat() {
@@ -211,7 +206,7 @@ public class ReportPOJO  extends Observable implements Parcelable  {
     }
 
     public ArrayList<Label> getLabelArrayList() {
-        return labelArrayList == null ?  new ArrayList<Label>() :  labelArrayList;
+        return labelArrayList == null ? new ArrayList<Label>() : labelArrayList;
     }
 
     public void setLabelArrayList(ArrayList<Label> labelArrayList) {
@@ -245,8 +240,8 @@ public class ReportPOJO  extends Observable implements Parcelable  {
         dest.writeString(filePath);
         dest.writeString(googleMapSnapShotFilePath);
         dest.writeTypedList(labelArrayList);
-        dest.writeParcelable(propertyDetailsPOJO , flags);
-        dest.writeParcelable(perilPOJO , flags);
+        dest.writeParcelable(propertyDetailsPOJO, flags);
+        dest.writeParcelable(perilPOJO, flags);
     }
 
     public String getGoogleMapSnapShotFilePath() {

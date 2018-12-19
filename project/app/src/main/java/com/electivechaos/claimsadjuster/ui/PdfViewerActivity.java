@@ -12,7 +12,6 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.electivechaos.claimsadjuster.R;
-import com.electivechaos.claimsadjuster.utils.CommonUtils;
 import com.github.barteksc.pdfviewer.PDFView;
 import com.github.barteksc.pdfviewer.listener.OnLoadCompleteListener;
 import com.github.barteksc.pdfviewer.listener.OnPageChangeListener;
@@ -56,7 +55,6 @@ public class PdfViewerActivity extends AppCompatActivity {
         });
 
 
-
         pdfView.fromFile(file).spacing(10).onLoad(new OnLoadCompleteListener() {
             @Override
             public void loadComplete(int nbPages) {
@@ -73,9 +71,10 @@ public class PdfViewerActivity extends AppCompatActivity {
             }
         }).load();
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 super.onBackPressed();
                 return true;

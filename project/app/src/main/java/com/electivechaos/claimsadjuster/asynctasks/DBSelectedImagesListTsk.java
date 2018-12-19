@@ -14,14 +14,14 @@ import java.util.ArrayList;
  */
 
 
-public class DBSelectedImagesListTsk extends AsyncTask<String,Integer,ArrayList> {
+public class DBSelectedImagesListTsk extends AsyncTask<String, Integer, ArrayList> {
     private CategoryListDBHelper categoryListDBHelper;
     private String type;
     private AsyncTaskStatusCallback taskCompleteCallback;
     private Label label;
     private ArrayList<ImageDetailsPOJO> imageList;
 
-    public DBSelectedImagesListTsk(CategoryListDBHelper categoryListDBHelper, String type, Label label ,ArrayList<ImageDetailsPOJO> imageList, AsyncTaskStatusCallback taskCompleteCallback) {
+    public DBSelectedImagesListTsk(CategoryListDBHelper categoryListDBHelper, String type, Label label, ArrayList<ImageDetailsPOJO> imageList, AsyncTaskStatusCallback taskCompleteCallback) {
         this.categoryListDBHelper = categoryListDBHelper;
         this.type = type;
         this.taskCompleteCallback = taskCompleteCallback;
@@ -44,20 +44,20 @@ public class DBSelectedImagesListTsk extends AsyncTask<String,Integer,ArrayList>
     @Override
     protected ArrayList doInBackground(String... strings) {
 
-        if(type.equalsIgnoreCase("insert_selected_images")) {
+        if (type.equalsIgnoreCase("insert_selected_images")) {
             return categoryListDBHelper.appendSelectedImages(label, imageList);
 
-        } else if(type.equalsIgnoreCase("insert_captured_image")) {
+        } else if (type.equalsIgnoreCase("insert_captured_image")) {
             ImageDetailsPOJO imgObj = categoryListDBHelper.appendCapturedImages(label, imageList);
             ArrayList<ImageDetailsPOJO> imageList = new ArrayList<>();
             imageList.add(imgObj);
             return imageList;
 
-        } else if(type.equalsIgnoreCase("insert_rearranged_image")) {
+        } else if (type.equalsIgnoreCase("insert_rearranged_image")) {
             categoryListDBHelper.updateSelectedImages(label, imageList);
             return categoryListDBHelper.getLabelImages(label.getId());
 
-        }else if(type.equalsIgnoreCase("get_images_for_label")) {
+        } else if (type.equalsIgnoreCase("get_images_for_label")) {
             return categoryListDBHelper.getLabelImages(label.getId());
 
         }
@@ -67,7 +67,7 @@ public class DBSelectedImagesListTsk extends AsyncTask<String,Integer,ArrayList>
 
     @Override
     protected void onPostExecute(ArrayList result) {
-        taskCompleteCallback.onPostExecute(result,type);
+        taskCompleteCallback.onPostExecute(result, type);
     }
 }
 

@@ -195,7 +195,7 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
                 month = c.get(Calendar.MONTH);
                 year = c.get(Calendar.YEAR);
                 day = c.get(Calendar.DAY_OF_MONTH);
-                if(getContext() != null){
+                if (getContext() != null) {
                     DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), PropertyDetailsFragment.this, year, month, day);
                     datePickerDialog.show();
                 }
@@ -230,9 +230,9 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
                             @Override
                             public void onClick(DialogInterface dialogInterface, int position) {
 
-                                    menuRoofSystem.setText(roofSystemList.get(position).getName());
-                                    onPropertyDetailsClickListener.setPropertyRoofSystem(roofSystemList.get(position).getName());
-                                    dialogInterface.dismiss();
+                                menuRoofSystem.setText(roofSystemList.get(position).getName());
+                                onPropertyDetailsClickListener.setPropertyRoofSystem(roofSystemList.get(position).getName());
+                                dialogInterface.dismiss();
 
                             }
                         });
@@ -341,8 +341,8 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
                             @Override
                             public void onClick(DialogInterface dialogInterface, int position) {
 
-                                    menuFoundation.setText(foundationList.get(position).getName().toString());
-                                    onPropertyDetailsClickListener.setPropertyFoundation(foundationList.get(position).getName().toString());
+                                menuFoundation.setText(foundationList.get(position).getName().toString());
+                                onPropertyDetailsClickListener.setPropertyFoundation(foundationList.get(position).getName().toString());
                                 dialogInterface.dismiss();
 
                             }
@@ -395,8 +395,8 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
 
                             @Override
                             public void onClick(DialogInterface dialogInterface, int position) {
-                                    menuBuildingType.setText(buildingTypeList.get(position).getName().toString());
-                                    onPropertyDetailsClickListener.setPropertyBuildingType(buildingTypeList.get(position).getName().toString());
+                                menuBuildingType.setText(buildingTypeList.get(position).getName().toString());
+                                onPropertyDetailsClickListener.setPropertyBuildingType(buildingTypeList.get(position).getName().toString());
 
                                 dialogInterface.dismiss();
 
@@ -437,7 +437,7 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
             public void afterTextChanged(Editable s) {
                 String tempString = s.toString().trim();
                 if (!tempString.isEmpty()) {
-                        onPropertyDetailsClickListener.setPropertySquareFootage(tempString);
+                    onPropertyDetailsClickListener.setPropertySquareFootage(tempString);
                 } else {
                     onPropertyDetailsClickListener.setPropertySquareFootage("");
                 }
@@ -485,7 +485,7 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
 
         DecimalFormat formatter = new DecimalFormat("00");
 
-        String dateString =   formatter.format(i1 + 1) + "/" + formatter.format(i2) + "/" + i;
+        String dateString = formatter.format(i1 + 1) + "/" + formatter.format(i2) + "/" + i;
         txtDate.setText(dateString);
         onPropertyDetailsClickListener.setPropertyDate(dateString);
 

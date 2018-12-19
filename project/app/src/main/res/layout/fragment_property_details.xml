@@ -1,140 +1,144 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="8dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_margin="8dp">
+
     <FrameLayout
         android:id="@+id/content_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    <LinearLayout
-        android:orientation="vertical"
-        android:visibility="gone"
-        android:id="@+id/progressBarLayout"
-        android:gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <ProgressBar
-            android:visibility="visible"
-            style="@style/Widget.AppCompat.ProgressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
-        <TextView
-            android:drawableRight="@drawable/ic_date"
-            android:textSize="16sp"
-            android:ellipsize="end"
-            android:lines="1"
-            android:id="@+id/txtDate"
+        <LinearLayout
+            android:id="@+id/progressBarLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/select_inspection_date"
-            android:gravity="center_vertical"
-            android:drawableEnd="@drawable/ic_date" />
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
 
+            <ProgressBar
+                style="@style/Widget.AppCompat.ProgressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="visible" />
+        </LinearLayout>
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_marginTop="10dp"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/squareFootage"
+            <TextView
+                android:id="@+id/txtDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/enter_square_footage"
-                android:digits="0123456789."
-                android:textColor="@color/black"
-                android:maxLength="10"
+                android:drawableEnd="@drawable/ic_date"
+                android:drawableRight="@drawable/ic_date"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:hint="@string/select_inspection_date"
+                android:lines="1"
                 android:textSize="16sp" />
-        </android.support.design.widget.TextInputLayout>
-
-        <TextView
-            android:ellipsize="end"
-            android:lines="1"
-            android:id="@+id/menuOne"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableEnd="@drawable/ic_key_arrow_down"
-            android:drawableRight="@drawable/ic_key_arrow_down"
-            android:padding="5dp"
-            android:text="@string/select_roof_system"
-            android:textSize="16sp"
-            android:layout_marginTop="10dp"/>
-
-        <TextView
-            android:ellipsize="end"
-            android:lines="1"
-            android:id="@+id/menuTwo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableEnd="@drawable/ic_key_arrow_down"
-            android:drawableRight="@drawable/ic_key_arrow_down"
-            android:padding="5dp"
-            android:text="@string/select_siding"
-            android:textSize="16sp"
-            android:layout_marginTop="10dp"/>
-
-        <TextView
-            android:ellipsize="end"
-            android:lines="1"
-            android:id="@+id/menuThree"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableEnd="@drawable/ic_key_arrow_down"
-            android:drawableRight="@drawable/ic_key_arrow_down"
-            android:padding="5dp"
-            android:text="@string/select_foundation"
-            android:textSize="16sp"
-            android:layout_marginTop="10dp"/>
-
-        <TextView
-            android:ellipsize="end"
-            android:lines="1"
-            android:id="@+id/menuFour"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableEnd="@drawable/ic_key_arrow_down"
-            android:drawableRight="@drawable/ic_key_arrow_down"
-            android:padding="5dp"
-            android:text="@string/select_building_type"
-            android:textSize="16sp"
-            android:layout_marginTop="10dp"/>
 
 
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
 
-    </LinearLayout>
-</FrameLayout>
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/squareFootage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:digits="0123456789."
+                    android:hint="@string/enter_square_footage"
+                    android:maxLength="10"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+            </android.support.design.widget.TextInputLayout>
+
+            <TextView
+                android:id="@+id/menuOne"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:drawableEnd="@drawable/ic_key_arrow_down"
+                android:drawableRight="@drawable/ic_key_arrow_down"
+                android:ellipsize="end"
+                android:lines="1"
+                android:padding="5dp"
+                android:text="@string/select_roof_system"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/menuTwo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:drawableEnd="@drawable/ic_key_arrow_down"
+                android:drawableRight="@drawable/ic_key_arrow_down"
+                android:ellipsize="end"
+                android:lines="1"
+                android:padding="5dp"
+                android:text="@string/select_siding"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/menuThree"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:drawableEnd="@drawable/ic_key_arrow_down"
+                android:drawableRight="@drawable/ic_key_arrow_down"
+                android:ellipsize="end"
+                android:lines="1"
+                android:padding="5dp"
+                android:text="@string/select_foundation"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/menuFour"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:drawableEnd="@drawable/ic_key_arrow_down"
+                android:drawableRight="@drawable/ic_key_arrow_down"
+                android:ellipsize="end"
+                android:lines="1"
+                android:padding="5dp"
+                android:text="@string/select_building_type"
+                android:textSize="16sp" />
+
+
+        </LinearLayout>
+    </FrameLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabGenerateReport"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
         android:layout_gravity="bottom|end"
+        android:layout_marginBottom="20dp"
+        android:layout_marginEnd="160dp"
         android:layout_marginRight="160dp"
+        android:src="@drawable/pdf_gen"
         android:visibility="invisible"
         app:elevation="6dp"
-        app:pressedTranslationZ="12dp"
-        android:src="@drawable/pdf_gen"
-        android:layout_marginEnd="160dp" />
+        app:pressedTranslationZ="12dp" />
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabAddLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="80dp"
         android:layout_gravity="bottom|end"
+        android:layout_marginBottom="80dp"
+        android:layout_marginEnd="155dp"
         android:layout_marginRight="155dp"
+        android:src="@drawable/label_add"
         android:visibility="invisible"
         app:elevation="6dp"
-        app:pressedTranslationZ="12dp"
-        android:src="@drawable/label_add"
-        android:layout_marginEnd="155dp" />
+        app:pressedTranslationZ="12dp" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabSaveReport"
@@ -142,46 +146,49 @@
         android:layout_height="58dp"
         android:layout_gravity="bottom|end"
         android:layout_marginBottom="135dp"
+        android:layout_marginEnd="130dp"
         android:layout_marginRight="130dp"
         android:src="@drawable/ic_white_save"
         android:visibility="invisible"
         app:elevation="6dp"
-        app:pressedTranslationZ="12dp"
-        android:layout_marginEnd="130dp" />
+        app:pressedTranslationZ="12dp" />
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabGoBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="170dp"
         android:layout_gravity="bottom|end"
+        android:layout_marginBottom="170dp"
+        android:layout_marginEnd="80dp"
         android:layout_marginRight="80dp"
+        android:src="@drawable/back_arrow_white"
         android:visibility="invisible"
         app:elevation="6dp"
-        app:pressedTranslationZ="12dp"
-        android:src="@drawable/back_arrow_white"
-        android:layout_marginEnd="80dp" />
+        app:pressedTranslationZ="12dp" />
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabGoNext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="180dp"
         android:layout_gravity="bottom|end"
+        android:layout_marginBottom="180dp"
+        android:layout_marginEnd="@dimen/fab_margin"
         android:layout_marginRight="@dimen/fab_margin"
+        android:src="@drawable/next_arrow_white"
         android:visibility="invisible"
         app:elevation="6dp"
-        app:pressedTranslationZ="12dp"
-        android:src="@drawable/next_arrow_white"
-        android:layout_marginEnd="@dimen/fab_margin" />
+        app:pressedTranslationZ="12dp" />
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/showFab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        app:elevation="6dp"
-        app:backgroundTint="@color/colorPrimaryDark"
-        app:pressedTranslationZ="12dp"
         android:layout_marginBottom="50dp"
+        android:layout_marginEnd="50dp"
         android:layout_marginRight="50dp"
         android:src="@drawable/ic_more_vertical_white"
-        android:layout_marginEnd="50dp" />
+        app:backgroundTint="@color/colorPrimaryDark"
+        app:elevation="6dp"
+        app:pressedTranslationZ="12dp" />
 </android.support.design.widget.CoordinatorLayout>

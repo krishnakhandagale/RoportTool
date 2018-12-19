@@ -3,14 +3,23 @@ package com.electivechaos.claimsadjuster.pojo;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.io.Serializable;
-
 /**
  * Created by nafeea on 4/24/18.
  */
 
 public class ImageDetailsPOJO implements Parcelable {
 
+    public static final Creator<ImageDetailsPOJO> CREATOR = new Creator<ImageDetailsPOJO>() {
+        @Override
+        public ImageDetailsPOJO createFromParcel(Parcel in) {
+            return new ImageDetailsPOJO(in);
+        }
+
+        @Override
+        public ImageDetailsPOJO[] newArray(int size) {
+            return new ImageDetailsPOJO[size];
+        }
+    };
     private String imageId;
     private String imageUrl;
     private String title;
@@ -20,8 +29,6 @@ public class ImageDetailsPOJO implements Parcelable {
     private boolean isPointOfOrigin;
     private String coverageTye; // Default value from label
     private String imageName;
-
-
     private String imageDateTime;
     private String imageGeoTag;
 
@@ -40,35 +47,7 @@ public class ImageDetailsPOJO implements Parcelable {
 
     }
 
-    public boolean isPointOfOrigin() {
-        return isPointOfOrigin;
-    }
-
-    public void setPointOfOrigin(boolean pointOfOrigin) {
-        isPointOfOrigin = pointOfOrigin;
-    }
-
-    public static final Creator<ImageDetailsPOJO> CREATOR = new Creator<ImageDetailsPOJO>() {
-        @Override
-        public ImageDetailsPOJO createFromParcel(Parcel in) {
-            return new ImageDetailsPOJO(in);
-        }
-
-        @Override
-        public ImageDetailsPOJO[] newArray(int size) {
-            return new ImageDetailsPOJO[size];
-        }
-    };
-
-    public boolean isDamage() {
-        return isDamage;
-    }
-
-    public void setIsDamage(boolean damage) {
-        isDamage = damage;
-    }
-
-    public ImageDetailsPOJO(){
+    public ImageDetailsPOJO() {
         this.imageId = "";
         this.imageUrl = "";
         this.title = "";
@@ -79,6 +58,26 @@ public class ImageDetailsPOJO implements Parcelable {
         this.imageGeoTag = "";
     }
 
+    public boolean isPointOfOrigin() {
+        return isPointOfOrigin;
+    }
+
+    public void setPointOfOrigin(boolean pointOfOrigin) {
+        isPointOfOrigin = pointOfOrigin;
+    }
+
+    public boolean isDamage() {
+        return isDamage;
+    }
+
+    public void setDamage(boolean damage) {
+        isDamage = damage;
+    }
+
+    public void setIsDamage(boolean damage) {
+        isDamage = damage;
+    }
+
     public String getImageId() {
         return imageId;
     }
@@ -86,6 +85,7 @@ public class ImageDetailsPOJO implements Parcelable {
     public void setImageId(String imageId) {
         this.imageId = imageId;
     }
+
     public String getImageUrl() {
         return imageUrl;
     }
@@ -108,10 +108,6 @@ public class ImageDetailsPOJO implements Parcelable {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public void setDamage(boolean damage) {
-        isDamage = damage;
     }
 
     public boolean isOverview() {
@@ -166,9 +162,9 @@ public class ImageDetailsPOJO implements Parcelable {
         dest.writeString(imageUrl);
         dest.writeString(title);
         dest.writeString(description);
-        dest.writeByte((byte)(isDamage ? 1 : 0));
-        dest.writeByte((byte)(isOverview ? 1 : 0));
-        dest.writeByte((byte)(isPointOfOrigin ? 1 : 0));
+        dest.writeByte((byte) (isDamage ? 1 : 0));
+        dest.writeByte((byte) (isOverview ? 1 : 0));
+        dest.writeByte((byte) (isPointOfOrigin ? 1 : 0));
         dest.writeString(coverageTye);
         dest.writeString(imageName);
         dest.writeString(imageDateTime);

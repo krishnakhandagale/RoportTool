@@ -4,12 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
@@ -32,16 +32,16 @@ import java.util.List;
 
 public class PerilDetailsActivity extends AppCompatActivity {
 
+    static CategoryListDBHelper mCategoryListDBHelper;
     public ArrayList<PerilPOJO> perilPOJOS = new ArrayList<>();
     private RecyclerView recyclerView;
-    static CategoryListDBHelper mCategoryListDBHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_peril_details);
 
-        Toolbar toolbar =  findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Manage Peril");
 
@@ -71,22 +71,22 @@ public class PerilDetailsActivity extends AppCompatActivity {
             if (resultCode == Activity.RESULT_OK) {
                 updatePerilDetails();
             }
-        }
-        else if(requestCode == 2) {
-                updatePerilDetails();
+        } else if (requestCode == 2) {
+            updatePerilDetails();
         }
 
     }
 
-    private  void updatePerilDetails(){
+    private void updatePerilDetails() {
         perilPOJOS = mCategoryListDBHelper.getPeril();
         PerilListAdapter mAdapter = new PerilListAdapter(perilPOJOS, PerilDetailsActivity.this);
         recyclerView.setAdapter(mAdapter);
     }
 
     public class PerilListAdapter extends RecyclerView.Adapter<PerilListAdapter.MyViewHolder> {
-        private Context context;
         List<PerilPOJO> perilPOJOS;
+        private Context context;
+
         PerilListAdapter(ArrayList<PerilPOJO> perilPOJOS, Context context) {
             this.context = context;
             this.perilPOJOS = perilPOJOS;
@@ -143,9 +143,9 @@ public class PerilDetailsActivity extends AppCompatActivity {
                                     AlertDialog alert = builder.create();
                                     alert.show();
                                     Button negativeButton = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
-                                    negativeButton.setTextColor(ContextCompat.getColor(context,R.color.colorPrimaryDark));
+                                    negativeButton.setTextColor(ContextCompat.getColor(context, R.color.colorPrimaryDark));
                                     Button positiveButton = alert.getButton(DialogInterface.BUTTON_POSITIVE);
-                                    positiveButton.setTextColor(ContextCompat.getColor(context,R.color.colorPrimaryDark));
+                                    positiveButton.setTextColor(ContextCompat.getColor(context, R.color.colorPrimaryDark));
                                     break;
                                 default:
                             }
@@ -166,6 +166,7 @@ public class PerilDetailsActivity extends AppCompatActivity {
         public class MyViewHolder extends RecyclerView.ViewHolder {
             public TextView title, desc;
             public ImageView textViewOptions;
+
             public MyViewHolder(View itemView) {
                 super(itemView);
                 title = itemView.findViewById(R.id.category_name);

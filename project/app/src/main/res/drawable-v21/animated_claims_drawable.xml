@@ -2,17 +2,17 @@
 <animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:drawable="@drawable/ic_claims">
     <target
-        android:animation="@animator/left_animator"
-        android:name="left" />
+        android:name="left"
+        android:animation="@animator/left_animator" />
     <target
-        android:animation="@animator/animator"
-        android:name="up" />
+        android:name="up"
+        android:animation="@animator/animator" />
     <target
-        android:animation="@animator/animator_from_right"
-        android:name="down" />
+        android:name="down"
+        android:animation="@animator/animator_from_right" />
 
     <target
-        android:animation="@animator/left_animator"
-        android:name="right" />
+        android:name="right"
+        android:animation="@animator/left_animator" />
 
 </animated-vector>

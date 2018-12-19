@@ -2,8 +2,9 @@ package com.electivechaos.claimsadjuster.interfaces;
 
 import com.electivechaos.claimsadjuster.pojo.Label;
 
-public  interface AddEditLabelInterface {
+public interface AddEditLabelInterface {
 
-     void onLabelAdded(Label label);
-     void onLabelDeleted(int position);
+    void onLabelAdded(Label label);
+
+    void onLabelDeleted(int position);
 }

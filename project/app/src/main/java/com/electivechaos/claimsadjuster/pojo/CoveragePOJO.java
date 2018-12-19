@@ -4,6 +4,17 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class CoveragePOJO implements Parcelable {
+    public static final Creator<CoveragePOJO> CREATOR = new Creator<CoveragePOJO>() {
+        @Override
+        public CoveragePOJO createFromParcel(Parcel in) {
+            return new CoveragePOJO(in);
+        }
+
+        @Override
+        public CoveragePOJO[] newArray(int size) {
+            return new CoveragePOJO[size];
+        }
+    };
     private String name;
     private String description;
     private int id;
@@ -19,18 +30,6 @@ public class CoveragePOJO implements Parcelable {
         name = in.readString();
         description = in.readString();
     }
-
-    public static final Creator<CoveragePOJO> CREATOR = new Creator<CoveragePOJO>() {
-        @Override
-        public CoveragePOJO createFromParcel(Parcel in) {
-            return new CoveragePOJO(in);
-        }
-
-        @Override
-        public CoveragePOJO[] newArray(int size) {
-            return new CoveragePOJO[size];
-        }
-    };
 
     public int getID() {
         return id;

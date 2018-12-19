@@ -36,7 +36,7 @@ public class ReportListFragment extends Fragment {
     private RecyclerView recyclerView;
     private ReportListAdapter mAdapter;
     private CategoryListDBHelper mCategoryListDBHelper;
-    private  ArrayList<ReportItemPOJO> reportItemPOJOS;
+    private ArrayList<ReportItemPOJO> reportItemPOJOS;
 
 
     @Override
@@ -60,7 +60,7 @@ public class ReportListFragment extends Fragment {
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        FloatingActionButton  btnAddReport = view.findViewById(R.id.btnAddReport);
+        FloatingActionButton btnAddReport = view.findViewById(R.id.btnAddReport);
 
 
         btnAddReport.setOnClickListener(new View.OnClickListener() {
@@ -78,35 +78,27 @@ public class ReportListFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        setReportListAdapter();
+    }
+
+    private void setReportListAdapter() {
+        reportItemPOJOS = mCategoryListDBHelper.getReports();
+        mAdapter = new ReportListAdapter(getActivity(), reportItemPOJOS);
+        recyclerView.setAdapter(mAdapter);
+    }
 
     public class ReportListAdapter extends RecyclerView.Adapter<ReportListAdapter.MyViewHolder> {
         private Context context;
         private ArrayList<ReportItemPOJO> reportItemPOJOArrayList;
 
 
-        ReportListAdapter(Context context, ArrayList<ReportItemPOJO> reportItemPOJOArrayList){
+        ReportListAdapter(Context context, ArrayList<ReportItemPOJO> reportItemPOJOArrayList) {
             this.context = context;
             this.reportItemPOJOArrayList = reportItemPOJOArrayList;
         }
-
-        public class MyViewHolder extends RecyclerView.ViewHolder {
-
-            public TextView insuredName, claimNumber;
-            public ImageView textViewOptions;
-
-
-            public MyViewHolder(View view) {
-                super(view);
-
-                insuredName = view.findViewById(R.id.insuredName);
-                claimNumber = view.findViewById(R.id.claimNumber);
-                textViewOptions = view.findViewById(R.id.textViewOptions);
-
-            }
-        }
-
-
-
 
         @Override
         public ReportListAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -119,10 +111,10 @@ public class ReportListFragment extends Fragment {
         @Override
         public void onBindViewHolder(final ReportListAdapter.MyViewHolder holder, final int position) {
             final ReportItemPOJO reportItemPOJO = reportItemPOJOArrayList.get(position);
-            if(reportItemPOJO.getInsuredName().isEmpty() || reportItemPOJO.getInsuredName()==null) {
+            if (reportItemPOJO.getInsuredName().isEmpty() || reportItemPOJO.getInsuredName() == null) {
 
                 holder.insuredName.setText(reportItemPOJO.getCreatedDate());
-            }else{
+            } else {
                 holder.insuredName.setText(reportItemPOJO.getInsuredName());
             }
 
@@ -138,10 +130,10 @@ public class ReportListFragment extends Fragment {
                         public boolean onMenuItemClick(MenuItem item) {
                             switch (item.getItemId()) {
                                 case R.id.edit:
-                                        Intent intent=new Intent(context,AddEditReportActivity.class);
-                                        intent.putExtra("reportId",reportItemPOJO.getId());
-                                        startActivityForResult(intent,1);
-                                        notifyDataSetChanged();
+                                    Intent intent = new Intent(context, AddEditReportActivity.class);
+                                    intent.putExtra("reportId", reportItemPOJO.getId());
+                                    startActivityForResult(intent, 1);
+                                    notifyDataSetChanged();
                                     break;
                                 case R.id.delete:
                                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -150,7 +142,7 @@ public class ReportListFragment extends Fragment {
                                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                                 public void onClick(DialogInterface dialog, int which) {
                                                     boolean fileDeleted = false;
-                                                    if(mCategoryListDBHelper.deleteReportEntry(reportItemPOJO.getId())>0) {
+                                                    if (mCategoryListDBHelper.deleteReportEntry(reportItemPOJO.getId()) > 0) {
                                                         if (!reportItemPOJO.getFilePath().trim().isEmpty()) {
                                                             File file = new File(reportItemPOJO.getFilePath());
                                                             if (file.exists()) {
@@ -158,7 +150,7 @@ public class ReportListFragment extends Fragment {
                                                             }
                                                         }
                                                     }
-                                                    if(fileDeleted){
+                                                    if (fileDeleted) {
                                                         reportItemPOJOArrayList.remove(position);
                                                         notifyItemRemoved(position);
                                                         notifyItemRangeChanged(position, reportItemPOJOArrayList.size());
@@ -174,19 +166,19 @@ public class ReportListFragment extends Fragment {
                                     AlertDialog alert = builder.create();
                                     alert.show();
                                     Button negativeButton = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
-                                    negativeButton.setTextColor(ContextCompat.getColor(context,R.color.colorPrimaryDark));
+                                    negativeButton.setTextColor(ContextCompat.getColor(context, R.color.colorPrimaryDark));
                                     Button positiveButton = alert.getButton(DialogInterface.BUTTON_POSITIVE);
-                                    positiveButton.setTextColor(ContextCompat.getColor(context,R.color.colorPrimaryDark));
+                                    positiveButton.setTextColor(ContextCompat.getColor(context, R.color.colorPrimaryDark));
                                     break;
                                 case R.id.view:
 
-                                    if(reportItemPOJO.getFilePath() != null && reportItemPOJO.getFilePath().isEmpty() == false){
+                                    if (reportItemPOJO.getFilePath() != null && reportItemPOJO.getFilePath().isEmpty() == false) {
                                         Intent pdfViewerIntent = new Intent(getContext(), PdfViewerActivity.class);
                                         pdfViewerIntent.putExtra("report_path", reportItemPOJO.getFilePath());
                                         pdfViewerIntent.putExtra("report_title", reportItemPOJO.getReportTitle());
                                         startActivity(pdfViewerIntent);
-                                    }else{
-                                        Toast.makeText(getContext(),"Seems no pdf report was generated, please generate report and view again.",Toast.LENGTH_LONG).show();
+                                    } else {
+                                        Toast.makeText(getContext(), "Seems no pdf report was generated, please generate report and view again.", Toast.LENGTH_LONG).show();
                                     }
 
 
@@ -205,17 +197,21 @@ public class ReportListFragment extends Fragment {
         public int getItemCount() {
             return reportItemPOJOArrayList.size();
         }
-    }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        setReportListAdapter();
-    }
+        public class MyViewHolder extends RecyclerView.ViewHolder {
 
-    private void setReportListAdapter() {
-        reportItemPOJOS = mCategoryListDBHelper.getReports();
-        mAdapter =  new ReportListAdapter(getActivity(), reportItemPOJOS);
-        recyclerView.setAdapter(mAdapter);
+            public TextView insuredName, claimNumber;
+            public ImageView textViewOptions;
+
+
+            public MyViewHolder(View view) {
+                super(view);
+
+                insuredName = view.findViewById(R.id.insuredName);
+                claimNumber = view.findViewById(R.id.claimNumber);
+                textViewOptions = view.findViewById(R.id.textViewOptions);
+
+            }
+        }
     }
 }

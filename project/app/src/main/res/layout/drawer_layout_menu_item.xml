@@ -1,27 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="8dp">
+
     <ImageView
-        android:src="@drawable/ic_cloud"
         android:id="@+id/menuIcon"
         android:layout_width="48dp"
         android:layout_height="wrap_content"
+        android:src="@drawable/ic_cloud"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/menuTitle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
-        android:textSize="16sp"
         android:id="@+id/menuTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:maxLines="1"
         android:text="@string/menu_title"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/addInspection"
         app:layout_constraintHorizontal_chainStyle="spread"
@@ -30,24 +31,24 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:focusable="false"
-        android:layout_margin="5dp"
         android:id="@+id/addInspection"
         android:layout_width="wrap_content"
         android:layout_height="28dp"
+        android:layout_margin="5dp"
+        android:background="@drawable/btn_shape_drawable"
+        android:focusable="false"
         android:text="@string/add"
         android:visibility="gone"
-        android:background="@drawable/btn_shape_drawable"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/checked"
         app:layout_constraintStart_toEndOf="@+id/menuTitle"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:src="@drawable/ic_check"
         android:id="@+id/checked"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:src="@drawable/ic_check"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

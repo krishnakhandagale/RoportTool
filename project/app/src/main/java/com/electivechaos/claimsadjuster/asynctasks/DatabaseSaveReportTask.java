@@ -16,7 +16,7 @@ import java.lang.ref.WeakReference;
  * Created by nafeesa on 5/16/18.
  */
 
-public class DatabaseSaveReportTask extends AsyncTask<String,Void,Void> {
+public class DatabaseSaveReportTask extends AsyncTask<String, Void, Void> {
 
     private WeakReference<Context> contextWeakReference;
     private WeakReference<View> viewWeakReference;
@@ -26,7 +26,7 @@ public class DatabaseSaveReportTask extends AsyncTask<String,Void,Void> {
     private ReportPOJO reportPOJO;
     private AsyncTaskStatusCallback asyncTaskStatusCallback;
 
-    public  DatabaseSaveReportTask(Context context, View progressBarLayout, ReportPOJO reportPOJO, boolean isProgressBar, CategoryListDBHelper categoryListDBHelper) {
+    public DatabaseSaveReportTask(Context context, View progressBarLayout, ReportPOJO reportPOJO, boolean isProgressBar, CategoryListDBHelper categoryListDBHelper) {
         this.isProgressBar = isProgressBar;
         this.categoryListDBHelper = categoryListDBHelper;
         this.reportPOJO = reportPOJO;
@@ -34,7 +34,7 @@ public class DatabaseSaveReportTask extends AsyncTask<String,Void,Void> {
         this.viewWeakReference = new WeakReference<>(progressBarLayout);
     }
 
-    public  DatabaseSaveReportTask(Context context, View progressBarLayout, ReportPOJO reportPOJO, boolean isProgressBar, CategoryListDBHelper categoryListDBHelper, AsyncTaskStatusCallback asyncTaskStatusCallback) {
+    public DatabaseSaveReportTask(Context context, View progressBarLayout, ReportPOJO reportPOJO, boolean isProgressBar, CategoryListDBHelper categoryListDBHelper, AsyncTaskStatusCallback asyncTaskStatusCallback) {
         this.isProgressBar = isProgressBar;
         this.categoryListDBHelper = categoryListDBHelper;
         this.reportPOJO = reportPOJO;
@@ -49,16 +49,15 @@ public class DatabaseSaveReportTask extends AsyncTask<String,Void,Void> {
         Context context = contextWeakReference.get();
         View progressBarLayout = viewWeakReference.get();
 
-        if(context == null){
+        if (context == null) {
             return;
         }
         CommonUtils.lockOrientation((Activity) context);
 
-        if(asyncTaskStatusCallback != null){
+        if (asyncTaskStatusCallback != null) {
             asyncTaskStatusCallback.onPreExecute();
         }
-        if(isProgressBar)
-        {
+        if (isProgressBar) {
             if (progressBarLayout != null) {
                 progressBarLayout.setVisibility(View.VISIBLE);
             }
@@ -75,16 +74,16 @@ public class DatabaseSaveReportTask extends AsyncTask<String,Void,Void> {
     protected void onPostExecute(Void result) {
         Context context = contextWeakReference.get();
         View progressBarLayout = viewWeakReference.get();
-        if(context == null){
+        if (context == null) {
             return;
         }
-        if(asyncTaskStatusCallback != null){
-            asyncTaskStatusCallback.onPostExecute(null,"report_save_complete");
+        if (asyncTaskStatusCallback != null) {
+            asyncTaskStatusCallback.onPostExecute(null, "report_save_complete");
         }
-        if(progressBarLayout != null){
+        if (progressBarLayout != null) {
             progressBarLayout.setVisibility(View.GONE);
         }
-        CommonUtils.unlockOrientation((Activity)context);
+        CommonUtils.unlockOrientation((Activity) context);
 
     }
 }

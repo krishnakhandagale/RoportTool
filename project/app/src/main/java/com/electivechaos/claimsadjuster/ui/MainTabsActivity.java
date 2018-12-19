@@ -30,7 +30,7 @@ public class MainTabsActivity extends BaseActivity {
 
         setContentView(R.layout.main_tabs_layout_activity);
 
-        Toolbar toolbar =  findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ViewPager viewPager = findViewById(R.id.main_viewpager);
 
@@ -41,11 +41,11 @@ public class MainTabsActivity extends BaseActivity {
         tabLayout.setupWithViewPager(viewPager);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
-        if(CommonUtils.getReportQuality(MainTabsActivity.this).isEmpty()){
-            CommonUtils.setReportQuality(Constants.REPORT_QUALITY_MEDIUM,MainTabsActivity.this);
+        if (CommonUtils.getReportQuality(MainTabsActivity.this).isEmpty()) {
+            CommonUtils.setReportQuality(Constants.REPORT_QUALITY_MEDIUM, MainTabsActivity.this);
         }
-        if(CommonUtils.getGoogleMap(MainTabsActivity.this).isEmpty()){
-            CommonUtils.setGoogleMap(Constants.MAP_TYPE_ID_SATELLITE,MainTabsActivity.this);
+        if (CommonUtils.getGoogleMap(MainTabsActivity.this).isEmpty()) {
+            CommonUtils.setGoogleMap(Constants.MAP_TYPE_ID_SATELLITE, MainTabsActivity.this);
         }
     }
 
@@ -59,32 +59,40 @@ public class MainTabsActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.Category:
-                Intent catIntent = new Intent(this,CategoryDetailsActivity.class);
+                Intent catIntent = new Intent(this, CategoryDetailsActivity.class);
                 startActivity(catIntent);
                 break;
 
             case R.id.Peril:
-                Intent perilIntent = new Intent(this,PerilDetailsActivity.class);
+                Intent perilIntent = new Intent(this, PerilDetailsActivity.class);
                 startActivity(perilIntent);
                 break;
             case R.id.Coverage:
-                Intent coverageIntent = new Intent(this,CoverageDetailsActivity.class);
+                Intent coverageIntent = new Intent(this, CoverageDetailsActivity.class);
                 startActivity(coverageIntent);
                 break;
             case R.id.Settings:
-                Intent settingsIntent = new Intent(this,SettingsActivity.class);
+                Intent settingsIntent = new Intent(this, SettingsActivity.class);
                 startActivity(settingsIntent);
                 break;
 
-                default:
+            default:
 
         }
         return super.onOptionsItemSelected(item);
     }
 
     //View pager  for showing two tabs in the welcome activity
+
+    @Override
+    public void onBackPressed() {
+        Intent setIntent = new Intent(Intent.ACTION_MAIN);
+        setIntent.addCategory(Intent.CATEGORY_HOME);
+        setIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(setIntent);
+    }
 
     static public class MainTabsActivityPagerAdapter extends FragmentStatePagerAdapter {
 
@@ -94,18 +102,19 @@ public class MainTabsActivity extends BaseActivity {
 
         @Override
         public Fragment getItem(int i) {
-            if( i ==0 ){
+            if (i == 0) {
                 Fragment fragment = new ReportListFragment();
                 return fragment;
-            }else if(i == 1){
+            } else if (i == 1) {
                 Fragment fragment = new CalenderFragment();
                 return fragment;
-            }else {
+            } else {
                 Fragment fragment = new AlertFragment();
                 return fragment;
             }
 
         }
+
         @Override
         public int getCount() {
             return 3;
@@ -113,22 +122,13 @@ public class MainTabsActivity extends BaseActivity {
 
         @Override
         public CharSequence getPageTitle(int position) {
-            if(position == 0){
-                return  "Report List";
-            }else if(position == 1){
-                return  "Calender";
-            }else {
+            if (position == 0) {
+                return "Report List";
+            } else if (position == 1) {
+                return "Calender";
+            } else {
                 return "Alert";
             }
         }
-    }
-
-
-    @Override
-    public void onBackPressed() {
-        Intent setIntent = new Intent(Intent.ACTION_MAIN);
-        setIntent.addCategory(Intent.CATEGORY_HOME);
-        setIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(setIntent);
     }
 }

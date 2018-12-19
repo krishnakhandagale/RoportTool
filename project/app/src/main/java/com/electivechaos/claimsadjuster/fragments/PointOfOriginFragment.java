@@ -23,7 +23,7 @@ import com.electivechaos.claimsadjuster.interfaces.OnSaveReportClickListener;
 public class PointOfOriginFragment extends Fragment {
 
     private Boolean isFabOpen = false;
-    private FloatingActionButton showFabBtn,fabGoNextBtn, fabGoBackBtn, fabAddLabelBtn, fabGenerateReportBtn, fabSaveReportBtn;
+    private FloatingActionButton showFabBtn, fabGoNextBtn, fabGoBackBtn, fabAddLabelBtn, fabGenerateReportBtn, fabSaveReportBtn;
     private Animation fab_open, fab_close;
     private NextButtonClickListener nextButtonClickListener;
     private BackButtonClickListener backButtonClickListener;
@@ -34,7 +34,7 @@ public class PointOfOriginFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view= inflater.inflate(R.layout.fragment_point_of_origin, container, false);
+        View view = inflater.inflate(R.layout.fragment_point_of_origin, container, false);
         showFabBtn = view.findViewById(R.id.showFab);
         fabGoNextBtn = view.findViewById(R.id.fabGoNext);
         fabGoBackBtn = view.findViewById(R.id.fabGoBack);
@@ -95,8 +95,6 @@ public class PointOfOriginFragment extends Fragment {
     }
 
 
-
-
     public void animateFAB() {
         if (isFabOpen) {
             showFabBtn.setImageResource(R.drawable.ic_more_vertical_white);
@@ -135,10 +133,10 @@ public class PointOfOriginFragment extends Fragment {
         try {
             nextButtonClickListener = (NextButtonClickListener) getActivity();
             backButtonClickListener = (BackButtonClickListener) getActivity();
-            onLabelAddClickListener = (DrawerMenuListAdapter.OnLabelAddClickListener)getActivity();
-            onSaveReportClickListener = (OnSaveReportClickListener)getActivity();
-            onGenerateReportClickListener = (OnGenerateReportClickListener)getActivity();
-        }catch (ClassCastException ex) {
+            onLabelAddClickListener = (DrawerMenuListAdapter.OnLabelAddClickListener) getActivity();
+            onSaveReportClickListener = (OnSaveReportClickListener) getActivity();
+            onGenerateReportClickListener = (OnGenerateReportClickListener) getActivity();
+        } catch (ClassCastException ex) {
             ex.printStackTrace();
         }
     }

@@ -64,71 +64,71 @@ public class SingleImageDetailsActivity extends BaseActivity {
         labelDefaultCoverageType = getIntent().getExtras().getString("labelDefaultCoverageType");
         isEdit = getIntent().getExtras().getBoolean("isEdit", false);
         position = getIntent().getExtras().getInt("position", -1);
-        labelPosition = getIntent().getExtras().getInt("labelPosition",-1);
+        labelPosition = getIntent().getExtras().getInt("labelPosition", -1);
 
-        if(imageDetails != null && isEdit){
-            if(imageDetails.getCoverageTye() == null || imageDetails.getCoverageTye().isEmpty()){
+        if (imageDetails != null && isEdit) {
+            if (imageDetails.getCoverageTye() == null || imageDetails.getCoverageTye().isEmpty()) {
                 imageCoverageType.setText(R.string.coverage_type);
-            }else {
+            } else {
                 imageCoverageType.setText(imageDetails.getCoverageTye());
             }
             description.setText(imageDetails.getDescription());
 
             isDamageTextView.setChecked(imageDetails.isDamage());
-            if(imageDetails.isDamage()) {
-                isDamageTextView.setBackground(ContextCompat.getDrawable(this,R.drawable.shape_chip_drawable_active));
-            }else {
-                isDamageTextView.setBackground(ContextCompat.getDrawable(this,R.drawable.shape_chip_drawable_gray));
+            if (imageDetails.isDamage()) {
+                isDamageTextView.setBackground(ContextCompat.getDrawable(this, R.drawable.shape_chip_drawable_active));
+            } else {
+                isDamageTextView.setBackground(ContextCompat.getDrawable(this, R.drawable.shape_chip_drawable_gray));
             }
 
 
             isOverviewTextView.setChecked(imageDetails.isOverview());
-            if(imageDetails.isOverview()) {
-                isOverviewTextView.setBackground(ContextCompat.getDrawable(this,R.drawable.shape_chip_drawable_active));
-            }else {
-                isOverviewTextView.setBackground(ContextCompat.getDrawable(this,R.drawable.shape_chip_drawable_gray));
+            if (imageDetails.isOverview()) {
+                isOverviewTextView.setBackground(ContextCompat.getDrawable(this, R.drawable.shape_chip_drawable_active));
+            } else {
+                isOverviewTextView.setBackground(ContextCompat.getDrawable(this, R.drawable.shape_chip_drawable_gray));
             }
 
             isPointOfOriginTextView.setChecked(imageDetails.isPointOfOrigin());
-            if(imageDetails.isPointOfOrigin()) {
-                isPointOfOriginTextView.setBackground(ContextCompat.getDrawable(this,R.drawable.shape_chip_drawable_active));
-            }else {
-                isPointOfOriginTextView.setBackground(ContextCompat.getDrawable(this,R.drawable.shape_chip_drawable_gray));
+            if (imageDetails.isPointOfOrigin()) {
+                isPointOfOriginTextView.setBackground(ContextCompat.getDrawable(this, R.drawable.shape_chip_drawable_active));
+            } else {
+                isPointOfOriginTextView.setBackground(ContextCompat.getDrawable(this, R.drawable.shape_chip_drawable_gray));
             }
 
 
         }
-        if(savedInstanceState != null) {
+        if (savedInstanceState != null) {
             imageDetails = savedInstanceState.getParcelable("image_details");
 
             isDamageTextView.setChecked(imageDetails.isDamage());
 
-            if(imageDetails.getCoverageTye() == null || imageDetails.getCoverageTye().isEmpty()){
+            if (imageDetails.getCoverageTye() == null || imageDetails.getCoverageTye().isEmpty()) {
                 imageCoverageType.setText(R.string.coverage_type);
-            }else {
+            } else {
                 imageCoverageType.setText(imageDetails.getCoverageTye());
             }
 
 
-            if(imageDetails.isDamage()) {
-                isDamageTextView.setBackground(ContextCompat.getDrawable(this,R.drawable.shape_chip_drawable_active));
-            }else {
-                isDamageTextView.setBackground(ContextCompat.getDrawable(this,R.drawable.shape_chip_drawable_gray));
+            if (imageDetails.isDamage()) {
+                isDamageTextView.setBackground(ContextCompat.getDrawable(this, R.drawable.shape_chip_drawable_active));
+            } else {
+                isDamageTextView.setBackground(ContextCompat.getDrawable(this, R.drawable.shape_chip_drawable_gray));
             }
 
 
             isOverviewTextView.setChecked(imageDetails.isOverview());
-            if(imageDetails.isOverview()) {
-                isOverviewTextView.setBackground(ContextCompat.getDrawable(this,R.drawable.shape_chip_drawable_active));
-            }else {
-                isOverviewTextView.setBackground(ContextCompat.getDrawable(this,R.drawable.shape_chip_drawable_gray));
+            if (imageDetails.isOverview()) {
+                isOverviewTextView.setBackground(ContextCompat.getDrawable(this, R.drawable.shape_chip_drawable_active));
+            } else {
+                isOverviewTextView.setBackground(ContextCompat.getDrawable(this, R.drawable.shape_chip_drawable_gray));
             }
 
             isPointOfOriginTextView.setChecked(imageDetails.isPointOfOrigin());
-            if(imageDetails.isPointOfOrigin()) {
-                isPointOfOriginTextView.setBackground(ContextCompat.getDrawable(this,R.drawable.shape_chip_drawable_active));
-            }else {
-                isPointOfOriginTextView.setBackground(ContextCompat.getDrawable(this,R.drawable.shape_chip_drawable_gray));
+            if (imageDetails.isPointOfOrigin()) {
+                isPointOfOriginTextView.setBackground(ContextCompat.getDrawable(this, R.drawable.shape_chip_drawable_active));
+            } else {
+                isPointOfOriginTextView.setBackground(ContextCompat.getDrawable(this, R.drawable.shape_chip_drawable_gray));
             }
         }
 
@@ -143,19 +143,19 @@ public class SingleImageDetailsActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
 
-                if(isOverviewTextView.isChecked()){
+                if (isOverviewTextView.isChecked()) {
                     isOverviewTextView.setChecked(false);
-                    isOverviewTextView.setBackground(ContextCompat.getDrawable(SingleImageDetailsActivity.this,R.drawable.shape_chip_drawable_gray));
+                    isOverviewTextView.setBackground(ContextCompat.getDrawable(SingleImageDetailsActivity.this, R.drawable.shape_chip_drawable_gray));
                     imageDetails.setOverview(false);
                 }
-                if(((CheckedTextView)v).isChecked()){
-                    ((CheckedTextView)v).setChecked(false);
+                if (((CheckedTextView) v).isChecked()) {
+                    ((CheckedTextView) v).setChecked(false);
                     imageDetails.setIsDamage(false);
-                    v.setBackground(ContextCompat.getDrawable(SingleImageDetailsActivity.this,R.drawable.shape_chip_drawable_gray));
-                }else{
-                    ((CheckedTextView)v).setChecked(true);
+                    v.setBackground(ContextCompat.getDrawable(SingleImageDetailsActivity.this, R.drawable.shape_chip_drawable_gray));
+                } else {
+                    ((CheckedTextView) v).setChecked(true);
                     imageDetails.setIsDamage(true);
-                    v.setBackground(ContextCompat.getDrawable(SingleImageDetailsActivity.this,R.drawable.shape_chip_drawable_active));
+                    v.setBackground(ContextCompat.getDrawable(SingleImageDetailsActivity.this, R.drawable.shape_chip_drawable_active));
                 }
             }
         });
@@ -164,19 +164,19 @@ public class SingleImageDetailsActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
 
-                if(isDamageTextView.isChecked()){
+                if (isDamageTextView.isChecked()) {
                     isDamageTextView.setChecked(false);
-                    isDamageTextView.setBackground(ContextCompat.getDrawable(SingleImageDetailsActivity.this,R.drawable.shape_chip_drawable_gray));
+                    isDamageTextView.setBackground(ContextCompat.getDrawable(SingleImageDetailsActivity.this, R.drawable.shape_chip_drawable_gray));
                     imageDetails.setDamage(false);
                 }
-                if(((CheckedTextView)v).isChecked()){
-                    ((CheckedTextView)v).setChecked(false);
+                if (((CheckedTextView) v).isChecked()) {
+                    ((CheckedTextView) v).setChecked(false);
                     imageDetails.setOverview(false);
-                    v.setBackground(ContextCompat.getDrawable(SingleImageDetailsActivity.this,R.drawable.shape_chip_drawable_gray));
-                }else{
-                    ((CheckedTextView)v).setChecked(true);
+                    v.setBackground(ContextCompat.getDrawable(SingleImageDetailsActivity.this, R.drawable.shape_chip_drawable_gray));
+                } else {
+                    ((CheckedTextView) v).setChecked(true);
                     imageDetails.setOverview(true);
-                    v.setBackground(ContextCompat.getDrawable(SingleImageDetailsActivity.this,R.drawable.shape_chip_drawable_active));
+                    v.setBackground(ContextCompat.getDrawable(SingleImageDetailsActivity.this, R.drawable.shape_chip_drawable_active));
                 }
             }
         });
@@ -185,13 +185,13 @@ public class SingleImageDetailsActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
 
-                if(isPointOfOriginTextView.isChecked()){
+                if (isPointOfOriginTextView.isChecked()) {
                     isPointOfOriginTextView.setChecked(false);
-                    isPointOfOriginTextView.setBackground(ContextCompat.getDrawable(SingleImageDetailsActivity.this,R.drawable.shape_chip_drawable_gray));
+                    isPointOfOriginTextView.setBackground(ContextCompat.getDrawable(SingleImageDetailsActivity.this, R.drawable.shape_chip_drawable_gray));
                     imageDetails.setPointOfOrigin(false);
-                }else{
+                } else {
                     isPointOfOriginTextView.setChecked(true);
-                    isPointOfOriginTextView.setBackground(ContextCompat.getDrawable(SingleImageDetailsActivity.this,R.drawable.shape_chip_drawable_active));
+                    isPointOfOriginTextView.setBackground(ContextCompat.getDrawable(SingleImageDetailsActivity.this, R.drawable.shape_chip_drawable_active));
                     imageDetails.setPointOfOrigin(true);
                 }
 
@@ -221,7 +221,7 @@ public class SingleImageDetailsActivity extends BaseActivity {
                             }
                         });
                         ad.setTitle("Coverage Type");
-                        if(coveragePOJOS.size() == 0){
+                        if (coveragePOJOS.size() == 0) {
                             ad.setMessage("No coverage types found.");
                         }
                         CustomMenuAdapter adapter = new CustomMenuAdapter(coveragePOJOS, imageDetails.getCoverageTye(), "coverage_type");
@@ -273,20 +273,19 @@ public class SingleImageDetailsActivity extends BaseActivity {
                 shareImageDetails.setImageGeoTag(imageDetails.getImageGeoTag());
 
 
-
                 Intent intent = new Intent();
                 intent.putExtra("selected_images", shareImageDetails);
                 intent.putExtra("isEdit", isEdit);
-                intent.putExtra("position",position);
+                intent.putExtra("position", position);
                 intent.putExtra("labelPosition", labelPosition);
-                setResult(RESULT_OK,intent);
+                setResult(RESULT_OK, intent);
                 finish();
             }
         });
-        Glide.with(this).load("file://"+imageDetails.getImageUrl()).into(imgView);
+        Glide.with(this).load("file://" + imageDetails.getImageUrl()).into(imgView);
     }
 
-    public void onShowPopup(ImageDetailsPOJO imageDetails){
+    public void onShowPopup(ImageDetailsPOJO imageDetails) {
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         Fragment prev = getSupportFragmentManager().findFragmentByTag("dialog");
@@ -295,7 +294,7 @@ public class SingleImageDetailsActivity extends BaseActivity {
         }
         ImageDetailsFragment imageDetailsFragment = new ImageDetailsFragment();
         Bundle imageDetailsData = new Bundle();
-        imageDetailsData.putString("imgName",imageDetails.getImageName());
+        imageDetailsData.putString("imgName", imageDetails.getImageName());
         imageDetailsData.putString("imgDateTime", imageDetails.getImageDateTime());
         imageDetailsData.putString("imgGeoTag", imageDetails.getImageGeoTag());
 
@@ -306,15 +305,15 @@ public class SingleImageDetailsActivity extends BaseActivity {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelable("image_details",imageDetails);
-        outState.putString("labelDefaultCoverageType",labelDefaultCoverageType);
+        outState.putParcelable("image_details", imageDetails);
+        outState.putString("labelDefaultCoverageType", labelDefaultCoverageType);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == RESULT_OK){
-            if(requestCode == ADD_COVERAGE_REQUEST_CODE){
+        if (resultCode == RESULT_OK) {
+            if (requestCode == ADD_COVERAGE_REQUEST_CODE) {
                 Bundle b = data.getExtras().getBundle("coverageDetails");
                 imageDetails.setCoverageTye(b.getString("name"));
                 imageCoverageType.setText(imageDetails.getCoverageTye());

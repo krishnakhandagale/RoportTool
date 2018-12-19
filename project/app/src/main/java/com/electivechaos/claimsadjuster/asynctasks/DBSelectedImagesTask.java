@@ -15,7 +15,7 @@ import java.lang.ref.WeakReference;
  * Created by nafeesa on 5/17/18.
  */
 
-public class DBSelectedImagesTask  extends AsyncTask<String,Void,Void> {
+public class DBSelectedImagesTask extends AsyncTask<String, Void, Void> {
 
 
     private WeakReference<Context> contextWeakReference;
@@ -25,7 +25,7 @@ public class DBSelectedImagesTask  extends AsyncTask<String,Void,Void> {
     private String type;
     private Label label;
 
-    public  DBSelectedImagesTask (Context context, View progressBarLayout, Label label,  boolean isProgressBar, CategoryListDBHelper categoryListDBHelper, String type) {
+    public DBSelectedImagesTask(Context context, View progressBarLayout, Label label, boolean isProgressBar, CategoryListDBHelper categoryListDBHelper, String type) {
         this.isProgressBar = isProgressBar;
         this.categoryListDBHelper = categoryListDBHelper;
         this.type = type;
@@ -39,14 +39,13 @@ public class DBSelectedImagesTask  extends AsyncTask<String,Void,Void> {
     @Override
     protected void onPreExecute() {
         Context context = contextWeakReference.get();
-        View progressBarLayout  =  viewWeakReference.get();
+        View progressBarLayout = viewWeakReference.get();
 
-        if(context == null){
+        if (context == null) {
             return;
         }
         CommonUtils.lockOrientation((Activity) context);
-        if(isProgressBar)
-        {
+        if (isProgressBar) {
             if (progressBarLayout != null) {
                 progressBarLayout.setVisibility(View.VISIBLE);
             }
@@ -56,10 +55,9 @@ public class DBSelectedImagesTask  extends AsyncTask<String,Void,Void> {
     @Override
     protected Void doInBackground(String... strings) {
 
-        if(type.equals("selected_images")) {
-           // categoryListDBHelper.appendSelectedImages(label);
-        }
-        else if(type.equals("elevation_images")){
+        if (type.equals("selected_images")) {
+            // categoryListDBHelper.appendSelectedImages(label);
+        } else if (type.equals("elevation_images")) {
             categoryListDBHelper.updateElevationImages(label);
         }
 
@@ -70,14 +68,14 @@ public class DBSelectedImagesTask  extends AsyncTask<String,Void,Void> {
     protected void onPostExecute(Void result) {
 
         Context context = contextWeakReference.get();
-        View progressBarLayout  =  viewWeakReference.get();
-        if(context == null){
+        View progressBarLayout = viewWeakReference.get();
+        if (context == null) {
             return;
         }
-        if(progressBarLayout != null){
+        if (progressBarLayout != null) {
             progressBarLayout.setVisibility(View.GONE);
         }
-        CommonUtils.unlockOrientation((Activity)context);
+        CommonUtils.unlockOrientation((Activity) context);
 
     }
 }

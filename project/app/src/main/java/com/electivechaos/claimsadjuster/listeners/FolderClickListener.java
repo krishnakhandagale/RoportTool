@@ -8,5 +8,5 @@ import com.electivechaos.claimsadjuster.Folder;
  */
 
 public interface FolderClickListener {
-    void onFolderClicked(Folder folder) ;
+    void onFolderClicked(Folder folder);
 }

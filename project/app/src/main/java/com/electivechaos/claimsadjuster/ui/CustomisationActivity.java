@@ -2,7 +2,6 @@ package com.electivechaos.claimsadjuster.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -30,11 +29,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class CustomisationActivity extends AppCompatActivity {
+    boolean selectionForTwo, selectionForFour;
     private ReportPOJO reportPOJO = null;
     private int noOfImagesPerPage;
-
     private View parentLayoutForMessages;
-    boolean selectionForTwo, selectionForFour;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,32 +40,30 @@ public class CustomisationActivity extends AppCompatActivity {
         setContentView(R.layout.customise_report_activity);
 
 
-
         final CheckedTextView twoPerPageTextView = findViewById(R.id.twoPerPage);
         final CheckedTextView fourPerPageTextView = findViewById(R.id.fourPerPage);
         parentLayoutForMessages = findViewById(R.id.parentLayoutForMessages);
 
-        if(savedInstanceState != null ){
+        if (savedInstanceState != null) {
             boolean selectedOptionTwo = savedInstanceState.getBoolean("checkedOptionTwo");
-            if(selectedOptionTwo) {
+            if (selectedOptionTwo) {
                 twoPerPageTextView.setBackground(ContextCompat.getDrawable(CustomisationActivity.this, R.drawable.shape_chip_drawable_active));
                 selectionForTwo = true;
                 selectionForFour = false;
                 noOfImagesPerPage = 2;
-            }else {
+            } else {
                 twoPerPageTextView.setBackground(ContextCompat.getDrawable(CustomisationActivity.this, R.drawable.shape_chip_drawable_gray));
             }
             twoPerPageTextView.setChecked(selectedOptionTwo);
 
 
-
             boolean selectedOptionFour = savedInstanceState.getBoolean("checkedOptionFour");
-            if(selectedOptionFour){
+            if (selectedOptionFour) {
                 fourPerPageTextView.setBackground(ContextCompat.getDrawable(CustomisationActivity.this, R.drawable.shape_chip_drawable_active));
                 selectionForFour = true;
                 selectionForTwo = false;
                 noOfImagesPerPage = 4;
-            }else {
+            } else {
                 fourPerPageTextView.setBackground(ContextCompat.getDrawable(CustomisationActivity.this, R.drawable.shape_chip_drawable_gray));
             }
             fourPerPageTextView.setChecked(selectedOptionFour);
@@ -133,9 +129,9 @@ public class CustomisationActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!twoPerPageTextView.isChecked() && !fourPerPageTextView.isChecked()){
-                    CommonUtils.showSnackbarMessage(getString(R.string.please_select_images_per_page), true, true,parentLayoutForMessages, CustomisationActivity.this);
-                }else {
+                if (!twoPerPageTextView.isChecked() && !fourPerPageTextView.isChecked()) {
+                    CommonUtils.showSnackbarMessage(getString(R.string.please_select_images_per_page), true, true, parentLayoutForMessages, CustomisationActivity.this);
+                } else {
                     Intent intent = new Intent();
                     intent.putExtra("modified_report", reportPOJO);
                     intent.putExtra("per_page_images", noOfImagesPerPage);
@@ -201,6 +197,29 @@ public class CustomisationActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Intent intent = new Intent();
+                setResult(RESULT_CANCELED, intent);
+                finish();
+                return true;
+        }
+        return true;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean("checkedOptionTwo", selectionForTwo);
+        outState.putBoolean("checkedOptionFour", selectionForFour);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+    }
 
     private class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         ArrayList<Label> labelArrayList;
@@ -228,7 +247,7 @@ public class CustomisationActivity extends AppCompatActivity {
             return labelArrayList.size();
         }
 
-        public class ViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder{
+        public class ViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder {
             TextView label;
 
             public ViewHolder(View itemView) {
@@ -238,7 +257,7 @@ public class CustomisationActivity extends AppCompatActivity {
 
             @Override
             public void onItemSelected() {
-                itemView.setBackgroundColor(ContextCompat.getColor(CustomisationActivity.this,R.color.colorPrimary));
+                itemView.setBackgroundColor(ContextCompat.getColor(CustomisationActivity.this, R.color.colorPrimary));
             }
 
             @Override
@@ -246,29 +265,5 @@ public class CustomisationActivity extends AppCompatActivity {
                 itemView.setBackgroundColor(0);
             }
         }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                Intent intent = new Intent();
-                setResult(RESULT_CANCELED, intent);
-                finish();
-                return true;
-        }
-        return true;
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putBoolean("checkedOptionTwo", selectionForTwo);
-        outState.putBoolean("checkedOptionFour",selectionForFour);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
     }
 }

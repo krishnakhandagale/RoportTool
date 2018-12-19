@@ -11,6 +11,17 @@ import java.util.Observable;
 
 public class PropertyDetailsPOJO extends Observable implements Parcelable {
 
+    public static final Creator<PropertyDetailsPOJO> CREATOR = new Creator<PropertyDetailsPOJO>() {
+        @Override
+        public PropertyDetailsPOJO createFromParcel(Parcel in) {
+            return new PropertyDetailsPOJO(in);
+        }
+
+        @Override
+        public PropertyDetailsPOJO[] newArray(int size) {
+            return new PropertyDetailsPOJO[size];
+        }
+    };
     private String propertyDate;
     private String squareFootage;
     private String roofSystem;
@@ -19,10 +30,30 @@ public class PropertyDetailsPOJO extends Observable implements Parcelable {
     private String buildingType;
     private String reportId;
 
+
+    public PropertyDetailsPOJO() {
+        propertyDate = "";
+        squareFootage = "";
+        roofSystem = "";
+        siding = "";
+        foundation = "";
+        buildingType = "";
+        reportId = "";
+    }
+
+    protected PropertyDetailsPOJO(Parcel in) {
+        propertyDate = in.readString();
+        squareFootage = in.readString();
+        roofSystem = in.readString();
+        siding = in.readString();
+        foundation = in.readString();
+        buildingType = in.readString();
+        reportId = in.readString();
+    }
+
     public String getPropertyDate() {
         return propertyDate;
     }
-
 
     public void setPropertyDate(String propertyDate) {
         this.propertyDate = propertyDate;
@@ -31,7 +62,6 @@ public class PropertyDetailsPOJO extends Observable implements Parcelable {
     public String getSquareFootage() {
         return squareFootage;
     }
-
 
     public void setSquareFootage(String squareFootage) {
         this.squareFootage = squareFootage;
@@ -62,6 +92,7 @@ public class PropertyDetailsPOJO extends Observable implements Parcelable {
     public void setFoundation(String foundation) {
         this.foundation = foundation;
     }
+
     public String getBuildingType() {
         return buildingType;
     }
@@ -69,7 +100,6 @@ public class PropertyDetailsPOJO extends Observable implements Parcelable {
     public void setBuildingType(String buildingType) {
         this.buildingType = buildingType;
     }
-
 
     public String getReportId() {
         return reportId;
@@ -79,40 +109,6 @@ public class PropertyDetailsPOJO extends Observable implements Parcelable {
         this.reportId = reportId;
 
     }
-
-
-    public PropertyDetailsPOJO()
-    {
-        propertyDate = "";
-        squareFootage = "";
-        roofSystem = "";
-        siding = "";
-        foundation = "";
-        buildingType = "";
-        reportId = "";
-    }
-
-    protected PropertyDetailsPOJO(Parcel in) {
-        propertyDate = in.readString();
-        squareFootage = in.readString();
-        roofSystem = in.readString();
-        siding = in.readString();
-        foundation = in.readString();
-        buildingType = in.readString();
-        reportId = in.readString();
-    }
-
-    public static final Creator<PropertyDetailsPOJO> CREATOR = new Creator<PropertyDetailsPOJO>() {
-        @Override
-        public PropertyDetailsPOJO createFromParcel(Parcel in) {
-            return new PropertyDetailsPOJO(in);
-        }
-
-        @Override
-        public PropertyDetailsPOJO[] newArray(int size) {
-            return new PropertyDetailsPOJO[size];
-        }
-    };
 
     @Override
     public int describeContents() {

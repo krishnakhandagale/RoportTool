@@ -3,7 +3,6 @@ package com.electivechaos.claimsadjuster.asynctasks;
 import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.view.View;
 
 import com.electivechaos.claimsadjuster.database.CategoryListDBHelper;
@@ -15,10 +14,10 @@ import java.lang.ref.WeakReference;
  * Created by nafeesa on 5/17/18.
  */
 
-public class DBUpdateTaskOnTextChanged extends AsyncTask<String,Void,Void> {
+public class DBUpdateTaskOnTextChanged extends AsyncTask<String, Void, Void> {
 
     private WeakReference<Context> contextWeakReference;
-    private  WeakReference<View>  viewWeakReference;
+    private WeakReference<View> viewWeakReference;
 
     private boolean isProgressBar;
     private CategoryListDBHelper categoryListDBHelper;
@@ -26,7 +25,7 @@ public class DBUpdateTaskOnTextChanged extends AsyncTask<String,Void,Void> {
     private String type;
     private String reportId;
 
-    public  DBUpdateTaskOnTextChanged(Context context, View progressBarLayout, String value,String reportId, boolean isProgressBar, CategoryListDBHelper categoryListDBHelper, String type) {
+    public DBUpdateTaskOnTextChanged(Context context, View progressBarLayout, String value, String reportId, boolean isProgressBar, CategoryListDBHelper categoryListDBHelper, String type) {
         this.isProgressBar = isProgressBar;
         this.categoryListDBHelper = categoryListDBHelper;
         this.value = value;
@@ -36,18 +35,17 @@ public class DBUpdateTaskOnTextChanged extends AsyncTask<String,Void,Void> {
         this.viewWeakReference = new WeakReference<>(progressBarLayout);
     }
 
-  @Override
+    @Override
     protected void onPreExecute() {
 
         Context context = contextWeakReference.get();
         View progressBarLayout = viewWeakReference.get();
 
-        if(context == null){
+        if (context == null) {
             return;
         }
         CommonUtils.lockOrientation((Activity) context);
-        if(isProgressBar)
-        {
+        if (isProgressBar) {
             if (progressBarLayout != null) {
                 progressBarLayout.setVisibility(View.VISIBLE);
             }
@@ -56,49 +54,36 @@ public class DBUpdateTaskOnTextChanged extends AsyncTask<String,Void,Void> {
 
     @Override
     protected Void doInBackground(String... strings) {
-        if(type.equals("title")) {
-            categoryListDBHelper.updateReportTitle(value,reportId);
+        if (type.equals("title")) {
+            categoryListDBHelper.updateReportTitle(value, reportId);
         }
-        if(type.equals("description")){
+        if (type.equals("description")) {
             categoryListDBHelper.updateReportDescription(value, reportId);
-        }
-        else if(type.equals("client_name")){
+        } else if (type.equals("client_name")) {
             categoryListDBHelper.updateClientName(value, reportId);
-        }
-        else if(type.equals("claim_number")){
+        } else if (type.equals("claim_number")) {
             categoryListDBHelper.updateClaimNumber(value, reportId);
-        }
-        else if(type.equals("report_by")){
+        } else if (type.equals("report_by")) {
             categoryListDBHelper.updateReportBy(value, reportId);
-        }
-        else if(type.equals("address_line")){
+        } else if (type.equals("address_line")) {
             categoryListDBHelper.updateAddressLine(value, reportId);
-        }
-        else if(type.equals("latitude")){
+        } else if (type.equals("latitude")) {
             categoryListDBHelper.updateLocationLat(value, reportId);
-        }
-        else if(type.equals("longitude")){
+        } else if (type.equals("longitude")) {
             categoryListDBHelper.updateLocationLong(value, reportId);
-        }
-        else if(type.equals("property_date")){
+        } else if (type.equals("property_date")) {
             categoryListDBHelper.updatePropertyDate(value, reportId);
-        }
-        else if(type.equals("square_footage")){
+        } else if (type.equals("square_footage")) {
             categoryListDBHelper.updateSquareFootage(value, reportId);
-        }
-        else if(type.equals("roof_system")){
+        } else if (type.equals("roof_system")) {
             categoryListDBHelper.updateRoofSystem(value, reportId);
-        }
-        else if(type.equals("siding")){
+        } else if (type.equals("siding")) {
             categoryListDBHelper.updateSiding(value, reportId);
-        }
-        else if(type.equals("foundation")){
+        } else if (type.equals("foundation")) {
             categoryListDBHelper.updateFoundation(value, reportId);
-        }
-        else if(type.equals("building_type")){
+        } else if (type.equals("building_type")) {
             categoryListDBHelper.updateBuildingType(value, reportId);
-        }
-        else if(type.equals("peril")){
+        } else if (type.equals("peril")) {
             categoryListDBHelper.updatePerilName(value, reportId);
         }
         return null;
@@ -109,13 +94,13 @@ public class DBUpdateTaskOnTextChanged extends AsyncTask<String,Void,Void> {
         Context context = contextWeakReference.get();
         View progressBarLayout = viewWeakReference.get();
 
-        if(context == null){
+        if (context == null) {
             return;
         }
-        if(progressBarLayout != null){
+        if (progressBarLayout != null) {
             progressBarLayout.setVisibility(View.GONE);
         }
-        CommonUtils.unlockOrientation((Activity)context);
+        CommonUtils.unlockOrientation((Activity) context);
 
     }
 }

@@ -30,9 +30,8 @@ import static com.electivechaos.claimsadjuster.ui.ImagePickerActivity.options;
 
 public class SettingsActivity extends AppCompatActivity {
 
+    private static final int SELECT_FILE_IMAGE_LOGO_REQUEST_CODE = 444;
     private View parentLayoutForMessages;
-    private  static final int SELECT_FILE_IMAGE_LOGO_REQUEST_CODE= 444;
-
     private ImageView companyNameLogo, companyNameLogoRemove;
 
     @Override
@@ -56,7 +55,7 @@ public class SettingsActivity extends AppCompatActivity {
         radioMedium = findViewById(R.id.radioMedium);
 
         RadioGroup radioGoogleMap = findViewById(R.id.radioMap);
-        final RadioButton radioMapRoad, radioMapSatellite, radioMapNone ;
+        final RadioButton radioMapRoad, radioMapSatellite, radioMapNone;
 
         radioMapRoad = findViewById(R.id.radioRoadMap);
         radioMapSatellite = findViewById(R.id.radioSatelliteMap);
@@ -83,41 +82,39 @@ public class SettingsActivity extends AppCompatActivity {
         final ImageButton doneAddressBtn = findViewById(R.id.doneAddress);
 
 
-
-
         final TextView uploadButton = findViewById(R.id.uploadButton);
         companyNameLogo = findViewById(R.id.companyNameLogo);
         companyNameLogoRemove = findViewById(R.id.companyNameLogoRemove);
 
-        if(!CommonUtils.getReportByField(this).isEmpty()){
+        if (!CommonUtils.getReportByField(this).isEmpty()) {
             reportByEditText.setText(CommonUtils.getReportByField(this));
         }
 
-        if(!CommonUtils.getReportTitle(this).isEmpty()){
+        if (!CommonUtils.getReportTitle(this).isEmpty()) {
             reportTitleEditText.setText(CommonUtils.getReportTitle(this));
         }
 
-        if(!CommonUtils.getReportDescription(this).isEmpty()){
+        if (!CommonUtils.getReportDescription(this).isEmpty()) {
             reportDescriptionEditText.setText(CommonUtils.getReportDescription(this));
         }
 
-        if(!CommonUtils.getCompanyName(this).isEmpty()){
+        if (!CommonUtils.getCompanyName(this).isEmpty()) {
             companyNameEditText.setText(CommonUtils.getCompanyName(this));
         }
 
-        if(!CommonUtils.getAddress(this).isEmpty()){
+        if (!CommonUtils.getAddress(this).isEmpty()) {
             addressEditText.setText(CommonUtils.getAddress(this));
         }
 
-        if(!CommonUtils.getImageLogoUrl(this).isEmpty()){
+        if (!CommonUtils.getImageLogoUrl(this).isEmpty()) {
             File file = new File(CommonUtils.getImageLogoUrl(this));
-            if(file.exists()) {
+            if (file.exists()) {
                 Glide.with(this)
                         .load("file://" + CommonUtils.getImageLogoUrl(this))
                         .thumbnail(0.1f)
                         .apply(options)
                         .into(companyNameLogo);
-            }else {
+            } else {
                 Glide.with(this)
                         .load("file:///android_asset/NoImageFound.jpg")
                         .thumbnail(0.1f)
@@ -125,48 +122,48 @@ public class SettingsActivity extends AppCompatActivity {
                         .into(companyNameLogo);
             }
             companyNameLogoRemove.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             companyNameLogoRemove.setVisibility(View.INVISIBLE);
         }
 
-        if(CommonUtils.getReportQuality(SettingsActivity.this).equals(Constants.REPORT_QUALITY_LOW)){
+        if (CommonUtils.getReportQuality(SettingsActivity.this).equals(Constants.REPORT_QUALITY_LOW)) {
             radioLow.setChecked(true);
-        }else if(CommonUtils.getReportQuality(SettingsActivity.this).equals(Constants.REPORT_QUALITY_HIGH)){
+        } else if (CommonUtils.getReportQuality(SettingsActivity.this).equals(Constants.REPORT_QUALITY_HIGH)) {
             radioHigh.setChecked(true);
-        }else {
+        } else {
             radioMedium.setChecked(true);
         }
 
         radioQuality.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if(radioLow.isChecked()){
-                    CommonUtils.setReportQuality(Constants.REPORT_QUALITY_LOW,SettingsActivity.this);
-                }else if(radioHigh.isChecked()){
-                    CommonUtils.setReportQuality(Constants.REPORT_QUALITY_HIGH,SettingsActivity.this);
-                }else {
-                    CommonUtils.setReportQuality(Constants.REPORT_QUALITY_MEDIUM,SettingsActivity.this);
+                if (radioLow.isChecked()) {
+                    CommonUtils.setReportQuality(Constants.REPORT_QUALITY_LOW, SettingsActivity.this);
+                } else if (radioHigh.isChecked()) {
+                    CommonUtils.setReportQuality(Constants.REPORT_QUALITY_HIGH, SettingsActivity.this);
+                } else {
+                    CommonUtils.setReportQuality(Constants.REPORT_QUALITY_MEDIUM, SettingsActivity.this);
                 }
             }
         });
 
-        if(CommonUtils.getGoogleMap(SettingsActivity.this).equals(Constants.MAP_TYPE_ID_ROADMAP)){
+        if (CommonUtils.getGoogleMap(SettingsActivity.this).equals(Constants.MAP_TYPE_ID_ROADMAP)) {
             radioMapRoad.setChecked(true);
-        }else if(CommonUtils.getGoogleMap(SettingsActivity.this).equals(Constants.MAP_TYPE_ID_SATELLITE)){
+        } else if (CommonUtils.getGoogleMap(SettingsActivity.this).equals(Constants.MAP_TYPE_ID_SATELLITE)) {
             radioMapSatellite.setChecked(true);
-        }else {
+        } else {
             radioMapNone.setChecked(true);
         }
 
         radioGoogleMap.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if(radioMapNone.isChecked()){
-                    CommonUtils.setGoogleMap("none",SettingsActivity.this);
-                }else if(radioMapSatellite.isChecked()) {
-                    CommonUtils.setGoogleMap(Constants.MAP_TYPE_ID_SATELLITE,SettingsActivity.this);
-                }else {
-                    CommonUtils.setGoogleMap(Constants.MAP_TYPE_ID_ROADMAP,SettingsActivity.this);
+                if (radioMapNone.isChecked()) {
+                    CommonUtils.setGoogleMap("none", SettingsActivity.this);
+                } else if (radioMapSatellite.isChecked()) {
+                    CommonUtils.setGoogleMap(Constants.MAP_TYPE_ID_SATELLITE, SettingsActivity.this);
+                } else {
+                    CommonUtils.setGoogleMap(Constants.MAP_TYPE_ID_ROADMAP, SettingsActivity.this);
                 }
             }
         });
@@ -188,14 +185,14 @@ public class SettingsActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 String reportBy = reportByEditText.getText().toString();
-                if(!reportBy.isEmpty()) {
+                if (!reportBy.isEmpty()) {
                     reportByEditText.setEnabled(false);
                     doneReportByBtn.setVisibility(View.GONE);
                     editReportByBtn.setVisibility(View.VISIBLE);
 
                     CommonUtils.setReportByField(reportBy, SettingsActivity.this);
-                }else {
-                    CommonUtils.showSnackbarMessage(getString(R.string.please_enter_report_by), true, true,parentLayoutForMessages, SettingsActivity.this);
+                } else {
+                    CommonUtils.showSnackbarMessage(getString(R.string.please_enter_report_by), true, true, parentLayoutForMessages, SettingsActivity.this);
                 }
             }
         });
@@ -217,14 +214,14 @@ public class SettingsActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 String reportTitle = reportTitleEditText.getText().toString();
-                if(!reportTitle.isEmpty()) {
+                if (!reportTitle.isEmpty()) {
                     reportTitleEditText.setEnabled(false);
                     doneReportTitleBtn.setVisibility(View.GONE);
                     editReportTitleBtn.setVisibility(View.VISIBLE);
 
                     CommonUtils.setReportTitle(reportTitle, SettingsActivity.this);
-                }else {
-                    CommonUtils.showSnackbarMessage(getString(R.string.please_enter_rep_title), true, true,parentLayoutForMessages, SettingsActivity.this);
+                } else {
+                    CommonUtils.showSnackbarMessage(getString(R.string.please_enter_rep_title), true, true, parentLayoutForMessages, SettingsActivity.this);
                 }
             }
         });
@@ -246,14 +243,14 @@ public class SettingsActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 String reportDescription = reportDescriptionEditText.getText().toString();
-                if(!reportDescription.isEmpty()) {
+                if (!reportDescription.isEmpty()) {
                     reportDescriptionEditText.setEnabled(false);
                     doneReportDescriptionBtn.setVisibility(View.GONE);
                     editReportDescriptionBtn.setVisibility(View.VISIBLE);
 
                     CommonUtils.setReportDescription(reportDescription, SettingsActivity.this);
-                }else {
-                    CommonUtils.showSnackbarMessage(getString(R.string.please_enter_report_description), true, true,parentLayoutForMessages, SettingsActivity.this);
+                } else {
+                    CommonUtils.showSnackbarMessage(getString(R.string.please_enter_report_description), true, true, parentLayoutForMessages, SettingsActivity.this);
                 }
             }
         });
@@ -275,14 +272,14 @@ public class SettingsActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 String companyName = companyNameEditText.getText().toString();
-                if(!companyName.isEmpty()) {
+                if (!companyName.isEmpty()) {
                     companyNameEditText.setEnabled(false);
                     doneCompanyNameBtn.setVisibility(View.GONE);
                     editCompanyNameBtn.setVisibility(View.VISIBLE);
 
                     CommonUtils.setCompanyName(companyName, SettingsActivity.this);
-                }else {
-                    CommonUtils.showSnackbarMessage(getString(R.string.please_enter_company_name), true, true,parentLayoutForMessages, SettingsActivity.this);
+                } else {
+                    CommonUtils.showSnackbarMessage(getString(R.string.please_enter_company_name), true, true, parentLayoutForMessages, SettingsActivity.this);
                 }
             }
         });
@@ -304,26 +301,25 @@ public class SettingsActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 String address = addressEditText.getText().toString();
-                if(!address.isEmpty()) {
+                if (!address.isEmpty()) {
                     addressEditText.setEnabled(false);
                     doneAddressBtn.setVisibility(View.GONE);
                     editAddressBtn.setVisibility(View.VISIBLE);
 
                     CommonUtils.setAddress(address, SettingsActivity.this);
-                }else {
-                    CommonUtils.showSnackbarMessage(getString(R.string.please_enter_address), true, true,parentLayoutForMessages, SettingsActivity.this);
+                } else {
+                    CommonUtils.showSnackbarMessage(getString(R.string.please_enter_address), true, true, parentLayoutForMessages, SettingsActivity.this);
                 }
             }
         });
-
 
 
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 boolean result = PermissionUtilities.checkPermissionImageUpload(SettingsActivity.this, SettingsActivity.this, PermissionUtilities.MY_APP_BROWSE_PHOTO_PERMISSIONS_IMAGE_LOGO);
-                if (result){
-                     galleryIntent(SELECT_FILE_IMAGE_LOGO_REQUEST_CODE);
+                if (result) {
+                    galleryIntent(SELECT_FILE_IMAGE_LOGO_REQUEST_CODE);
                 }
 
             }
@@ -335,18 +331,16 @@ public class SettingsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 companyNameLogo.setImageDrawable(null);
                 companyNameLogoRemove.setVisibility(View.INVISIBLE);
-                CommonUtils.setImageLogoUrl("",SettingsActivity.this);
+                CommonUtils.setImageLogoUrl("", SettingsActivity.this);
             }
         });
-
-
 
 
     }
 
     private void galleryIntent(int requestCode) {
         Intent intent = new Intent(SettingsActivity.this, ImagePickerActivity.class);
-        intent.putExtra("number_of_images_allowed",1 );
+        intent.putExtra("number_of_images_allowed", 1);
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(intent, requestCode);
 
@@ -374,7 +368,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void onSelectFromGalleryResult(Intent data, int requestId) {
         ArrayList<com.electivechaos.claimsadjuster.pojo.Image> selectedImages = data.getParcelableArrayListExtra("ImageUrls");
-        if (requestId ==SELECT_FILE_IMAGE_LOGO_REQUEST_CODE ) {
+        if (requestId == SELECT_FILE_IMAGE_LOGO_REQUEST_CODE) {
             Glide.with(this)
                     .load("file://" + selectedImages.get(0).getPath())
                     .thumbnail(0.1f)
@@ -387,10 +381,9 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
 
-
-        @Override
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
                 return true;
@@ -403,8 +396,8 @@ public class SettingsActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == RESULT_OK) {
-            if(requestCode == SELECT_FILE_IMAGE_LOGO_REQUEST_CODE ){
-                this.onSelectImagesFromGallery(data,requestCode);
+            if (requestCode == SELECT_FILE_IMAGE_LOGO_REQUEST_CODE) {
+                this.onSelectImagesFromGallery(data, requestCode);
             }
         }
     }
@@ -413,7 +406,7 @@ public class SettingsActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        if(requestCode == PermissionUtilities.MY_APP_BROWSE_PHOTO_PERMISSIONS_IMAGE_LOGO) {
+        if (requestCode == PermissionUtilities.MY_APP_BROWSE_PHOTO_PERMISSIONS_IMAGE_LOGO) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 galleryIntent(SELECT_FILE_IMAGE_LOGO_REQUEST_CODE);
             } else {

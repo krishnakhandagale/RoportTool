@@ -1,6 +1,6 @@
 package com.electivechaos.claimsadjuster.interfaces;
 
-public  interface OnSaveReportClickListener {
+public interface OnSaveReportClickListener {
 
-     void onReportSave(boolean isProgressBar);
+    void onReportSave(boolean isProgressBar);
 }

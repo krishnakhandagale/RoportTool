@@ -86,76 +86,56 @@ import java.util.Observer;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Pattern;
 
-public class AddEditReportActivity extends AppCompatActivity implements DrawerMenuListAdapter.OnLabelAddClickListener, AddEditLabelInterface, ClaimDetailsDataInterface, LossLocationDataInterface,SelectedImagesDataInterface,NextButtonClickListener,BackButtonClickListener,OnSaveReportClickListener, OnGenerateReportClickListener, OnPropertyDetailsClickListener,OnPerilSelectionListener, OnSetImageFileUriListener,OnStarterFragmentDataChangeListener, Observer {
+public class AddEditReportActivity extends AppCompatActivity implements DrawerMenuListAdapter.OnLabelAddClickListener, AddEditLabelInterface, ClaimDetailsDataInterface, LossLocationDataInterface, SelectedImagesDataInterface, NextButtonClickListener, BackButtonClickListener, OnSaveReportClickListener, OnGenerateReportClickListener, OnPropertyDetailsClickListener, OnPerilSelectionListener, OnSetImageFileUriListener, OnStarterFragmentDataChangeListener, Observer {
 
+    private static final int SHOWPREFERENCEACTIVITY = 486;
+    private static final int ADD_CATEGORY_REQUEST = 10;
+    private static final int SELECT_FILE = 1;
+    private static final int ADD_IMAGE_DETAILS = 2;
+    private static final int SET_CLICKED_IMAGE_DETAILS = 3;
+    private static final int SET_CLICKED_CAPTURED_DETAILS = 4;
+    private static final int REQUEST_CAMERA = 0;
+    private static final int IMAGE_ONE_REQUEST = 100;
+    private static final int IMAGE_TWO_REQUEST = 200;
+    private static final int IMAGE_THREE_REQUEST = 300;
+    private static final int IMAGE_FOUR_REQUEST = 400;
+    private static final int IMAGE_ONE_REQUEST_STARTER = 500;
+    private static final int IMAGE_TWO_REQUEST_STARTER = 600;
+    private static final int IMAGE_THREE_REQUEST_STARTER = 700;
+    private static final int IMAGE_FOUR_REQUEST_STARTER = 800;
+    private static final int HOUSE_NUMBER_REQUEST_STARTER = 900;
+    private static final int SELECT_FILE_IMAGE_ONE_STARTER = 201;
+    private static final int SELECT_FILE_IMAGE_TWO_STARTER = 202;
+    private static final int SELECT_FILE_IMAGE_THREE_STARTER = 203;
+    private static final int SELECT_FILE_IMAGE_FOUR_STARTER = 204;
+    private static final int SELECT_FILE_IMAGE_HOUSE_NUMBER_STARTER = 205;
+    private static final int SELECT_FILE_IMAGE_ONE_OVERVIEW = 301;
+    private static final int SELECT_FILE_IMAGE_TWO_OVERVIEW = 302;
+    private static final int SELECT_FILE_IMAGE_THREE_OVERVIEW = 303;
+    private static final int SELECT_FILE_IMAGE_FOUR_OVERVIEW = 304;
+    private static final String CLAIM_DETAILS_FRAGMENT_TAG = "claim_details_fragment";
+    private static final String PROPERTY_FRAGMENT_TAG = "property_details_fragment";
+    private static final String PERIL_FRAGMENT_TAG = "peril_fragment";
+    private static final String POINT_OF_ORIGIN_FRAGMENT_TAG = "point_of_origin_fragment";
+    private static final String LABEL_FRAGMENT_TAG = "label_fragment";
+    static CategoryListDBHelper categoryListDBHelper;
     private DrawerLayout mDrawerLayout;
     private DrawerMenuListAdapter drawerMenuListAdapter;
-
     private HashMap<String, List<Label>> childMenuItems = new HashMap<>();
     private ArrayList<ParentMenuItem> parentMenuItems;
-
     private int selectedFragmentPosition = 0;
-
     private ArrayList<Category> categories = null;
-    static CategoryListDBHelper categoryListDBHelper;
-
-
-    private ReportPOJO reportPOJO ;
+    private ReportPOJO reportPOJO;
     private View progressBarLayout;
-
-    private  Toolbar toolbar;
+    private Toolbar toolbar;
     private MenuItem actionBarEditBtn;
     private ActionBar activityActionBar;
     private View parentLayoutForMessages;
-
-    private  Bitmap googleMapSnapshotBitmap;
-
-    private  ReportPOJO modifiedReportPojo;
-    private static final int SHOWPREFERENCEACTIVITY = 486;
-    private static final int ADD_CATEGORY_REQUEST = 10 ;
-
-    private static final int SELECT_FILE = 1;
-    private  static final int ADD_IMAGE_DETAILS = 2;
-    private static final int SET_CLICKED_IMAGE_DETAILS = 3 ;
-    private static final int SET_CLICKED_CAPTURED_DETAILS = 4 ;
-
-
-    private  static final int REQUEST_CAMERA = 0;
-    private  static final int IMAGE_ONE_REQUEST = 100;
-    private  static final int IMAGE_TWO_REQUEST = 200;
-    private  static final int IMAGE_THREE_REQUEST = 300;
-    private  static final int IMAGE_FOUR_REQUEST = 400;
-
-    private  static final int IMAGE_ONE_REQUEST_STARTER = 500;
-    private  static final int IMAGE_TWO_REQUEST_STARTER = 600;
-    private  static final int IMAGE_THREE_REQUEST_STARTER = 700;
-    private  static final int IMAGE_FOUR_REQUEST_STARTER = 800;
-    private  static final int HOUSE_NUMBER_REQUEST_STARTER = 900;
-
-
-    private  static final int SELECT_FILE_IMAGE_ONE_STARTER = 201;
-    private  static final int SELECT_FILE_IMAGE_TWO_STARTER = 202;
-    private  static final int SELECT_FILE_IMAGE_THREE_STARTER = 203;
-    private  static final int SELECT_FILE_IMAGE_FOUR_STARTER = 204;
-    private  static final int SELECT_FILE_IMAGE_HOUSE_NUMBER_STARTER = 205;
-
-
-
-    private  static final int SELECT_FILE_IMAGE_ONE_OVERVIEW = 301;
-    private  static final int SELECT_FILE_IMAGE_TWO_OVERVIEW = 302;
-    private  static final int SELECT_FILE_IMAGE_THREE_OVERVIEW = 303;
-    private  static final int SELECT_FILE_IMAGE_FOUR_OVERVIEW = 304;
-
-
-    private static final String CLAIM_DETAILS_FRAGMENT_TAG = "claim_details_fragment" ;
-    private static final String PROPERTY_FRAGMENT_TAG = "property_details_fragment" ;
-    private static final String PERIL_FRAGMENT_TAG = "peril_fragment" ;
-    private static final String POINT_OF_ORIGIN_FRAGMENT_TAG = "point_of_origin_fragment" ;
-    private static final String LABEL_FRAGMENT_TAG = "label_fragment" ;
-
+    private Bitmap googleMapSnapshotBitmap;
+    private ReportPOJO modifiedReportPojo;
     private String fileUri;
 
-    private  ExpandableListView mExpandableListView;
+    private ExpandableListView mExpandableListView;
 
 
     @Override
@@ -182,19 +162,19 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         parentLayoutForMessages = findViewById(R.id.parentLayoutForMessages);
         progressBarLayout = findViewById(R.id.progressBarLayout);
         categoryListDBHelper = CategoryListDBHelper.getInstance(this);
-        if(savedInstanceState != null && savedInstanceState.getParcelable("reportPojo") !=null){
+        if (savedInstanceState != null && savedInstanceState.getParcelable("reportPojo") != null) {
             fileUri = savedInstanceState.getString("fileUri");
             reportPOJO = savedInstanceState.getParcelable("reportPojo");
             reportPOJO.addObserver(this);
             setDataToExpandableList();
-        }else{
-            if(getIntent().getExtras() != null){
+        } else {
+            if (getIntent().getExtras() != null) {
                 reportPOJO = categoryListDBHelper.getReportItem(getIntent().getExtras().getString("reportId"));
                 reportPOJO.addObserver(this);
                 setDataToExpandableList();
-            }else{
+            } else {
 
-                reportPOJO =new ReportPOJO();
+                reportPOJO = new ReportPOJO();
                 reportPOJO.addObserver(this);
                 setDataToExpandableList();
 
@@ -213,7 +193,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                         label.setReportId(reportPOJO.getId());
                         String id = "";
                         try {
-                            if(!validateLabelName(reportPOJO.getLabelArrayList(),label.getName())){
+                            if (!validateLabelName(reportPOJO.getLabelArrayList(), label.getName())) {
                                 Toast.makeText(AddEditReportActivity.this, R.string.label_validation_msg, Toast.LENGTH_SHORT).show();
                                 return;
                             }
@@ -233,6 +213,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                     public void onPreExecute() {
 
                     }
+
                     @Override
                     public void onProgress(int progress) {
 
@@ -245,28 +226,26 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         }
 
 
-
-
-        if(savedInstanceState != null && savedInstanceState.getInt("selectedFragmentPosition") != -1 ){
+        if (savedInstanceState != null && savedInstanceState.getInt("selectedFragmentPosition") != -1) {
 
             selectedFragmentPosition = savedInstanceState.getInt("selectedFragmentPosition");
 
-            if(selectedFragmentPosition == 0){
+            if (selectedFragmentPosition == 0) {
                 putClaimDetailsFragment();
-            }else if(selectedFragmentPosition == 1){
+            } else if (selectedFragmentPosition == 1) {
                 putPropertyDetails();
-            }else if(selectedFragmentPosition == 2){
+            } else if (selectedFragmentPosition == 2) {
                 putPerilDetails();
-            }else if(selectedFragmentPosition == 3){
+            } else if (selectedFragmentPosition == 3) {
                 putPointOfOriginFragment();
-            }else if(selectedFragmentPosition  > 3){
-                if(selectedFragmentPosition == 4){
+            } else if (selectedFragmentPosition > 3) {
+                if (selectedFragmentPosition == 4) {
                     putDefaultFragment();
-                }else {
+                } else {
                     putLabelFragment();
                 }
             }
-        }else{
+        } else {
             putClaimDetailsFragment();
         }
 
@@ -289,8 +268,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                     putPropertyDetails();
                     actionBarEditBtn.setVisible(false);
 
-                }
-                else if (parentMenuItems.get(groupPosition).getTitle().equals("Peril")) {
+                } else if (parentMenuItems.get(groupPosition).getTitle().equals("Peril")) {
 
                     mDrawerLayout.closeDrawer(Gravity.LEFT);
                     putPerilDetails();
@@ -313,9 +291,9 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
                 mDrawerLayout.closeDrawer(Gravity.LEFT);
                 selectedFragmentPosition = childPosition + 4;
-                if(selectedFragmentPosition == 4){
+                if (selectedFragmentPosition == 4) {
                     putDefaultFragment();
-                }else{
+                } else {
                     putLabelFragment();
                 }
 
@@ -326,10 +304,10 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
     }
 
-    private boolean validateLabelName(ArrayList<Label> labelArrayList,String label) {
+    private boolean validateLabelName(ArrayList<Label> labelArrayList, String label) {
         boolean isValid = true;
-        for(int i=0 ; i<labelArrayList.size();i++){
-            if(label.equalsIgnoreCase(labelArrayList.get(i).getName())){
+        for (int i = 0; i < labelArrayList.size(); i++) {
+            if (label.equalsIgnoreCase(labelArrayList.get(i).getName())) {
                 isValid = false;
                 break;
             }
@@ -340,11 +318,11 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     private void setDataToExpandableList() {
         parentMenuItems = new ArrayList<>();
 
-        parentMenuItems.add(new ParentMenuItem("Claim Details",false));
-        parentMenuItems.add(new ParentMenuItem("Property Details",false));
-        parentMenuItems.add(new ParentMenuItem("Peril",false));
-        parentMenuItems.add(new ParentMenuItem("Point Of Origin",false));
-        parentMenuItems.add(new ParentMenuItem("Inspection",false));
+        parentMenuItems.add(new ParentMenuItem("Claim Details", false));
+        parentMenuItems.add(new ParentMenuItem("Property Details", false));
+        parentMenuItems.add(new ParentMenuItem("Peril", false));
+        parentMenuItems.add(new ParentMenuItem("Point Of Origin", false));
+        parentMenuItems.add(new ParentMenuItem("Inspection", false));
 
 
         List<Label> inspectionChildMenu = (List<Label>) reportPOJO.getLabelArrayList().clone();
@@ -375,7 +353,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         claimDetailsData.putString("addressLine", reportPOJO.getAddressLine());
 
         claimDetailsFragment.setArguments(claimDetailsData);
-        fragmentTransaction.replace(R.id.content_frame, claimDetailsFragment,CLAIM_DETAILS_FRAGMENT_TAG);
+        fragmentTransaction.replace(R.id.content_frame, claimDetailsFragment, CLAIM_DETAILS_FRAGMENT_TAG);
         fragmentTransaction.commit();
 
 
@@ -383,98 +361,99 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         activityActionBar.setTitle("Claim Details");
     }
 
-    private void putPropertyDetails(){
+    private void putPropertyDetails() {
         FragmentManager transactionManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
 
-        PropertyDetailsFragment propertyDetailsFragment=new PropertyDetailsFragment();
+        PropertyDetailsFragment propertyDetailsFragment = new PropertyDetailsFragment();
         Bundle propertyDetailsData = new Bundle();
 
-        propertyDetailsData.putParcelable("propertyDetails",reportPOJO.getPropertyDetailsPOJO());
+        propertyDetailsData.putParcelable("propertyDetails", reportPOJO.getPropertyDetailsPOJO());
         propertyDetailsFragment.setArguments(propertyDetailsData);
 
-        fragmentTransaction.replace(R.id.content_frame, propertyDetailsFragment,PROPERTY_FRAGMENT_TAG);
+        fragmentTransaction.replace(R.id.content_frame, propertyDetailsFragment, PROPERTY_FRAGMENT_TAG);
         fragmentTransaction.commit();
 
         selectedFragmentPosition = 1;
         activityActionBar.setTitle("Property Details");
     }
-    private void putLabelFragment(){
-        ArrayList<Label> labelArrayList =  reportPOJO.getLabelArrayList();
-        if( labelArrayList!= null && labelArrayList.size() > selectedFragmentPosition - 4 && labelArrayList.get(selectedFragmentPosition - 4) != null){
+
+    private void putLabelFragment() {
+        ArrayList<Label> labelArrayList = reportPOJO.getLabelArrayList();
+        if (labelArrayList != null && labelArrayList.size() > selectedFragmentPosition - 4 && labelArrayList.get(selectedFragmentPosition - 4) != null) {
             FragmentManager transactionManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
-            AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment = AddEditReportSelectedImagesFragment.initFragment(labelArrayList.get(selectedFragmentPosition - 4).getSelectedImages(),labelArrayList.get(selectedFragmentPosition - 4).getSelectedElevationImages(), selectedFragmentPosition - 4,labelArrayList.get(selectedFragmentPosition - 4), fileUri, labelArrayList.get(selectedFragmentPosition - 4).getCoverageType());
-            fragmentTransaction.replace(R.id.content_frame, addEditReportSelectedImagesFragment,LABEL_FRAGMENT_TAG);
+            AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment = AddEditReportSelectedImagesFragment.initFragment(labelArrayList.get(selectedFragmentPosition - 4).getSelectedImages(), labelArrayList.get(selectedFragmentPosition - 4).getSelectedElevationImages(), selectedFragmentPosition - 4, labelArrayList.get(selectedFragmentPosition - 4), fileUri, labelArrayList.get(selectedFragmentPosition - 4).getCoverageType());
+            fragmentTransaction.replace(R.id.content_frame, addEditReportSelectedImagesFragment, LABEL_FRAGMENT_TAG);
             fragmentTransaction.commit();
 
             activityActionBar.setTitle(labelArrayList.get(selectedFragmentPosition - 4).getName());
-            if(actionBarEditBtn != null){
+            if (actionBarEditBtn != null) {
                 actionBarEditBtn.setVisible(true);
             }
             toolbar.setTag(labelArrayList.get(selectedFragmentPosition - 4));
-        }else{
+        } else {
             mDrawerLayout.closeDrawer(Gravity.LEFT);
             putClaimDetailsFragment();
-            if(actionBarEditBtn != null){
+            if (actionBarEditBtn != null) {
                 actionBarEditBtn.setVisible(false);
             }
         }
     }
 
-    private void putDefaultFragment(){
-        ArrayList<Label> labelArrayList =  reportPOJO.getLabelArrayList();
-        if( labelArrayList!= null && labelArrayList.size() > selectedFragmentPosition - 4 && labelArrayList.get(selectedFragmentPosition - 4) != null){
+    private void putDefaultFragment() {
+        ArrayList<Label> labelArrayList = reportPOJO.getLabelArrayList();
+        if (labelArrayList != null && labelArrayList.size() > selectedFragmentPosition - 4 && labelArrayList.get(selectedFragmentPosition - 4) != null) {
             FragmentManager transactionManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
-            StarterPhotosFragment starterPhotosFragment =  new StarterPhotosFragment();
+            StarterPhotosFragment starterPhotosFragment = new StarterPhotosFragment();
             Bundle bundle = new Bundle();
 
-            bundle.putString("fileUri",fileUri);
-            bundle.putInt("position",selectedFragmentPosition - 4);
-            bundle.putString("houseNumber",labelArrayList.get(selectedFragmentPosition - 4).getHouseNumber());
-            bundle.putSerializable("selectedElevationImagesList",labelArrayList.get(selectedFragmentPosition -4).getSelectedElevationImages());
+            bundle.putString("fileUri", fileUri);
+            bundle.putInt("position", selectedFragmentPosition - 4);
+            bundle.putString("houseNumber", labelArrayList.get(selectedFragmentPosition - 4).getHouseNumber());
+            bundle.putSerializable("selectedElevationImagesList", labelArrayList.get(selectedFragmentPosition - 4).getSelectedElevationImages());
             starterPhotosFragment.setArguments(bundle);
-            fragmentTransaction.replace(R.id.content_frame, starterPhotosFragment,LABEL_FRAGMENT_TAG);
+            fragmentTransaction.replace(R.id.content_frame, starterPhotosFragment, LABEL_FRAGMENT_TAG);
             fragmentTransaction.commit();
 
             activityActionBar.setTitle(labelArrayList.get(selectedFragmentPosition - 4).getName());
-            if(actionBarEditBtn != null){
+            if (actionBarEditBtn != null) {
                 actionBarEditBtn.setVisible(false);
             }
             toolbar.setTag(labelArrayList.get(selectedFragmentPosition - 4));
-        }else{
+        } else {
             mDrawerLayout.closeDrawer(Gravity.LEFT);
             putClaimDetailsFragment();
-            if(actionBarEditBtn != null){
+            if (actionBarEditBtn != null) {
                 actionBarEditBtn.setVisible(false);
             }
         }
     }
 
 
-    private void putPerilDetails(){
+    private void putPerilDetails() {
         FragmentManager transactionManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
 
-        PerilListMenuFragment perilListMenuFragment=new PerilListMenuFragment();
+        PerilListMenuFragment perilListMenuFragment = new PerilListMenuFragment();
         Bundle perilDetailsData = new Bundle();
 
-        perilDetailsData.putParcelable("perilDetails",reportPOJO.getPerilPOJO());
+        perilDetailsData.putParcelable("perilDetails", reportPOJO.getPerilPOJO());
         perilListMenuFragment.setArguments(perilDetailsData);
 
-        fragmentTransaction.replace(R.id.content_frame,perilListMenuFragment,PERIL_FRAGMENT_TAG);
+        fragmentTransaction.replace(R.id.content_frame, perilListMenuFragment, PERIL_FRAGMENT_TAG);
         fragmentTransaction.commit();
 
         selectedFragmentPosition = 2;
         activityActionBar.setTitle("Peril");
     }
 
-    private void putPointOfOriginFragment(){
+    private void putPointOfOriginFragment() {
         FragmentManager transactionManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
 
-        fragmentTransaction.replace(R.id.content_frame,new PointOfOriginFragment(),POINT_OF_ORIGIN_FRAGMENT_TAG);
+        fragmentTransaction.replace(R.id.content_frame, new PointOfOriginFragment(), POINT_OF_ORIGIN_FRAGMENT_TAG);
         fragmentTransaction.commit();
 
         selectedFragmentPosition = 3;
@@ -492,13 +471,13 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
             case R.id.edit:
 
                 View view = getLayoutInflater().inflate(R.layout.edit_label_actionbar_layout, null);
-                final EditText editLabel=view.findViewById(R.id.editText);
+                final EditText editLabel = view.findViewById(R.id.editText);
 
                 editLabel.setText(activityActionBar.getTitle());
                 editLabel.setFocusableInTouchMode(true);
                 editLabel.setFocusable(true);
                 editLabel.requestFocus();
-                final Label label=(Label)toolbar.getTag();
+                final Label label = (Label) toolbar.getTag();
 
 
                 view.findViewById(R.id.backButton).setOnClickListener(new View.OnClickListener() {
@@ -514,7 +493,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                 view.findViewById(R.id.doneBtn).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if(!validateLabelName(reportPOJO.getLabelArrayList(),editLabel.getText().toString())){
+                        if (!validateLabelName(reportPOJO.getLabelArrayList(), editLabel.getText().toString())) {
                             Toast.makeText(AddEditReportActivity.this, R.string.label_validation_msg, Toast.LENGTH_SHORT).show();
                             return;
                         }
@@ -537,14 +516,13 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                 activityActionBar.setDisplayShowCustomEnabled(true);
 
 
-
                 Toolbar.LayoutParams layout = new Toolbar.LayoutParams(Toolbar.LayoutParams.FILL_PARENT, Toolbar.LayoutParams.FILL_PARENT);
                 activityActionBar.setCustomView(view, layout);
                 item.setVisible(false);
                 break;
 
-                default:
-                    break;
+            default:
+                break;
         }
         return true;
     }
@@ -553,9 +531,9 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     public void onSaveInstanceState(Bundle outState) {
 
 
-        outState.putInt("selectedFragmentPosition",selectedFragmentPosition);
+        outState.putInt("selectedFragmentPosition", selectedFragmentPosition);
         outState.putParcelable("reportPojo", reportPOJO);
-        outState.putString("fileUri",fileUri);
+        outState.putString("fileUri", fileUri);
         super.onSaveInstanceState(outState);
     }
 
@@ -584,9 +562,9 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         AlertDialog alert = builder.create();
         alert.show();
         Button negativeButton = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
-        negativeButton.setTextColor(ContextCompat.getColor(AddEditReportActivity.this,R.color.colorPrimaryDark));
+        negativeButton.setTextColor(ContextCompat.getColor(AddEditReportActivity.this, R.color.colorPrimaryDark));
         Button positiveButton = alert.getButton(DialogInterface.BUTTON_POSITIVE);
-        positiveButton.setTextColor(ContextCompat.getColor(AddEditReportActivity.this,R.color.colorPrimaryDark));
+        positiveButton.setTextColor(ContextCompat.getColor(AddEditReportActivity.this, R.color.colorPrimaryDark));
     }
 
     @Override
@@ -617,7 +595,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         });
         ad.setTitle("Select Category");
 
-        ad.setSingleChoiceItems(adapter, -1,  new DialogInterface.OnClickListener() {
+        ad.setSingleChoiceItems(adapter, -1, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(final DialogInterface dialogInterface, int pos) {
                 final Label label = new Label();
@@ -628,7 +606,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                 label.setCoverageType(categories.get(pos).getCoverageType());
                 String id = "";
                 try {
-                    if(!validateLabelName(reportPOJO.getLabelArrayList(),label.getName())){
+                    if (!validateLabelName(reportPOJO.getLabelArrayList(), label.getName())) {
                         Toast.makeText(AddEditReportActivity.this, R.string.label_validation_msg, Toast.LENGTH_SHORT).show();
                         return;
                     }
@@ -651,28 +629,29 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
     }
 
-    public  void  onDefaultLabelAdded(Label label){
-        List<Label> labelList =  childMenuItems.get("Inspection");
+    public void onDefaultLabelAdded(Label label) {
+        List<Label> labelList = childMenuItems.get("Inspection");
         labelList.add(label);
         drawerMenuListAdapter.notifyDataSetChanged();
         reportPOJO.getLabelArrayList().add(label);
     }
+
     public void onLabelAdded(Label label) {
 
-        List<Label> labelList =  childMenuItems.get("Inspection");
+        List<Label> labelList = childMenuItems.get("Inspection");
         labelList.add(label);
         drawerMenuListAdapter.notifyDataSetChanged();
         reportPOJO.getLabelArrayList().add(label);
 
-        selectedFragmentPosition = (labelList.size() -1) + 4;
+        selectedFragmentPosition = (labelList.size() - 1) + 4;
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment = AddEditReportSelectedImagesFragment.initFragment(new ArrayList<ImageDetailsPOJO>(),new ArrayList<ImageDetailsPOJO>(),labelList.size()-1,label, fileUri,labelList.get(selectedFragmentPosition - 4).getCoverageType());
+        AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment = AddEditReportSelectedImagesFragment.initFragment(new ArrayList<ImageDetailsPOJO>(), new ArrayList<ImageDetailsPOJO>(), labelList.size() - 1, label, fileUri, labelList.get(selectedFragmentPosition - 4).getCoverageType());
         fragmentTransaction.replace(R.id.content_frame, addEditReportSelectedImagesFragment);
         fragmentTransaction.commit();
         activityActionBar.setTitle(label.getName());
-        if(actionBarEditBtn != null){
+        if (actionBarEditBtn != null) {
             actionBarEditBtn.setVisible(true);
         }
         toolbar.setTag(label);
@@ -688,14 +667,14 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         drawerMenuListAdapter.notifyDataSetChanged();
         reportPOJO.getLabelArrayList().remove(position);
 
-        if(reportPOJO.getLabelArrayList().size() > 0 ){
+        if (reportPOJO.getLabelArrayList().size() > 0) {
             selectedFragmentPosition = position > 0 ? position - 1 + 4 : position + 4;
-            ArrayList<Label> labelArrayList =  reportPOJO.getLabelArrayList();
-            if( labelArrayList!= null && labelArrayList.size() > selectedFragmentPosition - 4 && labelArrayList.get(selectedFragmentPosition - 4) != null) {
+            ArrayList<Label> labelArrayList = reportPOJO.getLabelArrayList();
+            if (labelArrayList != null && labelArrayList.size() > selectedFragmentPosition - 4 && labelArrayList.get(selectedFragmentPosition - 4) != null) {
 
-                if((selectedFragmentPosition-4) == 0){
+                if ((selectedFragmentPosition - 4) == 0) {
                     putDefaultFragment();
-                }else {
+                } else {
                     FragmentManager transactionManager = getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
                     AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment = AddEditReportSelectedImagesFragment.initFragment(labelArrayList.get(selectedFragmentPosition - 4).getSelectedImages(), labelArrayList.get(selectedFragmentPosition - 4).getSelectedElevationImages(), selectedFragmentPosition - 4, labelArrayList.get(selectedFragmentPosition - 4), fileUri, labelArrayList.get(selectedFragmentPosition - 4).getCoverageType());
@@ -707,7 +686,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                 actionBarEditBtn.setVisible(true);
                 toolbar.setTag(labelArrayList.get(selectedFragmentPosition - 4));
             }
-        }else{
+        } else {
             mDrawerLayout.closeDrawer(Gravity.LEFT);
             putClaimDetailsFragment();
             actionBarEditBtn.setVisible(false);
@@ -718,25 +697,25 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
     @Override
     public void setReportTitle(String reportTitle) {
-        new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout,reportTitle,reportPOJO.getId(),false,categoryListDBHelper,"title").execute();
+        new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, reportTitle, reportPOJO.getId(), false, categoryListDBHelper, "title").execute();
         reportPOJO.setReportTitle(reportTitle);
     }
 
     @Override
     public void setReportDescription(String reportDescription) {
         reportPOJO.setReportDescription(reportDescription);
-        new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout,reportDescription,reportPOJO.getId(),false,categoryListDBHelper,"description").execute();
+        new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, reportDescription, reportPOJO.getId(), false, categoryListDBHelper, "description").execute();
     }
 
     @Override
     public void setReportClientName(String reportClientName) {
-        new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout,reportClientName,reportPOJO.getId(),false,categoryListDBHelper,"client_name").execute();
+        new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, reportClientName, reportPOJO.getId(), false, categoryListDBHelper, "client_name").execute();
         reportPOJO.setInsuredName(reportClientName);
     }
 
     @Override
     public void setReportClaimNumber(String reportClaimNumber) {
-        new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, reportClaimNumber,reportPOJO.getId(),false,categoryListDBHelper,"claim_number").execute();
+        new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, reportClaimNumber, reportPOJO.getId(), false, categoryListDBHelper, "claim_number").execute();
         reportPOJO.setClaimNumber(reportClaimNumber);
     }
 
@@ -747,7 +726,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
     @Override
     public void setReportBy(String reportBy) {
-        new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, reportBy,reportPOJO.getId(),false,categoryListDBHelper,"report_by").execute();
+        new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, reportBy, reportPOJO.getId(), false, categoryListDBHelper, "report_by").execute();
         reportPOJO.setReportBy(reportBy);
     }
 
@@ -755,37 +734,37 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     @Override
     public void setLocationLat(String locationLat) {
         reportPOJO.setLocationLat(locationLat);
-        new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, locationLat,reportPOJO.getId(),false,categoryListDBHelper,"latitude").execute();
+        new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, locationLat, reportPOJO.getId(), false, categoryListDBHelper, "latitude").execute();
 
     }
 
     @Override
     public void setLocationLong(String locationLong) {
         reportPOJO.setLocationLong(locationLong);
-        new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, locationLong,reportPOJO.getId(),false,categoryListDBHelper,"longitude").execute();
+        new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, locationLong, reportPOJO.getId(), false, categoryListDBHelper, "longitude").execute();
     }
 
     @Override
     public void setAddressLine(String addressLine) {
         reportPOJO.setAddressLine(addressLine);
-        new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, addressLine,reportPOJO.getId(),false,categoryListDBHelper,"address_line").execute();
+        new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, addressLine, reportPOJO.getId(), false, categoryListDBHelper, "address_line").execute();
 
     }
 
     @Override
     public void setMapSnapshot(final Bitmap bitmap) {
 
-        googleMapSnapshotBitmap =  bitmap;
-        boolean result = PermissionUtilities.checkPermission(AddEditReportActivity.this,null,PermissionUtilities.MY_APP_SAVE_SNAPSHOT_PERMISSIONS);
+        googleMapSnapshotBitmap = bitmap;
+        boolean result = PermissionUtilities.checkPermission(AddEditReportActivity.this, null, PermissionUtilities.MY_APP_SAVE_SNAPSHOT_PERMISSIONS);
 
-        if(result){
+        if (result) {
             File destination = new File(Environment.getExternalStorageDirectory(), reportPOJO.getId() + ".png");
             final FileOutputStream fileOutputStream;
             try {
-                fileOutputStream = new FileOutputStream(destination,false);
+                fileOutputStream = new FileOutputStream(destination, false);
                 googleMapSnapshotBitmap.compress(Bitmap.CompressFormat.PNG, 90, fileOutputStream);
                 reportPOJO.setGoogleMapSnapShotFilePath(destination.getPath());
-                categoryListDBHelper.updateLocationSnapshot(destination.getPath(),reportPOJO.getId());
+                categoryListDBHelper.updateLocationSnapshot(destination.getPath(), reportPOJO.getId());
 
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -794,11 +773,11 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
             ImageHelper.grantAppPermission(this, getIntent(), Uri.fromFile(destination));
 
 
-            new SingleMediaScanner(this, destination, new OnMediaScannerListener(){
+            new SingleMediaScanner(this, destination, new OnMediaScannerListener() {
 
                 @Override
                 public void onMediaScanComplete(String path, Uri uri) {
-                    if(path != null){
+                    if (path != null) {
                         ImageHelper.revokeAppPermission(AddEditReportActivity.this, uri);
                     }
 
@@ -810,64 +789,63 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
 
     @Override
-    public void setSelectedElevationImages(ArrayList<ImageDetailsPOJO> elevationImagesList,int labelPosition) {
+    public void setSelectedElevationImages(ArrayList<ImageDetailsPOJO> elevationImagesList, int labelPosition) {
 
         reportPOJO.getLabelArrayList().get(labelPosition).setSelectedElevationImages(elevationImagesList);
-        new DBSelectedImagesTask(AddEditReportActivity.this, progressBarLayout, reportPOJO.getLabelArrayList().get(labelPosition),false,categoryListDBHelper,"elevation_images").execute();
+        new DBSelectedImagesTask(AddEditReportActivity.this, progressBarLayout, reportPOJO.getLabelArrayList().get(labelPosition), false, categoryListDBHelper, "elevation_images").execute();
 
     }
 
     @Override
-    public void setSelectedImages(ArrayList<ImageDetailsPOJO> imagesList , int labelPosition) {
+    public void setSelectedImages(ArrayList<ImageDetailsPOJO> imagesList, int labelPosition) {
         ArrayList<ImageDetailsPOJO> imageDetailsList = reportPOJO.getLabelArrayList().get(labelPosition).getSelectedImages();
         imageDetailsList.addAll(imagesList);
         reportPOJO.getLabelArrayList().get(labelPosition).setSelectedImages(imageDetailsList);
     }
 
     @Override
-    public void setSwapedSelectedImages(ArrayList<ImageDetailsPOJO> imagesList , int labelPosition) {
+    public void setSwapedSelectedImages(ArrayList<ImageDetailsPOJO> imagesList, int labelPosition) {
         reportPOJO.getLabelArrayList().get(labelPosition).setSelectedImages(imagesList);
     }
+
     @Override
     public void onBackButtonClick() {
-        selectedFragmentPosition = selectedFragmentPosition -1;
-        if(selectedFragmentPosition >=0){
+        selectedFragmentPosition = selectedFragmentPosition - 1;
+        if (selectedFragmentPosition >= 0) {
 
-            if(selectedFragmentPosition == 0) {
+            if (selectedFragmentPosition == 0) {
                 mDrawerLayout.closeDrawer(Gravity.LEFT);
                 putClaimDetailsFragment();
                 actionBarEditBtn.setVisible(false);
 
             }
 
-            if(selectedFragmentPosition == 1) {
+            if (selectedFragmentPosition == 1) {
                 mDrawerLayout.closeDrawer(Gravity.LEFT);
                 putPropertyDetails();
                 actionBarEditBtn.setVisible(false);
 
-            }
-            else if(selectedFragmentPosition == 2) {
+            } else if (selectedFragmentPosition == 2) {
                 mDrawerLayout.closeDrawer(Gravity.LEFT);
                 putPerilDetails();
                 activityActionBar.setTitle("Peril");
                 actionBarEditBtn.setVisible(false);
 
-            }
-            else if(selectedFragmentPosition == 3) {
+            } else if (selectedFragmentPosition == 3) {
                 mDrawerLayout.closeDrawer(Gravity.LEFT);
                 putPointOfOriginFragment();
                 activityActionBar.setTitle("Point Of Origin");
                 actionBarEditBtn.setVisible(false);
 
-            }else if(selectedFragmentPosition > 3){
-                if(selectedFragmentPosition == 4){
+            } else if (selectedFragmentPosition > 3) {
+                if (selectedFragmentPosition == 4) {
                     putDefaultFragment();
-                }else {
+                } else {
                     putLabelFragment();
                 }
             }
-        }else{
-            selectedFragmentPosition = 4 + reportPOJO.getLabelArrayList().size() -1 ;
+        } else {
+            selectedFragmentPosition = 4 + reportPOJO.getLabelArrayList().size() - 1;
             putLabelFragment();
 
         }
@@ -877,29 +855,27 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     public void onNextButtonClick() {
 
         selectedFragmentPosition = selectedFragmentPosition + 1;
-        if(selectedFragmentPosition == 1) {
+        if (selectedFragmentPosition == 1) {
             mDrawerLayout.closeDrawer(Gravity.LEFT);
             putPropertyDetails();
             actionBarEditBtn.setVisible(false);
 
-        }
-        else if(selectedFragmentPosition == 2) {
+        } else if (selectedFragmentPosition == 2) {
             mDrawerLayout.closeDrawer(Gravity.LEFT);
             putPerilDetails();
             activityActionBar.setTitle("Peril");
             actionBarEditBtn.setVisible(false);
 
-        }
-        else if(selectedFragmentPosition == 3) {
+        } else if (selectedFragmentPosition == 3) {
             mDrawerLayout.closeDrawer(Gravity.LEFT);
             putPointOfOriginFragment();
             activityActionBar.setTitle("Point Of Origin");
             actionBarEditBtn.setVisible(false);
 
-        }else if(selectedFragmentPosition > 3){
-            if(selectedFragmentPosition == 4){
+        } else if (selectedFragmentPosition > 3) {
+            if (selectedFragmentPosition == 4) {
                 putDefaultFragment();
-            }else {
+            } else {
                 putLabelFragment();
             }
         }
@@ -907,26 +883,25 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     }
 
 
-    public  boolean validateData(){
-        boolean validateSquareFootage= Pattern.compile("^[1-9]\\d*(\\.\\d+)?$").matcher(reportPOJO.getPropertyDetailsPOJO().getSquareFootage().trim()).matches();
-        if(reportPOJO.getReportTitle().trim().isEmpty()){
-            CommonUtils.showSnackbarMessage(getString(R.string.please_enter_title), true, true,parentLayoutForMessages, AddEditReportActivity.this);
+    public boolean validateData() {
+        boolean validateSquareFootage = Pattern.compile("^[1-9]\\d*(\\.\\d+)?$").matcher(reportPOJO.getPropertyDetailsPOJO().getSquareFootage().trim()).matches();
+        if (reportPOJO.getReportTitle().trim().isEmpty()) {
+            CommonUtils.showSnackbarMessage(getString(R.string.please_enter_title), true, true, parentLayoutForMessages, AddEditReportActivity.this);
             return false;
-        }else if(reportPOJO.getReportDescription().trim().isEmpty()){
+        } else if (reportPOJO.getReportDescription().trim().isEmpty()) {
             CommonUtils.showSnackbarMessage(getString(R.string.enter_description_message), true, true, parentLayoutForMessages, AddEditReportActivity.this);
             return false;
-        }else if(reportPOJO.getInsuredName().trim().isEmpty()){
+        } else if (reportPOJO.getInsuredName().trim().isEmpty()) {
             CommonUtils.showSnackbarMessage(getString(R.string.enter_insurance_name_message), true, true, parentLayoutForMessages, AddEditReportActivity.this);
             return false;
-        }else if(reportPOJO.getClaimNumber().trim().isEmpty()){
+        } else if (reportPOJO.getClaimNumber().trim().isEmpty()) {
             CommonUtils.showSnackbarMessage(getString(R.string.enter_claim_number_message), true, true, parentLayoutForMessages, AddEditReportActivity.this);
             return false;
-        }else if(reportPOJO.getAddressLine().trim().isEmpty()){
+        } else if (reportPOJO.getAddressLine().trim().isEmpty()) {
             CommonUtils.showSnackbarMessage(getString(R.string.please_add_address_message), true, true, parentLayoutForMessages, AddEditReportActivity.this);
             return false;
-        }
-        else if(!reportPOJO.getPropertyDetailsPOJO().getSquareFootage().trim().isEmpty()){
-            if(!validateSquareFootage) {
+        } else if (!reportPOJO.getPropertyDetailsPOJO().getSquareFootage().trim().isEmpty()) {
+            if (!validateSquareFootage) {
                 CommonUtils.showSnackbarMessage(getString(R.string.please_add_valid_square_footage_message), true, true, parentLayoutForMessages, AddEditReportActivity.this);
                 return false;
             }
@@ -940,14 +915,14 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     public void onReportSave(boolean isProgressBar) {
 
         boolean isValid;
-        if(isProgressBar) {
+        if (isProgressBar) {
             isValid = validateData();
 
-            if(isValid){
-                new DatabaseSaveReportTask(AddEditReportActivity.this, progressBarLayout, reportPOJO,false,categoryListDBHelper).execute();
+            if (isValid) {
+                new DatabaseSaveReportTask(AddEditReportActivity.this, progressBarLayout, reportPOJO, false, categoryListDBHelper).execute();
             }
-        }else {
-            new DatabaseSaveReportTask(AddEditReportActivity.this, progressBarLayout, reportPOJO,false,categoryListDBHelper).execute();
+        } else {
+            new DatabaseSaveReportTask(AddEditReportActivity.this, progressBarLayout, reportPOJO, false, categoryListDBHelper).execute();
         }
 
 
@@ -956,74 +931,74 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     @Override
     public void onReportGenerateClicked() {
         boolean isValid = validateData();
-        if(isValid){
-            Intent i  = new Intent(AddEditReportActivity.this, CustomisationActivity.class);
+        if (isValid) {
+            Intent i = new Intent(AddEditReportActivity.this, CustomisationActivity.class);
             i.putExtra("reportDetails", reportPOJO);
-            AddEditReportActivity.this.startActivityForResult(i,SHOWPREFERENCEACTIVITY);
+            AddEditReportActivity.this.startActivityForResult(i, SHOWPREFERENCEACTIVITY);
         }
     }
 
     public void onTwoImagesPerPage() {
-        boolean result = PermissionUtilities.checkPermission(AddEditReportActivity.this,null,PermissionUtilities.MY_APP_GENERATE_REPORT_PERMISSIONS_TWO);
+        boolean result = PermissionUtilities.checkPermission(AddEditReportActivity.this, null, PermissionUtilities.MY_APP_GENERATE_REPORT_PERMISSIONS_TWO);
 
-        if(result)
-            new DBUpdateFilePath(AddEditReportActivity.this,findViewById(R.id.progressBarLayout), modifiedReportPojo, reportPOJO, true, categoryListDBHelper).execute(2);
+        if (result)
+            new DBUpdateFilePath(AddEditReportActivity.this, findViewById(R.id.progressBarLayout), modifiedReportPojo, reportPOJO, true, categoryListDBHelper).execute(2);
     }
 
     public void onFourImagesPerPage() {
-        boolean result = PermissionUtilities.checkPermission(AddEditReportActivity.this,null,PermissionUtilities.MY_APP_GENERATE_REPORT_PERMISSIONS_FOUR);
-        if(result)
-            new DBUpdateFilePath(AddEditReportActivity.this,findViewById(R.id.progressBarLayout), modifiedReportPojo,reportPOJO, true, categoryListDBHelper).execute(4);
+        boolean result = PermissionUtilities.checkPermission(AddEditReportActivity.this, null, PermissionUtilities.MY_APP_GENERATE_REPORT_PERMISSIONS_FOUR);
+        if (result)
+            new DBUpdateFilePath(AddEditReportActivity.this, findViewById(R.id.progressBarLayout), modifiedReportPojo, reportPOJO, true, categoryListDBHelper).execute(4);
     }
 
     @Override
     public void setPropertyDate(String propertyDate) {
         reportPOJO.getPropertyDetailsPOJO().setPropertyDate(propertyDate);
-        reportPOJO.setPropertyDetailsPOJO( reportPOJO.getPropertyDetailsPOJO());
-        new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, propertyDate,reportPOJO.getId(),false,categoryListDBHelper,"property_date").execute();
+        reportPOJO.setPropertyDetailsPOJO(reportPOJO.getPropertyDetailsPOJO());
+        new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, propertyDate, reportPOJO.getId(), false, categoryListDBHelper, "property_date").execute();
 
     }
 
     @Override
     public void setPropertySquareFootage(String squareFootage) {
         reportPOJO.getPropertyDetailsPOJO().setSquareFootage(squareFootage);
-        reportPOJO.setPropertyDetailsPOJO( reportPOJO.getPropertyDetailsPOJO());
-        new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, String.valueOf(squareFootage),reportPOJO.getId(),false,categoryListDBHelper,"square_footage").execute();
+        reportPOJO.setPropertyDetailsPOJO(reportPOJO.getPropertyDetailsPOJO());
+        new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, String.valueOf(squareFootage), reportPOJO.getId(), false, categoryListDBHelper, "square_footage").execute();
     }
 
     @Override
     public void setPropertyRoofSystem(String roofSystem) {
         reportPOJO.getPropertyDetailsPOJO().setRoofSystem(roofSystem);
-        reportPOJO.setPropertyDetailsPOJO( reportPOJO.getPropertyDetailsPOJO());
-        new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, roofSystem, reportPOJO.getId(),false,categoryListDBHelper,"roof_system").execute();
+        reportPOJO.setPropertyDetailsPOJO(reportPOJO.getPropertyDetailsPOJO());
+        new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, roofSystem, reportPOJO.getId(), false, categoryListDBHelper, "roof_system").execute();
     }
 
     @Override
     public void setPropertySiding(String siding) {
         reportPOJO.getPropertyDetailsPOJO().setSiding(siding);
-        reportPOJO.setPropertyDetailsPOJO( reportPOJO.getPropertyDetailsPOJO());
-        new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, siding, reportPOJO.getId(),false,categoryListDBHelper,"siding").execute();
+        reportPOJO.setPropertyDetailsPOJO(reportPOJO.getPropertyDetailsPOJO());
+        new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, siding, reportPOJO.getId(), false, categoryListDBHelper, "siding").execute();
     }
 
     @Override
     public void setPropertyFoundation(String foundation) {
         reportPOJO.getPropertyDetailsPOJO().setFoundation(foundation);
-        reportPOJO.setPropertyDetailsPOJO( reportPOJO.getPropertyDetailsPOJO());
-        new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, foundation, reportPOJO.getId(),false,categoryListDBHelper,"foundation").execute();
+        reportPOJO.setPropertyDetailsPOJO(reportPOJO.getPropertyDetailsPOJO());
+        new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, foundation, reportPOJO.getId(), false, categoryListDBHelper, "foundation").execute();
 
     }
 
     @Override
     public void setPropertyBuildingType(String buildingType) {
         reportPOJO.getPropertyDetailsPOJO().setBuildingType(buildingType);
-        reportPOJO.setPropertyDetailsPOJO( reportPOJO.getPropertyDetailsPOJO());
-        new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, buildingType, reportPOJO.getId(),false,categoryListDBHelper,"building_type").execute();
+        reportPOJO.setPropertyDetailsPOJO(reportPOJO.getPropertyDetailsPOJO());
+        new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, buildingType, reportPOJO.getId(), false, categoryListDBHelper, "building_type").execute();
     }
 
     @Override
     public void setPeril(PerilPOJO perilPOJO) {
         reportPOJO.setPerilPOJO(perilPOJO);
-        new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, perilPOJO.getName(),reportPOJO.getId(),false,categoryListDBHelper,"peril").execute();
+        new DBUpdateTaskOnTextChanged(AddEditReportActivity.this, progressBarLayout, perilPOJO.getName(), reportPOJO.getId(), false, categoryListDBHelper, "peril").execute();
 
     }
 
@@ -1040,130 +1015,52 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
     @Override
     public void update(Observable o, Object arg) {
-        if(o instanceof ReportPOJO){
+        if (o instanceof ReportPOJO) {
             enableDisableCheckList(reportPOJO);
         }
     }
 
     private void enableDisableCheckList(ReportPOJO reportPOJO) {
 
-        if(!TextUtils.isEmpty(reportPOJO.getReportTitle())
+        if (!TextUtils.isEmpty(reportPOJO.getReportTitle())
                 && !TextUtils.isEmpty(reportPOJO.getReportDescription())
-                &&  !TextUtils.isEmpty(reportPOJO.getClaimNumber())
+                && !TextUtils.isEmpty(reportPOJO.getClaimNumber())
                 && !TextUtils.isEmpty(reportPOJO.getInsuredName())
-                && !TextUtils.isEmpty(reportPOJO.getAddressLine())){
+                && !TextUtils.isEmpty(reportPOJO.getAddressLine())) {
             parentMenuItems.get(0).setChecked(true);
             drawerMenuListAdapter.notifyDataSetChanged();
-        }else{
+        } else {
             parentMenuItems.get(0).setChecked(false);
             drawerMenuListAdapter.notifyDataSetChanged();
         }
 
         PropertyDetailsPOJO propertyDetailsPOJO = reportPOJO.getPropertyDetailsPOJO();
-        if(!TextUtils.isEmpty(propertyDetailsPOJO.getPropertyDate())
-                && !TextUtils.equals(propertyDetailsPOJO.getPropertyDate(),"--Select Inspection Date--")
+        if (!TextUtils.isEmpty(propertyDetailsPOJO.getPropertyDate())
+                && !TextUtils.equals(propertyDetailsPOJO.getPropertyDate(), "--Select Inspection Date--")
                 && !TextUtils.isEmpty(propertyDetailsPOJO.getSquareFootage())
                 && !TextUtils.isEmpty(propertyDetailsPOJO.getRoofSystem())
-                && !TextUtils.equals(propertyDetailsPOJO.getSquareFootage(),"--Select Roof System--")
+                && !TextUtils.equals(propertyDetailsPOJO.getSquareFootage(), "--Select Roof System--")
                 && !TextUtils.isEmpty(propertyDetailsPOJO.getSiding())
-                && !TextUtils.equals(propertyDetailsPOJO.getSiding(),"--Select Siding--")
+                && !TextUtils.equals(propertyDetailsPOJO.getSiding(), "--Select Siding--")
                 && !TextUtils.isEmpty(propertyDetailsPOJO.getFoundation())
-                && !TextUtils.equals(propertyDetailsPOJO.getSquareFootage(),"--Select Foundation--")
+                && !TextUtils.equals(propertyDetailsPOJO.getSquareFootage(), "--Select Foundation--")
                 && !TextUtils.isEmpty(propertyDetailsPOJO.getBuildingType())
-                && !TextUtils.equals(propertyDetailsPOJO.getBuildingType(),"--Select Building Type--")){
+                && !TextUtils.equals(propertyDetailsPOJO.getBuildingType(), "--Select Building Type--")) {
             parentMenuItems.get(1).setChecked(true);
             drawerMenuListAdapter.notifyDataSetChanged();
-        }else{
+        } else {
             parentMenuItems.get(1).setChecked(false);
             drawerMenuListAdapter.notifyDataSetChanged();
         }
-        if(!TextUtils.isEmpty(reportPOJO.getPerilPOJO().getName())){
+        if (!TextUtils.isEmpty(reportPOJO.getPerilPOJO().getName())) {
             parentMenuItems.get(2).setChecked(true);
             drawerMenuListAdapter.notifyDataSetChanged();
-        }else{
+        } else {
             parentMenuItems.get(2).setChecked(false);
             drawerMenuListAdapter.notifyDataSetChanged();
         }
 
 
-    }
-
-
-
-
-    // Task for label addition
-    class DatabaseTaskHelper extends AsyncTask <String,Void,String>{
-
-
-        private Label label;
-        private Context context;
-
-
-        public  DatabaseTaskHelper(Context context,Label label) {
-            this.context=context;
-            this.label=label;
-
-        }
-
-        @Override
-        protected void onPreExecute() {
-            CommonUtils.lockOrientation((Activity) context);
-            if(progressBarLayout != null){
-                progressBarLayout.setVisibility(View.VISIBLE);
-            }
-        }
-
-        @Override
-        protected String doInBackground(String... strings) {
-
-            return categoryListDBHelper.addLabel(label);
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-            if(progressBarLayout != null){
-                progressBarLayout.setVisibility(View.GONE);
-            }
-            CommonUtils.unlockOrientation((Activity)context);
-
-        }
-    }
-
-    // Task for getting  cat list
-    class DatabaseTaskCategoryList extends AsyncTask <String,Void,ArrayList<Category>>{
-
-        private Context context;
-
-
-        public  DatabaseTaskCategoryList(Context context) {
-            this.context=context;
-
-        }
-
-        @Override
-        protected void onPreExecute() {
-            CommonUtils.lockOrientation((Activity) context);
-            if(progressBarLayout != null){
-                progressBarLayout.setVisibility(View.VISIBLE);
-            }
-        }
-
-        @Override
-        protected ArrayList<Category> doInBackground(String... strings) {
-
-            ArrayList<Category> categories= categoryListDBHelper.getCategoryList();
-            return categories;
-        }
-
-        @Override
-        protected void onPostExecute(ArrayList<Category> result) {
-            if(progressBarLayout != null){
-                progressBarLayout.setVisibility(View.GONE);
-            }
-            CommonUtils.unlockOrientation((Activity)context);
-
-        }
     }
 
     @Override
@@ -1172,14 +1069,13 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         inflater.inflate(R.menu.actionbar_action_menu, menu);
         actionBarEditBtn = menu.findItem(R.id.edit);
 
-        if(selectedFragmentPosition > 4){
+        if (selectedFragmentPosition > 4) {
             actionBarEditBtn.setVisible(true);
-        }else{
+        } else {
             actionBarEditBtn.setVisible(false);
         }
         return true;
     }
-
 
     @Override
     protected void onDestroy() {
@@ -1227,21 +1123,21 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
             case SHOWPREFERENCEACTIVITY:
 
                 ReportPOJO reportPOJOModified = data.getParcelableExtra("modified_report");
-                int noOfImages = data.getIntExtra("per_page_images",2);
-                modifiedReportPojo =  reportPOJOModified;
-                if(noOfImages == 2){
+                int noOfImages = data.getIntExtra("per_page_images", 2);
+                modifiedReportPojo = reportPOJOModified;
+                if (noOfImages == 2) {
                     onTwoImagesPerPage();
-                }else{
+                } else {
                     onFourImagesPerPage();
                 }
                 break;
             case ADD_CATEGORY_REQUEST:
                 Bundle dataFromActivity = data.getExtras().getBundle("categoryDetails");
-                if(dataFromActivity!= null) {
+                if (dataFromActivity != null) {
                     int categoryId = dataFromActivity.getInt("categoryId");
                     String categoryName = dataFromActivity.get("categoryName").toString();
                     String categoryDescription = dataFromActivity.get("categoryDescription").toString();
-                    String categoryCoverageType= dataFromActivity.get("categoryCoverageType").toString();
+                    String categoryCoverageType = dataFromActivity.get("categoryCoverageType").toString();
 
                     final Label label = new Label();
                     label.setCategoryID(categoryId);
@@ -1253,7 +1149,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                     String labelId = "";
                     try {
 
-                        if(!validateLabelName(reportPOJO.getLabelArrayList(),label.getName())){
+                        if (!validateLabelName(reportPOJO.getLabelArrayList(), label.getName())) {
                             Toast.makeText(AddEditReportActivity.this, R.string.label_validation_msg, Toast.LENGTH_SHORT).show();
                             return;
                         }
@@ -1271,13 +1167,13 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                 break;
 
             case SET_CLICKED_IMAGE_DETAILS:
-                ImageDetailsPOJO imageDetailsPOJO  = (ImageDetailsPOJO) data.getExtras().get("selected_images");
+                ImageDetailsPOJO imageDetailsPOJO = (ImageDetailsPOJO) data.getExtras().get("selected_images");
                 int labelPosition = data.getExtras().getInt("labelPosition");
                 ArrayList<ImageDetailsPOJO> imageDetailsPOJOArrayList = (ArrayList<ImageDetailsPOJO>) reportPOJO.getLabelArrayList().get(labelPosition).getSelectedImages().clone();
                 ImageDetailsPOJO selectedImage = null;
                 if (data.getExtras().getBoolean("isEdit")) {
                     int position = data.getExtras().getInt("position");
-                    selectedImage= imageDetailsPOJOArrayList.get(position);
+                    selectedImage = imageDetailsPOJOArrayList.get(position);
                     selectedImage.setTitle(imageDetailsPOJO.getTitle());
                     selectedImage.setDescription(imageDetailsPOJO.getDescription());
                     selectedImage.setImageUrl(imageDetailsPOJO.getImageUrl());
@@ -1287,15 +1183,15 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                     selectedImage.setCoverageTye(imageDetailsPOJO.getCoverageTye());
 
                 }
-                if(selectedImage != null) {
+                if (selectedImage != null) {
                     categoryListDBHelper.updateImageDetails(selectedImage);
                 }
                 try {
                     FragmentManager fm = getSupportFragmentManager();
-                    if(fm.getFragments() != null && fm.getFragments().size() >0){
-                        for(int i=0;i<fm.getFragments().size();i++){
+                    if (fm.getFragments() != null && fm.getFragments().size() > 0) {
+                        for (int i = 0; i < fm.getFragments().size(); i++) {
 
-                            if(fm.getFragments().get(i) instanceof  AddEditReportSelectedImagesFragment){
+                            if (fm.getFragments().get(i) instanceof AddEditReportSelectedImagesFragment) {
                                 AddEditReportSelectedImagesFragment fragment = (AddEditReportSelectedImagesFragment) fm.getFragments().get(i);
                                 fragment.setDataAndAdapter(imageDetailsPOJOArrayList);
                             }
@@ -1308,7 +1204,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                 }
                 break;
 
-            case  SET_CLICKED_CAPTURED_DETAILS:
+            case SET_CLICKED_CAPTURED_DETAILS:
                 ImageDetailsPOJO imageDetails = (ImageDetailsPOJO) data.getExtras().get("selected_images");
                 categoryListDBHelper.editImageDetails(imageDetails);
 
@@ -1317,10 +1213,10 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
                 try {
                     FragmentManager fm = getSupportFragmentManager();
-                    if(fm.getFragments() != null && fm.getFragments().size() >0){
-                        for(int i=0;i<fm.getFragments().size();i++){
+                    if (fm.getFragments() != null && fm.getFragments().size() > 0) {
+                        for (int i = 0; i < fm.getFragments().size(); i++) {
 
-                            if(fm.getFragments().get(i) instanceof  AddEditReportSelectedImagesFragment){
+                            if (fm.getFragments().get(i) instanceof AddEditReportSelectedImagesFragment) {
                                 AddEditReportSelectedImagesFragment fragment = (AddEditReportSelectedImagesFragment) fm.getFragments().get(i);
                                 fragment.setDataAndAdapter(imageDetailsPOJOSList);
                             }
@@ -1332,17 +1228,17 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                     e.printStackTrace();
                 }
                 break;
-            case  ADD_IMAGE_DETAILS:
+            case ADD_IMAGE_DETAILS:
                 ArrayList<ImageDetailsPOJO> selectedImageList = (ArrayList<ImageDetailsPOJO>) data.getExtras().getSerializable("selected_images");
                 final int labelPos = data.getExtras().getInt("labelPosition");
 
-                if(selectedImageList!=null) {
+                if (selectedImageList != null) {
                     for (int i = 0; i < selectedImageList.size(); i++) {
                         categoryListDBHelper.editImageDetails(selectedImageList.get(i));
                     }
                 }
 
-                new DBSelectedImagesListTsk(categoryListDBHelper,"get_images_for_label",reportPOJO.getLabelArrayList().get(labelPos),selectedImageList,new AsyncTaskStatusCallback(){
+                new DBSelectedImagesListTsk(categoryListDBHelper, "get_images_for_label", reportPOJO.getLabelArrayList().get(labelPos), selectedImageList, new AsyncTaskStatusCallback() {
 
                     @Override
                     public void onPostExecute(Object object, String type) {
@@ -1366,10 +1262,10 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                 }
                 try {
                     FragmentManager fm = getSupportFragmentManager();
-                    if(fm.getFragments() != null && fm.getFragments().size() >0){
-                        for(int i=0;i<fm.getFragments().size();i++){
+                    if (fm.getFragments() != null && fm.getFragments().size() > 0) {
+                        for (int i = 0; i < fm.getFragments().size(); i++) {
 
-                            if(fm.getFragments().get(i) instanceof  AddEditReportSelectedImagesFragment){
+                            if (fm.getFragments().get(i) instanceof AddEditReportSelectedImagesFragment) {
                                 AddEditReportSelectedImagesFragment fragment = (AddEditReportSelectedImagesFragment) fm.getFragments().get(i);
                                 fragment.setDataAndAdapter(selectedImageList);
                             }
@@ -1382,14 +1278,14 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                 }
                 break;
 
-            case SELECT_FILE :
+            case SELECT_FILE:
 
                 try {
                     FragmentManager fm = getSupportFragmentManager();
-                    if(fm.getFragments() != null && fm.getFragments().size() >0){
-                        for(int i=0;i<fm.getFragments().size();i++){
+                    if (fm.getFragments() != null && fm.getFragments().size() > 0) {
+                        for (int i = 0; i < fm.getFragments().size(); i++) {
 
-                            if(fm.getFragments().get(i) instanceof  AddEditReportSelectedImagesFragment){
+                            if (fm.getFragments().get(i) instanceof AddEditReportSelectedImagesFragment) {
                                 AddEditReportSelectedImagesFragment fragment = (AddEditReportSelectedImagesFragment) fm.getFragments().get(i);
                                 fragment.onSelectImagesFromGallery(data, SELECT_FILE);
                             }
@@ -1403,13 +1299,13 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
 
                 break;
-            case  REQUEST_CAMERA:
+            case REQUEST_CAMERA:
                 try {
                     FragmentManager fm = getSupportFragmentManager();
-                    if(fm.getFragments() != null && fm.getFragments().size() >0){
-                        for(int i=0;i<fm.getFragments().size();i++){
+                    if (fm.getFragments() != null && fm.getFragments().size() > 0) {
+                        for (int i = 0; i < fm.getFragments().size(); i++) {
 
-                            if(fm.getFragments().get(i) instanceof  AddEditReportSelectedImagesFragment){
+                            if (fm.getFragments().get(i) instanceof AddEditReportSelectedImagesFragment) {
                                 AddEditReportSelectedImagesFragment fragment = (AddEditReportSelectedImagesFragment) fm.getFragments().get(i);
                                 fragment.onImageCapturedResult(data);
                             }
@@ -1426,12 +1322,12 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
                 try {
                     FragmentManager fm = getSupportFragmentManager();
-                    if(fm.getFragments() != null && fm.getFragments().size() >0){
-                        for(int i=0;i<fm.getFragments().size();i++){
+                    if (fm.getFragments() != null && fm.getFragments().size() > 0) {
+                        for (int i = 0; i < fm.getFragments().size(); i++) {
 
-                            if(fm.getFragments().get(i) instanceof  AddEditReportSelectedImagesFragment){
+                            if (fm.getFragments().get(i) instanceof AddEditReportSelectedImagesFragment) {
                                 AddEditReportSelectedImagesFragment fragment = (AddEditReportSelectedImagesFragment) fm.getFragments().get(i);
-                                fragment.onElevationImageOneCapture(data,requestCode);
+                                fragment.onElevationImageOneCapture(data, requestCode);
                             }
                         }
                     }
@@ -1445,12 +1341,12 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
                 try {
                     FragmentManager fm = getSupportFragmentManager();
-                    if(fm.getFragments() != null && fm.getFragments().size() >0){
-                        for(int i=0;i<fm.getFragments().size();i++){
+                    if (fm.getFragments() != null && fm.getFragments().size() > 0) {
+                        for (int i = 0; i < fm.getFragments().size(); i++) {
 
-                            if(fm.getFragments().get(i) instanceof  AddEditReportSelectedImagesFragment){
+                            if (fm.getFragments().get(i) instanceof AddEditReportSelectedImagesFragment) {
                                 AddEditReportSelectedImagesFragment fragment = (AddEditReportSelectedImagesFragment) fm.getFragments().get(i);
-                                fragment.onElevationImageTwoCapture(data,requestCode);
+                                fragment.onElevationImageTwoCapture(data, requestCode);
                             }
                         }
                     }
@@ -1464,12 +1360,12 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
                 try {
                     FragmentManager fm = getSupportFragmentManager();
-                    if(fm.getFragments() != null && fm.getFragments().size() >0){
-                        for(int i=0;i<fm.getFragments().size();i++){
+                    if (fm.getFragments() != null && fm.getFragments().size() > 0) {
+                        for (int i = 0; i < fm.getFragments().size(); i++) {
 
-                            if(fm.getFragments().get(i) instanceof  AddEditReportSelectedImagesFragment){
+                            if (fm.getFragments().get(i) instanceof AddEditReportSelectedImagesFragment) {
                                 AddEditReportSelectedImagesFragment fragment = (AddEditReportSelectedImagesFragment) fm.getFragments().get(i);
-                                fragment. onElevationImageThreeCapture(data,requestCode);
+                                fragment.onElevationImageThreeCapture(data, requestCode);
                             }
                         }
                     }
@@ -1486,12 +1382,12 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
                 try {
                     FragmentManager fm = getSupportFragmentManager();
-                    if(fm.getFragments() != null && fm.getFragments().size() >0){
-                        for(int i=0;i<fm.getFragments().size();i++){
+                    if (fm.getFragments() != null && fm.getFragments().size() > 0) {
+                        for (int i = 0; i < fm.getFragments().size(); i++) {
 
-                            if(fm.getFragments().get(i) instanceof  AddEditReportSelectedImagesFragment){
+                            if (fm.getFragments().get(i) instanceof AddEditReportSelectedImagesFragment) {
                                 AddEditReportSelectedImagesFragment fragment = (AddEditReportSelectedImagesFragment) fm.getFragments().get(i);
-                                fragment. onElevationImageFourCapture(data,requestCode);
+                                fragment.onElevationImageFourCapture(data, requestCode);
                             }
                         }
                     }
@@ -1505,12 +1401,12 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
                 try {
                     FragmentManager fm = getSupportFragmentManager();
-                    if(fm.getFragments() != null && fm.getFragments().size() >0){
-                        for(int i=0;i<fm.getFragments().size();i++){
+                    if (fm.getFragments() != null && fm.getFragments().size() > 0) {
+                        for (int i = 0; i < fm.getFragments().size(); i++) {
 
-                            if(fm.getFragments().get(i) instanceof  StarterPhotosFragment){
+                            if (fm.getFragments().get(i) instanceof StarterPhotosFragment) {
                                 StarterPhotosFragment fragment = (StarterPhotosFragment) fm.getFragments().get(i);
-                                fragment.onElevationImageOneCapture(data,requestCode);
+                                fragment.onElevationImageOneCapture(data, requestCode);
                             }
                         }
                     }
@@ -1524,12 +1420,12 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
                 try {
                     FragmentManager fm = getSupportFragmentManager();
-                    if(fm.getFragments() != null && fm.getFragments().size() >0){
-                        for(int i=0;i<fm.getFragments().size();i++){
+                    if (fm.getFragments() != null && fm.getFragments().size() > 0) {
+                        for (int i = 0; i < fm.getFragments().size(); i++) {
 
-                            if(fm.getFragments().get(i) instanceof  StarterPhotosFragment){
+                            if (fm.getFragments().get(i) instanceof StarterPhotosFragment) {
                                 StarterPhotosFragment fragment = (StarterPhotosFragment) fm.getFragments().get(i);
-                                fragment.onElevationImageTwoCapture(data,requestCode);
+                                fragment.onElevationImageTwoCapture(data, requestCode);
                             }
                         }
                     }
@@ -1543,12 +1439,12 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
                 try {
                     FragmentManager fm = getSupportFragmentManager();
-                    if(fm.getFragments() != null && fm.getFragments().size() >0){
-                        for(int i=0;i<fm.getFragments().size();i++){
+                    if (fm.getFragments() != null && fm.getFragments().size() > 0) {
+                        for (int i = 0; i < fm.getFragments().size(); i++) {
 
-                            if(fm.getFragments().get(i) instanceof  StarterPhotosFragment){
+                            if (fm.getFragments().get(i) instanceof StarterPhotosFragment) {
                                 StarterPhotosFragment fragment = (StarterPhotosFragment) fm.getFragments().get(i);
-                                fragment.onElevationImageThreeCapture(data,requestCode);
+                                fragment.onElevationImageThreeCapture(data, requestCode);
                             }
                         }
                     }
@@ -1565,12 +1461,12 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
                 try {
                     FragmentManager fm = getSupportFragmentManager();
-                    if(fm.getFragments() != null && fm.getFragments().size() >0){
-                        for(int i=0;i<fm.getFragments().size();i++){
+                    if (fm.getFragments() != null && fm.getFragments().size() > 0) {
+                        for (int i = 0; i < fm.getFragments().size(); i++) {
 
-                            if(fm.getFragments().get(i) instanceof  StarterPhotosFragment){
+                            if (fm.getFragments().get(i) instanceof StarterPhotosFragment) {
                                 StarterPhotosFragment fragment = (StarterPhotosFragment) fm.getFragments().get(i);
-                                fragment.onElevationImageFourCapture(data,requestCode);
+                                fragment.onElevationImageFourCapture(data, requestCode);
                             }
                         }
                     }
@@ -1579,16 +1475,16 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                     e.printStackTrace();
                 }
                 break;
-            case HOUSE_NUMBER_REQUEST_STARTER :
+            case HOUSE_NUMBER_REQUEST_STARTER:
 
                 try {
                     FragmentManager fm = getSupportFragmentManager();
-                    if(fm.getFragments() != null && fm.getFragments().size() >0){
-                        for(int i=0;i<fm.getFragments().size();i++){
+                    if (fm.getFragments() != null && fm.getFragments().size() > 0) {
+                        for (int i = 0; i < fm.getFragments().size(); i++) {
 
-                            if(fm.getFragments().get(i) instanceof  StarterPhotosFragment){
+                            if (fm.getFragments().get(i) instanceof StarterPhotosFragment) {
                                 StarterPhotosFragment fragment = (StarterPhotosFragment) fm.getFragments().get(i);
-                                fragment.onHouseNumberImageCapture(data,requestCode);
+                                fragment.onHouseNumberImageCapture(data, requestCode);
                             }
                         }
                     }
@@ -1598,20 +1494,20 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                 }
                 break;
 
-            case SELECT_FILE_IMAGE_ONE_STARTER :
-            case SELECT_FILE_IMAGE_TWO_STARTER :
-            case SELECT_FILE_IMAGE_THREE_STARTER :
-            case SELECT_FILE_IMAGE_FOUR_STARTER :
-            case SELECT_FILE_IMAGE_HOUSE_NUMBER_STARTER :
+            case SELECT_FILE_IMAGE_ONE_STARTER:
+            case SELECT_FILE_IMAGE_TWO_STARTER:
+            case SELECT_FILE_IMAGE_THREE_STARTER:
+            case SELECT_FILE_IMAGE_FOUR_STARTER:
+            case SELECT_FILE_IMAGE_HOUSE_NUMBER_STARTER:
 
                 try {
                     FragmentManager fm = getSupportFragmentManager();
-                    if(fm.getFragments() != null && fm.getFragments().size() >0){
-                        for(int i=0;i<fm.getFragments().size();i++){
+                    if (fm.getFragments() != null && fm.getFragments().size() > 0) {
+                        for (int i = 0; i < fm.getFragments().size(); i++) {
 
-                            if(fm.getFragments().get(i) instanceof  StarterPhotosFragment){
+                            if (fm.getFragments().get(i) instanceof StarterPhotosFragment) {
                                 StarterPhotosFragment fragment = (StarterPhotosFragment) fm.getFragments().get(i);
-                                fragment.onSelectImagesFromGallery(data,requestCode);
+                                fragment.onSelectImagesFromGallery(data, requestCode);
                             }
                         }
                     }
@@ -1621,19 +1517,19 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                     e.printStackTrace();
                 }
                 break;
-            case SELECT_FILE_IMAGE_ONE_OVERVIEW :
-            case SELECT_FILE_IMAGE_TWO_OVERVIEW :
-            case SELECT_FILE_IMAGE_THREE_OVERVIEW :
-            case SELECT_FILE_IMAGE_FOUR_OVERVIEW :
+            case SELECT_FILE_IMAGE_ONE_OVERVIEW:
+            case SELECT_FILE_IMAGE_TWO_OVERVIEW:
+            case SELECT_FILE_IMAGE_THREE_OVERVIEW:
+            case SELECT_FILE_IMAGE_FOUR_OVERVIEW:
 
                 try {
                     FragmentManager fm = getSupportFragmentManager();
-                    if(fm.getFragments() != null && fm.getFragments().size() >0){
-                        for(int i=0;i<fm.getFragments().size();i++){
+                    if (fm.getFragments() != null && fm.getFragments().size() > 0) {
+                        for (int i = 0; i < fm.getFragments().size(); i++) {
 
-                            if(fm.getFragments().get(i) instanceof  AddEditReportSelectedImagesFragment){
+                            if (fm.getFragments().get(i) instanceof AddEditReportSelectedImagesFragment) {
                                 AddEditReportSelectedImagesFragment fragment = (AddEditReportSelectedImagesFragment) fm.getFragments().get(i);
-                                fragment.onSelectImagesFromGallery(data,requestCode);
+                                fragment.onSelectImagesFromGallery(data, requestCode);
                             }
                         }
                     }
@@ -1644,10 +1540,84 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                 }
                 break;
 
-                default:
+            default:
         }
     }
 
+    // Task for label addition
+    class DatabaseTaskHelper extends AsyncTask<String, Void, String> {
+
+
+        private Label label;
+        private Context context;
+
+
+        public DatabaseTaskHelper(Context context, Label label) {
+            this.context = context;
+            this.label = label;
+
+        }
+
+        @Override
+        protected void onPreExecute() {
+            CommonUtils.lockOrientation((Activity) context);
+            if (progressBarLayout != null) {
+                progressBarLayout.setVisibility(View.VISIBLE);
+            }
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+
+            return categoryListDBHelper.addLabel(label);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            if (progressBarLayout != null) {
+                progressBarLayout.setVisibility(View.GONE);
+            }
+            CommonUtils.unlockOrientation((Activity) context);
+
+        }
+    }
+
+    // Task for getting  cat list
+    class DatabaseTaskCategoryList extends AsyncTask<String, Void, ArrayList<Category>> {
+
+        private Context context;
+
+
+        public DatabaseTaskCategoryList(Context context) {
+            this.context = context;
+
+        }
+
+        @Override
+        protected void onPreExecute() {
+            CommonUtils.lockOrientation((Activity) context);
+            if (progressBarLayout != null) {
+                progressBarLayout.setVisibility(View.VISIBLE);
+            }
+        }
+
+        @Override
+        protected ArrayList<Category> doInBackground(String... strings) {
+
+            ArrayList<Category> categories = categoryListDBHelper.getCategoryList();
+            return categories;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<Category> result) {
+            if (progressBarLayout != null) {
+                progressBarLayout.setVisibility(View.GONE);
+            }
+            CommonUtils.unlockOrientation((Activity) context);
+
+        }
+    }
 
 
 }

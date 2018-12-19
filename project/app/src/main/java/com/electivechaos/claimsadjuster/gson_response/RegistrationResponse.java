@@ -3,6 +3,7 @@ package com.electivechaos.claimsadjuster.gson_response;
 public class RegistrationResponse {
     String id;
     String error;
+    RegistrationResult result;
 
     public String getId() {
         return id;
@@ -27,7 +28,5 @@ public class RegistrationResponse {
     public void setResult(RegistrationResult result) {
         this.result = result;
     }
-
-    RegistrationResult result;
 }
 

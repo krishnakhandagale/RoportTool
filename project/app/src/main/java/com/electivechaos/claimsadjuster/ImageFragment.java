@@ -43,6 +43,10 @@ import java.util.ArrayList;
 import static com.electivechaos.claimsadjuster.ui.AddEditCategoryActivity.ADD_COVERAGE_REQUEST_CODE;
 
 public class ImageFragment extends Fragment {
+    static ViewPager mPagerInstance;
+    private static CategoryListDBHelper categoryListDBHelper;
+    TextView imageCoverageType;
+    ImageButton imageInfo;
     private String imageUrl;
     private String imgDescription;
     private String coverageType;
@@ -50,14 +54,8 @@ public class ImageFragment extends Fragment {
     private boolean imgIsDamage;
     private boolean imgIsOverview;
     private boolean imgIsPointOfOrigin;
-
     private int position;
     private MonitorImageDetailsChange monitorImageDetailsChange;
-    static ViewPager mPagerInstance;
-    private static CategoryListDBHelper categoryListDBHelper;
-
-    TextView imageCoverageType;
-    ImageButton imageInfo;
 
     public static ImageFragment init(ImageDetailsPOJO imageDetails, int position, ViewPager mPager) {
         ImageFragment imageFragment = new ImageFragment();
@@ -66,8 +64,8 @@ public class ImageFragment extends Fragment {
         Bundle args = new Bundle();
 
         args.putString("imageUrl", imageDetails.getImageUrl());
-        args.putString("description",imageDetails.getDescription());
-        args.putString("coverageType",imageDetails.getCoverageTye());
+        args.putString("description", imageDetails.getDescription());
+        args.putString("coverageType", imageDetails.getCoverageTye());
         args.putBoolean("imgIsDamage", imageDetails.isDamage());
         args.putBoolean("imgIsOverview", imageDetails.isOverview());
         args.putBoolean("imgIsPointPofOrigin", imageDetails.isPointOfOrigin());
@@ -86,16 +84,16 @@ public class ImageFragment extends Fragment {
 
         imageUrl = getArguments() != null ? getArguments().getString("imageUrl") : "";
         position = getArguments() != null ? getArguments().getInt("position") : 0;
-        imgDescription =getArguments() != null ? getArguments().getString("description") : "";
-        coverageType =getArguments() != null ? getArguments().getString("coverageType") : "";
-        imgIsDamage =getArguments() != null  && getArguments().getBoolean("imgIsDamage");
+        imgDescription = getArguments() != null ? getArguments().getString("description") : "";
+        coverageType = getArguments() != null ? getArguments().getString("coverageType") : "";
+        imgIsDamage = getArguments() != null && getArguments().getBoolean("imgIsDamage");
         imgIsOverview = getArguments() != null && getArguments().getBoolean("imgIsOverview");
         imgIsPointOfOrigin = getArguments() != null && getArguments().getBoolean("imgIsPointOfOrigin");
-        imgName =getArguments() != null ? getArguments().getString("imgName") : "";
-        imgDateTime =getArguments() != null ? getArguments().getString("imgDateTime") : "";
-        imgGeoTag =getArguments() != null ? getArguments().getString("imgGeoTag") : "";
+        imgName = getArguments() != null ? getArguments().getString("imgName") : "";
+        imgDateTime = getArguments() != null ? getArguments().getString("imgDateTime") : "";
+        imgGeoTag = getArguments() != null ? getArguments().getString("imgGeoTag") : "";
 
-        if(savedInstanceState != null){
+        if (savedInstanceState != null) {
             imgIsDamage = savedInstanceState.getBoolean("imgIsDamage");
             imgIsOverview = savedInstanceState.getBoolean("imgIsOverview");
             imgIsPointOfOrigin = savedInstanceState.getBoolean("imgIsPointOfOrigin");
@@ -104,7 +102,7 @@ public class ImageFragment extends Fragment {
             imgDateTime = savedInstanceState.getString("imgDateTime");
             imgGeoTag = savedInstanceState.getString("imgGeoTag");
         }
-  }
+    }
 
 
     @Override
@@ -115,7 +113,7 @@ public class ImageFragment extends Fragment {
 
         final CheckedTextView damageTextView = layoutView.findViewById(R.id.damageTextView);
         final CheckedTextView overviewTextView = layoutView.findViewById(R.id.overviewTextView);
-        final  CheckedTextView pointOfOriginTextView = layoutView.findViewById(R.id.isPointOfOrigin);
+        final CheckedTextView pointOfOriginTextView = layoutView.findViewById(R.id.isPointOfOrigin);
         imageCoverageType = layoutView.findViewById(R.id.imageCoverageType);
 
         imageInfo = layoutView.findViewById(R.id.imageInfo);
@@ -129,37 +127,37 @@ public class ImageFragment extends Fragment {
         });
 
 
-        if(coverageType == null || coverageType.isEmpty()){
+        if (coverageType == null || coverageType.isEmpty()) {
             imageCoverageType.setText("Coverage Type");
-        }else {
+        } else {
             imageCoverageType.setText(coverageType);
         }
         pointOfOriginTextView.setChecked(imgIsPointOfOrigin);
 
-        if(imgIsPointOfOrigin) {
-            pointOfOriginTextView.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.shape_chip_drawable_active));
-        }else {
-            pointOfOriginTextView.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.shape_chip_drawable_gray));
+        if (imgIsPointOfOrigin) {
+            pointOfOriginTextView.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.shape_chip_drawable_active));
+        } else {
+            pointOfOriginTextView.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.shape_chip_drawable_gray));
         }
 
         damageTextView.setChecked(imgIsDamage);
-        if(imgIsDamage) {
+        if (imgIsDamage) {
             imgIsDamage = true;
             imgIsOverview = false;
-            damageTextView.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.shape_chip_drawable_active));
-        }else {
+            damageTextView.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.shape_chip_drawable_active));
+        } else {
             imgIsDamage = false;
-            damageTextView.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.shape_chip_drawable_gray));
+            damageTextView.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.shape_chip_drawable_gray));
         }
 
         overviewTextView.setChecked(imgIsOverview);
-        if(imgIsOverview) {
+        if (imgIsOverview) {
             imgIsOverview = true;
             imgIsDamage = false;
-            overviewTextView.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.shape_chip_drawable_active));
-        }else {
+            overviewTextView.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.shape_chip_drawable_active));
+        } else {
             imgIsOverview = false;
-            overviewTextView.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.shape_chip_drawable_gray));
+            overviewTextView.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.shape_chip_drawable_gray));
         }
 
 
@@ -187,7 +185,7 @@ public class ImageFragment extends Fragment {
                             }
                         });
                         ad.setTitle("Coverage Type");
-                        if(coveragePOJOS.size() == 0){
+                        if (coveragePOJOS.size() == 0) {
                             ad.setMessage("No coverage types found.");
                         }
                         CustomMenuAdapter adapter = new CustomMenuAdapter(coveragePOJOS, coverageType, "coverage_type");
@@ -237,7 +235,7 @@ public class ImageFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                monitorImageDetailsChange.updateImageDescription(s.toString(),position);
+                monitorImageDetailsChange.updateImageDescription(s.toString(), position);
             }
         });
 
@@ -245,23 +243,23 @@ public class ImageFragment extends Fragment {
         damageTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(overviewTextView.isChecked()){
+                if (overviewTextView.isChecked()) {
                     overviewTextView.setChecked(false);
-                    overviewTextView.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.shape_chip_drawable_gray));
+                    overviewTextView.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.shape_chip_drawable_gray));
                     imgIsOverview = false;
-                    monitorImageDetailsChange.setUnsetOverview(false,position);
+                    monitorImageDetailsChange.setUnsetOverview(false, position);
                 }
 
-                if(((CheckedTextView)v).isChecked()){
-                    ((CheckedTextView)v).setChecked(false);
+                if (((CheckedTextView) v).isChecked()) {
+                    ((CheckedTextView) v).setChecked(false);
                     imgIsDamage = false;
-                    v.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.shape_chip_drawable_gray));
-                    monitorImageDetailsChange.setUnsetDamage(false,position);
-                }else{
-                    ((CheckedTextView)v).setChecked(true);
+                    v.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.shape_chip_drawable_gray));
+                    monitorImageDetailsChange.setUnsetDamage(false, position);
+                } else {
+                    ((CheckedTextView) v).setChecked(true);
                     imgIsDamage = true;
-                    v.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.shape_chip_drawable_active));
-                    monitorImageDetailsChange.setUnsetDamage(true,position);
+                    v.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.shape_chip_drawable_active));
+                    monitorImageDetailsChange.setUnsetDamage(true, position);
                 }
 
             }
@@ -271,23 +269,23 @@ public class ImageFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                if(damageTextView.isChecked()){
+                if (damageTextView.isChecked()) {
                     damageTextView.setChecked(false);
                     imgIsDamage = false;
-                    damageTextView.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.shape_chip_drawable_gray));
-                    monitorImageDetailsChange.setUnsetDamage(false,position);
+                    damageTextView.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.shape_chip_drawable_gray));
+                    monitorImageDetailsChange.setUnsetDamage(false, position);
                 }
-                if(((CheckedTextView)v).isChecked()){
-                    ((CheckedTextView)v).setChecked(false);
+                if (((CheckedTextView) v).isChecked()) {
+                    ((CheckedTextView) v).setChecked(false);
                     imgIsOverview = false;
-                    v.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.shape_chip_drawable_gray));
-                    monitorImageDetailsChange.setUnsetOverview(false,position);
-                }else{
+                    v.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.shape_chip_drawable_gray));
+                    monitorImageDetailsChange.setUnsetOverview(false, position);
+                } else {
 
-                    ((CheckedTextView)v).setChecked(true);
+                    ((CheckedTextView) v).setChecked(true);
                     imgIsOverview = true;
-                    v.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.shape_chip_drawable_active));
-                    monitorImageDetailsChange.setUnsetOverview(true,position);
+                    v.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.shape_chip_drawable_active));
+                    monitorImageDetailsChange.setUnsetOverview(true, position);
                 }
             }
         });
@@ -295,21 +293,19 @@ public class ImageFragment extends Fragment {
         pointOfOriginTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(pointOfOriginTextView.isChecked()){
+                if (pointOfOriginTextView.isChecked()) {
                     imgIsPointOfOrigin = false;
                     pointOfOriginTextView.setChecked(false);
-                    pointOfOriginTextView.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.shape_chip_drawable_gray));
-                    monitorImageDetailsChange.setUnsetPointOfOrigin(false,position);
-                }else{
+                    pointOfOriginTextView.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.shape_chip_drawable_gray));
+                    monitorImageDetailsChange.setUnsetPointOfOrigin(false, position);
+                } else {
                     imgIsPointOfOrigin = true;
                     pointOfOriginTextView.setChecked(true);
-                    pointOfOriginTextView.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.shape_chip_drawable_active));
-                    monitorImageDetailsChange.setUnsetPointOfOrigin(true,position);
+                    pointOfOriginTextView.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.shape_chip_drawable_active));
+                    monitorImageDetailsChange.setUnsetPointOfOrigin(true, position);
                 }
             }
         });
-
-
 
 
         description.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -317,14 +313,14 @@ public class ImageFragment extends Fragment {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 boolean handled = false;
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    mPagerInstance.setCurrentItem(position+1);
+                    mPagerInstance.setCurrentItem(position + 1);
                     handled = true;
                 }
                 return handled;
             }
         });
 
-        Glide.with(this).load("file://"+imageUrl).into(iv);
+        Glide.with(this).load("file://" + imageUrl).into(iv);
 
         return layoutView;
     }
@@ -332,23 +328,10 @@ public class ImageFragment extends Fragment {
     public void setCoverageType(String name) {
         coverageType = name;
         imageCoverageType.setText(coverageType);
-        monitorImageDetailsChange.setUnsetCoverageType(coverageType,position);
+        monitorImageDetailsChange.setUnsetCoverageType(coverageType, position);
     }
 
-
-    public interface MonitorImageDetailsChange{
-       // void updateImageTitle(String title, int position);
-        void updateImageDescription(String description, int position);
-        void setUnsetDamage(boolean isDamage, int position);
-        void setUnsetOverview(boolean isOverview, int position);
-        void setUnsetPointOfOrigin(boolean isPointOfOrigin, int position);
-        void setUnsetCoverageType(String coverageType, int position);
-        void setImageName(String name,int position);
-        void setImageDateTime(String dateTime, int position);
-        void setGeoTag(String geoTag, int position);
-
-    }
-    public void onShowPopup(){
+    public void onShowPopup() {
 
         FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
 
@@ -358,12 +341,12 @@ public class ImageFragment extends Fragment {
         }
         ImageDetailsFragment imageDetailsFragment = new ImageDetailsFragment();
         Bundle imageDetailsData = new Bundle();
-        imageDetailsData.putString("imgName",imgName);
+        imageDetailsData.putString("imgName", imgName);
         imageDetailsData.putString("imgDateTime", imgDateTime);
         imageDetailsData.putString("imgGeoTag", imgGeoTag);
 
         imageDetailsFragment.setArguments(imageDetailsData);
-        imageDetailsFragment.show(ft,"dialog");
+        imageDetailsFragment.show(ft, "dialog");
 
     }
 
@@ -380,13 +363,33 @@ public class ImageFragment extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putBoolean("imgIsDamage",imgIsDamage);
-        outState.putBoolean("imgIsOverview",imgIsOverview);
-        outState.putBoolean("imgIsPointOfOrigin",imgIsPointOfOrigin);
-        outState.putString("coverageType",coverageType);
-        outState.putString("imgName",imgName);
-        outState.putString("imgDateTime",imgDateTime);
-        outState.putString("imgGeoTag",imgGeoTag);
+        outState.putBoolean("imgIsDamage", imgIsDamage);
+        outState.putBoolean("imgIsOverview", imgIsOverview);
+        outState.putBoolean("imgIsPointOfOrigin", imgIsPointOfOrigin);
+        outState.putString("coverageType", coverageType);
+        outState.putString("imgName", imgName);
+        outState.putString("imgDateTime", imgDateTime);
+        outState.putString("imgGeoTag", imgGeoTag);
+    }
+
+    public interface MonitorImageDetailsChange {
+        // void updateImageTitle(String title, int position);
+        void updateImageDescription(String description, int position);
+
+        void setUnsetDamage(boolean isDamage, int position);
+
+        void setUnsetOverview(boolean isOverview, int position);
+
+        void setUnsetPointOfOrigin(boolean isPointOfOrigin, int position);
+
+        void setUnsetCoverageType(String coverageType, int position);
+
+        void setImageName(String name, int position);
+
+        void setImageDateTime(String dateTime, int position);
+
+        void setGeoTag(String geoTag, int position);
+
     }
 
 

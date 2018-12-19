@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.electivechaos.claimsadjuster.R;
 import com.electivechaos.claimsadjuster.interfaces.ClaimDetailsDataInterface;
@@ -22,10 +21,9 @@ public class ClaimDetailsTabsFragment extends Fragment {
 
     private EditText reportTitleEditText;
     private EditText reportDescriptionEditText;
-    private EditText clientNameEditText ;
+    private EditText clientNameEditText;
     private EditText claimNumberEditText;
     private EditText reportByEditText;
-
 
 
     private String reportTitle;
@@ -33,8 +31,6 @@ public class ClaimDetailsTabsFragment extends Fragment {
     private String clientName;
     private String claimNumber;
     private String reportBy;
-
-
 
 
     private ClaimDetailsDataInterface claimDetailsDataInterface;
@@ -58,7 +54,7 @@ public class ClaimDetailsTabsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_claim_details, container, false);
 
         reportTitleEditText = view.findViewById(R.id.reportTitle);
-        reportDescriptionEditText =view.findViewById(R.id.reportDescription);
+        reportDescriptionEditText = view.findViewById(R.id.reportDescription);
         clientNameEditText = view.findViewById(R.id.insuredName);
         claimNumberEditText = view.findViewById(R.id.claimNumber);
         reportByEditText = view.findViewById(R.id.reportBy);
@@ -75,7 +71,7 @@ public class ClaimDetailsTabsFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                 claimDetailsDataInterface.setReportTitle(s.toString().trim());
+                claimDetailsDataInterface.setReportTitle(s.toString().trim());
             }
         });
 
@@ -96,7 +92,6 @@ public class ClaimDetailsTabsFragment extends Fragment {
                 claimDetailsDataInterface.setReportDescription(s.toString().trim());
             }
         });
-
 
 
         clientNameEditText.addTextChangedListener(new TextWatcher() {
@@ -156,46 +151,45 @@ public class ClaimDetailsTabsFragment extends Fragment {
         });
 
 
-
         return view;
     }
-    private boolean isTooLarge (EditText text, String newText) {
+
+    private boolean isTooLarge(EditText text, String newText) {
         float textWidth = text.getPaint().measureText(newText);
-        return (textWidth >= text.getMeasuredWidth ());
+        return (textWidth >= text.getMeasuredWidth());
     }
 
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        try{
-            claimDetailsDataInterface = (ClaimDetailsDataInterface)getActivity();
-        }catch (ClassCastException exception){
+        try {
+            claimDetailsDataInterface = (ClaimDetailsDataInterface) getActivity();
+        } catch (ClassCastException exception) {
             exception.printStackTrace();
         }
 
 
-
-
     }
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if(TextUtils.isEmpty(reportTitle)){
+        if (TextUtils.isEmpty(reportTitle)) {
             reportTitleEditText.setText(CommonUtils.getReportTitle(getActivity()).toString());
-        }else {
+        } else {
             reportTitleEditText.setText(reportTitle);
         }
 
-        if(TextUtils.isEmpty(reportDescription)){
+        if (TextUtils.isEmpty(reportDescription)) {
             reportDescriptionEditText.setText(CommonUtils.getReportDescription(getActivity()).toString());
-        }else {
+        } else {
             reportDescriptionEditText.setText(reportDescription);
         }
 
-        if(TextUtils.isEmpty(reportBy)){
+        if (TextUtils.isEmpty(reportBy)) {
             reportByEditText.setText(CommonUtils.getReportByField(getActivity()).toString());
-        }else {
+        } else {
             reportByEditText.setText(reportBy);
         }
         clientNameEditText.setText(clientName);

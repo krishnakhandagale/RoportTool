@@ -4,12 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
@@ -32,17 +32,17 @@ import java.util.List;
 
 public class CategoryDetailsActivity extends AppCompatActivity {
 
+    static CategoryListDBHelper mCategoryListDBHelper;
     public ArrayList<Category> categoryList = new ArrayList<>();
     private RecyclerView recyclerView;
     private CategoriesAdapter mAdapter;
-    static CategoryListDBHelper mCategoryListDBHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_details);
 
-        Toolbar toolbar =  findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Manage Category");
 
@@ -68,6 +68,7 @@ public class CategoryDetailsActivity extends AppCompatActivity {
             }
         });
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -85,7 +86,7 @@ public class CategoryDetailsActivity extends AppCompatActivity {
 
     }
 
-    private  void getCategoryList(){
+    private void getCategoryList() {
         categoryList = mCategoryListDBHelper.getCategoryList();
         mAdapter = new CategoriesAdapter(categoryList, CategoryDetailsActivity.this);
         recyclerView.setAdapter(mAdapter);
@@ -93,31 +94,13 @@ public class CategoryDetailsActivity extends AppCompatActivity {
 
 
     public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.MyViewHolder> {
-        private Context context;
         public List<Category> categoryList;
-
-        public class MyViewHolder extends RecyclerView.ViewHolder {
-
-            public TextView categoryName, categoryDescription;
-            public ImageView textViewOptions;
-
-
-            public MyViewHolder(View view) {
-                super(view);
-
-                categoryName = view.findViewById(R.id.category_name);
-                categoryDescription = view.findViewById(R.id.category_description);
-                textViewOptions = view.findViewById(R.id.textViewOptions);
-
-            }
-        }
-
+        private Context context;
 
         public CategoriesAdapter(List<Category> categoryList, Context context) {
             this.categoryList = categoryList;
             this.context = context;
         }
-
 
         @NonNull
         @Override
@@ -146,10 +129,10 @@ public class CategoryDetailsActivity extends AppCompatActivity {
                                 case R.id.edit:
                                     Intent addCategoryActivity = new Intent(context, AddEditCategoryActivity.class);
                                     Bundle data = new Bundle();
-                                    data.putString("categoryName",category.getCategoryName());
-                                    data.putString("categoryDescription",category.getCategoryDescription());
-                                    data.putString("categoryCoverageType",category.getCoverageType());
-                                    data.putInt("categoryID",category.getCategoryId());
+                                    data.putString("categoryName", category.getCategoryName());
+                                    data.putString("categoryDescription", category.getCategoryDescription());
+                                    data.putString("categoryCoverageType", category.getCoverageType());
+                                    data.putInt("categoryID", category.getCategoryId());
                                     addCategoryActivity.putExtra("categoryDetails", data);
                                     startActivityForResult(addCategoryActivity, 2);
                                     break;
@@ -172,12 +155,12 @@ public class CategoryDetailsActivity extends AppCompatActivity {
                                     AlertDialog alert = builder.create();
                                     alert.show();
                                     Button negativeButton = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
-                                    negativeButton.setTextColor(ContextCompat.getColor(context,R.color.colorPrimaryDark));
+                                    negativeButton.setTextColor(ContextCompat.getColor(context, R.color.colorPrimaryDark));
                                     Button positiveButton = alert.getButton(DialogInterface.BUTTON_POSITIVE);
-                                    positiveButton.setTextColor(ContextCompat.getColor(context,R.color.colorPrimaryDark));
+                                    positiveButton.setTextColor(ContextCompat.getColor(context, R.color.colorPrimaryDark));
                                     break;
 
-                                    default:
+                                default:
                             }
                             return false;
                         }
@@ -190,6 +173,22 @@ public class CategoryDetailsActivity extends AppCompatActivity {
         @Override
         public int getItemCount() {
             return categoryList.size();
+        }
+
+        public class MyViewHolder extends RecyclerView.ViewHolder {
+
+            public TextView categoryName, categoryDescription;
+            public ImageView textViewOptions;
+
+
+            public MyViewHolder(View view) {
+                super(view);
+
+                categoryName = view.findViewById(R.id.category_name);
+                categoryDescription = view.findViewById(R.id.category_description);
+                textViewOptions = view.findViewById(R.id.textViewOptions);
+
+            }
         }
     }
 }

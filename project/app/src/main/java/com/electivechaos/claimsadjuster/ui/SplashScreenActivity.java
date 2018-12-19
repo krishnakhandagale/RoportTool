@@ -34,12 +34,12 @@ public class SplashScreenActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if(!CommonUtils.getReportByField(SplashScreenActivity.this).isEmpty() && !CommonUtils.getEmailId(SplashScreenActivity.this).isEmpty() && !CommonUtils.getSession(SplashScreenActivity.this).isEmpty()) {
-                    Intent i = new Intent(SplashScreenActivity.this,MainTabsActivity.class);
+                if (!CommonUtils.getReportByField(SplashScreenActivity.this).isEmpty() && !CommonUtils.getEmailId(SplashScreenActivity.this).isEmpty() && !CommonUtils.getSession(SplashScreenActivity.this).isEmpty()) {
+                    Intent i = new Intent(SplashScreenActivity.this, MainTabsActivity.class);
                     startActivity(i);
                     finish();
-                }else {
-                    Intent i = new Intent(SplashScreenActivity.this,RegistrationActivity.class);
+                } else {
+                    Intent i = new Intent(SplashScreenActivity.this, RegistrationActivity.class);
                     startActivity(i);
                     finish();
                 }

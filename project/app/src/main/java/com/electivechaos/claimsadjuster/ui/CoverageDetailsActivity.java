@@ -30,10 +30,10 @@ import com.electivechaos.claimsadjuster.pojo.CoveragePOJO;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CoverageDetailsActivity extends AppCompatActivity{
+public class CoverageDetailsActivity extends AppCompatActivity {
+    static CategoryListDBHelper mCategoryListDBHelper;
     public ArrayList<CoveragePOJO> coveragePOJOS = new ArrayList<>();
     private RecyclerView recyclerView;
-    static CategoryListDBHelper mCategoryListDBHelper;
     private CoverageDetailsActivity.CoverageListAdapter mAdapter;
 
     @Override
@@ -41,9 +41,9 @@ public class CoverageDetailsActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_coverage_details);
 
-        Toolbar toolbar =  findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        if(getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("Manage Coverage");
         }
         recyclerView = findViewById(R.id.recycler_view);
@@ -71,22 +71,22 @@ public class CoverageDetailsActivity extends AppCompatActivity{
             if (resultCode == Activity.RESULT_OK) {
                 updateCoverageDetails();
             }
-        }
-        else if(requestCode == 2) {
+        } else if (requestCode == 2) {
             updateCoverageDetails();
         }
 
     }
 
-    private  void updateCoverageDetails(){
+    private void updateCoverageDetails() {
         coveragePOJOS = mCategoryListDBHelper.getCoverageList();
-        mAdapter = new CoverageDetailsActivity.CoverageListAdapter(coveragePOJOS,CoverageDetailsActivity.this);
+        mAdapter = new CoverageDetailsActivity.CoverageListAdapter(coveragePOJOS, CoverageDetailsActivity.this);
         recyclerView.setAdapter(mAdapter);
     }
 
     public class CoverageListAdapter extends RecyclerView.Adapter<CoverageDetailsActivity.CoverageListAdapter.MyViewHolder> {
-        private Context context;
         List<CoveragePOJO> coveragePOJOS;
+        private Context context;
+
         CoverageListAdapter(ArrayList<CoveragePOJO> coveragePOJOS, Context context) {
             this.context = context;
             this.coveragePOJOS = coveragePOJOS;
@@ -143,9 +143,9 @@ public class CoverageDetailsActivity extends AppCompatActivity{
                                     AlertDialog alert = builder.create();
                                     alert.show();
                                     Button negativeButton = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
-                                    negativeButton.setTextColor(ContextCompat.getColor(context,R.color.colorPrimaryDark));
+                                    negativeButton.setTextColor(ContextCompat.getColor(context, R.color.colorPrimaryDark));
                                     Button positiveButton = alert.getButton(DialogInterface.BUTTON_POSITIVE);
-                                    positiveButton.setTextColor(ContextCompat.getColor(context,R.color.colorPrimaryDark));
+                                    positiveButton.setTextColor(ContextCompat.getColor(context, R.color.colorPrimaryDark));
                                     break;
 
                                 default:
@@ -167,6 +167,7 @@ public class CoverageDetailsActivity extends AppCompatActivity{
         public class MyViewHolder extends RecyclerView.ViewHolder {
             public TextView title, desc;
             public ImageView textViewOptions;
+
             MyViewHolder(View itemView) {
                 super(itemView);
                 title = itemView.findViewById(R.id.category_name);

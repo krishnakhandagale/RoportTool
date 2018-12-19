@@ -1,8 +1,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_height="match_parent"
     android:id="@+id/relative_layout_image_fragment"
-    android:layout_width="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/imageView"
@@ -24,14 +24,15 @@
             android:layout_height="40dp"
             android:layout_gravity="right"
             android:layout_marginBottom="5dp"
+            android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
             android:background="@drawable/rounded_button"
-            android:src="@drawable/ic_send_white"
-            android:layout_marginEnd="5dp" />
+            android:src="@drawable/ic_send_white" />
+
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <CheckedTextView
                 android:id="@+id/isPointOfOrigin"
@@ -41,52 +42,54 @@
                 android:text="@string/point_of_origin"
                 android:textColor="@color/black"
                 android:textStyle="bold" />
+
             <CheckedTextView
-                android:layout_marginLeft="5dp"
                 android:id="@+id/isDamageTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
                 android:background="@drawable/shape_chip_drawable_gray"
                 android:text="@string/damage"
                 android:textColor="@color/black"
-                android:textStyle="bold"
-                android:layout_marginStart="5dp" />
+                android:textStyle="bold" />
+
             <CheckedTextView
-                android:layout_marginLeft="5dp"
                 android:id="@+id/isOverviewTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
                 android:background="@drawable/shape_chip_drawable_gray"
                 android:text="@string/overview"
                 android:textColor="@color/black"
-                android:textStyle="bold"
-                android:layout_marginStart="5dp" />
+                android:textStyle="bold" />
 
             <ImageButton
-                android:padding="5dp"
                 android:id="@+id/imageInfo"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
-                android:src="@drawable/ic_info_black_24dp"
-                android:background="?attr/selectableItemBackgroundBorderless"/>
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:padding="5dp"
+                android:src="@drawable/ic_info_black_24dp" />
         </LinearLayout>
 
         <TextView
-            android:textSize="16sp"
             android:id="@+id/imageCoverageType"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:background="@drawable/rounded_edit_text"
-            android:imeOptions="actionNext"
-            android:text="@string/coverage_type"
-            android:nextFocusRight="@+id/clickedImageTitle"
-            android:drawableRight="@drawable/ic_key_arrow_down"
-            android:padding="7dp"
             android:drawableEnd="@drawable/ic_key_arrow_down"
-            tools:ignore="TextViewEdits" />
-        <EditText
+            android:drawableRight="@drawable/ic_key_arrow_down"
+            android:imeOptions="actionNext"
+            android:nextFocusRight="@+id/clickedImageTitle"
+            android:padding="7dp"
+            android:text="@string/coverage_type"
             android:textSize="16sp"
+            tools:ignore="TextViewEdits" />
+
+        <EditText
             android:id="@+id/clickedImageDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -95,7 +98,8 @@
             android:hint="@string/enter_note"
             android:imeOptions="actionDone"
             android:inputType="textImeMultiLine"
-            android:padding="5dp" />
+            android:padding="5dp"
+            android:textSize="16sp" />
 
 
     </LinearLayout>

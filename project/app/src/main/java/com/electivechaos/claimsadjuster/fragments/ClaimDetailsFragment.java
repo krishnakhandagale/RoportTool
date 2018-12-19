@@ -23,7 +23,7 @@ import com.electivechaos.claimsadjuster.interfaces.NextButtonClickListener;
 import com.electivechaos.claimsadjuster.interfaces.OnGenerateReportClickListener;
 import com.electivechaos.claimsadjuster.interfaces.OnSaveReportClickListener;
 
-public class ClaimDetailsFragment  extends Fragment{
+public class ClaimDetailsFragment extends Fragment {
 
 
     ViewPager viewPager;
@@ -44,7 +44,7 @@ public class ClaimDetailsFragment  extends Fragment{
     String addressLine = "";
 
     private Boolean isFabOpen = false;
-    private FloatingActionButton showFabBtn,fabGoNextBtn,fabGoBackBtn, fabAddLabelBtn, fabGenerateReportBtn, fabSaveReportBtn;
+    private FloatingActionButton showFabBtn, fabGoNextBtn, fabGoBackBtn, fabAddLabelBtn, fabGenerateReportBtn, fabSaveReportBtn;
     private Animation fab_open;
     private Animation fab_close;
 
@@ -59,7 +59,7 @@ public class ClaimDetailsFragment  extends Fragment{
         super.onStart();
         Bundle passedArgs = getArguments();
 
-        if(passedArgs != null){
+        if (passedArgs != null) {
             reportTitle = passedArgs.get("reportTitle").toString();
             reportDescription = passedArgs.get("reportDescription").toString();
             clientName = passedArgs.get("clientName").toString();
@@ -88,14 +88,14 @@ public class ClaimDetailsFragment  extends Fragment{
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.claim_details_layout,container, false);
-        showFabBtn =  view.findViewById(R.id.showFab);
-        fabGoNextBtn = view. findViewById(R.id.fabGoNext);
+        view = inflater.inflate(R.layout.claim_details_layout, container, false);
+        showFabBtn = view.findViewById(R.id.showFab);
+        fabGoNextBtn = view.findViewById(R.id.fabGoNext);
         fabGoBackBtn = view.findViewById(R.id.fabGoBack);
 
-        fabAddLabelBtn = view. findViewById(R.id.fabAddLabel);
-        fabGenerateReportBtn =  view.findViewById(R.id.fabGenerateReport);
-        fabSaveReportBtn  = view.findViewById(R.id.fabSaveReport);
+        fabAddLabelBtn = view.findViewById(R.id.fabAddLabel);
+        fabGenerateReportBtn = view.findViewById(R.id.fabGenerateReport);
+        fabSaveReportBtn = view.findViewById(R.id.fabSaveReport);
 
         fab_open = AnimationUtils.loadAnimation(getActivity(), R.anim.fab_open);
         fab_close = AnimationUtils.loadAnimation(getActivity(), R.anim.fab_close);
@@ -127,12 +127,12 @@ public class ClaimDetailsFragment  extends Fragment{
             }
         });
 
-        ClaimDetailsTabsPagerAdapter adapter=new ClaimDetailsTabsPagerAdapter(getActivity().getSupportFragmentManager());
+        ClaimDetailsTabsPagerAdapter adapter = new ClaimDetailsTabsPagerAdapter(getActivity().getSupportFragmentManager());
         viewPager.setAdapter(adapter);
 
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener(){
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
-            public void onTabSelected(TabLayout.Tab tab){
+            public void onTabSelected(TabLayout.Tab tab) {
 
             }
 
@@ -177,55 +177,6 @@ public class ClaimDetailsFragment  extends Fragment{
 
     }
 
-
-    public class ClaimDetailsTabsPagerAdapter extends FragmentStatePagerAdapter {
-
-        public ClaimDetailsTabsPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int i) {
-
-            if( i ==0 ){
-                Fragment fragment =  new ClaimDetailsTabsFragment();
-                Bundle claimDetailsArgs = new Bundle();
-                claimDetailsArgs.putString("reportTitle", reportTitle);
-                claimDetailsArgs.putString("reportDescription", reportDescription);
-                claimDetailsArgs.putString("clientName", clientName);
-                claimDetailsArgs.putString("claimNumber", claimNumber);
-                claimDetailsArgs.putString("reportBy", reportBy);
-                claimDetailsArgs.putString("address", address);
-                fragment.setArguments(claimDetailsArgs);
-                return fragment;
-            }else{
-                Fragment fragment = new LossLocationFragment();
-
-                Bundle claimDetailsLocationArgs = new Bundle();
-                claimDetailsLocationArgs.putString("locationLat", locationLat);
-                claimDetailsLocationArgs.putString("locationLong", locationLong);
-                claimDetailsLocationArgs.putString("addressLine", addressLine);
-
-                fragment.setArguments(claimDetailsLocationArgs);
-                return fragment;
-            }
-
-        }
-        @Override
-        public int getCount() {
-
-            return 2;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            if (position == 0) {
-                return "Claim Details";
-            } else{
-                return "Loss Location";
-            }
-        }
-    }
     public void animateFAB() {
         if (isFabOpen) {
 
@@ -244,7 +195,7 @@ public class ClaimDetailsFragment  extends Fragment{
 
         } else {
 
-            
+
             fabGoNextBtn.startAnimation(fab_open);
             fabGoBackBtn.startAnimation(fab_open);
             fabAddLabelBtn.startAnimation(fab_open);
@@ -267,12 +218,62 @@ public class ClaimDetailsFragment  extends Fragment{
         try {
             nextButtonClickListener = (NextButtonClickListener) getActivity();
             backButtonClickListener = (BackButtonClickListener) getActivity();
-            onLabelAddClickListener = (DrawerMenuListAdapter.OnLabelAddClickListener)getActivity();
-            onSaveReportClickListener = (OnSaveReportClickListener)getActivity();
-            onGenerateReportClickListener = (OnGenerateReportClickListener)getActivity();
+            onLabelAddClickListener = (DrawerMenuListAdapter.OnLabelAddClickListener) getActivity();
+            onSaveReportClickListener = (OnSaveReportClickListener) getActivity();
+            onGenerateReportClickListener = (OnGenerateReportClickListener) getActivity();
 
-        }catch (ClassCastException ex) {
+        } catch (ClassCastException ex) {
             ex.printStackTrace();
+        }
+    }
+
+    public class ClaimDetailsTabsPagerAdapter extends FragmentStatePagerAdapter {
+
+        public ClaimDetailsTabsPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int i) {
+
+            if (i == 0) {
+                Fragment fragment = new ClaimDetailsTabsFragment();
+                Bundle claimDetailsArgs = new Bundle();
+                claimDetailsArgs.putString("reportTitle", reportTitle);
+                claimDetailsArgs.putString("reportDescription", reportDescription);
+                claimDetailsArgs.putString("clientName", clientName);
+                claimDetailsArgs.putString("claimNumber", claimNumber);
+                claimDetailsArgs.putString("reportBy", reportBy);
+                claimDetailsArgs.putString("address", address);
+                fragment.setArguments(claimDetailsArgs);
+                return fragment;
+            } else {
+                Fragment fragment = new LossLocationFragment();
+
+                Bundle claimDetailsLocationArgs = new Bundle();
+                claimDetailsLocationArgs.putString("locationLat", locationLat);
+                claimDetailsLocationArgs.putString("locationLong", locationLong);
+                claimDetailsLocationArgs.putString("addressLine", addressLine);
+
+                fragment.setArguments(claimDetailsLocationArgs);
+                return fragment;
+            }
+
+        }
+
+        @Override
+        public int getCount() {
+
+            return 2;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            if (position == 0) {
+                return "Claim Details";
+            } else {
+                return "Loss Location";
+            }
         }
     }
 }

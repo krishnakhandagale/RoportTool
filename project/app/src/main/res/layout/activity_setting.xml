@@ -1,418 +1,432 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/parentLayoutForMessages"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     android:orientation="vertical">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimaryDark"
             app:layout_scrollFlags=""
-            app:popupTheme="@style/ThemeOverlay.AppCompat.ActionBar">
-        </android.support.v7.widget.Toolbar>
+            app:popupTheme="@style/ThemeOverlay.AppCompat.ActionBar"></android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
-<ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-<LinearLayout
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:layout_height="wrap_content">
 
-    <TextView
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_width="match_parent"
-        android:textSize="15sp"
-        android:layout_height="30dp"
-        android:textColor="@color/grayDark"
-        android:fontFamily="sans-serif-condensed"
-        android:text="@string/image_quality_setting"
-        android:layout_marginStart="20dp" />
-    <View
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_width="fill_parent"
-        android:layout_height="2dp"
-        android:background="@color/grayLight"/>
-
-    <RadioGroup
-        android:id="@+id/radioQuality"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginTop="5dp"
-        android:textSize="15sp">
-
-        <RadioButton
-            android:id="@+id/radioLow"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:fontFamily="sans-serif-condensed"
-            android:paddingLeft="20dp"
-            android:text="@string/low"
-            android:textColor="@drawable/custom_radio_button_text"
-            android:paddingStart="20dp" />
-
-        <RadioButton
-            android:id="@+id/radioMedium"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:checked="true"
-            android:fontFamily="sans-serif-condensed"
-            android:paddingLeft="20dp"
-            android:text="@string/medium"
-            android:textColor="@drawable/custom_radio_button_text" />
-
-
-        <RadioButton
-            android:id="@+id/radioHigh"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:fontFamily="sans-serif-condensed"
-            android:paddingLeft="20dp"
-            android:text="@string/high"
-            android:textColor="@drawable/custom_radio_button_text"
-            android:paddingStart="20dp" />
-
-    </RadioGroup>
-
-    <TextView
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_width="match_parent"
-        android:textSize="15sp"
-        android:layout_height="30dp"
-        android:textColor="@color/grayDark"
-        android:fontFamily="sans-serif-condensed"
-        android:text="@string/map_setting"
-        android:layout_marginStart="20dp" />
-    <View
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_width="fill_parent"
-        android:layout_height="2dp"
-        android:background="@color/grayLight"/>
-
-    <RadioGroup
-        android:id="@+id/radioMap"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginTop="5dp"
-        android:textSize="15sp">
-
-        <RadioButton
-            android:id="@+id/radioRoadMap"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:fontFamily="sans-serif-condensed"
-            android:paddingLeft="20dp"
-            android:text="@string/normal_view"
-            android:textColor="@drawable/custom_radio_button_text" />
-
-        <RadioButton
-            android:id="@+id/radioSatelliteMap"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:checked="true"
-            android:fontFamily="sans-serif-condensed"
-            android:paddingLeft="20dp"
-            android:text="@string/satellite_view"
-            android:textColor="@drawable/custom_radio_button_text" />
-
-        <RadioButton
-            android:id="@+id/radioMapNone"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:fontFamily="sans-serif-condensed"
-            android:paddingLeft="20dp"
-            android:text="@string/none"
-            android:textColor="@drawable/custom_radio_button_text"
-            android:paddingStart="20dp" />
-    </RadioGroup>
-
-    <View
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_width="fill_parent"
-        android:layout_height="2dp"
-        android:background="@color/grayLight"/>
-
-    <LinearLayout
-        android:layout_marginTop="15dp"
-        android:orientation="horizontal"
-        android:weightSum="4"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="0dip"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="3.3"
-            android:layout_marginLeft="30dp">
-
-            <EditText
-                android:fontFamily="sans-serif-condensed"
-                android:id="@+id/reportBy"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:hint="@string/enter_report_by"
-                android:textSize="16sp" />
-        </android.support.design.widget.TextInputLayout>
-        <ImageButton
-            android:layout_gravity="bottom"
-            android:id="@+id/editBtn"
-            android:background="@null"
-            android:src="@drawable/ic_edit_black_16"
-            android:layout_weight="0.7"
-            android:layout_width="0dip"
-            android:layout_height="40dp" />
-
-        <ImageButton
-            android:layout_gravity="bottom"
-            android:id="@+id/doneBtn"
-            android:background="@null"
-            android:src="@drawable/ic_done"
-            android:layout_weight="0.7"
-            android:visibility="invisible"
-            android:layout_width="0dip"
-            android:layout_height="40dp" />
-
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal"
-        android:weightSum="4"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="0dip"
-            android:layout_height="wrap_content"
-            android:layout_weight="3.3"
-            android:layout_marginLeft="30dp"
-            android:layout_marginStart="30dp">
-
-            <EditText
-                android:fontFamily="sans-serif-condensed"
-                android:id="@+id/reportTitle"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:hint="@string/enter_report_title_setting"
-                android:textSize="14sp" />
-        </android.support.design.widget.TextInputLayout>
-        <ImageButton
-            android:layout_gravity="bottom"
-            android:id="@+id/editReportTitle"
-            android:background="@null"
-            android:src="@drawable/ic_edit_black_16"
-            android:layout_weight="0.7"
-            android:layout_width="0dip"
-            android:layout_height="40dp" />
-
-        <ImageButton
-            android:layout_gravity="bottom"
-            android:id="@+id/doneReportTitle"
-            android:background="@null"
-            android:src="@drawable/ic_done"
-            android:layout_weight="0.7"
-            android:visibility="invisible"
-            android:layout_width="0dip"
-            android:layout_height="40dp" />
-
-
-    </LinearLayout>
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal"
-        android:weightSum="4"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="0dip"
-            android:layout_height="wrap_content"
-            android:layout_weight="3.3"
-            android:layout_marginLeft="30dp"
-            android:layout_marginStart="30dp">
-
-            <EditText
-                android:fontFamily="sans-serif-condensed"
-                android:id="@+id/reportDescription"
-                android:layout_width="match_parent"
-                android:maxLines="3"
-                android:minLines="3"
-                android:layout_height="wrap_content"
-                android:hint="@string/enter_report_description_setting"
-                android:textSize="14sp" />
-        </android.support.design.widget.TextInputLayout>
-        <ImageButton
-            android:id="@+id/editReportDescription"
-            android:background="@null"
-            android:src="@drawable/ic_edit_black_16"
-            android:layout_weight="0.7"
-            android:layout_gravity="bottom"
-            android:layout_width="0dip"
-            android:layout_height="40dp" />
-
-        <ImageButton
-            android:id="@+id/doneReportDescription"
-            android:background="@null"
-            android:src="@drawable/ic_done"
-            android:layout_weight="0.7"
-            android:layout_gravity="bottom"
-            android:visibility="invisible"
-            android:layout_width="0dip"
-            android:layout_height="40dp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:weightSum="4"
-        android:layout_marginTop="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="0dip"
-            android:layout_height="wrap_content"
-            android:layout_weight="3.3"
-            android:layout_marginLeft="30dp"
-            android:layout_marginStart="30dp">
-
-            <EditText
-                android:fontFamily="sans-serif-condensed"
-                android:id="@+id/companyName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/enter_company_name_setting"
-                android:textSize="14sp" />
-        </android.support.design.widget.TextInputLayout>
-        <ImageButton
-            android:id="@+id/editCompanyName"
-            android:background="@null"
-            android:src="@drawable/ic_edit_black_16"
-            android:layout_weight="0.7"
-            android:layout_gravity="bottom"
-            android:layout_width="0dip"
-            android:layout_height="40dp" />
-
-        <ImageButton
-            android:id="@+id/doneCompanyName"
-            android:background="@null"
-            android:src="@drawable/ic_done"
-            android:layout_weight="0.7"
-            android:layout_gravity="bottom"
-            android:visibility="invisible"
-            android:layout_width="0dip"
-            android:layout_height="40dp" />
-
-    </LinearLayout>
-    <LinearLayout
-        android:orientation="horizontal"
-        android:weightSum="4"
-        android:layout_marginTop="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="0dip"
-            android:layout_height="wrap_content"
-            android:layout_weight="3.3"
-            android:layout_marginLeft="30dp"
-            android:layout_marginStart="30dp">
-
-            <EditText
-                android:fontFamily="sans-serif-condensed"
-                android:id="@+id/address"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/enter_address_setting"
-                android:textSize="14sp" />
-        </android.support.design.widget.TextInputLayout>
-        <ImageButton
-            android:id="@+id/editAddress"
-            android:background="@null"
-            android:src="@drawable/ic_edit_black_16"
-            android:layout_weight="0.7"
-            android:layout_gravity="bottom"
-            android:layout_width="0dip"
-            android:layout_height="40dp" />
-
-        <ImageButton
-            android:id="@+id/doneAddress"
-            android:background="@null"
-            android:src="@drawable/ic_done"
-            android:layout_weight="0.7"
-            android:layout_gravity="bottom"
-            android:visibility="invisible"
-            android:layout_width="0dip"
-            android:layout_height="40dp" />
-
-    </LinearLayout>
-    <RelativeLayout
-        android:layout_marginTop="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp">
-
-        <FrameLayout
-            android:layout_alignParentLeft="true"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_marginLeft="30dp"
-            android:background="@color/colorPrimary"
-            android:layout_marginBottom="10dp"
             android:orientation="vertical"
-            android:layout_marginStart="30dp"
-            android:layout_alignParentStart="true">
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <ImageView
-            android:id="@+id/companyNameLogo"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:background="@color/grayDark" />
-            <ImageButton
-                android:id="@+id/companyNameLogoRemove"
-                android:layout_width="wrap_content"
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:fontFamily="sans-serif-condensed"
+                android:text="@string/image_quality_setting"
+                android:textColor="@color/grayDark"
+                android:textSize="15sp" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="2dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@color/grayLight" />
+
+            <RadioGroup
+                android:id="@+id/radioQuality"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right|end"
-                android:background="@drawable/rounded_button"
-                android:src="@drawable/ic_remove_image_12" />
-        </FrameLayout>
-        <TextView
-            android:padding="5dp"
-            android:gravity="center"
-            android:textAllCaps="false"
-            android:textColor="@color/black"
-            android:id="@+id/uploadButton"
-            android:layout_width="wrap_content"
-            android:layout_height="32dp"
-            android:text="@string/chose_logo"
-            android:textSize="12sp"
-            android:layout_alignParentRight="true"
-            android:background="@drawable/btn_shape_drawable"
-            android:layout_marginRight="20dp"
-            android:layout_centerVertical="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="20dp" />
-    </RelativeLayout>
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="5dp"
+                android:textSize="15sp">
 
-</LinearLayout>
+                <RadioButton
+                    android:id="@+id/radioLow"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:fontFamily="sans-serif-condensed"
+                    android:paddingLeft="20dp"
+                    android:paddingStart="20dp"
+                    android:text="@string/low"
+                    android:textColor="@drawable/custom_radio_button_text" />
+
+                <RadioButton
+                    android:id="@+id/radioMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:checked="true"
+                    android:fontFamily="sans-serif-condensed"
+                    android:paddingLeft="20dp"
+                    android:text="@string/medium"
+                    android:textColor="@drawable/custom_radio_button_text" />
+
+
+                <RadioButton
+                    android:id="@+id/radioHigh"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:fontFamily="sans-serif-condensed"
+                    android:paddingLeft="20dp"
+                    android:paddingStart="20dp"
+                    android:text="@string/high"
+                    android:textColor="@drawable/custom_radio_button_text" />
+
+            </RadioGroup>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:fontFamily="sans-serif-condensed"
+                android:text="@string/map_setting"
+                android:textColor="@color/grayDark"
+                android:textSize="15sp" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="2dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@color/grayLight" />
+
+            <RadioGroup
+                android:id="@+id/radioMap"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="5dp"
+                android:textSize="15sp">
+
+                <RadioButton
+                    android:id="@+id/radioRoadMap"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:fontFamily="sans-serif-condensed"
+                    android:paddingLeft="20dp"
+                    android:text="@string/normal_view"
+                    android:textColor="@drawable/custom_radio_button_text" />
+
+                <RadioButton
+                    android:id="@+id/radioSatelliteMap"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:checked="true"
+                    android:fontFamily="sans-serif-condensed"
+                    android:paddingLeft="20dp"
+                    android:text="@string/satellite_view"
+                    android:textColor="@drawable/custom_radio_button_text" />
+
+                <RadioButton
+                    android:id="@+id/radioMapNone"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:fontFamily="sans-serif-condensed"
+                    android:paddingLeft="20dp"
+                    android:paddingStart="20dp"
+                    android:text="@string/none"
+                    android:textColor="@drawable/custom_radio_button_text" />
+            </RadioGroup>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="2dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@color/grayLight" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal"
+                android:weightSum="4">
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_weight="3.3">
+
+                    <EditText
+                        android:id="@+id/reportBy"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:fontFamily="sans-serif-condensed"
+                        android:hint="@string/enter_report_by"
+                        android:textSize="16sp" />
+                </android.support.design.widget.TextInputLayout>
+
+                <ImageButton
+                    android:id="@+id/editBtn"
+                    android:layout_width="0dip"
+                    android:layout_height="40dp"
+                    android:layout_gravity="bottom"
+                    android:layout_weight="0.7"
+                    android:background="@null"
+                    android:src="@drawable/ic_edit_black_16" />
+
+                <ImageButton
+                    android:id="@+id/doneBtn"
+                    android:layout_width="0dip"
+                    android:layout_height="40dp"
+                    android:layout_gravity="bottom"
+                    android:layout_weight="0.7"
+                    android:background="@null"
+                    android:src="@drawable/ic_done"
+                    android:visibility="invisible" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:weightSum="4">
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginStart="30dp"
+                    android:layout_weight="3.3">
+
+                    <EditText
+                        android:id="@+id/reportTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:fontFamily="sans-serif-condensed"
+                        android:hint="@string/enter_report_title_setting"
+                        android:textSize="14sp" />
+                </android.support.design.widget.TextInputLayout>
+
+                <ImageButton
+                    android:id="@+id/editReportTitle"
+                    android:layout_width="0dip"
+                    android:layout_height="40dp"
+                    android:layout_gravity="bottom"
+                    android:layout_weight="0.7"
+                    android:background="@null"
+                    android:src="@drawable/ic_edit_black_16" />
+
+                <ImageButton
+                    android:id="@+id/doneReportTitle"
+                    android:layout_width="0dip"
+                    android:layout_height="40dp"
+                    android:layout_gravity="bottom"
+                    android:layout_weight="0.7"
+                    android:background="@null"
+                    android:src="@drawable/ic_done"
+                    android:visibility="invisible" />
+
+
+            </LinearLayout>
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:weightSum="4">
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginStart="30dp"
+                    android:layout_weight="3.3">
+
+                    <EditText
+                        android:id="@+id/reportDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-condensed"
+                        android:hint="@string/enter_report_description_setting"
+                        android:maxLines="3"
+                        android:minLines="3"
+                        android:textSize="14sp" />
+                </android.support.design.widget.TextInputLayout>
+
+                <ImageButton
+                    android:id="@+id/editReportDescription"
+                    android:layout_width="0dip"
+                    android:layout_height="40dp"
+                    android:layout_gravity="bottom"
+                    android:layout_weight="0.7"
+                    android:background="@null"
+                    android:src="@drawable/ic_edit_black_16" />
+
+                <ImageButton
+                    android:id="@+id/doneReportDescription"
+                    android:layout_width="0dip"
+                    android:layout_height="40dp"
+                    android:layout_gravity="bottom"
+                    android:layout_weight="0.7"
+                    android:background="@null"
+                    android:src="@drawable/ic_done"
+                    android:visibility="invisible" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:weightSum="4">
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginStart="30dp"
+                    android:layout_weight="3.3">
+
+                    <EditText
+                        android:id="@+id/companyName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-condensed"
+                        android:hint="@string/enter_company_name_setting"
+                        android:textSize="14sp" />
+                </android.support.design.widget.TextInputLayout>
+
+                <ImageButton
+                    android:id="@+id/editCompanyName"
+                    android:layout_width="0dip"
+                    android:layout_height="40dp"
+                    android:layout_gravity="bottom"
+                    android:layout_weight="0.7"
+                    android:background="@null"
+                    android:src="@drawable/ic_edit_black_16" />
+
+                <ImageButton
+                    android:id="@+id/doneCompanyName"
+                    android:layout_width="0dip"
+                    android:layout_height="40dp"
+                    android:layout_gravity="bottom"
+                    android:layout_weight="0.7"
+                    android:background="@null"
+                    android:src="@drawable/ic_done"
+                    android:visibility="invisible" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:weightSum="4">
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginStart="30dp"
+                    android:layout_weight="3.3">
+
+                    <EditText
+                        android:id="@+id/address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-condensed"
+                        android:hint="@string/enter_address_setting"
+                        android:textSize="14sp" />
+                </android.support.design.widget.TextInputLayout>
+
+                <ImageButton
+                    android:id="@+id/editAddress"
+                    android:layout_width="0dip"
+                    android:layout_height="40dp"
+                    android:layout_gravity="bottom"
+                    android:layout_weight="0.7"
+                    android:background="@null"
+                    android:src="@drawable/ic_edit_black_16" />
+
+                <ImageButton
+                    android:id="@+id/doneAddress"
+                    android:layout_width="0dip"
+                    android:layout_height="40dp"
+                    android:layout_gravity="bottom"
+                    android:layout_weight="0.7"
+                    android:background="@null"
+                    android:src="@drawable/ic_done"
+                    android:visibility="invisible" />
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp">
+
+                <FrameLayout
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginStart="30dp"
+                    android:background="@color/colorPrimary"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/companyNameLogo"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:background="@color/grayDark" />
+
+                    <ImageButton
+                        android:id="@+id/companyNameLogoRemove"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right|end"
+                        android:background="@drawable/rounded_button"
+                        android:src="@drawable/ic_remove_image_12" />
+                </FrameLayout>
+
+                <TextView
+                    android:id="@+id/uploadButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@drawable/btn_shape_drawable"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="@string/chose_logo"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black"
+                    android:textSize="12sp" />
+            </RelativeLayout>
+
+        </LinearLayout>
     </ScrollView>
 
 </LinearLayout>

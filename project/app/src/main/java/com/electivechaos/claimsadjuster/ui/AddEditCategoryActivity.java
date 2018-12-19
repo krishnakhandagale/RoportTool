@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -20,7 +19,6 @@ import com.electivechaos.claimsadjuster.database.CategoryListDBHelper;
 import com.electivechaos.claimsadjuster.interfaces.AsyncTaskStatusCallback;
 import com.electivechaos.claimsadjuster.pojo.Category;
 import com.electivechaos.claimsadjuster.pojo.CoveragePOJO;
-import com.electivechaos.claimsadjuster.pojo.RoofSystemPOJO;
 import com.electivechaos.claimsadjuster.utils.CommonUtils;
 
 import java.util.ArrayList;
@@ -29,19 +27,16 @@ import java.util.ArrayList;
  * Created by barkhasikka on 25/04/18.
  */
 
-public class AddEditCategoryActivity extends AppCompatActivity{
-    private  int categoryID = -1;
+public class AddEditCategoryActivity extends AppCompatActivity {
     public static final int ADD_COVERAGE_REQUEST_CODE = 2000;
-
+    private static final int UNIQUE_CONSTRAINT_FAIL_ERROR_CODE = -111;
+    private int categoryID = -1;
     private EditText categoryName;
     private EditText categoryDescription;
     private View addEditCategoryParentLayout;
     private CategoryListDBHelper categoryListDBHelper;
     private TextView selectCoverageType;
     private String coverageType;
-
-
-    private static final int UNIQUE_CONSTRAINT_FAIL_ERROR_CODE = -111;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,12 +48,12 @@ public class AddEditCategoryActivity extends AppCompatActivity{
         categoryDescription = findViewById(R.id.editTextCategoryDescription);
         selectCoverageType = findViewById(R.id.selectCoverageType);
         addEditCategoryParentLayout = findViewById(R.id.addEditCategoryParentLayout);
-        if(getIntent().getExtras()!= null){
+        if (getIntent().getExtras() != null) {
             Bundle dataFromActivity = getIntent().getExtras().getBundle("categoryDetails");
-            String intentCategoryTitle = dataFromActivity.getString("categoryName","");
-            String intentCategoryDescription = dataFromActivity.getString("categoryDescription","");
-            String intentCategoryCoverageType = dataFromActivity.getString("categoryCoverageType","");
-            categoryID =dataFromActivity.getInt("categoryID");
+            String intentCategoryTitle = dataFromActivity.getString("categoryName", "");
+            String intentCategoryDescription = dataFromActivity.getString("categoryDescription", "");
+            String intentCategoryCoverageType = dataFromActivity.getString("categoryCoverageType", "");
+            categoryID = dataFromActivity.getInt("categoryID");
 
             Button updateCategoryButton = findViewById(R.id.updateCategory);
             updateCategoryButton.setText(R.string.update_category);
@@ -67,15 +62,15 @@ public class AddEditCategoryActivity extends AppCompatActivity{
             categoryName.setText(intentCategoryTitle);
 
             categoryDescription.setText(intentCategoryDescription);
-            if(!intentCategoryCoverageType.isEmpty()){
+            if (!intentCategoryCoverageType.isEmpty()) {
                 selectCoverageType.setText(intentCategoryCoverageType);
             }
             categoryDescription.setText(intentCategoryDescription);
         }
 
-        if(savedInstanceState!= null){
+        if (savedInstanceState != null) {
             coverageType = savedInstanceState.getString("coverageType");
-            if(coverageType!=null && !coverageType.isEmpty()){
+            if (coverageType != null && !coverageType.isEmpty()) {
                 selectCoverageType.setText(coverageType);
             }
         }
@@ -89,19 +84,19 @@ public class AddEditCategoryActivity extends AppCompatActivity{
                 String categoryDescriptionString = categoryDescription.getText().toString().trim();
                 String categoryCoverageType = selectCoverageType.getText().toString().trim();
 
-                if(categoryCoverageType.equals(getString(R.string.select_coverage_type))){
+                if (categoryCoverageType.equals(getString(R.string.select_coverage_type))) {
                     categoryCoverageType = "";
                 }
 
-                if(categoryNameString.isEmpty()){
+                if (categoryNameString.isEmpty()) {
                     CommonUtils.hideKeyboard(AddEditCategoryActivity.this);
-                    CommonUtils.showSnackbarMessage("Please enter category name.", true, true,addEditCategoryParentLayout,AddEditCategoryActivity.this);
+                    CommonUtils.showSnackbarMessage("Please enter category name.", true, true, addEditCategoryParentLayout, AddEditCategoryActivity.this);
                     return;
-                }else if(categoryDescriptionString.isEmpty()){
+                } else if (categoryDescriptionString.isEmpty()) {
                     CommonUtils.hideKeyboard(AddEditCategoryActivity.this);
-                    CommonUtils.showSnackbarMessage("Please enter category description.", true, true,addEditCategoryParentLayout,AddEditCategoryActivity.this);
+                    CommonUtils.showSnackbarMessage("Please enter category description.", true, true, addEditCategoryParentLayout, AddEditCategoryActivity.this);
                     return;
-                }else {
+                } else {
                     Bundle data = new Bundle();
                     int catId;
                     if (categoryID == -1) {
@@ -112,13 +107,13 @@ public class AddEditCategoryActivity extends AppCompatActivity{
 
                         catId = Integer.parseInt(String.valueOf(categoryListDBHelper.addCategory(categoryPOJO)));
 
-                        if(catId == UNIQUE_CONSTRAINT_FAIL_ERROR_CODE){
+                        if (catId == UNIQUE_CONSTRAINT_FAIL_ERROR_CODE) {
                             Toast.makeText(AddEditCategoryActivity.this, "Category type with same name already exists.", Toast.LENGTH_SHORT).show();
-                        }else {
+                        } else {
 
                             categoryPOJO.setCategoryId(catId);
-                            if(categoryID == -1) {
-                                data.putInt("categoryId",catId);
+                            if (categoryID == -1) {
+                                data.putInt("categoryId", catId);
                                 data.putString("categoryName", categoryNameString);
                                 data.putString("categoryDescription", categoryDescriptionString);
                                 data.putString("categoryCoverageType", categoryCoverageType);
@@ -136,20 +131,20 @@ public class AddEditCategoryActivity extends AppCompatActivity{
                         categoryPOJO.setCoverageType(categoryCoverageType);
                         catId = categoryListDBHelper.updateCategory(categoryPOJO);
 
-                       if(catId == UNIQUE_CONSTRAINT_FAIL_ERROR_CODE){
-                           Toast.makeText(AddEditCategoryActivity.this, "Category type with same name already exists.", Toast.LENGTH_SHORT).show();
+                        if (catId == UNIQUE_CONSTRAINT_FAIL_ERROR_CODE) {
+                            Toast.makeText(AddEditCategoryActivity.this, "Category type with same name already exists.", Toast.LENGTH_SHORT).show();
 
-                       }else {
-                           categoryPOJO.setCategoryId(categoryID);
-                           Intent intent = new Intent();
-                           data.putString("categoryName", categoryNameString);
-                           data.putString("categoryDescription", categoryDescriptionString);
-                           data.putString("categoryCoverageType", categoryCoverageType);
-                           data.putInt("categoryID", categoryID);
-                           intent.putExtra("categoryDetails", data);
-                           setResult(Activity.RESULT_OK, intent);
-                           finish();
-                       }
+                        } else {
+                            categoryPOJO.setCategoryId(categoryID);
+                            Intent intent = new Intent();
+                            data.putString("categoryName", categoryNameString);
+                            data.putString("categoryDescription", categoryDescriptionString);
+                            data.putString("categoryCoverageType", categoryCoverageType);
+                            data.putInt("categoryID", categoryID);
+                            intent.putExtra("categoryDetails", data);
+                            setResult(Activity.RESULT_OK, intent);
+                            finish();
+                        }
                     }
                 }
             }
@@ -177,7 +172,7 @@ public class AddEditCategoryActivity extends AppCompatActivity{
                             }
                         });
                         ad.setTitle("Coverage Type");
-                        if(coveragePOJOS.size() == 0){
+                        if (coveragePOJOS.size() == 0) {
                             ad.setMessage("No coverage types found.");
                         }
                         CustomMenuAdapter adapter = new CustomMenuAdapter(coveragePOJOS, selectCoverageType.getText().toString(), "coverage_type");
@@ -214,8 +209,8 @@ public class AddEditCategoryActivity extends AppCompatActivity{
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == RESULT_OK){
-            if(requestCode ==   ADD_COVERAGE_REQUEST_CODE){
+        if (resultCode == RESULT_OK) {
+            if (requestCode == ADD_COVERAGE_REQUEST_CODE) {
                 selectCoverageType.setText(data.getBundleExtra("coverageDetails").getString("name"));
             }
         }
@@ -224,6 +219,6 @@ public class AddEditCategoryActivity extends AppCompatActivity{
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString("coverageType",coverageType);
+        outState.putString("coverageType", coverageType);
     }
 }

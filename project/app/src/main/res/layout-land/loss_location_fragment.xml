@@ -1,64 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:id="@+id/lossLocationParentLayout"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/lossLocationParentLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:weightSum="5"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:weightSum="5">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="2dp"
         android:layout_weight="1"
-        android:weightSum="2"
         android:orientation="horizontal"
-        android:layout_marginTop="2dp">
+        android:weightSum="2">
+
         <AutoCompleteTextView
-            android:textSize="14sp"
-            android:hint="@string/search_place"
             android:id="@+id/place_autocomplete_text_view"
             android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1.5"
-            android:layout_height="match_parent" />
+            android:hint="@string/search_place"
+            android:textSize="14sp" />
+
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_weight="0.5"
             android:layout_height="match_parent"
-            android:weightSum="2"
-            android:orientation="vertical"
             android:layout_marginLeft="10dp"
-            android:layout_marginRight="5dp">
-        <CheckBox
-            android:checked="false"
-            android:id="@+id/txtSetLocation"
-            android:clickable="true"
-            android:background="?attr/selectableItemBackground"
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            android:textColor="@color/colorCurrentLocation"
-            android:drawablePadding="10dp"
-            android:drawableLeft="@drawable/ic_location_pin"
-            android:button="@android:color/transparent"
-            android:text="@string/pin_location"
-            android:focusable="true" />
-        <CheckBox
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:textSize="12sp"
-            android:drawablePadding="10dp"
-            android:drawableLeft="@drawable/ic_my_location"
-            android:text="@string/current_location"
-            android:textColor="@color/colorCurrentLocation"
-            android:id="@+id/txtCurrentLocation"
-            android:clickable="true"
-            android:textStyle="bold"
-            android:button="@android:color/transparent"
-            android:background="?attr/selectableItemBackground"
-            android:focusable="true" />
+            android:layout_marginRight="5dp"
+            android:layout_weight="0.5"
+            android:orientation="vertical"
+            android:weightSum="2">
+
+            <CheckBox
+                android:id="@+id/txtSetLocation"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="?attr/selectableItemBackground"
+                android:button="@android:color/transparent"
+                android:checked="false"
+                android:clickable="true"
+                android:drawableLeft="@drawable/ic_location_pin"
+                android:drawablePadding="10dp"
+                android:focusable="true"
+                android:text="@string/pin_location"
+                android:textColor="@color/colorCurrentLocation"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <CheckBox
+                android:id="@+id/txtCurrentLocation"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="?attr/selectableItemBackground"
+                android:button="@android:color/transparent"
+                android:clickable="true"
+                android:drawableLeft="@drawable/ic_my_location"
+                android:drawablePadding="10dp"
+                android:focusable="true"
+                android:text="@string/current_location"
+                android:textColor="@color/colorCurrentLocation"
+                android:textSize="12sp"
+                android:textStyle="bold" />
         </LinearLayout>
 
     </LinearLayout>
@@ -67,6 +71,6 @@
     <com.google.android.gms.maps.MapView
         android:id="@+id/mapView"
         android:layout_width="match_parent"
-        android:layout_weight="4"
-        android:layout_height="0dp" />
+        android:layout_height="0dp"
+        android:layout_weight="4" />
 </LinearLayout>

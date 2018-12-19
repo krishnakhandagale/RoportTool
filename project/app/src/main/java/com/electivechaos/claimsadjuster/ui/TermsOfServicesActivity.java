@@ -29,7 +29,7 @@ public class TermsOfServicesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_terms_of_services);
 
-        if(CommonUtils.getTermsAndConditions(this).equals("agree")){
+        if (CommonUtils.getTermsAndConditions(this).equals("agree")) {
             Intent intentSplash = new Intent(TermsOfServicesActivity.this, SplashScreenActivity.class);
             startActivity(intentSplash);
         }
@@ -57,11 +57,11 @@ public class TermsOfServicesActivity extends AppCompatActivity {
         acceptBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(validate()){
+                if (validate()) {
                     Intent intentSplash = new Intent(TermsOfServicesActivity.this, SplashScreenActivity.class);
                     startActivity(intentSplash);
-                }else {
-                    CommonUtils.showSnackbarMessage(getString(R.string.please_check_terms_of_services), true, true,parentLayoutForMessages, TermsOfServicesActivity.this);
+                } else {
+                    CommonUtils.showSnackbarMessage(getString(R.string.please_check_terms_of_services), true, true, parentLayoutForMessages, TermsOfServicesActivity.this);
                 }
             }
         });
@@ -76,17 +76,17 @@ public class TermsOfServicesActivity extends AppCompatActivity {
     }
 
     private boolean validate() {
-        if(termsOfServices.isChecked()){
-            CommonUtils.setTermsAndConditions("agree",TermsOfServicesActivity.this);
+        if (termsOfServices.isChecked()) {
+            CommonUtils.setTermsAndConditions("agree", TermsOfServicesActivity.this);
             return true;
-        }else {
-            CommonUtils.setTermsAndConditions("disagree",TermsOfServicesActivity.this);
+        } else {
+            CommonUtils.setTermsAndConditions("disagree", TermsOfServicesActivity.this);
             return false;
         }
     }
 
 
-    private void showAlertForDisagreement(){
+    private void showAlertForDisagreement() {
         AlertDialog.Builder builder = new AlertDialog.Builder(TermsOfServicesActivity.this);
         builder.setTitle(R.string.disagreement_title)
                 .setMessage(R.string.disagreement_msg)
@@ -94,21 +94,22 @@ public class TermsOfServicesActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         Intent i = new Intent(Intent.ACTION_MAIN);
                         i.addCategory(Intent.CATEGORY_HOME);
-                        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);;
+                        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        ;
                         startActivity(i);
                         finish();
                     }
                 }).setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
         AlertDialog alert = builder.create();
         alert.show();
         Button negativeButton = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
-        negativeButton.setTextColor(ContextCompat.getColor(TermsOfServicesActivity.this,R.color.colorPrimaryDark));
+        negativeButton.setTextColor(ContextCompat.getColor(TermsOfServicesActivity.this, R.color.colorPrimaryDark));
         Button positiveButton = alert.getButton(DialogInterface.BUTTON_POSITIVE);
-        positiveButton.setTextColor(ContextCompat.getColor(TermsOfServicesActivity.this,R.color.colorPrimaryDark));
+        positiveButton.setTextColor(ContextCompat.getColor(TermsOfServicesActivity.this, R.color.colorPrimaryDark));
 
     }
 

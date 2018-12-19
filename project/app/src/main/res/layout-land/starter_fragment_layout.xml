@@ -1,312 +1,317 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-<android.support.design.widget.CoordinatorLayout
-    android:id="@+id/selectImagesParentLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="@style/Widget.AppCompat.ProgressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_gravity="center|center_horizontal"
-        android:theme="@style/CircularProgress"
-        android:visibility="gone" />
-
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/constraintLayout"
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/selectImagesParentLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.constraint.Guideline
-            android:id="@+id/guideline"
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="@style/Widget.AppCompat.ProgressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.20" />
+            android:layout_centerInParent="true"
+            android:layout_gravity="center|center_horizontal"
+            android:theme="@style/CircularProgress"
+            android:visibility="gone" />
 
-        <ScrollView
-            android:layout_width="120dp"
-            android:layout_height="match_parent"
-            android:layout_marginTop="4dp"
-            app:layout_constraintEnd_toStartOf="@+id/guideline"
-            app:layout_constraintHorizontal_bias="0.111"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/constraintLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-            <android.support.constraint.ConstraintLayout
+            <android.support.constraint.Guideline
+                android:id="@+id/guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.20" />
+
+            <ScrollView
                 android:layout_width="120dp"
                 android:layout_height="match_parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginTop="4dp"
+                app:layout_constraintEnd_toStartOf="@+id/guideline"
+                app:layout_constraintHorizontal_bias="0.111"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <FrameLayout
-                    android:id="@+id/button"
+                <android.support.constraint.ConstraintLayout
                     android:layout_width="120dp"
-                    android:layout_height="150dp"
-                    android:layout_marginTop="4dp"
-                    android:background="@color/colorPrimary"
+                    android:layout_height="match_parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
-                    <ImageView
-                        android:id="@+id/imageOnePreview"
+
+                    <FrameLayout
+                        android:id="@+id/button"
                         android:layout_width="120dp"
                         android:layout_height="150dp"
-                        tools:layout_editor_absoluteX="8dp"
-                        tools:layout_editor_absoluteY="8dp" />
+                        android:layout_marginTop="4dp"
+                        android:background="@color/colorPrimary"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="30dp"
-                        android:layout_gravity="bottom"
-                        android:background="@color/cardview_dark_background"
-                        android:gravity="center"
-                        android:text="Front"
-                        android:textColor="@color/white_color" />
+                        <ImageView
+                            android:id="@+id/imageOnePreview"
+                            android:layout_width="120dp"
+                            android:layout_height="150dp"
+                            tools:layout_editor_absoluteX="8dp"
+                            tools:layout_editor_absoluteY="8dp" />
 
-                    <ImageView
-                        android:id="@+id/imageViewOne"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/rounded_button"
-                        android:src="@drawable/ic_camera_16" />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            android:layout_gravity="bottom"
+                            android:background="@color/cardview_dark_background"
+                            android:gravity="center"
+                            android:text="Front"
+                            android:textColor="@color/white_color" />
 
-                </FrameLayout>
+                        <ImageView
+                            android:id="@+id/imageViewOne"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/rounded_button"
+                            android:src="@drawable/ic_camera_16" />
+
+                    </FrameLayout>
 
 
-                <FrameLayout
-                    android:id="@+id/button3"
-                    android:layout_width="120dp"
-                    android:layout_height="150dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginTop="8dp"
-                    android:background="@color/colorPrimary"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/button">
-
-                    <ImageView
-                        android:id="@+id/imageTwoPreview"
+                    <FrameLayout
+                        android:id="@+id/button3"
                         android:layout_width="120dp"
-                        android:layout_height="150dp" />
+                        android:layout_height="150dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@color/colorPrimary"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/button">
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="30dp"
-                        android:layout_gravity="bottom"
-                        android:background="@color/cardview_dark_background"
-                        android:gravity="center"
-                        android:text="Back"
-                        android:textColor="@color/white_color" />
+                        <ImageView
+                            android:id="@+id/imageTwoPreview"
+                            android:layout_width="120dp"
+                            android:layout_height="150dp" />
 
-                    <ImageView
-                        android:id="@+id/imageViewTwo"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/rounded_button"
-                        android:src="@drawable/ic_camera_16" />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            android:layout_gravity="bottom"
+                            android:background="@color/cardview_dark_background"
+                            android:gravity="center"
+                            android:text="Back"
+                            android:textColor="@color/white_color" />
 
-                </FrameLayout>
+                        <ImageView
+                            android:id="@+id/imageViewTwo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/rounded_button"
+                            android:src="@drawable/ic_camera_16" />
 
-                <FrameLayout
-                    android:id="@+id/button4"
-                    android:layout_width="120dp"
-                    android:layout_height="150dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginTop="8dp"
-                    android:background="@color/colorPrimary"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/button3">
+                    </FrameLayout>
 
-                    <ImageView
-                        android:id="@+id/imageThreePreview"
+                    <FrameLayout
+                        android:id="@+id/button4"
                         android:layout_width="120dp"
-                        android:layout_height="150dp" />
+                        android:layout_height="150dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@color/colorPrimary"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/button3">
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="30dp"
-                        android:layout_gravity="bottom"
-                        android:background="@color/cardview_dark_background"
-                        android:gravity="center"
-                        android:text="Left"
-                        android:textColor="@color/white_color" />
+                        <ImageView
+                            android:id="@+id/imageThreePreview"
+                            android:layout_width="120dp"
+                            android:layout_height="150dp" />
 
-                    <ImageView
-                        android:id="@+id/imageViewThree"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/rounded_button"
-                        android:src="@drawable/ic_camera_16" />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            android:layout_gravity="bottom"
+                            android:background="@color/cardview_dark_background"
+                            android:gravity="center"
+                            android:text="Left"
+                            android:textColor="@color/white_color" />
 
-                </FrameLayout>
+                        <ImageView
+                            android:id="@+id/imageViewThree"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/rounded_button"
+                            android:src="@drawable/ic_camera_16" />
 
-                <FrameLayout
-                    android:id="@+id/button6"
-                    android:layout_width="120dp"
-                    android:layout_height="150dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginTop="8dp"
-                    android:background="@color/colorPrimary"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/button4">
+                    </FrameLayout>
 
-                    <ImageView
-                        android:id="@+id/imageFourPreview"
+                    <FrameLayout
+                        android:id="@+id/button6"
                         android:layout_width="120dp"
-                        android:layout_height="140dp" />
+                        android:layout_height="150dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@color/colorPrimary"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/button4">
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="30dp"
-                        android:layout_gravity="bottom"
-                        android:background="@color/cardview_dark_background"
-                        android:gravity="center"
-                        android:text="Right"
-                        android:textColor="@color/white_color" />
+                        <ImageView
+                            android:id="@+id/imageFourPreview"
+                            android:layout_width="120dp"
+                            android:layout_height="140dp" />
 
-                    <ImageView
-                        android:id="@+id/imageViewFour"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/rounded_button"
-                        android:src="@drawable/ic_camera_16" />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            android:layout_gravity="bottom"
+                            android:background="@color/cardview_dark_background"
+                            android:gravity="center"
+                            android:text="Right"
+                            android:textColor="@color/white_color" />
 
-                </FrameLayout>
+                        <ImageView
+                            android:id="@+id/imageViewFour"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/rounded_button"
+                            android:src="@drawable/ic_camera_16" />
 
-            </android.support.constraint.ConstraintLayout>
-        </ScrollView>
+                    </FrameLayout>
+
+                </android.support.constraint.ConstraintLayout>
+            </ScrollView>
 
 
-        <FrameLayout
-            android:id="@+id/button7"
-            android:layout_width="380dp"
-            android:layout_height="285dp"
-            android:layout_marginStart="40dp"
-            android:background="@color/colorPrimary"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/guideline"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.20999998"
-            android:layout_marginLeft="40dp">
-
-            <ImageView
-                android:id="@+id/houseNumberPreview"
+            <FrameLayout
+                android:id="@+id/button7"
                 android:layout_width="380dp"
                 android:layout_height="285dp"
-                tools:layout_editor_absoluteX="124dp"
-                tools:layout_editor_absoluteY="8dp" />
+                android:layout_marginLeft="40dp"
+                android:layout_marginStart="40dp"
+                android:background="@color/colorPrimary"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/guideline"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.20999998">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:layout_gravity="bottom"
-                android:background="@color/cardview_dark_background"
-                android:gravity="center"
-                android:text="House Number"
-                android:textColor="@color/white_color" />
+                <ImageView
+                    android:id="@+id/houseNumberPreview"
+                    android:layout_width="380dp"
+                    android:layout_height="285dp"
+                    tools:layout_editor_absoluteX="124dp"
+                    tools:layout_editor_absoluteY="8dp" />
 
-            <ImageView
-                android:id="@+id/houseNumberImage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/rounded_button"
-                android:src="@drawable/ic_camera_16" />
-        </FrameLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_gravity="bottom"
+                    android:background="@color/cardview_dark_background"
+                    android:gravity="center"
+                    android:text="House Number"
+                    android:textColor="@color/white_color" />
+
+                <ImageView
+                    android:id="@+id/houseNumberImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rounded_button"
+                    android:src="@drawable/ic_camera_16" />
+            </FrameLayout>
 
 
-    </android.support.constraint.ConstraintLayout>
+        </android.support.constraint.ConstraintLayout>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fabGenerateReport"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:layout_gravity="bottom|end"
-        android:layout_marginRight="160dp"
-        android:visibility="invisible"
-        app:elevation="6dp"
-        app:pressedTranslationZ="12dp"
-        android:src="@drawable/pdf_gen"
-        android:layout_marginEnd="160dp" />
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fabAddLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="80dp"
-        android:layout_gravity="bottom|end"
-        android:layout_marginRight="155dp"
-        android:visibility="invisible"
-        app:elevation="6dp"
-        app:pressedTranslationZ="12dp"
-        android:src="@drawable/label_add"
-        android:layout_marginEnd="155dp" />
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fabGenerateReport"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginBottom="20dp"
+            android:layout_marginEnd="160dp"
+            android:layout_marginRight="160dp"
+            android:src="@drawable/pdf_gen"
+            android:visibility="invisible"
+            app:elevation="6dp"
+            app:pressedTranslationZ="12dp" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fabSaveReport"
-        android:layout_width="wrap_content"
-        android:layout_height="58dp"
-        android:layout_gravity="bottom|end"
-        android:layout_marginBottom="135dp"
-        android:layout_marginRight="130dp"
-        android:src="@drawable/ic_white_save"
-        android:visibility="invisible"
-        app:elevation="6dp"
-        app:pressedTranslationZ="12dp"
-        android:layout_marginEnd="130dp" />
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fabGoBack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="170dp"
-        android:layout_gravity="bottom|end"
-        android:layout_marginRight="80dp"
-        android:visibility="invisible"
-        app:elevation="6dp"
-        app:pressedTranslationZ="12dp"
-        android:src="@drawable/back_arrow_white"
-        android:layout_marginEnd="80dp" />
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fabGoNext"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="180dp"
-        android:layout_gravity="bottom|end"
-        android:layout_marginRight="@dimen/fab_margin"
-        android:visibility="invisible"
-        app:elevation="6dp"
-        app:pressedTranslationZ="12dp"
-        android:src="@drawable/next_arrow_white"
-        android:layout_marginEnd="@dimen/fab_margin" />
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/showFab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        app:elevation="6dp"
-        app:backgroundTint="@color/colorPrimaryDark"
-        app:pressedTranslationZ="12dp"
-        android:layout_marginBottom="50dp"
-        android:layout_marginRight="50dp"
-        android:src="@drawable/ic_more_vertical_white"
-        android:layout_marginEnd="50dp" />
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fabAddLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginBottom="80dp"
+            android:layout_marginEnd="155dp"
+            android:layout_marginRight="155dp"
+            android:src="@drawable/label_add"
+            android:visibility="invisible"
+            app:elevation="6dp"
+            app:pressedTranslationZ="12dp" />
 
-</android.support.design.widget.CoordinatorLayout>
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fabSaveReport"
+            android:layout_width="wrap_content"
+            android:layout_height="58dp"
+            android:layout_gravity="bottom|end"
+            android:layout_marginBottom="135dp"
+            android:layout_marginEnd="130dp"
+            android:layout_marginRight="130dp"
+            android:src="@drawable/ic_white_save"
+            android:visibility="invisible"
+            app:elevation="6dp"
+            app:pressedTranslationZ="12dp" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fabGoBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginBottom="170dp"
+            android:layout_marginEnd="80dp"
+            android:layout_marginRight="80dp"
+            android:src="@drawable/back_arrow_white"
+            android:visibility="invisible"
+            app:elevation="6dp"
+            app:pressedTranslationZ="12dp" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fabGoNext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginBottom="180dp"
+            android:layout_marginEnd="@dimen/fab_margin"
+            android:layout_marginRight="@dimen/fab_margin"
+            android:src="@drawable/next_arrow_white"
+            android:visibility="invisible"
+            app:elevation="6dp"
+            app:pressedTranslationZ="12dp" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/showFab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginBottom="50dp"
+            android:layout_marginEnd="50dp"
+            android:layout_marginRight="50dp"
+            android:src="@drawable/ic_more_vertical_white"
+            app:backgroundTint="@color/colorPrimaryDark"
+            app:elevation="6dp"
+            app:pressedTranslationZ="12dp" />
+
+    </android.support.design.widget.CoordinatorLayout>
 </android.support.constraint.ConstraintLayout>

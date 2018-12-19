@@ -32,7 +32,6 @@ import com.electivechaos.claimsadjuster.DepthPageTransformer;
 import com.electivechaos.claimsadjuster.ImageFragment;
 import com.electivechaos.claimsadjuster.R;
 import com.electivechaos.claimsadjuster.listeners.OnLastSelectionChangeListener;
-import com.electivechaos.claimsadjuster.pojo.Image;
 import com.electivechaos.claimsadjuster.pojo.ImageDetailsPOJO;
 
 import java.io.File;
@@ -56,6 +55,7 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
     private String labelDefaultCoverageType = "";
 
     private OnLastSelectionChangeListener onLastSelectionChangeListener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,7 +66,7 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
         labelPosition = getIntent().getExtras().getInt("labelPosition");
         labelDefaultCoverageType = getIntent().getExtras().getString("labelDefaultCoverageType");
         imagesInformation = new ArrayList<>();
-        for(int i =0; i< imageList.size();i++){
+        for (int i = 0; i < imageList.size(); i++) {
             ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
             imgObj.setImageId(imageList.get(i).getImageId());
             imgObj.setImageUrl(imageList.get(i).getImageUrl());
@@ -74,19 +74,19 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
             imgObj.setDescription("");
             imgObj.setCoverageTye(labelDefaultCoverageType);
             File file = new File(imageList.get(i).getImageUrl());
-            if (file.exists()){
+            if (file.exists()) {
                 imgObj.setImageName(file.getName());
                 Date date = new Date(file.lastModified());
                 String dateString = new SimpleDateFormat("dd/MM/yyyy").format(date);
                 String timeString = new SimpleDateFormat("HH:mm:ss a").format(date);
-                imgObj.setImageDateTime(dateString+" at "+timeString);
+                imgObj.setImageDateTime(dateString + " at " + timeString);
             }
             imgObj.setImageGeoTag("");
             imagesInformation.add(imgObj);
         }
 
-        if(savedInstanceState != null){
-            lastSelectedPosition = savedInstanceState.getInt("lastSelectedPosition",-1);
+        if (savedInstanceState != null) {
+            lastSelectedPosition = savedInstanceState.getInt("lastSelectedPosition", -1);
             imagesInformation = (ArrayList<ImageDetailsPOJO>) savedInstanceState.getSerializable("imagesInformation");
             labelPosition = savedInstanceState.getInt("labelPosition");
             labelDefaultCoverageType = savedInstanceState.getString("labelDefaultCoverageType");
@@ -104,15 +104,14 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
         mImagePreviewList.setLayoutManager(mLayoutManager);
 
 
-
         onLastSelectionChangeListener = new OnLastSelectionChangeListener() {
             @Override
             public void onLastSelectionChanged(final int lastSelectedPos) {
-                mLayoutManager.scrollToPositionWithOffset(lastSelectedPos,20);
+                mLayoutManager.scrollToPositionWithOffset(lastSelectedPos, 20);
                 lastSelectedPosition = lastSelectedPos;
             }
         };
-        mImagePreviewListAdapter = new ImagePreviewListAdapter(imagesInformation,getBaseContext(),mPager,lastSelectedPosition, onLastSelectionChangeListener);
+        mImagePreviewListAdapter = new ImagePreviewListAdapter(imagesInformation, getBaseContext(), mPager, lastSelectedPosition, onLastSelectionChangeListener);
         mImagePreviewList.setAdapter(mImagePreviewListAdapter);
 
         selectImagesBtn.setOnClickListener(new OnClickListener() {
@@ -120,10 +119,10 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
             public void onClick(View v) {
                 Intent intent = new Intent();
                 Bundle imagesObj = new Bundle();
-                imagesObj.putSerializable("selected_images",imagesInformation);
-                imagesObj.putInt("labelPosition",labelPosition);
+                imagesObj.putSerializable("selected_images", imagesInformation);
+                imagesObj.putInt("labelPosition", labelPosition);
                 intent.putExtras(imagesObj);
-                setResult(RESULT_OK,intent);
+                setResult(RESULT_OK, intent);
                 finish();
             }
         });
@@ -170,134 +169,13 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
         imagesInformation.get(position).setImageGeoTag(geoTag);
     }
 
-    public class ImagePagerAdapter extends FragmentStatePagerAdapter {
-        private Fragment mCurrentFragment;
-
-        ImagePagerAdapter(FragmentManager fragmentManager) {
-            super(fragmentManager);
-        }
-
-        @Override
-        public int getCount() {
-            return imageList.size();
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return ImageFragment.init(imagesInformation.get(position),position,mPager);
-        }
-
-        @Override
-        public void setPrimaryItem(ViewGroup container, int position, Object object) {
-            if (getCurrentFragment() != object) {
-                mCurrentFragment = ((Fragment) object);
-            }
-            super.setPrimaryItem(container, position, object);
-        }
-
-        Fragment getCurrentFragment() {
-            return mCurrentFragment;
-        }
-    }
-
-    public class ImagePreviewListAdapter extends RecyclerView.Adapter<ImagePreviewListAdapter.MyViewHolder> {
-
-        private ArrayList<ImageDetailsPOJO> imageList;
-        private Context context;
-        private ViewPager mPager;
-        private int lastSelectedPos;
-        private OnLastSelectionChangeListener onLastSelectionChangeListener;
-        public class MyViewHolder extends RecyclerView.ViewHolder {
-            public ImageView imageView;
-            public TextView hiddenText;
-            public MyViewHolder(View view) {
-                super(view);
-                imageView = view.findViewById(R.id.imagePreview);
-                hiddenText = view.findViewById(R.id.hiddenText);
-            }
-        }
-        public ImagePreviewListAdapter(ArrayList<ImageDetailsPOJO> imageList, Context context, ViewPager mPager, int lastSelectedPos, OnLastSelectionChangeListener onLastSelectionChangeListener) {
-            this.imageList = imageList;
-            this.context = context;
-            this.mPager = mPager;
-            this.lastSelectedPos =  lastSelectedPos;
-            this.onLastSelectionChangeListener = onLastSelectionChangeListener;
-        }
-
-        @Override
-        public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View itemView = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.image_preview_list, parent, false);
-
-            return new MyViewHolder(itemView);
-        }
-
-        @Override
-        public void onBindViewHolder(final MyViewHolder holder, final int position) {
-            holder.hiddenText.setTag(position);
-            if(lastSelectedPos == position){
-                lastSelectedPos = position;
-                onLastSelectionChangeListener.onLastSelectionChanged(position);
-            }
-            else if(position == 0 &&   lastSelectedPos == -1){
-                lastSelectedPos = 0 ;
-                onLastSelectionChangeListener.onLastSelectionChanged(position);
-            }
-
-
-            ImageDetailsPOJO imgDetails = imageList.get(position);
-            Glide.with(context).load("file://"+imgDetails.getImageUrl()).thumbnail(0.1f).into(holder.imageView);
-            holder.imageView.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(lastSelectedPos != position){
-                        lastSelectedPos = position;
-                        onLastSelectionChangeListener.onLastSelectionChanged(position);
-                        holder.imageView.setBackgroundResource(R.drawable.image_selection_border);
-                        mPager.setCurrentItem(position);
-                        notifyItemChanged(position);
-                    }
-
-
-                }
-            });
-
-            mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-                @Override
-                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-                }
-
-                @Override
-                public void onPageSelected(int position) {
-                    if((int)holder.hiddenText.getTag() == position){
-                        lastSelectedPos = position;
-                        onLastSelectionChangeListener.onLastSelectionChanged(position);
-                        holder.imageView.setBackgroundResource(R.drawable.image_selection_border);
-                        notifyItemChanged(position);
-                    }
-                }
-
-                @Override
-                public void onPageScrollStateChanged(int state) {
-
-                }
-            });
-        }
-
-        @Override
-        public int getItemCount() {
-            return imageList.size();
-        }
-    }
-
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt("lastSelectedPosition",lastSelectedPosition);
-        outState.putSerializable("imagesInformation",imagesInformation);
-        outState.putInt("labelPosition",labelPosition);
-        outState.putString("labelDefaultCoverageType",labelDefaultCoverageType);
+        outState.putInt("lastSelectedPosition", lastSelectedPosition);
+        outState.putSerializable("imagesInformation", imagesInformation);
+        outState.putInt("labelPosition", labelPosition);
+        outState.putString("labelDefaultCoverageType", labelDefaultCoverageType);
 
     }
 
@@ -309,8 +187,8 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == RESULT_OK){
-            if(requestCode == ADD_COVERAGE_REQUEST_CODE){
+        if (resultCode == RESULT_OK) {
+            if (requestCode == ADD_COVERAGE_REQUEST_CODE) {
                 Bundle b = data.getExtras().getBundle("coverageDetails");
                 ((ImageFragment) mAdapter.getCurrentFragment()).setCoverageType(b.getString("name"));
             }
@@ -337,10 +215,133 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
         AlertDialog alert = builder.create();
         alert.show();
         Button negativeButton = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
-        negativeButton.setTextColor(ContextCompat.getColor(ImageSliderActivity.this,R.color.colorPrimaryDark));
+        negativeButton.setTextColor(ContextCompat.getColor(ImageSliderActivity.this, R.color.colorPrimaryDark));
         Button positiveButton = alert.getButton(DialogInterface.BUTTON_POSITIVE);
-        positiveButton.setTextColor(ContextCompat.getColor(ImageSliderActivity.this,R.color.colorPrimaryDark));
+        positiveButton.setTextColor(ContextCompat.getColor(ImageSliderActivity.this, R.color.colorPrimaryDark));
 
+    }
+
+    public class ImagePagerAdapter extends FragmentStatePagerAdapter {
+        private Fragment mCurrentFragment;
+
+        ImagePagerAdapter(FragmentManager fragmentManager) {
+            super(fragmentManager);
+        }
+
+        @Override
+        public int getCount() {
+            return imageList.size();
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return ImageFragment.init(imagesInformation.get(position), position, mPager);
+        }
+
+        @Override
+        public void setPrimaryItem(ViewGroup container, int position, Object object) {
+            if (getCurrentFragment() != object) {
+                mCurrentFragment = ((Fragment) object);
+            }
+            super.setPrimaryItem(container, position, object);
+        }
+
+        Fragment getCurrentFragment() {
+            return mCurrentFragment;
+        }
+    }
+
+    public class ImagePreviewListAdapter extends RecyclerView.Adapter<ImagePreviewListAdapter.MyViewHolder> {
+
+        private ArrayList<ImageDetailsPOJO> imageList;
+        private Context context;
+        private ViewPager mPager;
+        private int lastSelectedPos;
+        private OnLastSelectionChangeListener onLastSelectionChangeListener;
+
+        public ImagePreviewListAdapter(ArrayList<ImageDetailsPOJO> imageList, Context context, ViewPager mPager, int lastSelectedPos, OnLastSelectionChangeListener onLastSelectionChangeListener) {
+            this.imageList = imageList;
+            this.context = context;
+            this.mPager = mPager;
+            this.lastSelectedPos = lastSelectedPos;
+            this.onLastSelectionChangeListener = onLastSelectionChangeListener;
+        }
+
+        @Override
+        public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View itemView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.image_preview_list, parent, false);
+
+            return new MyViewHolder(itemView);
+        }
+
+        @Override
+        public void onBindViewHolder(final MyViewHolder holder, final int position) {
+            holder.hiddenText.setTag(position);
+            if (lastSelectedPos == position) {
+                lastSelectedPos = position;
+                onLastSelectionChangeListener.onLastSelectionChanged(position);
+            } else if (position == 0 && lastSelectedPos == -1) {
+                lastSelectedPos = 0;
+                onLastSelectionChangeListener.onLastSelectionChanged(position);
+            }
+
+
+            ImageDetailsPOJO imgDetails = imageList.get(position);
+            Glide.with(context).load("file://" + imgDetails.getImageUrl()).thumbnail(0.1f).into(holder.imageView);
+            holder.imageView.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (lastSelectedPos != position) {
+                        lastSelectedPos = position;
+                        onLastSelectionChangeListener.onLastSelectionChanged(position);
+                        holder.imageView.setBackgroundResource(R.drawable.image_selection_border);
+                        mPager.setCurrentItem(position);
+                        notifyItemChanged(position);
+                    }
+
+
+                }
+            });
+
+            mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                }
+
+                @Override
+                public void onPageSelected(int position) {
+                    if ((int) holder.hiddenText.getTag() == position) {
+                        lastSelectedPos = position;
+                        onLastSelectionChangeListener.onLastSelectionChanged(position);
+                        holder.imageView.setBackgroundResource(R.drawable.image_selection_border);
+                        notifyItemChanged(position);
+                    }
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int state) {
+
+                }
+            });
+        }
+
+        @Override
+        public int getItemCount() {
+            return imageList.size();
+        }
+
+        public class MyViewHolder extends RecyclerView.ViewHolder {
+            public ImageView imageView;
+            public TextView hiddenText;
+
+            public MyViewHolder(View view) {
+                super(view);
+                imageView = view.findViewById(R.id.imagePreview);
+                hiddenText = view.findViewById(R.id.hiddenText);
+            }
+        }
     }
 
 

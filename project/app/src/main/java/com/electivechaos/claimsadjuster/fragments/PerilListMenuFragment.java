@@ -10,13 +10,11 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.electivechaos.claimsadjuster.R;
@@ -32,10 +30,12 @@ import com.electivechaos.claimsadjuster.pojo.PerilPOJO;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PerilListMenuFragment extends Fragment{
+public class PerilListMenuFragment extends Fragment {
 
+    public ArrayList<PerilPOJO> perilPOJOS = new ArrayList<>();
+    CategoryListDBHelper mCategoryListDBHelper;
     private Boolean isFabOpen = false;
-    private FloatingActionButton showFabBtn,fabGoNextBtn, fabGoBackBtn, fabAddLabelBtn, fabGenerateReportBtn, fabSaveReportBtn;
+    private FloatingActionButton showFabBtn, fabGoNextBtn, fabGoBackBtn, fabAddLabelBtn, fabGenerateReportBtn, fabSaveReportBtn;
     private Animation fab_open, fab_close;
     private NextButtonClickListener nextButtonClickListener;
     private BackButtonClickListener backButtonClickListener;
@@ -43,11 +43,7 @@ public class PerilListMenuFragment extends Fragment{
     private OnSaveReportClickListener onSaveReportClickListener;
     private OnGenerateReportClickListener onGenerateReportClickListener;
     private OnPerilSelectionListener onPerilSelectionListener;
-
-
-    public ArrayList<PerilPOJO> perilPOJOS = new ArrayList<>();
     private RecyclerView recyclerView;
-    CategoryListDBHelper mCategoryListDBHelper;
     private PerilListMenuFragment.PerilListAdapter mAdapter;
 
     private PerilPOJO perilPOJODetails;
@@ -164,19 +160,33 @@ public class PerilListMenuFragment extends Fragment{
     }
 
 
-    private  void updatePerilDetails(){
+    private void updatePerilDetails() {
         perilPOJOS = mCategoryListDBHelper.getPeril();
-        mAdapter = new PerilListMenuFragment.PerilListAdapter(perilPOJOS,perilPOJODetails);
+        mAdapter = new PerilListMenuFragment.PerilListAdapter(perilPOJOS, perilPOJODetails);
         recyclerView.setAdapter(mAdapter);
 
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            nextButtonClickListener = (NextButtonClickListener) getActivity();
+            backButtonClickListener = (BackButtonClickListener) getActivity();
+            onLabelAddClickListener = (DrawerMenuListAdapter.OnLabelAddClickListener) getActivity();
+            onSaveReportClickListener = (OnSaveReportClickListener) getActivity();
+            onGenerateReportClickListener = (OnGenerateReportClickListener) getActivity();
+            onPerilSelectionListener = (OnPerilSelectionListener) getActivity();
+        } catch (ClassCastException ex) {
+            ex.printStackTrace();
+        }
+    }
+
     public class PerilListAdapter extends RecyclerView.Adapter<PerilListMenuFragment.PerilListAdapter.MyViewHolder> {
         List<PerilPOJO> perilPOJOS;
-
+        PerilPOJO perilPOJODetails;
         private int sSelected;
         private CheckBox lastSelectedCheckbox;
-        PerilPOJO perilPOJODetails;
 
         PerilListAdapter(ArrayList<PerilPOJO> perilPOJOS, PerilPOJO perilPOJODetails) {
             this.perilPOJOS = perilPOJOS;
@@ -184,14 +194,15 @@ public class PerilListMenuFragment extends Fragment{
             this.sSelected = getSelectedPosition();
         }
 
-        int getSelectedPosition(){
-            for(int i=0;i<perilPOJOS.size();i++){
-                if(perilPOJOS.get(i).getName().equals(perilPOJODetails.getName())){
+        int getSelectedPosition() {
+            for (int i = 0; i < perilPOJOS.size(); i++) {
+                if (perilPOJOS.get(i).getName().equals(perilPOJODetails.getName())) {
                     return i;
                 }
             }
-            return  -1;
+            return -1;
         }
+
         @NonNull
         @Override
         public PerilListAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -209,7 +220,7 @@ public class PerilListMenuFragment extends Fragment{
             holder.chkItem.setChecked(sSelected == holder.getAdapterPosition());
             holder.chkItem.setTag(holder.getAdapterPosition());
 
-            if(sSelected == holder.getAdapterPosition()){
+            if (sSelected == holder.getAdapterPosition()) {
                 lastSelectedCheckbox = holder.chkItem;
 
             }
@@ -218,51 +229,51 @@ public class PerilListMenuFragment extends Fragment{
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onCheckChange(holder,perilPOJO);
+                    onCheckChange(holder, perilPOJO);
                 }
             });
             holder.chkItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onCheckChangeFromCheckbox(holder,perilPOJO);
+                    onCheckChangeFromCheckbox(holder, perilPOJO);
                 }
             });
 
         }
 
-       void onCheckChange(MyViewHolder holder, PerilPOJO perilPOJO){
+        void onCheckChange(MyViewHolder holder, PerilPOJO perilPOJO) {
 
             holder.chkItem.setChecked(!holder.chkItem.isChecked());
-            if(holder.chkItem.isChecked()){
+            if (holder.chkItem.isChecked()) {
                 sSelected = holder.getAdapterPosition();
                 onPerilSelectionListener.setPeril(perilPOJO);
-                if(lastSelectedCheckbox != null && (int) lastSelectedCheckbox.getTag() != holder.getAdapterPosition()){
+                if (lastSelectedCheckbox != null && (int) lastSelectedCheckbox.getTag() != holder.getAdapterPosition()) {
                     lastSelectedCheckbox.setChecked(false);
                     lastSelectedCheckbox = holder.chkItem;
-                }else{
+                } else {
                     lastSelectedCheckbox = holder.chkItem;
                 }
 
-            }else{
+            } else {
                 lastSelectedCheckbox = null;
                 sSelected = -1;
                 onPerilSelectionListener.setPeril(new PerilPOJO());
             }
         }
 
-        void onCheckChangeFromCheckbox(MyViewHolder holder, PerilPOJO perilPOJO){
+        void onCheckChangeFromCheckbox(MyViewHolder holder, PerilPOJO perilPOJO) {
 
-            if(holder.chkItem.isChecked()){
+            if (holder.chkItem.isChecked()) {
                 sSelected = holder.getAdapterPosition();
                 onPerilSelectionListener.setPeril(perilPOJO);
-                if(lastSelectedCheckbox != null && (int) lastSelectedCheckbox.getTag() != holder.getAdapterPosition()){
+                if (lastSelectedCheckbox != null && (int) lastSelectedCheckbox.getTag() != holder.getAdapterPosition()) {
                     lastSelectedCheckbox.setChecked(false);
                     lastSelectedCheckbox = holder.chkItem;
-                }else{
+                } else {
                     lastSelectedCheckbox = holder.chkItem;
                 }
 
-            }else{
+            } else {
                 lastSelectedCheckbox = null;
                 sSelected = -1;
                 onPerilSelectionListener.setPeril(new PerilPOJO());
@@ -275,8 +286,7 @@ public class PerilListMenuFragment extends Fragment{
         }
 
 
-
-        public class MyViewHolder extends RecyclerView.ViewHolder{
+        public class MyViewHolder extends RecyclerView.ViewHolder {
             public TextView title, desc;
             CheckBox chkItem;
 
@@ -291,21 +301,5 @@ public class PerilListMenuFragment extends Fragment{
         }
 
 
-    }
-
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        try {
-            nextButtonClickListener = (NextButtonClickListener) getActivity();
-            backButtonClickListener = (BackButtonClickListener) getActivity();
-            onLabelAddClickListener = (DrawerMenuListAdapter.OnLabelAddClickListener)getActivity();
-            onSaveReportClickListener = (OnSaveReportClickListener)getActivity();
-            onGenerateReportClickListener = (OnGenerateReportClickListener)getActivity();
-            onPerilSelectionListener = (OnPerilSelectionListener) getActivity();
-        }catch (ClassCastException ex) {
-            ex.printStackTrace();
-        }
     }
 }

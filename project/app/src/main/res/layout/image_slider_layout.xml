@@ -4,39 +4,38 @@
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:padding="4dip" >
+    android:padding="4dip">
 
     <android.support.v4.view.ViewPager
         android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="0px"
-        android:layout_weight="1" >
-    </android.support.v4.view.ViewPager>
+        android:layout_weight="1"></android.support.v4.view.ViewPager>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0"
         android:gravity="center"
-        android:weightSum="4"
         android:measureWithLargestChild="true"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:weightSum="4">
 
         <android.support.v7.widget.RecyclerView
-            android:layout_weight="4"
             android:id="@+id/imagePreviewList"
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        </android.support.v7.widget.RecyclerView>
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:orientation="horizontal"></android.support.v7.widget.RecyclerView>
+
         <ImageButton
             android:id="@+id/selectImages"
-            android:layout_margin="5dp"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="20dp"
-            android:src="@drawable/ic_send_white"
-            android:background="@drawable/rounded_button"
             android:layout_width="50dp"
-            android:layout_height="50dp" />
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
+            android:layout_margin="5dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/rounded_button"
+            android:src="@drawable/ic_send_white" />
     </LinearLayout>
 </LinearLayout>

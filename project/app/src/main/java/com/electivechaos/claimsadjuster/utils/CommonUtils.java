@@ -39,7 +39,10 @@ public class CommonUtils {
         int noOfColumns = (int) (dpWidth / 180);
         return noOfColumns;
     }
-    /** Locks the device window in actual screen mode. */
+
+    /**
+     * Locks the device window in actual screen mode.
+     */
     public static void lockOrientation(Activity activity) {
         int orientation;
         int rotation = ((WindowManager) activity.getSystemService(
@@ -62,12 +65,14 @@ public class CommonUtils {
         activity.setRequestedOrientation(orientation);
     }
 
-    /** Unlocks the device window in user defined screen mode. */
+    /**
+     * Unlocks the device window in user defined screen mode.
+     */
     public static void unlockOrientation(Activity activity) {
         activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_USER);
     }
 
-    public static void  showSnackbarMessage(String message, boolean isAutoHide, boolean isError, View parentLayout, Context context) {
+    public static void showSnackbarMessage(String message, boolean isAutoHide, boolean isError, View parentLayout, Context context) {
         if (isError == false) {
             Snackbar snackbar = Snackbar.make(parentLayout, message, Snackbar.LENGTH_LONG);
             View snackBarView = snackbar.getView();
@@ -82,6 +87,7 @@ public class CommonUtils {
 
 
     }
+
     public static void hideKeyboard(Activity activity) {
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
         View view = activity.getCurrentFocus();
@@ -91,16 +97,17 @@ public class CommonUtils {
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
-    public static String generateId(){
-         Random random = new Random();
+    public static String generateId() {
+        Random random = new Random();
         int number = 100000 + random.nextInt(900000);
-        return  new Date().getTime() +"" + number;
+        return new Date().getTime() + "" + number;
     }
-    public static String generateIdString(){
+
+    public static String generateIdString() {
         long timeInMillisecond = System.currentTimeMillis();
         Random random = new Random();
         int number = 100000 + random.nextInt(900000);
-        return  new Date().getTime() +""+timeInMillisecond + number;
+        return new Date().getTime() + "" + timeInMillisecond + number;
     }
 
     public static Bitmap fastblur(Bitmap sentBitmap, int radius) {
@@ -255,7 +262,7 @@ public class CommonUtils {
             stackpointer = radius;
             for (y = 0; y < h; y++) {
                 // Preserve alpha channel: ( 0xff000000 & pix[yi] )
-                pix[yi] = ( 0xff000000 & pix[yi] ) | ( dv[rsum] << 16 ) | ( dv[gsum] << 8 ) | dv[bsum];
+                pix[yi] = (0xff000000 & pix[yi]) | (dv[rsum] << 16) | (dv[gsum] << 8) | dv[bsum];
 
                 rsum -= routsum;
                 gsum -= goutsum;
@@ -307,8 +314,7 @@ public class CommonUtils {
     }
 
 
-    public static Bitmap takeScreenShot(Activity activity)
-    {
+    public static Bitmap takeScreenShot(Activity activity) {
         View view = activity.getWindow().getDecorView();
         view.setDrawingCacheEnabled(true);
         view.buildDrawingCache();
@@ -318,157 +324,157 @@ public class CommonUtils {
         int statusBarHeight = frame.top;
         int width = activity.getWindowManager().getDefaultDisplay().getWidth();
         int height = activity.getWindowManager().getDefaultDisplay().getHeight();
-        Bitmap b = Bitmap.createBitmap(b1, 0, statusBarHeight, width, height  - statusBarHeight);
+        Bitmap b = Bitmap.createBitmap(b1, 0, statusBarHeight, width, height - statusBarHeight);
         view.destroyDrawingCache();
         return b;
     }
 
     public static void setReportQuality(String reportQuality, Context context) {
-        SharedPreferences sharedPref = context.getSharedPreferences("quality",Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = context.getSharedPreferences("quality", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("ReportQuality", reportQuality);
         editor.apply();
     }
 
 
-    public static String getReportQuality(Context context){
-        SharedPreferences sharedPref = context.getSharedPreferences("quality",Context.MODE_PRIVATE);
+    public static String getReportQuality(Context context) {
+        SharedPreferences sharedPref = context.getSharedPreferences("quality", Context.MODE_PRIVATE);
         String reportQuality = sharedPref.getString("ReportQuality", "");
         return reportQuality;
     }
 
-    public static void clearReportQuality(Context context){
-        SharedPreferences sharedPref = context.getSharedPreferences("quality",Context.MODE_PRIVATE);
+    public static void clearReportQuality(Context context) {
+        SharedPreferences sharedPref = context.getSharedPreferences("quality", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.clear();
         editor.apply();
     }
 
     public static void setGoogleMap(String googleMap, Context context) {
-        SharedPreferences sharedPref = context.getSharedPreferences("map",Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = context.getSharedPreferences("map", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("GoogleMap", googleMap);
         editor.apply();
     }
 
 
-    public static String getGoogleMap(Context context){
-        if(context !=null){
-            SharedPreferences sharedPref = context.getSharedPreferences("map",Context.MODE_PRIVATE);
+    public static String getGoogleMap(Context context) {
+        if (context != null) {
+            SharedPreferences sharedPref = context.getSharedPreferences("map", Context.MODE_PRIVATE);
             return sharedPref.getString("GoogleMap", "");
-        }else {
-            return  "";
+        } else {
+            return "";
         }
 
     }
 
-    public static void clearGoogleMap(Context context){
-        SharedPreferences sharedPref = context.getSharedPreferences("map",Context.MODE_PRIVATE);
+    public static void clearGoogleMap(Context context) {
+        SharedPreferences sharedPref = context.getSharedPreferences("map", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.clear();
         editor.apply();
     }
 
     public static void setReportByField(String reportBy, Context context) {
-        SharedPreferences sharedPref = context.getSharedPreferences("report by",Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = context.getSharedPreferences("report by", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("ReportBy", reportBy);
         editor.apply();
     }
 
 
-    public static String getReportByField(Context context){
-        SharedPreferences sharedPref = context.getSharedPreferences("report by",Context.MODE_PRIVATE);
+    public static String getReportByField(Context context) {
+        SharedPreferences sharedPref = context.getSharedPreferences("report by", Context.MODE_PRIVATE);
         String reportBy = sharedPref.getString("ReportBy", "");
         return reportBy;
     }
 
-    public static void clearReportByField(Context context){
-        SharedPreferences sharedPref = context.getSharedPreferences("report by",Context.MODE_PRIVATE);
+    public static void clearReportByField(Context context) {
+        SharedPreferences sharedPref = context.getSharedPreferences("report by", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.clear();
         editor.apply();
     }
 
     public static void setEmailId(String emailId, Context context) {
-        SharedPreferences sharedPref = context.getSharedPreferences("emailId",Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = context.getSharedPreferences("emailId", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("EmailId", emailId);
         editor.apply();
     }
 
 
-    public static String getEmailId(Context context){
-        SharedPreferences sharedPref = context.getSharedPreferences("emailId",Context.MODE_PRIVATE);
+    public static String getEmailId(Context context) {
+        SharedPreferences sharedPref = context.getSharedPreferences("emailId", Context.MODE_PRIVATE);
         String emailId = sharedPref.getString("EmailId", "");
         return emailId;
     }
 
-    public static void clearEmailId(Context context){
-        SharedPreferences sharedPref = context.getSharedPreferences("emailId",Context.MODE_PRIVATE);
+    public static void clearEmailId(Context context) {
+        SharedPreferences sharedPref = context.getSharedPreferences("emailId", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.clear();
         editor.apply();
     }
 
     public static void setReportTitle(String title, Context context) {
-        SharedPreferences sharedPref = context.getSharedPreferences("title",Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = context.getSharedPreferences("title", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("Title", title);
         editor.apply();
     }
 
 
-    public static String getReportTitle(Context context){
-        SharedPreferences sharedPref = context.getSharedPreferences("title",Context.MODE_PRIVATE);
+    public static String getReportTitle(Context context) {
+        SharedPreferences sharedPref = context.getSharedPreferences("title", Context.MODE_PRIVATE);
         String title = sharedPref.getString("Title", "");
         return title;
     }
 
-    public static void clearReportTitle(Context context){
-        SharedPreferences sharedPref = context.getSharedPreferences("title",Context.MODE_PRIVATE);
+    public static void clearReportTitle(Context context) {
+        SharedPreferences sharedPref = context.getSharedPreferences("title", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.clear();
         editor.apply();
     }
 
     public static void setReportDescription(String description, Context context) {
-        SharedPreferences sharedPref = context.getSharedPreferences("description",Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = context.getSharedPreferences("description", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("Description", description);
         editor.apply();
     }
 
 
-    public static String getReportDescription(Context context){
-        SharedPreferences sharedPref = context.getSharedPreferences("description",Context.MODE_PRIVATE);
+    public static String getReportDescription(Context context) {
+        SharedPreferences sharedPref = context.getSharedPreferences("description", Context.MODE_PRIVATE);
         String description = sharedPref.getString("Description", "");
         return description;
     }
 
-    public static void clearReportDescription(Context context){
-        SharedPreferences sharedPref = context.getSharedPreferences("description",Context.MODE_PRIVATE);
+    public static void clearReportDescription(Context context) {
+        SharedPreferences sharedPref = context.getSharedPreferences("description", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.clear();
         editor.apply();
     }
 
     public static void setCompanyName(String companyName, Context context) {
-        SharedPreferences sharedPref = context.getSharedPreferences("companyName",Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = context.getSharedPreferences("companyName", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("CompanyName", companyName);
         editor.apply();
     }
 
 
-    public static String getCompanyName(Context context){
-        SharedPreferences sharedPref = context.getSharedPreferences("companyName",Context.MODE_PRIVATE);
+    public static String getCompanyName(Context context) {
+        SharedPreferences sharedPref = context.getSharedPreferences("companyName", Context.MODE_PRIVATE);
         String companyName = sharedPref.getString("CompanyName", "");
         return companyName;
     }
 
-    public static void clearCompanyName(Context context){
-        SharedPreferences sharedPref = context.getSharedPreferences("companyName",Context.MODE_PRIVATE);
+    public static void clearCompanyName(Context context) {
+        SharedPreferences sharedPref = context.getSharedPreferences("companyName", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.clear();
         editor.apply();
@@ -476,21 +482,21 @@ public class CommonUtils {
 
 
     public static void setImageLogoUrl(String imageUrl, Context context) {
-        SharedPreferences sharedPref = context.getSharedPreferences("imageUrl",Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = context.getSharedPreferences("imageUrl", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("ImageUrl", imageUrl);
         editor.apply();
     }
 
 
-    public static String getImageLogoUrl(Context context){
-        SharedPreferences sharedPref = context.getSharedPreferences("imageUrl",Context.MODE_PRIVATE);
+    public static String getImageLogoUrl(Context context) {
+        SharedPreferences sharedPref = context.getSharedPreferences("imageUrl", Context.MODE_PRIVATE);
         String imageUrl = sharedPref.getString("ImageUrl", "");
         return imageUrl;
     }
 
-    public static void clearImageLogoUrl(Context context){
-        SharedPreferences sharedPref = context.getSharedPreferences("imageUrl",Context.MODE_PRIVATE);
+    public static void clearImageLogoUrl(Context context) {
+        SharedPreferences sharedPref = context.getSharedPreferences("imageUrl", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.clear();
         editor.apply();
@@ -498,68 +504,68 @@ public class CommonUtils {
 
 
     public static void setAddress(String address, Context context) {
-        SharedPreferences sharedPref = context.getSharedPreferences("address",Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = context.getSharedPreferences("address", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("Address", address);
         editor.apply();
     }
 
 
-    public static String getAddress(Context context){
-        SharedPreferences sharedPref = context.getSharedPreferences("address",Context.MODE_PRIVATE);
+    public static String getAddress(Context context) {
+        SharedPreferences sharedPref = context.getSharedPreferences("address", Context.MODE_PRIVATE);
         String address = sharedPref.getString("Address", "");
         return address;
     }
 
-    public static void clearAddress(Context context){
-        SharedPreferences sharedPref = context.getSharedPreferences("address",Context.MODE_PRIVATE);
+    public static void clearAddress(Context context) {
+        SharedPreferences sharedPref = context.getSharedPreferences("address", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.clear();
         editor.apply();
     }
 
     public static void setTermsAndConditions(String tc, Context context) {
-        SharedPreferences sharedPref = context.getSharedPreferences("termsAndConditions",Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = context.getSharedPreferences("termsAndConditions", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("TC", tc);
         editor.apply();
     }
 
 
-    public static String getTermsAndConditions(Context context){
-        SharedPreferences sharedPref = context.getSharedPreferences("termsAndConditions",Context.MODE_PRIVATE);
+    public static String getTermsAndConditions(Context context) {
+        SharedPreferences sharedPref = context.getSharedPreferences("termsAndConditions", Context.MODE_PRIVATE);
         String tc = sharedPref.getString("TC", "");
         return tc;
     }
 
-    public static void clearTermsAndConditions(Context context){
-        SharedPreferences sharedPref = context.getSharedPreferences("termsAndConditions",Context.MODE_PRIVATE);
+    public static void clearTermsAndConditions(Context context) {
+        SharedPreferences sharedPref = context.getSharedPreferences("termsAndConditions", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.clear();
         editor.apply();
     }
 
-    public static void setSession(String userId,Context context) {
-        SharedPreferences sharedPref = context.getSharedPreferences("login",Context.MODE_PRIVATE);
+    public static void setSession(String userId, Context context) {
+        SharedPreferences sharedPref = context.getSharedPreferences("login", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString(Constants.USER_ID, userId);
         editor.apply();
     }
 
-    public static String getSession(Context context){
-        SharedPreferences sharedPref = context.getSharedPreferences("login",Context.MODE_PRIVATE);
-        String userId = sharedPref.getString(Constants.USER_ID , "");
+    public static String getSession(Context context) {
+        SharedPreferences sharedPref = context.getSharedPreferences("login", Context.MODE_PRIVATE);
+        String userId = sharedPref.getString(Constants.USER_ID, "");
         return userId;
     }
 
-    public static void clearSession(Context context){
-        SharedPreferences sharedPref = context.getSharedPreferences("login",Context.MODE_PRIVATE);
+    public static void clearSession(Context context) {
+        SharedPreferences sharedPref = context.getSharedPreferences("login", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.clear();
         editor.apply();
     }
 
-    public static String getRequestError(VolleyError volleyError){
+    public static String getRequestError(VolleyError volleyError) {
         String message = null;
         if (volleyError instanceof NetworkError) {
             message = "Cannot connect to Internet.Please check your connection!";
@@ -574,7 +580,7 @@ public class CommonUtils {
         } else if (volleyError instanceof TimeoutError) {
             message = "Connection TimeOut! Please check your internet connection.";
         }
-        return  message;
+        return message;
     }
 
 }

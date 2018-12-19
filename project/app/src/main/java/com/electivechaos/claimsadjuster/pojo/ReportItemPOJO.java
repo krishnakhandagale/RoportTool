@@ -24,7 +24,6 @@ public class ReportItemPOJO {
     }
 
 
-
     public String getCreatedDate() {
         return createdDate;
     }

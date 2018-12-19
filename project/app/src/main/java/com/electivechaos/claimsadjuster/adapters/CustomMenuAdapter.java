@@ -28,12 +28,13 @@ public class CustomMenuAdapter extends BaseAdapter {
     private String value;
     private String type;
 
-    public  CustomMenuAdapter(ArrayList arrayList, String value, String type){
+    public CustomMenuAdapter(ArrayList arrayList, String value, String type) {
         this.arrayList = arrayList;
         this.value = value;
         this.type = type;
-        this.selectedPosition =  findSelectedPosition();
+        this.selectedPosition = findSelectedPosition();
     }
+
     @Override
     public int getCount() {
         return arrayList.size();
@@ -54,50 +55,47 @@ public class CustomMenuAdapter extends BaseAdapter {
         return 0;
     }
 
-    private int findSelectedPosition(){
+    private int findSelectedPosition() {
 
-        for(int i=0;i<arrayList.size();i++){
-            if(type.equals("roof_system")) {
-                if (((RoofSystemPOJO)arrayList.get(i)).getName().equals(value)){
-                    return  i;
-                }
-                else if(type.equals("siding")) {
-                    if (((SidingPOJO)arrayList.get(i)).getName().equals(value)){
-                        return  i;
+        for (int i = 0; i < arrayList.size(); i++) {
+            if (type.equals("roof_system")) {
+                if (((RoofSystemPOJO) arrayList.get(i)).getName().equals(value)) {
+                    return i;
+                } else if (type.equals("siding")) {
+                    if (((SidingPOJO) arrayList.get(i)).getName().equals(value)) {
+                        return i;
+                    }
+                } else if (type.equals("foundation")) {
+                    if (((FoundationPOJO) arrayList.get(i)).getName().equals(value)) {
+                        return i;
+                    }
+                } else if (type.equals("building_type")) {
+                    if (((BuildingTypePOJO) arrayList.get(i)).getName().equals(value)) {
+                        return i;
+                    }
+                } else if (type.equals("coverage_type")) {
+                    if (((CoveragePOJO) arrayList.get(i)).getName().equals(value)) {
+                        return i;
                     }
                 }
-                else if(type.equals("foundation")) {
-                    if (((FoundationPOJO)arrayList.get(i)).getName().equals(value)){
-                        return  i;
-                    }
-                }
-                else if(type.equals("building_type")) {
-                    if (((BuildingTypePOJO)arrayList.get(i)).getName().equals(value)){
-                        return  i;
-                    }
-                }
-                else if(type.equals("coverage_type")) {
-                    if (((CoveragePOJO)arrayList.get(i)).getName().equals(value)){
-                        return  i;
-                    }
-                }
-          }
+            }
         }
-        return  -1;
+        return -1;
     }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
 
-        if(convertView == null){
+        if (convertView == null) {
             holder = new ViewHolder();
-            LayoutInflater inflater =  LayoutInflater.from(parent.getContext());
-            convertView = inflater.inflate(R.layout.custom_menu_popup_adapter_layout,parent,false);
+            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+            convertView = inflater.inflate(R.layout.custom_menu_popup_adapter_layout, parent, false);
             holder.checkedTextView = convertView.findViewById(R.id.checked_text_name);
             convertView.setTag(holder);
-        } else{
+        } else {
             holder = (ViewHolder) convertView.getTag();
-            if( holder.checkedTextView.getCheckMarkDrawable() == null){
+            if (holder.checkedTextView.getCheckMarkDrawable() == null) {
                 TypedValue value = new TypedValue();
                 parent.getContext().getTheme().resolveAttribute(android.R.attr.listChoiceIndicatorSingle, value, true);
                 int checkMarkDrawableResId = value.resourceId;
@@ -106,71 +104,67 @@ public class CustomMenuAdapter extends BaseAdapter {
         }
 
 
-       if(type.equals("roof_system")) {
+        if (type.equals("roof_system")) {
 
-           RoofSystemPOJO roofSystemPOJO=(RoofSystemPOJO)arrayList.get(position);
-           holder.checkedTextView.setText(roofSystemPOJO.getName());
-           if(selectedPosition == position || roofSystemPOJO.getName().equals(value)) {
-               holder.checkedTextView.setChecked(true);
-           }else {
-               holder.checkedTextView.setChecked(false);
-           }
-       }
-       else if(type.equals("siding")){
+            RoofSystemPOJO roofSystemPOJO = (RoofSystemPOJO) arrayList.get(position);
+            holder.checkedTextView.setText(roofSystemPOJO.getName());
+            if (selectedPosition == position || roofSystemPOJO.getName().equals(value)) {
+                holder.checkedTextView.setChecked(true);
+            } else {
+                holder.checkedTextView.setChecked(false);
+            }
+        } else if (type.equals("siding")) {
 
-           SidingPOJO sidingPOJO=(SidingPOJO) arrayList.get(position);
-           holder.checkedTextView.setText(sidingPOJO.getName());
+            SidingPOJO sidingPOJO = (SidingPOJO) arrayList.get(position);
+            holder.checkedTextView.setText(sidingPOJO.getName());
 
-           if(selectedPosition == position || sidingPOJO.getName().equals(value)) {
-               holder.checkedTextView.setChecked(true);
-           }else {
-               holder.checkedTextView.setChecked(false);
-           }
-
-
-       }
-       else if(type.equals("foundation")){
-           FoundationPOJO foundationPOJO=(FoundationPOJO) arrayList.get(position);
-
-           holder.checkedTextView.setText(foundationPOJO.getName());
-
-           if(selectedPosition == position || foundationPOJO.getName().equals(value)) {
-               holder.checkedTextView.setChecked(true);
-           }else {
-               holder.checkedTextView.setChecked(false);
-           }
+            if (selectedPosition == position || sidingPOJO.getName().equals(value)) {
+                holder.checkedTextView.setChecked(true);
+            } else {
+                holder.checkedTextView.setChecked(false);
+            }
 
 
-       }
-       else if(type.equals("building_type")){
-           BuildingTypePOJO buildingTypePOJO=(BuildingTypePOJO) arrayList.get(position);
+        } else if (type.equals("foundation")) {
+            FoundationPOJO foundationPOJO = (FoundationPOJO) arrayList.get(position);
 
-           holder.checkedTextView.setText(buildingTypePOJO.getName());
+            holder.checkedTextView.setText(foundationPOJO.getName());
 
-           if(selectedPosition == position || buildingTypePOJO.getName().equals(value)) {
-               holder.checkedTextView.setChecked(true);
-           }else {
-               holder.checkedTextView.setChecked(false);
-           }
+            if (selectedPosition == position || foundationPOJO.getName().equals(value)) {
+                holder.checkedTextView.setChecked(true);
+            } else {
+                holder.checkedTextView.setChecked(false);
+            }
 
-       }
-       else if(type.equals("coverage_type")){
-           CoveragePOJO coveragePOJO=(CoveragePOJO) arrayList.get(position);
 
-           holder.checkedTextView.setText(coveragePOJO.getName());
+        } else if (type.equals("building_type")) {
+            BuildingTypePOJO buildingTypePOJO = (BuildingTypePOJO) arrayList.get(position);
 
-           if(selectedPosition == position || coveragePOJO.getName().equals(value)) {
-               holder.checkedTextView.setChecked(true);
-           }else {
-               holder.checkedTextView.setChecked(false);
-           }
+            holder.checkedTextView.setText(buildingTypePOJO.getName());
 
-       }
-        if(holder.checkedTextView.getText().toString().equals("Add New")) {
+            if (selectedPosition == position || buildingTypePOJO.getName().equals(value)) {
+                holder.checkedTextView.setChecked(true);
+            } else {
+                holder.checkedTextView.setChecked(false);
+            }
+
+        } else if (type.equals("coverage_type")) {
+            CoveragePOJO coveragePOJO = (CoveragePOJO) arrayList.get(position);
+
+            holder.checkedTextView.setText(coveragePOJO.getName());
+
+            if (selectedPosition == position || coveragePOJO.getName().equals(value)) {
+                holder.checkedTextView.setChecked(true);
+            } else {
+                holder.checkedTextView.setChecked(false);
+            }
+
+        }
+        if (holder.checkedTextView.getText().toString().equals("Add New")) {
             holder.checkedTextView.setGravity(Gravity.CENTER);
-            holder.checkedTextView.setBackgroundColor(ContextCompat.getColor(parent.getContext(),R.color.colorPrimary));
+            holder.checkedTextView.setBackgroundColor(ContextCompat.getColor(parent.getContext(), R.color.colorPrimary));
             holder.checkedTextView.setCheckMarkDrawable(null);
-        }else{
+        } else {
             holder.checkedTextView.setGravity(Gravity.LEFT);
             holder.checkedTextView.setBackgroundColor(0);
         }
@@ -178,7 +172,8 @@ public class CustomMenuAdapter extends BaseAdapter {
 
         return convertView;
     }
-    public static  class ViewHolder{
+
+    public static class ViewHolder {
         CheckedTextView checkedTextView;
     }
 

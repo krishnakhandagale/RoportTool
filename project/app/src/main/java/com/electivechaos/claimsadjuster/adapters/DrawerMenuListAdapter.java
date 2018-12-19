@@ -22,33 +22,28 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
+public class DrawerMenuListAdapter extends BaseExpandableListAdapter {
 
     private Context context;
-    private HashMap<String,List<Label>> childMenuList;
+    private HashMap<String, List<Label>> childMenuList;
     private ArrayList<ParentMenuItem> parentMenuList;
     private OnLabelAddClickListener onLabelAddClickListener;
     private CategoryListDBHelper mCategoryList;
     private AddEditLabelInterface addEditLabelInterface;
 
-    public interface OnLabelAddClickListener {
-        void onLabelAddClick();
-    }
-
-    public DrawerMenuListAdapter(Context context, ArrayList<ParentMenuItem> parentMenuList, HashMap<String,List<Label>> childMenuList){
-        this.context= context;
-        this.parentMenuList = parentMenuList ;
+    public DrawerMenuListAdapter(Context context, ArrayList<ParentMenuItem> parentMenuList, HashMap<String, List<Label>> childMenuList) {
+        this.context = context;
+        this.parentMenuList = parentMenuList;
         this.childMenuList = childMenuList;
-        this.onLabelAddClickListener = (OnLabelAddClickListener)context;
-        this.addEditLabelInterface= (AddEditLabelInterface)context;
-        mCategoryList=CategoryListDBHelper.getInstance(context);
+        this.onLabelAddClickListener = (OnLabelAddClickListener) context;
+        this.addEditLabelInterface = (AddEditLabelInterface) context;
+        mCategoryList = CategoryListDBHelper.getInstance(context);
     }
 
     @Override
     public int getGroupCount() {
         return parentMenuList.size();
     }
-
 
     @Override
     public int getChildrenCount(int groupPosition) {
@@ -85,20 +80,19 @@ public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
     public View getGroupView(final int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         ParentViewHolder holder;
 
-        if(convertView == null){
+        if (convertView == null) {
 
             convertView = LayoutInflater.from(context).inflate(R.layout.drawer_layout_menu_item, parent, false);
             holder = new ParentViewHolder();
 
-            holder.menuTitle =  convertView.findViewById(R.id.menuTitle);
+            holder.menuTitle = convertView.findViewById(R.id.menuTitle);
             holder.imageView = convertView.findViewById(R.id.menuIcon);
             holder.addInspectionView = convertView.findViewById(R.id.addInspection);
-            holder.checked =  convertView.findViewById(R.id.checked);
+            holder.checked = convertView.findViewById(R.id.checked);
             convertView.setTag(holder);
-        }else{
+        } else {
             holder = (ParentViewHolder) convertView.getTag();
         }
-
 
 
         String parentMenuString = parentMenuList.get(groupPosition).getTitle();
@@ -112,21 +106,20 @@ public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
             }
         });
 
-        if(parentMenuList.get(groupPosition).isChecked()){
+        if (parentMenuList.get(groupPosition).isChecked()) {
             holder.checked.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             holder.checked.setVisibility(View.GONE);
         }
-        if(parentMenuString.equals("Claim Details")) {
+        if (parentMenuString.equals("Claim Details")) {
             holder.imageView.setImageResource(R.drawable.ic_reports);
-        }
-        else if(parentMenuString.equals("Property Details")){
-                holder.imageView.setImageResource(R.drawable.ic_building);
-        }else if(parentMenuString.equals("Peril")){
+        } else if (parentMenuString.equals("Property Details")) {
+            holder.imageView.setImageResource(R.drawable.ic_building);
+        } else if (parentMenuString.equals("Peril")) {
             holder.imageView.setImageResource(R.drawable.ic_warning);
-        }else if(parentMenuString.equals("Point Of Origin")){
+        } else if (parentMenuString.equals("Point Of Origin")) {
             holder.imageView.setImageResource(R.drawable.ic_point_of_origin);
-        }else{
+        } else {
             holder.imageView.setImageResource(R.drawable.ic_damage);
             holder.addInspectionView.setVisibility(View.VISIBLE);
         }
@@ -136,28 +129,28 @@ public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(final int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         ChildViewHolder holder;
-        if(convertView == null){
+        if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.drawer_layout_child_menu_item, parent, false);
             holder = new ChildViewHolder();
             holder.menuTitle = convertView.findViewById(R.id.menuTitle);
             holder.labelDeleteBtn = convertView.findViewById(R.id.labelDeleteBtn);
             convertView.setTag(holder);
 
-        }else{
+        } else {
             holder = (ChildViewHolder) convertView.getTag();
         }
         String menuTitle = childMenuList.get(parentMenuList.get(groupPosition).getTitle()).get(childPosition).toString();
 
-        if(menuTitle.equals("Risk Overview")){
+        if (menuTitle.equals("Risk Overview")) {
             holder.labelDeleteBtn.setVisibility(View.GONE);
-        }else{
+        } else {
             holder.labelDeleteBtn.setVisibility(View.VISIBLE);
         }
         holder.menuTitle.setText(menuTitle);
         holder.labelDeleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(context != null){
+                if (context != null) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
                     builder.setTitle("Remove Image")
                             .setMessage("Are you sure wanna remove label ?")
@@ -165,7 +158,7 @@ public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
                                 public void onClick(DialogInterface dialog, int which) {
                                     String id = childMenuList.get(parentMenuList.get(groupPosition).getTitle()).get(childPosition).getId();
                                     int result = mCategoryList.deleteLabel(id);
-                                    if(result > 0) {
+                                    if (result > 0) {
                                         addEditLabelInterface.onLabelDeleted(childPosition);
                                     }
                                     dialog.cancel();
@@ -179,9 +172,9 @@ public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
                     AlertDialog alert = builder.create();
                     alert.show();
                     Button negativeButton = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
-                    negativeButton.setTextColor(ContextCompat.getColor(context,R.color.colorPrimaryDark));
+                    negativeButton.setTextColor(ContextCompat.getColor(context, R.color.colorPrimaryDark));
                     Button positiveButton = alert.getButton(DialogInterface.BUTTON_POSITIVE);
-                    positiveButton.setTextColor(ContextCompat.getColor(context,R.color.colorPrimaryDark));
+                    positiveButton.setTextColor(ContextCompat.getColor(context, R.color.colorPrimaryDark));
                 }
             }
         });
@@ -196,19 +189,21 @@ public  class  DrawerMenuListAdapter extends BaseExpandableListAdapter {
         return true;
     }
 
+    public interface OnLabelAddClickListener {
+        void onLabelAddClick();
+    }
 
-    static class ChildViewHolder{
+    static class ChildViewHolder {
         TextView menuTitle;
         Button labelDeleteBtn;
     }
 
-    static class ParentViewHolder{
+    static class ParentViewHolder {
         TextView menuTitle;
         ImageView imageView;
         ImageView checked;
         Button addInspectionView;
     }
-
 
 
 }

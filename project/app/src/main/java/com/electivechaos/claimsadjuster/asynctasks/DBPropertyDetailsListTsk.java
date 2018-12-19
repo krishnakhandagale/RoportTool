@@ -4,10 +4,6 @@ import android.os.AsyncTask;
 
 import com.electivechaos.claimsadjuster.database.CategoryListDBHelper;
 import com.electivechaos.claimsadjuster.interfaces.AsyncTaskStatusCallback;
-import com.electivechaos.claimsadjuster.pojo.BuildingTypePOJO;
-import com.electivechaos.claimsadjuster.pojo.FoundationPOJO;
-import com.electivechaos.claimsadjuster.pojo.RoofSystemPOJO;
-import com.electivechaos.claimsadjuster.pojo.SidingPOJO;
 
 import java.util.ArrayList;
 
@@ -16,12 +12,12 @@ import java.util.ArrayList;
  */
 
 
-public class DBPropertyDetailsListTsk extends AsyncTask<String,Integer,ArrayList> {
+public class DBPropertyDetailsListTsk extends AsyncTask<String, Integer, ArrayList> {
     private CategoryListDBHelper categoryListDBHelper;
     private String type;
     private AsyncTaskStatusCallback taskCompleteCallback;
 
-    public  DBPropertyDetailsListTsk(CategoryListDBHelper categoryListDBHelper, String type, AsyncTaskStatusCallback taskCompleteCallback) {
+    public DBPropertyDetailsListTsk(CategoryListDBHelper categoryListDBHelper, String type, AsyncTaskStatusCallback taskCompleteCallback) {
         this.categoryListDBHelper = categoryListDBHelper;
         this.type = type;
         this.taskCompleteCallback = taskCompleteCallback;
@@ -42,23 +38,20 @@ public class DBPropertyDetailsListTsk extends AsyncTask<String,Integer,ArrayList
     @Override
     protected ArrayList doInBackground(String... strings) {
 
-        if(type.equalsIgnoreCase("roof_system")) {
+        if (type.equalsIgnoreCase("roof_system")) {
 
             return categoryListDBHelper.getRoofSystemList();
-        }
-        else if(type.equalsIgnoreCase("siding")) {
+        } else if (type.equalsIgnoreCase("siding")) {
 
             return categoryListDBHelper.getSidingList();
-        }
-        else if(type.equalsIgnoreCase("foundation")) {
+        } else if (type.equalsIgnoreCase("foundation")) {
 
             return categoryListDBHelper.getFoundationList();
-        }
-        else if(type.equalsIgnoreCase("building_type")) {
+        } else if (type.equalsIgnoreCase("building_type")) {
 
             return categoryListDBHelper.getBuildingTypeList();
 
-        }else if(type.equalsIgnoreCase("coverage_type")) {
+        } else if (type.equalsIgnoreCase("coverage_type")) {
 
             return categoryListDBHelper.getCoverageList();
         }
@@ -67,7 +60,7 @@ public class DBPropertyDetailsListTsk extends AsyncTask<String,Integer,ArrayList
 
     @Override
     protected void onPostExecute(ArrayList result) {
-        taskCompleteCallback.onPostExecute(result,type);
+        taskCompleteCallback.onPostExecute(result, type);
 
     }
 }

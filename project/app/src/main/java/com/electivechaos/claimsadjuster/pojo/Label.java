@@ -9,22 +9,29 @@ import java.util.ArrayList;
  * Created by barkhasikka on 26/04/18.
  */
 
-public class Label implements Parcelable{
+public class Label implements Parcelable {
+    public static final Creator<Label> CREATOR = new Creator<Label>() {
+        @Override
+        public Label createFromParcel(Parcel in) {
+            return new Label(in);
+        }
+
+        @Override
+        public Label[] newArray(int size) {
+            return new Label[size];
+        }
+    };
     private String id;
     private String name;
     private String description;
     private int categoryID;
-
-
     private String reportId;
     private ArrayList<ImageDetailsPOJO> selectedImages;
     private ArrayList<ImageDetailsPOJO> selectedElevationImages;
     private String houseNumber;
-
     private String coverageType;
 
-
-    public Label(){
+    public Label() {
         id = "";
         name = "";
         description = "";
@@ -48,18 +55,6 @@ public class Label implements Parcelable{
         houseNumber = in.readString();
         coverageType = in.readString();
     }
-
-    public static final Creator<Label> CREATOR = new Creator<Label>() {
-        @Override
-        public Label createFromParcel(Parcel in) {
-            return new Label(in);
-        }
-
-        @Override
-        public Label[] newArray(int size) {
-            return new Label[size];
-        }
-    };
 
     public String getReportId() {
         return reportId;

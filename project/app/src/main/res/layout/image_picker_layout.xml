@@ -5,62 +5,64 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:orientation="horizontal"
-        android:background="@color/colorPrimary"
         android:id="@+id/toolbar"
-        android:layout_alignParentTop="true"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@color/colorPrimary"
+        android:orientation="horizontal">
 
         <android.support.v7.widget.AppCompatImageView
-            android:padding="@dimen/image_picker_padding_large"
-            android:layout_gravity="center_vertical"
             android:id="@+id/image_toolbar_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="@dimen/image_picker_padding_large"
             android:src="@drawable/image_picker_ic_back" />
 
-    <LinearLayout
-        android:weightSum="6"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:layout_weight="5.5"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:id="@+id/text_toolbar_title"
-            android:padding="@dimen/image_picker_padding_large"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:singleLine="true"
-            android:textAllCaps="true"
-            android:text="@string/folder"
-            android:textColor="@color/black" />
-        <TextView
-            style="@style/imagepicker_ToolbarMenuText"
-            android:layout_weight="0.5"
-            android:padding="@dimen/image_picker_padding_large"
-            android:id="@+id/text_toolbar_done"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:text="@string/image_picker_action_done"
-            android:textAllCaps="true"
-            android:gravity="end"
-            android:textColor="@color/black"
-            android:visibility="gone" />
-    </LinearLayout>
+            android:orientation="horizontal"
+            android:weightSum="6">
+
+            <TextView
+                android:id="@+id/text_toolbar_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="5.5"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:padding="@dimen/image_picker_padding_large"
+                android:singleLine="true"
+                android:text="@string/folder"
+                android:textAllCaps="true"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/text_toolbar_done"
+                style="@style/imagepicker_ToolbarMenuText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:gravity="end"
+                android:padding="@dimen/image_picker_padding_large"
+                android:text="@string/image_picker_action_done"
+                android:textAllCaps="true"
+                android:textColor="@color/black"
+                android:visibility="gone" />
+        </LinearLayout>
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
-        android:layout_below="@+id/toolbar"
         android:id="@+id/gridview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar" />
 
 
 </RelativeLayout>

@@ -8,6 +8,17 @@ import android.os.Parcelable;
  */
 
 public class PerilPOJO implements Parcelable {
+    public static final Creator<PerilPOJO> CREATOR = new Creator<PerilPOJO>() {
+        @Override
+        public PerilPOJO createFromParcel(Parcel in) {
+            return new PerilPOJO(in);
+        }
+
+        @Override
+        public PerilPOJO[] newArray(int size) {
+            return new PerilPOJO[size];
+        }
+    };
     private String name;
     private String description;
     private int id;
@@ -23,18 +34,6 @@ public class PerilPOJO implements Parcelable {
         name = in.readString();
         description = in.readString();
     }
-
-    public static final Creator<PerilPOJO> CREATOR = new Creator<PerilPOJO>() {
-        @Override
-        public PerilPOJO createFromParcel(Parcel in) {
-            return new PerilPOJO(in);
-        }
-
-        @Override
-        public PerilPOJO[] newArray(int size) {
-            return new PerilPOJO[size];
-        }
-    };
 
     public int getID() {
         return id;
