@@ -113,7 +113,7 @@ public class StarterPhotosFragment extends Fragment {
     private int labelPosition;
 
 
-    static RequestOptions options = null;
+    RequestOptions options = null;
 
     private SelectedImagesDataInterface selectedImagesDataInterface;
 
@@ -802,6 +802,8 @@ public class StarterPhotosFragment extends Fragment {
                 }
                 break;
             }
+            default:
+                break;
         }
     }
 

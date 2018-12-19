@@ -541,6 +541,10 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                 Toolbar.LayoutParams layout = new Toolbar.LayoutParams(Toolbar.LayoutParams.FILL_PARENT, Toolbar.LayoutParams.FILL_PARENT);
                 activityActionBar.setCustomView(view, layout);
                 item.setVisible(false);
+                break;
+
+                default:
+                    break;
         }
         return true;
     }
@@ -1211,6 +1215,8 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                 }
                 break;
             }
+            default:
+                break;
         }
     }
 
@@ -1636,6 +1642,9 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                break;
+
+                default:
         }
     }
 

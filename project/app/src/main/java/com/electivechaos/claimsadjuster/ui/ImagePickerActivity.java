@@ -122,10 +122,7 @@ public class ImagePickerActivity extends BaseActivity {
         if (cursor == null) {
             return;
         }
-
-        List<Image> images = new ArrayList<>(cursor.getCount());
         Map<String, Folder> folderMap =  new LinkedHashMap<>() ;
-
         if (cursor.moveToLast()) {
             do {
                 long id = cursor.getLong(cursor.getColumnIndex(projection[0]));
@@ -136,26 +133,21 @@ public class ImagePickerActivity extends BaseActivity {
                 File file = makeSafeFile(path);
                 if (file != null && file.exists()) {
                     Image image = new Image(id, name, path);
-                    images.add(image);
-
-                    if (folderMap != null) {
-                        Folder folder = folderMap.get(bucket);
-                        if (folder == null) {
-                            folder = new Folder(bucket);
-                            folderMap.put(bucket, folder);
-                        }
-                        folder.getImages().add(image);
+                    Folder folder = folderMap.get(bucket);
+                    if (folder == null) {
+                        folder = new Folder(bucket);
+                        folderMap.put(bucket, folder);
                     }
+                    folder.getImages().add(image);
                 }
 
             } while (cursor.moveToPrevious());
         }
         cursor.close();
-        /* Convert HashMap to ArrayList if not null */
+
         List<Folder> folders = null;
-        if (folderMap != null) {
-            folders = new ArrayList<>(folderMap.values());
-        }
+
+        folders = new ArrayList<>(folderMap.values());
         FolderPickerAdapter imageAdapter = new ImagePickerActivity.FolderPickerAdapter(this,folders, folderClickListener);
         gridView = findViewById(R.id.gridview);
         GridLayoutManager mLayoutManager = new GridLayoutManager(getBaseContext(),2);
@@ -197,7 +189,7 @@ public class ImagePickerActivity extends BaseActivity {
         Context context;
         List<Folder> folders;
         FolderClickListener folderClickListener;
-        LayoutInflater mInflater;
+//        LayoutInflater mInflater;
 
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -247,7 +239,7 @@ public class ImagePickerActivity extends BaseActivity {
 
 
         FolderPickerAdapter (Context context, List<Folder> folders, FolderClickListener folderClickListener){
-            mInflater = LayoutInflater.from(context);
+//            mInflater = LayoutInflater.from(context);
             this.context = context;
             this.folders = folders;
             this.folderClickListener = folderClickListener;
@@ -262,7 +254,6 @@ public class ImagePickerActivity extends BaseActivity {
         List<Image> images;
         List<Image> selectedImages;
         int numberOfAlreadySelectedImages;
-        LayoutInflater mInflater;
         ImageClickListener imageClickListener;
         int numberOfImagesAllowed;
 
@@ -346,7 +337,6 @@ public class ImagePickerActivity extends BaseActivity {
 
 
         ImagePickerAdapter (Context context, List<Image> images,  List<Image> selectedImages,ImageClickListener imageClickListener, int numberOfAlreadySelectedImages, int numberOfImagesAllowed){
-            mInflater = LayoutInflater.from(context);
             this.context = context;
             this.images = images;
             this.selectedImages = selectedImages;

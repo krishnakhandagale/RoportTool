@@ -43,9 +43,9 @@ public class Category {
         return String.valueOf(categoryName);
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        Category category = (Category) obj;
-        return this.categoryName.trim().equals(category.getCategoryName().trim());
-    }
+//    @Override
+//    public boolean equals(Object obj) {
+//        Category category = (Category) obj;
+//        return this.categoryName.trim().equals(category.getCategoryName().trim());
+//    }
 }

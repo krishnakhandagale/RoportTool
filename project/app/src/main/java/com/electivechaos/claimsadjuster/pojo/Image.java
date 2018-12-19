@@ -80,4 +80,8 @@ public class Image implements Parcelable {
         dest.writeString(this.path);
     }
 
+    @Override
+    public int hashCode() {
+        return (int)this.id;
+    }
 }

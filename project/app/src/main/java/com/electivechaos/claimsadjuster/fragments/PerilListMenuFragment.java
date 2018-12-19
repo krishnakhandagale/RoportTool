@@ -47,7 +47,7 @@ public class PerilListMenuFragment extends Fragment{
 
     public ArrayList<PerilPOJO> perilPOJOS = new ArrayList<>();
     private RecyclerView recyclerView;
-    static CategoryListDBHelper mCategoryListDBHelper;
+    CategoryListDBHelper mCategoryListDBHelper;
     private PerilListMenuFragment.PerilListAdapter mAdapter;
 
     private PerilPOJO perilPOJODetails;

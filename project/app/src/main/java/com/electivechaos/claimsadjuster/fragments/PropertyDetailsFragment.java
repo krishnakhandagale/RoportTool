@@ -180,25 +180,25 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
             public void onClick(View view) {
                 Calendar c = Calendar.getInstance();
                 String enteredDate = txtDate.getText().toString().trim();
-                if (enteredDate.isEmpty() || enteredDate == null) {
+                if (enteredDate.isEmpty()) {
 
                 } else {
                     DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
-                    Date startDate = null;
                     try {
-                        startDate = df.parse(enteredDate);
+                        Date startDate = df.parse(enteredDate);
+                        c.setTime(startDate);
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
-                    c.setTime(startDate);
+
                 }
                 month = c.get(Calendar.MONTH);
                 year = c.get(Calendar.YEAR);
                 day = c.get(Calendar.DAY_OF_MONTH);
-
-                DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), PropertyDetailsFragment.this, year, month, day);
-                datePickerDialog.show();
-
+                if(getContext() != null){
+                    DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), PropertyDetailsFragment.this, year, month, day);
+                    datePickerDialog.show();
+                }
             }
         });
 

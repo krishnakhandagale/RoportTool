@@ -43,10 +43,9 @@ import java.util.Date;
 import static com.electivechaos.claimsadjuster.ui.AddEditCategoryActivity.ADD_COVERAGE_REQUEST_CODE;
 
 public class ImageSliderActivity extends BaseActivity implements ImageFragment.MonitorImageDetailsChange {
-    static  int ITEMS;
     ImagePagerAdapter mAdapter;
     ImagePreviewListAdapter mImagePreviewListAdapter;
-    static ViewPager mPager;
+    ViewPager mPager;
     RecyclerView mImagePreviewList;
     ImageButton selectImagesBtn;
 
@@ -93,7 +92,6 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
             labelDefaultCoverageType = savedInstanceState.getString("labelDefaultCoverageType");
         }
 
-        ITEMS = imageList.size();
         selectImagesBtn = findViewById(R.id.selectImages);
         mImagePreviewList = findViewById(R.id.imagePreviewList);
         mPager = findViewById(R.id.pager);
@@ -131,11 +129,6 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
         });
 
     }
-
-//    @Override
-//    public void updateImageTitle(String title, int position) {
-//        imagesInformation.get(position).setTitle(title);
-//    }
 
     @Override
     public void updateImageDescription(String description, int position) {
@@ -186,7 +179,7 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
 
         @Override
         public int getCount() {
-            return ITEMS;
+            return imageList.size();
         }
 
         @Override

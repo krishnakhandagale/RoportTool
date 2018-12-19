@@ -294,7 +294,9 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
                     mPlaceDetectionClient = Places.getPlaceDetectionClient(getActivity());
                     showCurrentPlace();
                 }
+                break;
             }
+            default:
         }
 
     }

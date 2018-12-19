@@ -58,7 +58,6 @@ import com.electivechaos.claimsadjuster.interfaces.OnGenerateReportClickListener
 import com.electivechaos.claimsadjuster.interfaces.OnSaveReportClickListener;
 import com.electivechaos.claimsadjuster.interfaces.OnSetImageFileUriListener;
 import com.electivechaos.claimsadjuster.interfaces.SelectedImagesDataInterface;
-import com.electivechaos.claimsadjuster.listeners.OnImageRemovalListener;
 import com.electivechaos.claimsadjuster.listeners.OnMediaScannerListener;
 import com.electivechaos.claimsadjuster.pojo.Image;
 import com.electivechaos.claimsadjuster.pojo.ImageDetailsPOJO;
@@ -67,6 +66,7 @@ import com.electivechaos.claimsadjuster.ui.ImagePickerActivity;
 import com.electivechaos.claimsadjuster.ui.ImageSliderActivity;
 import com.electivechaos.claimsadjuster.ui.SingleImageDetailsActivity;
 import com.electivechaos.claimsadjuster.utils.CommonUtils;
+import com.electivechaos.claimsadjuster.utils.ReportConstants;
 
 import java.io.File;
 import java.io.IOException;
@@ -77,33 +77,12 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by krishna on 11/23/17.
- */
-
 public class AddEditReportSelectedImagesFragment extends Fragment {
-    static CategoryListDBHelper categoryListDBHelper;
-    private  static final int REQUEST_CAMERA = 0;
-    private  static final int IMAGE_ONE_REQUEST = 100;
-    private  static final int IMAGE_TWO_REQUEST = 200;
-    private  static final int IMAGE_THREE_REQUEST = 300;
-    private  static final int IMAGE_FOUR_REQUEST = 400;
-
-    private  static final int SELECT_FILE_IMAGE_ONE_OVERVIEW = 301;
-    private  static final int SELECT_FILE_IMAGE_TWO_OVERVIEW  = 302;
-    private  static final int SELECT_FILE_IMAGE_THREE_OVERVIEW  = 303;
-    private  static final int SELECT_FILE_IMAGE_FOUR_OVERVIEW  = 304;
-
-    private  static final int SELECT_FILE = 1;
-    private  static final int ADD_IMAGE_DETAILS = 2;
-    private  static final int SET_CLICKED_IMAGE_DETAILS = 3;
-    private static final int SET_CLICKED_CAPTURED_DETAILS = 4 ;
-
-
+    RequestOptions options = null;
+    CategoryListDBHelper categoryListDBHelper;
     private LinearLayout parentLayout;
     private RecyclerView selectedImagesRecyclerView;
     private SelectedImagesAdapter selectedImagesAdapter;
-
     private Boolean isFabOpen = false;
     private FloatingActionButton showFabBtn;
     private FloatingActionButton fabGoNextBtn;
@@ -112,30 +91,21 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
     private FloatingActionButton fabGenerateReportBtn;
     private FloatingActionButton fabSaveReportBtn;
     private Animation fab_open, fab_close;
-
-
     private ImageView imageOnePreview;
     private ImageView imageTwoPreview;
     private ImageView imageThreePreview;
     private ImageView imageFourPreview;
-
     private Uri fileUri;
     private String mCurrentPhotoPath;
     private File photoFile;
-
     //This is used by image picker
     private ArrayList<Image> selectedImages = null;
-
     private ArrayList<ImageDetailsPOJO> selectedImageList = null;
     private ArrayList<ImageDetailsPOJO> selectedElevationImagesList = new ArrayList<>();
     private int labelPosition;
     private String labelDefaultCoverageType;
     private Label label;
-
-
-    private OnImageRemovalListener onImageRemovalListener = null;
-    static RequestOptions options = null;
-
+//    private OnImageRemovalListener onImageRemovalListener = null;
     private SelectedImagesDataInterface selectedImagesDataInterface;
 
     private NextButtonClickListener nextButtonClickListener;
@@ -149,7 +119,6 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
     private OnGenerateReportClickListener onGenerateReportClickListener;
     private OnSetImageFileUriListener onSetImageFileUriListener;
 
-    private PopupWindow popupWindow;
 
     public static AddEditReportSelectedImagesFragment initFragment(ArrayList<ImageDetailsPOJO> selectedImageList, ArrayList<ImageDetailsPOJO> selectedElevationImagesList, int position, Label label, String fileUri, String labelDefaultCoverageType) {
         AddEditReportSelectedImagesFragment fragment = new AddEditReportSelectedImagesFragment();
@@ -167,9 +136,9 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
         args.putSerializable("selectedImagesList", selectedImageList);
         args.putSerializable("selectedElevationImagesList", selectedElevationImagesList);
         args.putInt("position", position);
-        args.putParcelable("label",label);
+        args.putParcelable("label", label);
         args.putString("fileUri", fileUri);
-        args.putString("labelDefaultCoverageType",labelDefaultCoverageType);
+        args.putString("labelDefaultCoverageType", labelDefaultCoverageType);
         fragment.setArguments(args);
         return fragment;
     }
@@ -186,7 +155,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
             labelDefaultCoverageType = (String) getArguments().get("labelDefaultCoverageType");
 
             mCurrentPhotoPath = getArguments().getString("fileUri");
-            if(mCurrentPhotoPath != null){
+            if (mCurrentPhotoPath != null) {
                 photoFile = new File(mCurrentPhotoPath);
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
                     fileUri = Uri.fromFile(photoFile);
@@ -204,7 +173,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View  selectImageView = inflater.inflate(R.layout.fragment_select_photo, container, false);
+        View selectImageView = inflater.inflate(R.layout.fragment_select_photo, container, false);
 
         showFabBtn = selectImageView.findViewById(R.id.showFab);
         fabGoNextBtn = selectImageView.findViewById(R.id.fabGoNext);
@@ -223,14 +192,6 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                 animateFAB();
             }
         });
-//        onImageRemovalListener = new OnImageRemovalListener() {
-//            @Override
-//            public void onImageSelectionChanged(List<ImageDetailsPOJO> selectedImgs) {
-//                selectedImageList = (ArrayList<ImageDetailsPOJO>) selectedImgs;
-//                selectedImagesDataInterface.setSelectedImages(selectedImageList, labelPosition);
-//            }
-//        };
-
         fabAddLabelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -266,7 +227,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                 Collections.swap(selectedImageList, viewHolder.getAdapterPosition(), target.getAdapterPosition());
 
                 selectedImagesAdapter.notifyItemMoved(viewHolder.getAdapterPosition(), target.getAdapterPosition());
-                new DBSelectedImagesListTsk(categoryListDBHelper,"insert_rearranged_image",label,selectedImageList,new AsyncTaskStatusCallback(){
+                new DBSelectedImagesListTsk(categoryListDBHelper, "insert_rearranged_image", label, selectedImageList, new AsyncTaskStatusCallback() {
 
                     @Override
                     public void onPostExecute(Object object, String type) {
@@ -299,7 +260,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
             }
         };
         ItemTouchHelper ith = new ItemTouchHelper(_ithCallback);
-            ith.attachToRecyclerView(selectedImagesRecyclerView);
+        ith.attachToRecyclerView(selectedImagesRecyclerView);
 
 
         ImageView imageViewOne = selectImageView.findViewById(R.id.imageViewOne);
@@ -320,7 +281,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                 boolean result = PermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_TAKE_FRONT_PHOTO_PERMISSIONS);
 
                 if (result)
-                    selectImage(IMAGE_ONE_REQUEST, SELECT_FILE_IMAGE_ONE_OVERVIEW );
+                    selectImage(ReportConstants.IMAGE_ONE_REQUEST, ReportConstants.SELECT_FILE_IMAGE_ONE_OVERVIEW);
 
             }
         });
@@ -332,7 +293,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                 boolean result = PermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_TAKE_BACK_PHOTO_PERMISSIONS);
 
                 if (result)
-                    selectImage(IMAGE_TWO_REQUEST, SELECT_FILE_IMAGE_TWO_OVERVIEW );
+                    selectImage(ReportConstants.IMAGE_TWO_REQUEST, ReportConstants.SELECT_FILE_IMAGE_TWO_OVERVIEW);
 
             }
         });
@@ -344,7 +305,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                 boolean result = PermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_TAKE_LEFT_PHOTO_PERMISSIONS);
 
                 if (result)
-                    selectImage(IMAGE_THREE_REQUEST, SELECT_FILE_IMAGE_THREE_OVERVIEW );
+                    selectImage(ReportConstants.IMAGE_THREE_REQUEST, ReportConstants.SELECT_FILE_IMAGE_THREE_OVERVIEW);
             }
         });
 
@@ -354,14 +315,14 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                 boolean result = PermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_TAKE_RIGHT_PHOTO_PERMISSIONS);
 
                 if (result)
-                    selectImage(IMAGE_FOUR_REQUEST, SELECT_FILE_IMAGE_FOUR_OVERVIEW );
+                    selectImage(ReportConstants.IMAGE_FOUR_REQUEST, ReportConstants.SELECT_FILE_IMAGE_FOUR_OVERVIEW);
             }
         });
 
         selectPhotoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectImage(REQUEST_CAMERA, SELECT_FILE);
+                selectImage(ReportConstants.REQUEST_CAMERA, ReportConstants.SELECT_FILE);
                 if (isFabOpen) {
                     showFabBtn.setImageResource(R.drawable.ic_more_vertical_white);
                     fabGoNextBtn.startAnimation(fab_close);
@@ -404,7 +365,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
         });
 
 
-        if(savedInstanceState != null){
+        if (savedInstanceState != null) {
             fileUri = savedInstanceState.getParcelable("fileUri");
         }
         return selectImageView;
@@ -419,7 +380,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
         if (selectedImagesAdapter != null) {
             selectedImagesRecyclerView.setAdapter(selectedImagesAdapter);
         } else if (selectedImageList != null && selectedImageList.size() > 0) {
-            selectedImagesAdapter = new SelectedImagesAdapter(selectedImageList, getContext(), onImageRemovalListener);
+            selectedImagesAdapter = new SelectedImagesAdapter(selectedImageList, getContext());
             selectedImagesRecyclerView.setAdapter(selectedImagesAdapter);
         }
 
@@ -427,14 +388,14 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
         if (selectedElevationImagesList != null && selectedElevationImagesList.size() > 0) {
             if (selectedElevationImagesList.get(0).getImageUrl() != null && !selectedElevationImagesList.get(0).getImageUrl().isEmpty()) {
                 File file = new File(selectedElevationImagesList.get(0).getImageUrl());
-                if(!file.exists()){
+                if (!file.exists()) {
                     Glide.with(getActivity())
                             .load("file:///android_asset/NoImageFound.jpg")
                             .thumbnail(0.1f)
                             .apply(options)
                             .into(imageOnePreview);
 
-                }else {
+                } else {
                     Glide.with(getActivity())
                             .load("file://" + selectedElevationImagesList.get(0).getImageUrl())
                             .thumbnail(0.1f)
@@ -445,13 +406,13 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
             }
             if (selectedElevationImagesList.get(1).getImageUrl() != null && !selectedElevationImagesList.get(1).getImageUrl().isEmpty()) {
                 File file = new File(selectedElevationImagesList.get(1).getImageUrl());
-                if(!file.exists()){
+                if (!file.exists()) {
                     Glide.with(getActivity())
                             .load("file:///android_asset/NoImageFound.jpg")
                             .thumbnail(0.1f)
                             .apply(options)
                             .into(imageTwoPreview);
-                }else {
+                } else {
                     Glide.with(getActivity())
                             .load("file://" + selectedElevationImagesList.get(1).getImageUrl())
                             .thumbnail(0.1f)
@@ -461,13 +422,13 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
             }
             if (selectedElevationImagesList.get(2).getImageUrl() != null && !selectedElevationImagesList.get(2).getImageUrl().isEmpty()) {
                 File file = new File(selectedElevationImagesList.get(2).getImageUrl());
-                if(!file.exists()){
+                if (!file.exists()) {
                     Glide.with(getActivity())
                             .load("file:///android_asset/NoImageFound.jpg")
                             .thumbnail(0.1f)
                             .apply(options)
                             .into(imageThreePreview);
-                }else {
+                } else {
                     Glide.with(getActivity())
                             .load("file://" + selectedElevationImagesList.get(2).getImageUrl())
                             .thumbnail(0.1f)
@@ -478,13 +439,13 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
             }
             if (selectedElevationImagesList.get(3).getImageUrl() != null && !selectedElevationImagesList.get(3).getImageUrl().isEmpty()) {
                 File file = new File(selectedElevationImagesList.get(3).getImageUrl());
-                if(!file.exists()){
+                if (!file.exists()) {
                     Glide.with(getActivity())
                             .load("file:///android_asset/NoImageFound.jpg")
                             .thumbnail(0.1f)
                             .apply(options)
                             .into(imageFourPreview);
-                }else {
+                } else {
                     Glide.with(getActivity())
                             .load("file://" + selectedElevationImagesList.get(3).getImageUrl())
                             .thumbnail(0.1f)
@@ -528,7 +489,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
         Intent intent = new Intent(getActivity(), ImagePickerActivity.class);
         intent.putExtra("already_selected_images", selectedImageList.size());
 
-        if(galleryRequestCode != 1) {
+        if (galleryRequestCode != 1) {
             intent.putExtra("already_selected_images", 0);
             intent.putExtra("number_of_images_allowed", 1);
         }
@@ -540,7 +501,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
 
     private void cameraIntent(int requestId) {
 
-        Intent intent = new Intent(getContext(),CameraActivity.class);
+        Intent intent = new Intent(getContext(), CameraActivity.class);
         if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
 
             photoFile = getOutputMediaFile();
@@ -565,7 +526,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
 
     }
 
-    public void onElevationImageFourCapture(Intent data, int requestCode){
+    public void onElevationImageFourCapture(Intent data, int requestCode) {
         if (fileUri != null) {
             onElevationImageCaptureResult(data, requestCode);
         } else {
@@ -575,7 +536,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
             snackbar.setAction("RETRY", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    openCamera(PermissionUtilities.MY_APP_TAKE_RIGHT_PHOTO_PERMISSIONS, IMAGE_FOUR_REQUEST);
+                    openCamera(PermissionUtilities.MY_APP_TAKE_RIGHT_PHOTO_PERMISSIONS, ReportConstants.IMAGE_FOUR_REQUEST);
                     v.setVisibility(View.GONE);
                 }
             });
@@ -595,7 +556,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
             snackbar.setAction("RETRY", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    openCamera(PermissionUtilities.MY_APP_TAKE_LEFT_PHOTO_PERMISSIONS, IMAGE_THREE_REQUEST);
+                    openCamera(PermissionUtilities.MY_APP_TAKE_LEFT_PHOTO_PERMISSIONS, ReportConstants.IMAGE_THREE_REQUEST);
                     v.setVisibility(View.GONE);
                 }
             });
@@ -616,7 +577,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
             snackbar.setAction("RETRY", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    openCamera(PermissionUtilities.MY_APP_TAKE_FRONT_PHOTO_PERMISSIONS, IMAGE_ONE_REQUEST);
+                    openCamera(PermissionUtilities.MY_APP_TAKE_FRONT_PHOTO_PERMISSIONS, ReportConstants.IMAGE_ONE_REQUEST);
                     v.setVisibility(View.GONE);
                 }
             });
@@ -636,7 +597,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
             snackbar.setAction("RETRY", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    openCamera(PermissionUtilities.MY_APP_TAKE_BACK_PHOTO_PERMISSIONS, IMAGE_TWO_REQUEST);
+                    openCamera(PermissionUtilities.MY_APP_TAKE_BACK_PHOTO_PERMISSIONS, ReportConstants.IMAGE_TWO_REQUEST);
                     v.setVisibility(View.GONE);
                 }
             });
@@ -656,7 +617,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
             snackbar.setAction("RETRY", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    selectImage(REQUEST_CAMERA, SELECT_FILE);
+                    selectImage(ReportConstants.REQUEST_CAMERA, ReportConstants.SELECT_FILE);
                     v.setVisibility(View.GONE);
                 }
             });
@@ -686,11 +647,11 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
 
     }
 
-    public void setDataAndAdapter(ArrayList<ImageDetailsPOJO> selectedImageListToSet){
+    public void setDataAndAdapter(ArrayList<ImageDetailsPOJO> selectedImageListToSet) {
         selectedImageList.clear();
         selectedImageList.addAll(selectedImageListToSet);
         if (selectedImagesAdapter == null) {
-            selectedImagesAdapter = new SelectedImagesAdapter(selectedImageList, getContext(), onImageRemovalListener);
+            selectedImagesAdapter = new SelectedImagesAdapter(selectedImageList, getContext());
             selectedImagesRecyclerView.setAdapter(selectedImagesAdapter);
         } else {
 
@@ -738,7 +699,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            if (requestId == IMAGE_ONE_REQUEST) {
+                            if (requestId == ReportConstants.IMAGE_ONE_REQUEST) {
                                 final ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
                                 imgObj.setDescription("Overview 1");
                                 imgObj.setTitle("Overview Image 1");
@@ -752,7 +713,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
 
                                 selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList, labelPosition);
 
-                            } else if (requestId == IMAGE_TWO_REQUEST) {
+                            } else if (requestId == ReportConstants.IMAGE_TWO_REQUEST) {
 
                                 final ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
                                 imgObj.setDescription("Overview 2");
@@ -765,7 +726,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                                         .apply(options)
                                         .into(imageTwoPreview);
                                 selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList, labelPosition);
-                            } else if (requestId == IMAGE_THREE_REQUEST) {
+                            } else if (requestId == ReportConstants.IMAGE_THREE_REQUEST) {
                                 final ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
                                 imgObj.setDescription("Overview 3");
                                 imgObj.setTitle("Overview Image 3");
@@ -777,7 +738,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                                         .apply(options)
                                         .into(imageThreePreview);
                                 selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList, labelPosition);
-                            } else if (requestId == IMAGE_FOUR_REQUEST) {
+                            } else if (requestId == ReportConstants.IMAGE_FOUR_REQUEST) {
                                 final ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
                                 imgObj.setDescription("Overview 4");
                                 imgObj.setTitle("Overview Image 4");
@@ -815,20 +776,20 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                     imgObj.setCoverageTye(labelDefaultCoverageType);
 
                     File file = new File(path);
-                    if(file.exists()){
+                    if (file.exists()) {
                         imgObj.setImageName(file.getName());
                         Date date = new Date(file.lastModified());
                         String dateString = new SimpleDateFormat("dd/MM/yyyy").format(date);
                         String timeString = new SimpleDateFormat("HH:mm:ss a").format(date);
-                        imgObj.setImageDateTime(dateString+" at "+timeString);
+                        imgObj.setImageDateTime(dateString + " at " + timeString);
                         imgObj.setImageGeoTag("");
                     }
                     final ArrayList<ImageDetailsPOJO> capturedImage = new ArrayList<ImageDetailsPOJO>();
                     capturedImage.add(imgObj);
 
-                    selectedImagesDataInterface.setSelectedImages(capturedImage,labelPosition);
+                    selectedImagesDataInterface.setSelectedImages(capturedImage, labelPosition);
 
-                    new DBSelectedImagesListTsk(categoryListDBHelper,"insert_captured_image",label,capturedImage,new AsyncTaskStatusCallback(){
+                    new DBSelectedImagesListTsk(categoryListDBHelper, "insert_captured_image", label, capturedImage, new AsyncTaskStatusCallback() {
 
                         @Override
                         public void onPostExecute(Object object, String type) {
@@ -837,12 +798,12 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
 
                             ArrayList<ImageDetailsPOJO> returnedImageItem = (ArrayList<ImageDetailsPOJO>) object;
                             Intent intent = new Intent(getActivity(), SingleImageDetailsActivity.class);
-                            if(returnedImageItem != null) {
+                            if (returnedImageItem != null) {
                                 intent.putExtra("image_details", returnedImageItem.get(0));
                             }
-                            intent.putExtra("labelPosition",labelPosition);
+                            intent.putExtra("labelPosition", labelPosition);
                             intent.putExtra("labelDefaultCoverageType", labelDefaultCoverageType);
-                            getActivity().startActivityForResult(intent, SET_CLICKED_CAPTURED_DETAILS);
+                            getActivity().startActivityForResult(intent, ReportConstants.SET_CLICKED_CAPTURED_DETAILS);
 
                         }
 
@@ -865,7 +826,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
 
     private void onSelectFromGalleryResult(Intent data, int requestId) {
         selectedImages = data.getParcelableArrayListExtra("ImageUrls");
-        if (requestId == SELECT_FILE_IMAGE_ONE_OVERVIEW) {
+        if (requestId == ReportConstants.SELECT_FILE_IMAGE_ONE_OVERVIEW) {
             final ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
             imgObj.setDescription("Overview 1");
             imgObj.setTitle("Overview Image 1");
@@ -879,7 +840,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
 
             selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList, labelPosition);
 
-        } else if (requestId == SELECT_FILE_IMAGE_TWO_OVERVIEW) {
+        } else if (requestId == ReportConstants.SELECT_FILE_IMAGE_TWO_OVERVIEW) {
 
             final ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
             imgObj.setDescription("Overview 2");
@@ -892,7 +853,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                     .apply(options)
                     .into(imageTwoPreview);
             selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList, labelPosition);
-        } else if (requestId == SELECT_FILE_IMAGE_THREE_OVERVIEW) {
+        } else if (requestId == ReportConstants.SELECT_FILE_IMAGE_THREE_OVERVIEW) {
             final ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
             imgObj.setDescription("Overview 3");
             imgObj.setTitle("Overview Image 3");
@@ -904,7 +865,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                     .apply(options)
                     .into(imageThreePreview);
             selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList, labelPosition);
-        } else if (requestId == SELECT_FILE_IMAGE_FOUR_OVERVIEW) {
+        } else if (requestId == ReportConstants.SELECT_FILE_IMAGE_FOUR_OVERVIEW) {
             final ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
             imgObj.setDescription("Overview 4");
             imgObj.setTitle("Overview Image 4");
@@ -916,31 +877,31 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                     .thumbnail(0.1f)
                     .into(imageFourPreview);
             selectedImagesDataInterface.setSelectedElevationImages(selectedElevationImagesList, labelPosition);
-        }else if(requestId == SELECT_FILE){
+        } else if (requestId == ReportConstants.SELECT_FILE) {
 
             ArrayList<ImageDetailsPOJO> imagesInformation = new ArrayList<>();
-            for(int i =0; i< selectedImages.size();i++){
+            for (int i = 0; i < selectedImages.size(); i++) {
                 ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
                 imgObj.setImageUrl(selectedImages.get(i).getPath());
                 imgObj.setTitle("");
                 imgObj.setDescription("");
                 imgObj.setCoverageTye(labelDefaultCoverageType);
                 File file = new File(selectedImages.get(i).getPath());
-                if (file.exists()){
+                if (file.exists()) {
                     imgObj.setImageName(file.getName());
                     Date date = new Date(file.lastModified());
                     String dateString = new SimpleDateFormat("dd/MM/yyyy").format(date);
                     String timeString = new SimpleDateFormat("HH:mm:ss a").format(date);
-                    imgObj.setImageDateTime(dateString+" at "+timeString);
+                    imgObj.setImageDateTime(dateString + " at " + timeString);
                 }
                 imgObj.setImageGeoTag("");
                 imagesInformation.add(imgObj);
 
             }
 
-            selectedImagesDataInterface.setSelectedImages(imagesInformation,labelPosition);
+            selectedImagesDataInterface.setSelectedImages(imagesInformation, labelPosition);
 
-            new DBSelectedImagesListTsk(categoryListDBHelper,"insert_selected_images",label,imagesInformation,new AsyncTaskStatusCallback(){
+            new DBSelectedImagesListTsk(categoryListDBHelper, "insert_selected_images", label, imagesInformation, new AsyncTaskStatusCallback() {
 
                 @Override
                 public void onPostExecute(Object object, String type) {
@@ -949,7 +910,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                     intent.putExtra("ImageList", returnedImagesList);
                     intent.putExtra("labelPosition", labelPosition);
                     intent.putExtra("labelDefaultCoverageType", labelDefaultCoverageType);
-                    getActivity().startActivityForResult(intent, ADD_IMAGE_DETAILS);
+                    getActivity().startActivityForResult(intent, ReportConstants.ADD_IMAGE_DETAILS);
                 }
 
                 @Override
@@ -973,7 +934,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
         switch (requestCode) {
             case PermissionUtilities.MY_APP_TAKE_PHOTO_PERMISSIONS: {
                 if (grantResults.length == 3 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
-                    cameraIntent(REQUEST_CAMERA);
+                    cameraIntent(ReportConstants.REQUEST_CAMERA);
                 } else {
                     PermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_TAKE_PHOTO_PERMISSIONS);
                 }
@@ -982,7 +943,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
 
             case PermissionUtilities.MY_APP_TAKE_FRONT_PHOTO_PERMISSIONS: {
                 if (grantResults.length == 3 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
-                    cameraIntent(IMAGE_ONE_REQUEST);
+                    cameraIntent(ReportConstants.IMAGE_ONE_REQUEST);
                 } else {
                     PermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_TAKE_FRONT_PHOTO_PERMISSIONS);
                 }
@@ -991,7 +952,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
 
             case PermissionUtilities.MY_APP_TAKE_BACK_PHOTO_PERMISSIONS: {
                 if (grantResults.length == 3 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
-                    cameraIntent(IMAGE_TWO_REQUEST);
+                    cameraIntent(ReportConstants.IMAGE_TWO_REQUEST);
                 } else {
                     PermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_TAKE_BACK_PHOTO_PERMISSIONS);
                 }
@@ -1000,7 +961,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
 
             case PermissionUtilities.MY_APP_TAKE_LEFT_PHOTO_PERMISSIONS: {
                 if (grantResults.length == 3 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
-                    cameraIntent(IMAGE_THREE_REQUEST);
+                    cameraIntent(ReportConstants.IMAGE_THREE_REQUEST);
                 } else {
                     PermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_TAKE_LEFT_PHOTO_PERMISSIONS);
                 }
@@ -1009,7 +970,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
 
             case PermissionUtilities.MY_APP_TAKE_RIGHT_PHOTO_PERMISSIONS: {
                 if (grantResults.length == 3 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
-                    cameraIntent(IMAGE_FOUR_REQUEST);
+                    cameraIntent(ReportConstants.IMAGE_FOUR_REQUEST);
                 } else {
                     PermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_TAKE_RIGHT_PHOTO_PERMISSIONS);
                 }
@@ -1017,165 +978,15 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
             }
             case PermissionUtilities.MY_APP_BROWSE_PHOTO_PERMISSIONS: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    galleryIntent(SELECT_FILE);
+                    galleryIntent(ReportConstants.SELECT_FILE);
                 } else {
                     PermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_BROWSE_PHOTO_PERMISSIONS);
                 }
                 break;
             }
+            default:
         }
     }
-
-
-    public class SelectedImagesAdapter extends RecyclerView.Adapter<AddEditReportSelectedImagesFragment.SelectedImagesAdapter.MyViewHolder> {
-
-        private ArrayList<ImageDetailsPOJO> imageList;
-        private Context context;
-        private OnImageRemovalListener onImageRemovalListener;
-
-        public class MyViewHolder extends RecyclerView.ViewHolder {
-            public ImageView imageView;
-            public TextView title;
-            public TextView description;
-            public TextView imageType;
-            public TextView isPointOfOrigin;
-            public ImageButton editBtn;
-            public ImageButton deleteBtn;
-            public ImageButton imageInfoBtn;
-
-            public MyViewHolder(View view) {
-                super(view);
-                imageView = view.findViewById(R.id.selectedImagePreview);
-                title = view.findViewById(R.id.title);
-                imageType = view.findViewById(R.id.imageType);
-                description = view.findViewById(R.id.description);
-                editBtn = view.findViewById(R.id.editBtn);
-                deleteBtn = view.findViewById(R.id.deleteBtn);
-                isPointOfOrigin = view.findViewById(R.id.isPointOfOriginImage);
-                imageInfoBtn = view.findViewById(R.id.imageInfo);
-
-            }
-        }
-
-
-        public SelectedImagesAdapter(ArrayList<ImageDetailsPOJO> imageList, Context context, OnImageRemovalListener onImageRemovalListener) {
-            this.imageList = imageList;
-            this.context = context;
-            this.onImageRemovalListener = onImageRemovalListener;
-        }
-
-        @Override
-        public AddEditReportSelectedImagesFragment.SelectedImagesAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View itemView = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.selected_image_item, parent, false);
-            return new AddEditReportSelectedImagesFragment.SelectedImagesAdapter.MyViewHolder(itemView);
-        }
-
-        @Override
-        public void onBindViewHolder(final AddEditReportSelectedImagesFragment.SelectedImagesAdapter.MyViewHolder holder, final int position) {
-            final ImageDetailsPOJO imgDetails = imageList.get(holder.getAdapterPosition());
-
-            File file = new File(imgDetails.getImageUrl());
-            if(!file.exists()) {
-                Glide.with(context)
-                        .load("file:///android_asset/NoImageFound.jpg")
-                        .apply(options)
-                        .into(holder.imageView);
-                holder.imageType.setVisibility(View.GONE);
-                holder.isPointOfOrigin.setVisibility(View.GONE);
-
-
-            }else {
-                holder.title.setText(imgDetails.getTitle());
-                holder.description.setText(imgDetails.getDescription());
-
-                if (imgDetails.isOverview()) {
-                    holder.imageType.setText("Overview");
-                    holder.imageType.setVisibility(View.VISIBLE);
-                } else if (imgDetails.isDamage()) {
-                    holder.imageType.setText("Damage");
-                    holder.imageType.setVisibility(View.VISIBLE);
-                } else {
-                    holder.imageType.setVisibility(View.GONE);
-                }
-
-                if (imgDetails.isPointOfOrigin()) {
-                    holder.isPointOfOrigin.setVisibility(View.VISIBLE);
-                } else {
-                    holder.isPointOfOrigin.setVisibility(View.GONE);
-                }
-
-                Glide.with(context)
-                        .load("file://" + imgDetails.getImageUrl())
-                        .apply(options)
-                        .into(holder.imageView);
-            }
-
-
-                holder.editBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(context, SingleImageDetailsActivity.class);
-                        intent.putExtra("image_details", imgDetails);
-                        intent.putExtra("isEdit", true);
-                        intent.putExtra("position", holder.getAdapterPosition());
-                        intent.putExtra("labelPosition", labelPosition);
-                        getActivity().startActivityForResult(intent, SET_CLICKED_IMAGE_DETAILS);
-                    }
-                });
-
-
-                holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        if (getActivity() != null) {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                            builder.setTitle("Remove Image")
-                                    .setMessage("Are you sure wanna remove this image ?")
-                                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            categoryListDBHelper.deleteImage(imageList.get(holder.getAdapterPosition()).getImageId());
-                                            imageList.remove(holder.getAdapterPosition());
-                                            //onImageRemovalListener.onImageSelectionChanged(imageList);
-                                            notifyDataSetChanged();
-                                            dialog.cancel();
-                                        }
-                                    })
-                                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            dialog.cancel();
-                                        }
-                                    });
-                            AlertDialog alert = builder.create();
-                            alert.show();
-                            Button negativeButton = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
-                            negativeButton.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorPrimaryDark));
-                            Button positiveButton = alert.getButton(DialogInterface.BUTTON_POSITIVE);
-                            positiveButton.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorPrimaryDark));
-                        }
-                    }
-                });
-
-                holder.imageInfoBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        onShowPopup(imgDetails);
-                    }
-                });
-
-
-        }
-
-        @Override
-        public int getItemCount() {
-            return imageList.size();
-        }
-    }
-
-
-
-
 
     @Override
     public void onAttach(Context context) {
@@ -1199,7 +1010,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
 
     }
 
-    public void onShowPopup(ImageDetailsPOJO imageDetails){
+    public void onShowPopup(ImageDetailsPOJO imageDetails) {
 
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         Fragment prev = getFragmentManager().findFragmentByTag("dialog");
@@ -1208,7 +1019,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
         }
         ImageDetailsFragment imageDetailsFragment = new ImageDetailsFragment();
         Bundle imageDetailsData = new Bundle();
-        imageDetailsData.putString("imgName",imageDetails.getImageName());
+        imageDetailsData.putString("imgName", imageDetails.getImageName());
         imageDetailsData.putString("imgDateTime", imageDetails.getImageDateTime());
         imageDetailsData.putString("imgGeoTag", imageDetails.getImageGeoTag());
         imageDetailsFragment.setArguments(imageDetailsData);
@@ -1252,13 +1063,154 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
 
     }
 
-
     @Override
     public void onResume() {
         super.onResume();
         CategoryListDBHelper categoryListDBHelper = CategoryListDBHelper.getInstance(getActivity());
         ArrayList<ImageDetailsPOJO> imageList = categoryListDBHelper.getLabelImages(label.getId());
         setDataAndAdapter(imageList);
+    }
+
+    public class SelectedImagesAdapter extends RecyclerView.Adapter<AddEditReportSelectedImagesFragment.SelectedImagesAdapter.MyViewHolder> {
+
+        private ArrayList<ImageDetailsPOJO> imageList;
+        private Context context;
+
+        public SelectedImagesAdapter(ArrayList<ImageDetailsPOJO> imageList, Context context) {
+            this.imageList = imageList;
+            this.context = context;
+        }
+
+        @Override
+        public AddEditReportSelectedImagesFragment.SelectedImagesAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View itemView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.selected_image_item, parent, false);
+            return new AddEditReportSelectedImagesFragment.SelectedImagesAdapter.MyViewHolder(itemView);
+        }
+
+        @Override
+        public void onBindViewHolder(final AddEditReportSelectedImagesFragment.SelectedImagesAdapter.MyViewHolder holder, final int position) {
+            final ImageDetailsPOJO imgDetails = imageList.get(holder.getAdapterPosition());
+
+            File file = new File(imgDetails.getImageUrl());
+            if (!file.exists()) {
+                Glide.with(context)
+                        .load("file:///android_asset/NoImageFound.jpg")
+                        .apply(options)
+                        .into(holder.imageView);
+                holder.imageType.setVisibility(View.GONE);
+                holder.isPointOfOrigin.setVisibility(View.GONE);
+
+
+            } else {
+                holder.title.setText(imgDetails.getTitle());
+                holder.description.setText(imgDetails.getDescription());
+
+                if (imgDetails.isOverview()) {
+                    holder.imageType.setText("Overview");
+                    holder.imageType.setVisibility(View.VISIBLE);
+                } else if (imgDetails.isDamage()) {
+                    holder.imageType.setText("Damage");
+                    holder.imageType.setVisibility(View.VISIBLE);
+                } else {
+                    holder.imageType.setVisibility(View.GONE);
+                }
+
+                if (imgDetails.isPointOfOrigin()) {
+                    holder.isPointOfOrigin.setVisibility(View.VISIBLE);
+                } else {
+                    holder.isPointOfOrigin.setVisibility(View.GONE);
+                }
+
+                Glide.with(context)
+                        .load("file://" + imgDetails.getImageUrl())
+                        .apply(options)
+                        .into(holder.imageView);
+            }
+
+
+            holder.editBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, SingleImageDetailsActivity.class);
+                    intent.putExtra("image_details", imgDetails);
+                    intent.putExtra("isEdit", true);
+                    intent.putExtra("position", holder.getAdapterPosition());
+                    intent.putExtra("labelPosition", labelPosition);
+                    getActivity().startActivityForResult(intent, ReportConstants.SET_CLICKED_IMAGE_DETAILS);
+                }
+            });
+
+
+            holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if (getActivity() != null) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                        builder.setTitle("Remove Image")
+                                .setMessage("Are you sure wanna remove this image ?")
+                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        categoryListDBHelper.deleteImage(imageList.get(holder.getAdapterPosition()).getImageId());
+                                        imageList.remove(holder.getAdapterPosition());
+                                        notifyDataSetChanged();
+                                        dialog.cancel();
+                                    }
+                                })
+                                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.cancel();
+                                    }
+                                });
+                        AlertDialog alert = builder.create();
+                        alert.show();
+                        Button negativeButton = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
+                        negativeButton.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorPrimaryDark));
+                        Button positiveButton = alert.getButton(DialogInterface.BUTTON_POSITIVE);
+                        positiveButton.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorPrimaryDark));
+                    }
+                }
+            });
+
+            holder.imageInfoBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onShowPopup(imgDetails);
+                }
+            });
+
+
+        }
+
+        @Override
+        public int getItemCount() {
+            return imageList.size();
+        }
+
+        public class MyViewHolder extends RecyclerView.ViewHolder {
+            public ImageView imageView;
+            public TextView title;
+            public TextView description;
+            public TextView imageType;
+            public TextView isPointOfOrigin;
+            public ImageButton editBtn;
+            public ImageButton deleteBtn;
+            public ImageButton imageInfoBtn;
+
+            public MyViewHolder(View view) {
+                super(view);
+                imageView = view.findViewById(R.id.selectedImagePreview);
+                title = view.findViewById(R.id.title);
+                imageType = view.findViewById(R.id.imageType);
+                description = view.findViewById(R.id.description);
+                editBtn = view.findViewById(R.id.editBtn);
+                deleteBtn = view.findViewById(R.id.deleteBtn);
+                isPointOfOrigin = view.findViewById(R.id.isPointOfOriginImage);
+                imageInfoBtn = view.findViewById(R.id.imageInfo);
+
+            }
+        }
     }
 
 }

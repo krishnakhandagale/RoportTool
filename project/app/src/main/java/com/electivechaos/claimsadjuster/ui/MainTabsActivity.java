@@ -78,13 +78,15 @@ public class MainTabsActivity extends BaseActivity {
                 startActivity(settingsIntent);
                 break;
 
+                default:
+
         }
         return super.onOptionsItemSelected(item);
     }
 
     //View pager  for showing two tabs in the welcome activity
 
-    public class MainTabsActivityPagerAdapter extends FragmentStatePagerAdapter {
+    static public class MainTabsActivityPagerAdapter extends FragmentStatePagerAdapter {
 
         public MainTabsActivityPagerAdapter(FragmentManager fm) {
             super(fm);

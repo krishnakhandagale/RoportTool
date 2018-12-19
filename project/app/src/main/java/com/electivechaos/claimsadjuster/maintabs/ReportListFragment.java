@@ -149,19 +149,21 @@ public class ReportListFragment extends Fragment {
                                             .setMessage(R.string.delete_report_msg)
                                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                                 public void onClick(DialogInterface dialog, int which) {
-
+                                                    boolean fileDeleted = false;
                                                     if(mCategoryListDBHelper.deleteReportEntry(reportItemPOJO.getId())>0) {
                                                         if (!reportItemPOJO.getFilePath().trim().isEmpty()) {
                                                             File file = new File(reportItemPOJO.getFilePath());
-                                                            if (file != null && file.exists()) {
-                                                                file.delete();
+                                                            if (file.exists()) {
+                                                                fileDeleted = file.delete();
                                                             }
                                                         }
                                                     }
+                                                    if(fileDeleted){
+                                                        reportItemPOJOArrayList.remove(position);
+                                                        notifyItemRemoved(position);
+                                                        notifyItemRangeChanged(position, reportItemPOJOArrayList.size());
+                                                    }
 
-                                                    reportItemPOJOArrayList.remove(position);
-                                                    notifyItemRemoved(position);
-                                                    notifyItemRangeChanged(position, reportItemPOJOArrayList.size());
                                                 }
                                             })
                                             .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -189,6 +191,7 @@ public class ReportListFragment extends Fragment {
 
 
                                     break;
+                                default:
                             }
                             return false;
                         }

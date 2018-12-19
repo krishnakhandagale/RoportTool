@@ -9,6 +9,7 @@ import android.graphics.Matrix;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.support.media.ExifInterface;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -93,7 +94,8 @@ public class DBUpdateFilePath extends AsyncTask<Integer, Void, Void> {
         if (!reportPOJO.getFilePath().trim().isEmpty()) {
             File file = new File(reportPOJO.getFilePath());
             if (file.exists()) {
-                file.delete();
+               boolean isDeleted =  file.delete();
+               Log.d("LOG", String.valueOf(isDeleted));
             }
         }
 
@@ -109,7 +111,10 @@ public class DBUpdateFilePath extends AsyncTask<Integer, Void, Void> {
         PDFDocHeader event = new PDFDocHeader("");
         event.setHeader(reportPOJO.getReportTitle(), 14);
         try {
-            destination.createNewFile();
+
+            if(!destination.createNewFile()){
+                return null;
+            }
             fo = new FileOutputStream(destination);
             final Document document = new Document(PageSize.A4, 50, 50, 80, 50);
             addMetaData(document);
@@ -168,7 +173,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer, Void, Void> {
                         File file = new File(selectedElevationImagesList1.get(i).getImageUrl());
                         if(file.exists()){
                         byte[] imageBytesResized;
-                        imageBytesResized = resizeImage(selectedElevationImagesList1.get(i).getImageUrl(), (int) ((document.getPageSize().getWidth() / 2 - 100)), (int) ((remainingHeight / 2) - 80));
+                        imageBytesResized = resizeImage(selectedElevationImagesList1.get(i).getImageUrl());
                         try {
                             count++;
                             com.itextpdf.text.Image img;
@@ -257,7 +262,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer, Void, Void> {
                                 PdfPTable table = new PdfPTable(3);
                                 byte[] imageBytesResized;
                                 table.setWidths(new float[]{1, 5, 4});
-                                imageBytesResized = resizeImage(selectedElevationImagesList.get(j).getImageUrl(), (int) ((document.getPageSize().getWidth() / 2) - 100), (int) ((document.getPageSize().getHeight() / numberOfImagesPerPage) - 130));
+                                imageBytesResized = resizeImage(selectedElevationImagesList.get(j).getImageUrl());
                                 com.itextpdf.text.Image img = com.itextpdf.text.Image.getInstance(imageBytesResized);
                                 table.setHorizontalAlignment(Element.ALIGN_LEFT);
                                 table.setWidthPercentage(100);
@@ -291,7 +296,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer, Void, Void> {
                             PdfPTable table = new PdfPTable(3);
                             byte[] imageBytesResized;
                             table.setWidths(new float[]{1, 5, 4});
-                            imageBytesResized = resizeImage(selectedImageList.get(i).getImageUrl(), (int) ((document.getPageSize().getWidth() / 2) - 100), (int) ((document.getPageSize().getHeight() / numberOfImagesPerPage) - 130));
+                            imageBytesResized = resizeImage(selectedImageList.get(i).getImageUrl());
                             com.itextpdf.text.Image img = com.itextpdf.text.Image.getInstance(imageBytesResized);
 
                             table.setHorizontalAlignment(Element.ALIGN_LEFT);
@@ -407,16 +412,9 @@ public class DBUpdateFilePath extends AsyncTask<Integer, Void, Void> {
 
     }
 
-    private byte[] resizeImage(String imagePath, int maxWidth, int maxHeight) {
+    private byte[] resizeImage(String imagePath) {
 
-        ExifInterface ei = null;
-        try {
-            ei = new ExifInterface(imagePath);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION,
-                ExifInterface.ORIENTATION_UNDEFINED);
+       int orientation = getOrientation(imagePath);
 
         final BitmapFactory.Options options = new BitmapFactory.Options();
 
@@ -441,14 +439,11 @@ public class DBUpdateFilePath extends AsyncTask<Integer, Void, Void> {
 
     private byte[] resizeImageLogo(String imagePath) {
 
-        ExifInterface ei = null;
-        try {
-            ei = new ExifInterface(imagePath);
-        } catch (IOException e) {
-            e.printStackTrace();
+        int orientation = getOrientation(imagePath);
+
+        if(orientation == -1){
+            return  null;
         }
-        int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION,
-                ExifInterface.ORIENTATION_UNDEFINED);
 
         final BitmapFactory.Options options = new BitmapFactory.Options();
 
@@ -464,16 +459,22 @@ public class DBUpdateFilePath extends AsyncTask<Integer, Void, Void> {
 
     }
 
-    private byte[] resizeGoogleImage(String imagePath, int maxWidth, int maxHeight) {
-
+    private int getOrientation(String imagePath){
         ExifInterface ei = null;
         try {
             ei = new ExifInterface(imagePath);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION,
-                ExifInterface.ORIENTATION_UNDEFINED);
+        if(ei == null){
+            return  -1;
+        }
+        return ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
+    }
+
+    private byte[] resizeGoogleImage(String imagePath) {
+
+        int orientation = getOrientation(imagePath);
 
         final BitmapFactory.Options options = new BitmapFactory.Options();
 
@@ -663,22 +664,25 @@ public class DBUpdateFilePath extends AsyncTask<Integer, Void, Void> {
         if (!reportPOJO.getGoogleMapSnapShotFilePath().isEmpty()) {
             File file = new File(reportPOJO.getGoogleMapSnapShotFilePath());
             if (file.exists()) {
-                byte[] imgResized = resizeGoogleImage(reportPOJO.getGoogleMapSnapShotFilePath(), (int) ((document.getPageSize().getWidth() / 2) - 100), (int) ((document.getPageSize().getHeight() / 2) - 130));
-                try {
-                    imgMap = com.itextpdf.text.Image.getInstance(imgResized);
-                    cell = new PdfPCell(imgMap, true);
-                    cell.setPaddingTop(5f);
-                    cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-                    cell.setVerticalAlignment(Element.ALIGN_TOP);
-                    cell.setBorder(Rectangle.NO_BORDER);
-                    cell.setFixedHeight((document.getPageSize().getHeight() / 2) - 130);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (BadElementException e) {
-                    e.printStackTrace();
-                } catch (NullPointerException e){
-                    e.printStackTrace();
+                byte[] imgResized = resizeGoogleImage(reportPOJO.getGoogleMapSnapShotFilePath());
+                if(imgResized !=null){
+                    try {
+                        imgMap = com.itextpdf.text.Image.getInstance(imgResized);
+                        cell = new PdfPCell(imgMap, true);
+                        cell.setPaddingTop(5f);
+                        cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+                        cell.setVerticalAlignment(Element.ALIGN_TOP);
+                        cell.setBorder(Rectangle.NO_BORDER);
+                        cell.setFixedHeight((document.getPageSize().getHeight() / 2) - 130);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (BadElementException e) {
+                        e.printStackTrace();
+                    } catch (NullPointerException e){
+                        e.printStackTrace();
+                    }
                 }
+
             }
 
         }
@@ -697,7 +701,7 @@ public class DBUpdateFilePath extends AsyncTask<Integer, Void, Void> {
             File file = new File(originalReportPojo.getLabelArrayList().get(0).getHouseNumber());
             if (file.exists()) {
                 byte[] imageBytesResized;
-                imageBytesResized = resizeImage(originalReportPojo.getLabelArrayList().get(0).getHouseNumber(), (int) ((document.getPageSize().getWidth() / 4) - 100), (int) ((document.getPageSize().getHeight() / 4) - 130));
+                imageBytesResized = resizeImage(originalReportPojo.getLabelArrayList().get(0).getHouseNumber());
                 com.itextpdf.text.Image img;
                 try {
                     img = com.itextpdf.text.Image.getInstance(imageBytesResized);
@@ -752,6 +756,8 @@ public class DBUpdateFilePath extends AsyncTask<Integer, Void, Void> {
 
             case ExifInterface.ORIENTATION_ROTATE_270:
                 matrix.postRotate(270);
+                break;
+            default:
         }
 
 
@@ -892,17 +898,18 @@ public class DBUpdateFilePath extends AsyncTask<Integer, Void, Void> {
                         e.printStackTrace();
                     }
 
+                    if(img != null){ imageLogoCell = new PdfPCell(img, true);
+                        imageLogoCell.setPaddingTop(10f);
+                        imageLogoCell.setPaddingBottom(5f);
+                        imageLogoCell.setBorderWidthLeft(0);
+                        imageLogoCell.setBorderWidthRight(0);
+                        imageLogoCell.setBorderWidthTop(0);
+                        imageLogoCell.setBorderColor(BaseColor.GRAY);
+                        imageLogoCell.setFixedHeight(50f);
+                        img.scaleToFit(35, 35);
 
-                    img.scaleToFit(35, 35);
+                    }
 
-                    imageLogoCell = new PdfPCell(img, true);
-                    imageLogoCell.setPaddingTop(10f);
-                    imageLogoCell.setPaddingBottom(5f);
-                    imageLogoCell.setBorderWidthLeft(0);
-                    imageLogoCell.setBorderWidthRight(0);
-                    imageLogoCell.setBorderWidthTop(0);
-                    imageLogoCell.setBorderColor(BaseColor.GRAY);
-                    imageLogoCell.setFixedHeight(50f);
                 }else {
                     imageLogoCell = new PdfPCell();
                     try {

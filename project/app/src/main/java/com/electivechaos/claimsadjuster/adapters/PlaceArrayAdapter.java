@@ -153,7 +153,7 @@ public class PlaceArrayAdapter extends ArrayAdapter<PlaceArrayAdapter.PlaceAutoc
         return filter;
     }
 
-    public class PlaceAutocomplete {
+   static public class PlaceAutocomplete {
 
         public CharSequence placeId;
         public CharSequence primaryText;

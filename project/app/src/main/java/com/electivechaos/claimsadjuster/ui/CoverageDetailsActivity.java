@@ -147,6 +147,8 @@ public class CoverageDetailsActivity extends AppCompatActivity{
                                     Button positiveButton = alert.getButton(DialogInterface.BUTTON_POSITIVE);
                                     positiveButton.setTextColor(ContextCompat.getColor(context,R.color.colorPrimaryDark));
                                     break;
+
+                                default:
                             }
                             return false;
                         }

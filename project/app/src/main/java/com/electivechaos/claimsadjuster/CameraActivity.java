@@ -68,12 +68,21 @@ public class CameraActivity extends AppCompatActivity {
                             }
                         }
 
+                        FileOutputStream outputStream = null;
                         try {
-                            FileOutputStream outputStream = new FileOutputStream(fileUri,false);
+                            outputStream = new FileOutputStream(fileUri,false);
                             outputStream.write(capturedImage);
-                            outputStream.close();
+
                         } catch (java.io.IOException e) {
                             e.printStackTrace();
+                        }finally {
+                            try {
+                                if(outputStream!= null) {
+                                    outputStream.close();
+                                }
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         }
 
 
