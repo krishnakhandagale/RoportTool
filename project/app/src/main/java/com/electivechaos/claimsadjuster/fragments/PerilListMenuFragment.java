@@ -222,7 +222,6 @@ public class PerilListMenuFragment extends Fragment {
 
             if (sSelected == holder.getAdapterPosition()) {
                 lastSelectedCheckbox = holder.chkItem;
-
             }
 
 
