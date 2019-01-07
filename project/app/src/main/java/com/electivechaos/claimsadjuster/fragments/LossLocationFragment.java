@@ -209,10 +209,7 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
 
             @Override
             public void afterTextChanged(Editable s) {
-//                lossLocationDataInterface.setLocationLat("");
-//                lossLocationDataInterface.setLocationLong("");
-//                lossLocationDataInterface.setAddressLine("");
-//                txtSetLocation.setText("Pin Location");
+
             }
         });
 

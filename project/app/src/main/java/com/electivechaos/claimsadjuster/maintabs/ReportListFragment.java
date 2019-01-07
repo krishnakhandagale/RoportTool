@@ -150,11 +150,9 @@ public class ReportListFragment extends Fragment {
                                                             }
                                                         }
                                                     }
-                                                    if (fileDeleted) {
                                                         reportItemPOJOArrayList.remove(position);
                                                         notifyItemRemoved(position);
                                                         notifyItemRangeChanged(position, reportItemPOJOArrayList.size());
-                                                    }
 
                                                 }
                                             })
@@ -169,6 +167,7 @@ public class ReportListFragment extends Fragment {
                                     negativeButton.setTextColor(ContextCompat.getColor(context, R.color.colorPrimaryDark));
                                     Button positiveButton = alert.getButton(DialogInterface.BUTTON_POSITIVE);
                                     positiveButton.setTextColor(ContextCompat.getColor(context, R.color.colorPrimaryDark));
+
                                     break;
                                 case R.id.view:
 
