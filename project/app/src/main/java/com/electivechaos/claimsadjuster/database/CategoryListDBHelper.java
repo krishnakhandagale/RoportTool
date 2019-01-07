@@ -32,7 +32,7 @@ import java.util.Iterator;
  */
 
 public class CategoryListDBHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 186;
+    private static final int DATABASE_VERSION = 191;
 
 
     // Database Name
@@ -92,6 +92,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
     private static final String KEY_CATEGORY_NAME = "name";
     private static final String KEY_CATEGORY_DESCRIPTION = "description";
     private static final String KEY_CATEGORY_COVERAGE_TYPE = "coverage_type";
+    private static final String KEY_CATEGORY_COUNT = "category_count";
 
 
     // Label Table Column Names
@@ -181,6 +182,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 + KEY_CATEGORY_NAME + " TEXT,"
                 + KEY_CATEGORY_COVERAGE_TYPE + " TEXT,"
                 + KEY_CATEGORY_DESCRIPTION + " TEXT, "
+                + KEY_CATEGORY_COUNT+ " INTEGER DEFAULT 0, "
                 + " CONSTRAINT uc_category UNIQUE (" + KEY_CATEGORY_NAME + " COLLATE NOCASE), CHECK(" + KEY_CATEGORY_NAME + "<> '')" + ")";
 
         String CATEGORY_LABELS_TABLE = "CREATE TABLE " + TABLE_CATEGORY_LABELS + "("
@@ -447,7 +449,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
     public ArrayList<Category> getCategoryList() {
 
         ArrayList<Category> tempList = new ArrayList<>();
-        String selectQueryReportTable = "SELECT  * FROM " + TABLE_MASTER_CATEGORY;
+        String selectQueryReportTable = "SELECT  * FROM " + TABLE_MASTER_CATEGORY +" ORDER BY category_count DESC";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQueryReportTable, null);
 
@@ -608,6 +610,20 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         contentValues.put(KEY_LABEL_HOUSE_NUMBER, label.getHouseNumber());
         contentValues.put(KEY_LABEL_COVERAGE_TYPE, label.getCoverageType());
         db.insertOrThrow(TABLE_CATEGORY_LABELS, null, contentValues);
+
+
+        String selectQueryReportTable = "SELECT category_count FROM " + TABLE_MASTER_CATEGORY +" WHERE name ='" + label.getName()+"'";
+        SQLiteDatabase dbSelect = this.getReadableDatabase();
+        Cursor cursor = dbSelect.rawQuery(selectQueryReportTable, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                ContentValues cv = new ContentValues();
+                cv.put(KEY_CATEGORY_COUNT, cursor.getInt(0)+1);
+                db.update(TABLE_MASTER_CATEGORY, cv, KEY_CATEGORY_NAME + "='" + label.getName()+"'", null);
+
+            } while (cursor.moveToNext());
+        }
         return id;
     }
 
