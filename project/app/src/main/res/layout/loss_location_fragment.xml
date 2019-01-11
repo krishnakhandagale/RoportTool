@@ -18,7 +18,6 @@
             android:id="@+id/txtSetLocation"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
             android:layout_weight="1"
             android:background="?attr/selectableItemBackground"
             android:button="@android:color/transparent"
