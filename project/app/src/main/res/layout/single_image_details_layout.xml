@@ -78,7 +78,7 @@
             android:id="@+id/imageCoverageType"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="7dp"
             android:background="@drawable/rounded_edit_text"
             android:drawableEnd="@drawable/ic_key_arrow_down"
             android:drawableRight="@drawable/ic_key_arrow_down"
@@ -89,18 +89,49 @@
             android:textSize="16sp"
             tools:ignore="TextViewEdits" />
 
-        <EditText
-            android:id="@+id/clickedImageDescription"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/rounded_edit_text"
-            android:hint="@string/enter_note"
-            android:imeOptions="actionDone"
-            android:inputType="textImeMultiLine"
-            android:padding="5dp"
-            android:textSize="16sp" />
+            android:layout_marginTop="2dp"
+            android:background="@drawable/linear_layout_border"
+            android:orientation="horizontal"
+            android:weightSum="4">
 
+            <EditText
+                android:id="@+id/clickedImageDescription"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_weight="3.4"
+                android:background="@android:color/transparent"
+                android:hint="@string/enter_note"
+                android:imeOptions="actionDone"
+                android:inputType="textImeMultiLine"
+                android:padding="5dp"
+                android:textSize="16sp" />
+
+            <ImageButton
+                android:id="@+id/lastNote"
+                android:layout_width="0dip"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="0.3"
+                android:background="@android:color/transparent"
+                android:clickable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:src="@drawable/ic_last_note" />
+
+            <ImageButton
+                android:id="@+id/freqNotes"
+                android:layout_width="0dip"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="0.3"
+                android:background="@android:color/transparent"
+                android:clickable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:src="@drawable/ic_key_arrow_down" />
+        </LinearLayout>
 
     </LinearLayout>
 </FrameLayout>
