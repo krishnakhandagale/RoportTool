@@ -31,7 +31,6 @@ public class DBPropertyDetailsListTsk extends AsyncTask<String, Integer, ArrayLi
 
     @Override
     protected void onProgressUpdate(Integer... values) {
-
         taskCompleteCallback.onProgress(values[0]);
     }
 

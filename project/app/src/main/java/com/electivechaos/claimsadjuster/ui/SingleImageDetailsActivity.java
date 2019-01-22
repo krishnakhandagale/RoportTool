@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.CheckedTextView;
 import android.widget.EditText;
@@ -19,15 +20,19 @@ import com.bumptech.glide.Glide;
 import com.electivechaos.claimsadjuster.BaseActivity;
 import com.electivechaos.claimsadjuster.R;
 import com.electivechaos.claimsadjuster.adapters.CustomMenuAdapter;
+import com.electivechaos.claimsadjuster.adapters.FrequentlyUsedNotesPopUpAdapter;
+import com.electivechaos.claimsadjuster.asynctasks.DBFrequentlyUsedNotes;
 import com.electivechaos.claimsadjuster.asynctasks.DBPropertyDetailsListTsk;
 import com.electivechaos.claimsadjuster.database.CategoryListDBHelper;
 import com.electivechaos.claimsadjuster.dialog.ImageDetailsFragment;
 import com.electivechaos.claimsadjuster.interfaces.AsyncTaskStatusCallback;
+import com.electivechaos.claimsadjuster.interfaces.AsyncTaskStatusCallbackForNotes;
 import com.electivechaos.claimsadjuster.pojo.CoveragePOJO;
 import com.electivechaos.claimsadjuster.pojo.ImageDetailsPOJO;
 import com.electivechaos.claimsadjuster.utils.CommonUtils;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 import static com.electivechaos.claimsadjuster.ui.AddEditCategoryActivity.ADD_COVERAGE_REQUEST_CODE;
 
@@ -43,6 +48,7 @@ public class SingleImageDetailsActivity extends BaseActivity {
     private TextView imageCoverageType;
     private CategoryListDBHelper categoryListDBHelper;
     private String labelDefaultCoverageType = "";
+    private ImageButton freqNotes, lastNote;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,6 +64,8 @@ public class SingleImageDetailsActivity extends BaseActivity {
         final ImageButton imageInfoBtn = findViewById(R.id.imageInfo);
 
         imageCoverageType = findViewById(R.id.imageCoverageType);
+        freqNotes = findViewById(R.id.freqNotes);
+        lastNote = findViewById(R.id.lastNote);
 
 
         imageDetails = getIntent().getExtras().getParcelable("image_details");
@@ -131,6 +139,121 @@ public class SingleImageDetailsActivity extends BaseActivity {
                 isPointOfOriginTextView.setBackground(ContextCompat.getDrawable(this, R.drawable.shape_chip_drawable_gray));
             }
         }
+
+
+        //Most frequently used notes
+
+
+        freqNotes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    new DBFrequentlyUsedNotes(SingleImageDetailsActivity.this, categoryListDBHelper, "frequent", new AsyncTaskStatusCallbackForNotes() {
+                        @Override
+                        public void onPostExecute(Object object, String type) {
+                            final ArrayList notesList = (ArrayList<String>) object;
+                            final AlertDialog.Builder ad = new AlertDialog.Builder(SingleImageDetailsActivity.this);
+
+                            ad.setCancelable(true);
+
+                            ad.setTitle("Frequently Used Notes");
+                            if (notesList.size() == 0) {
+                                ad.setMessage(R.string.notes_not_found);
+                            }
+                            final FrequentlyUsedNotesPopUpAdapter adapter = new FrequentlyUsedNotesPopUpAdapter(SingleImageDetailsActivity.this, notesList);
+
+                            ad.setSingleChoiceItems(adapter, -1, new DialogInterface.OnClickListener() {
+
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int position) {
+                                    if (notesList != null) {
+                                        if(!TextUtils.isEmpty(notesList.get(position).toString())){
+                                            description.setText(notesList.get(position).toString());
+                                        }
+                                    }
+                                    dialogInterface.dismiss();
+
+                                }
+                            });
+
+                            ad.show();
+                        }
+
+
+                        @Override
+                        public void onPreExecute() {
+
+                        }
+
+                        @Override
+                        public void onProgress(int progress) {
+
+                        }
+                    }).execute().get();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
+
+        lastNote.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    new DBFrequentlyUsedNotes(SingleImageDetailsActivity.this, categoryListDBHelper, "lastnote", new AsyncTaskStatusCallbackForNotes() {
+                        @Override
+                        public void onPostExecute(Object object, String type) {
+                            final ArrayList notesList = (ArrayList<String>) object;
+                            final AlertDialog.Builder ad = new AlertDialog.Builder(SingleImageDetailsActivity.this);
+
+                            ad.setCancelable(true);
+
+                            ad.setTitle("Last Note");
+                            if (notesList.size() == 0) {
+                                ad.setMessage(R.string.notes_not_found);
+                            }
+                            final FrequentlyUsedNotesPopUpAdapter adapter = new FrequentlyUsedNotesPopUpAdapter(SingleImageDetailsActivity.this, notesList);
+
+                            ad.setSingleChoiceItems(adapter, -1, new DialogInterface.OnClickListener() {
+
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int position) {
+                                    Object noteObj =notesList.get(position);
+                                    if (notesList != null && noteObj!= null) {
+                                        if(!TextUtils.isEmpty(noteObj.toString())){
+                                            description.setText(noteObj.toString());
+                                        }
+                                    }
+                                    dialogInterface.dismiss();
+                                }
+                            });
+
+                            ad.show();
+                        }
+
+                        @Override
+                        public void onPreExecute() {
+
+                        }
+
+                        @Override
+                        public void onProgress(int progress) {
+
+                        }
+                    }).execute().get();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
 
         imageInfoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
