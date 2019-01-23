@@ -89,7 +89,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:layout_weight="3.4"
-                android:background="@android:color/transparent"
+                android:background="@null"
                 android:hint="@string/enter_note"
                 android:imeOptions="actionDone"
                 android:inputType="textImeMultiLine"
@@ -102,7 +102,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_weight="0.3"
-                android:background="@android:color/transparent"
+                android:background="@null"
                 android:clickable="true"
                 android:foreground="?attr/selectableItemBackground"
                 android:src="@drawable/ic_last_note" />
@@ -113,7 +113,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_weight="0.3"
-                android:background="@android:color/transparent"
+                android:background="@null"
                 android:clickable="true"
                 android:foreground="?attr/selectableItemBackground"
                 android:src="@drawable/ic_key_arrow_down" />

@@ -28,14 +28,9 @@ import com.electivechaos.claimsadjuster.utils.CommonUtils;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-/**
- * Created by barkhasikka on 26/04/18.
- */
-
 public class CategoryListDBHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 198;
-
-
+    private static final int DATABASE_VERSION = 203;
+    
     // Database Name
     private static final String DATABASE_NAME = "master_categories_list";
 
