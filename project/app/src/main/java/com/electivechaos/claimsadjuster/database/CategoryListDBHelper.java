@@ -30,7 +30,7 @@ import java.util.Iterator;
 
 public class CategoryListDBHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 203;
-    
+
     // Database Name
     private static final String DATABASE_NAME = "master_categories_list";
 
@@ -833,7 +833,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                         imageEntry.put(KEY_IMAGE_ID, id);
                         imageEntry.put(KEY_IMAGE_TITLE, imageItem.getTitle());
                         if (!TextUtils.isEmpty(imageItem.getDescription())) {
-                            imageEntry.put(KEY_IMAGE_DESCRIPTION, imageItem.getDescription());
+                            imageEntry.put(KEY_IMAGE_DESCRIPTION, imageItem.getDescription().trim());
                         }
                         imageEntry.put(KEY_IMAGE_URL, imageItem.getImageUrl());
                         imageEntry.put(KEY_IS_DAMAGE, imageItem.isDamage());
@@ -1202,7 +1202,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 imageEntry.put(KEY_IMAGE_ID, CommonUtils.generateIdString());
                 imageEntry.put(KEY_IMAGE_TITLE, imageItem.getTitle());
                 if (!TextUtils.isEmpty(imageItem.getDescription())) {
-                    imageEntry.put(KEY_IMAGE_DESCRIPTION, imageItem.getDescription());
+                    imageEntry.put(KEY_IMAGE_DESCRIPTION, imageItem.getDescription().trim());
                 }
                 imageEntry.put(KEY_IMAGE_URL, imageItem.getImageUrl());
                 imageEntry.put(KEY_IS_DAMAGE, imageItem.isDamage());
@@ -1260,7 +1260,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         ContentValues cv = new ContentValues();
         cv.put(KEY_IMAGE_TITLE, imageDetailsPOJO.getTitle());
         if (!TextUtils.isEmpty(imageDetailsPOJO.getDescription())) {
-            cv.put(KEY_IMAGE_DESCRIPTION, imageDetailsPOJO.getDescription());
+            cv.put(KEY_IMAGE_DESCRIPTION, imageDetailsPOJO.getDescription().trim());
         }
         cv.put(KEY_IS_DAMAGE, imageDetailsPOJO.isDamage());
         cv.put(KEY_IS_OVERVIEW, imageDetailsPOJO.isOverview());
@@ -1285,7 +1285,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(KEY_IMAGE_TITLE, imageDetailsPOJO.getTitle());
         if (!TextUtils.isEmpty(imageDetailsPOJO.getDescription())) {
-            contentValues.put(KEY_IMAGE_DESCRIPTION, imageDetailsPOJO.getDescription());
+            contentValues.put(KEY_IMAGE_DESCRIPTION, imageDetailsPOJO.getDescription().trim());
         }
         contentValues.put(KEY_IS_DAMAGE, imageDetailsPOJO.isDamage());
         contentValues.put(KEY_IS_OVERVIEW, imageDetailsPOJO.isOverview());
@@ -1316,7 +1316,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 imageEntry.put(KEY_IMAGE_ID, imageId);
                 imageEntry.put(KEY_IMAGE_TITLE, imageItem.getTitle());
                 if (!TextUtils.isEmpty(imageItem.getDescription())) {
-                    imageEntry.put(KEY_IMAGE_DESCRIPTION, imageItem.getDescription());
+                    imageEntry.put(KEY_IMAGE_DESCRIPTION, imageItem.getDescription().trim());
                 }
                 imageEntry.put(KEY_IMAGE_URL, imageItem.getImageUrl());
                 imageEntry.put(KEY_IS_DAMAGE, imageItem.isDamage());
@@ -1358,7 +1358,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 imageEntry.put(KEY_IMAGE_TITLE, imageItem.getTitle());
 
                 if (!TextUtils.isEmpty(imageItem.getDescription())) {
-                    imageEntry.put(KEY_IMAGE_DESCRIPTION, imageItem.getDescription());
+                    imageEntry.put(KEY_IMAGE_DESCRIPTION, imageItem.getDescription().trim());
                 }
                 imageEntry.put(KEY_IMAGE_URL, imageItem.getImageUrl());
                 imageEntry.put(KEY_IS_DAMAGE, imageItem.isDamage());
