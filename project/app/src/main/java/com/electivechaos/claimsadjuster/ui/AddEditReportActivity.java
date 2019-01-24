@@ -45,6 +45,7 @@ import com.electivechaos.claimsadjuster.asynctasks.DatabaseSaveReportTask;
 import com.electivechaos.claimsadjuster.database.CategoryListDBHelper;
 import com.electivechaos.claimsadjuster.fragments.AddEditReportSelectedImagesFragment;
 import com.electivechaos.claimsadjuster.fragments.ClaimDetailsFragment;
+import com.electivechaos.claimsadjuster.fragments.ClaimDetailsTabsFragment;
 import com.electivechaos.claimsadjuster.fragments.PerilListMenuFragment;
 import com.electivechaos.claimsadjuster.fragments.PointOfOriginFragment;
 import com.electivechaos.claimsadjuster.fragments.PropertyDetailsFragment;
@@ -94,7 +95,10 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     private static final int ADD_IMAGE_DETAILS = 2;
     private static final int SET_CLICKED_IMAGE_DETAILS = 3;
     private static final int SET_CLICKED_CAPTURED_DETAILS = 4;
+    private static final int SET_QUICK_CLICKED_CAPTURED_DETAILS = 5;
     private static final int REQUEST_CAMERA = 0;
+    private static final int REQUEST_QUICK_CAMERA = 250;
+
     private static final int IMAGE_ONE_REQUEST = 100;
     private static final int IMAGE_TWO_REQUEST = 200;
     private static final int IMAGE_THREE_REQUEST = 300;
@@ -804,6 +808,15 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     }
 
     @Override
+    public void setCapturedImage(ArrayList<ImageDetailsPOJO> imagesList, int labelPosition) {
+        ArrayList<ImageDetailsPOJO> imageDetailsList = reportPOJO.getLabelArrayList().get(labelPosition).getSelectedImages();
+        imageDetailsList.addAll(imagesList);
+        reportPOJO.getLabelArrayList().get(0).setSelectedImages(imageDetailsList);
+    }
+
+
+
+    @Override
     public void setSwapedSelectedImages(ArrayList<ImageDetailsPOJO> imagesList, int labelPosition) {
         reportPOJO.getLabelArrayList().get(labelPosition).setSelectedImages(imagesList);
     }
@@ -1228,6 +1241,30 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                     e.printStackTrace();
                 }
                 break;
+            case SET_QUICK_CLICKED_CAPTURED_DETAILS:
+                ImageDetailsPOJO imageObj = (ImageDetailsPOJO) data.getExtras().get("selected_images");
+                categoryListDBHelper.editImageDetails(imageObj);
+
+                ArrayList<ImageDetailsPOJO> imagePOJOSList = new ArrayList<>();
+                imagePOJOSList.add(imageObj);
+
+                try {
+                    FragmentManager fm = getSupportFragmentManager();
+                    if (fm.getFragments() != null && fm.getFragments().size() > 0) {
+                        for (int i = 0; i < fm.getFragments().size(); i++) {
+
+                            if (fm.getFragments().get(i) instanceof AddEditReportSelectedImagesFragment) {
+                                AddEditReportSelectedImagesFragment fragment = (AddEditReportSelectedImagesFragment) fm.getFragments().get(i);
+                                fragment.setDataAndAdapter(imagePOJOSList);
+                            }
+                        }
+                    }
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
             case ADD_IMAGE_DETAILS:
                 ArrayList<ImageDetailsPOJO> selectedImageList = (ArrayList<ImageDetailsPOJO>) data.getExtras().getSerializable("selected_images");
                 final int labelPos = data.getExtras().getInt("labelPosition");
@@ -1307,6 +1344,25 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
                             if (fm.getFragments().get(i) instanceof AddEditReportSelectedImagesFragment) {
                                 AddEditReportSelectedImagesFragment fragment = (AddEditReportSelectedImagesFragment) fm.getFragments().get(i);
+                                fragment.onImageCapturedResult(data);
+                            }
+                        }
+                    }
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                break;
+            case REQUEST_QUICK_CAMERA:
+                try {
+                    FragmentManager fm = getSupportFragmentManager();
+                    if (fm.getFragments() != null && fm.getFragments().size() > 0) {
+                        for (int i = 0; i < fm.getFragments().size(); i++) {
+
+                            if (fm.getFragments().get(i) instanceof ClaimDetailsFragment) {
+                                ClaimDetailsFragment fragment = (ClaimDetailsFragment) fm.getFragments().get(i);
                                 fragment.onImageCapturedResult(data);
                             }
                         }

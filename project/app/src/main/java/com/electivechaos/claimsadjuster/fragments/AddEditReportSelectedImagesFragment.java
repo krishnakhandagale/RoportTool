@@ -91,6 +91,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
     private File photoFile;
     //This is used by image picker
     private ArrayList<Image> selectedImages = null;
+
     private ArrayList<ImageDetailsPOJO> selectedImageList = null;
     private ArrayList<ImageDetailsPOJO> selectedElevationImagesList = new ArrayList<>();
     private int labelPosition;

@@ -12,5 +12,7 @@ public interface SelectedImagesDataInterface {
 
     void setSwapedSelectedImages(ArrayList<ImageDetailsPOJO> imagesList, int labelPosition);
 
+    void setCapturedImage(ArrayList<ImageDetailsPOJO> imagesList, int labelPosition);
+
 
 }

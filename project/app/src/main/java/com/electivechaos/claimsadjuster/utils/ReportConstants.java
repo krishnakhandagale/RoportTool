@@ -17,5 +17,6 @@ public interface ReportConstants {
     int ADD_IMAGE_DETAILS = 2;
     int SET_CLICKED_IMAGE_DETAILS = 3;
     int SET_CLICKED_CAPTURED_DETAILS = 4;
+    int SET_QUICK_CLICKED_CAPTURED_DETAILS = 5;
 
 }

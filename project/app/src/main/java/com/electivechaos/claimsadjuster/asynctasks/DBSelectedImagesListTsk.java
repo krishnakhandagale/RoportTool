@@ -60,7 +60,11 @@ public class DBSelectedImagesListTsk extends AsyncTask<String, Integer, ArrayLis
         } else if (type.equalsIgnoreCase("get_images_for_label")) {
             return categoryListDBHelper.getLabelImages(label.getId());
 
-        }
+        }else if(type.equalsIgnoreCase("quick_captured_image")){
+            ImageDetailsPOJO imgObj = categoryListDBHelper.appendCapturedImages(label, imageList);
+            ArrayList<ImageDetailsPOJO> imageList = new ArrayList<>();
+            imageList.add(imgObj);
+            return imageList;        }
 
         return null;
     }
