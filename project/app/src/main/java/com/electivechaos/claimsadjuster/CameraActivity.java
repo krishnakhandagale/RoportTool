@@ -38,7 +38,6 @@ public class CameraActivity extends AppCompatActivity {
 
         cameraKitView.setFlash(CameraKit.FLASH_OFF);
 
-
         btnCapture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
