@@ -57,7 +57,7 @@ public class SingleImageDetailsActivity extends BaseActivity {
 
         categoryListDBHelper = CategoryListDBHelper.getInstance(this);
         ImageView imgView = findViewById(R.id.imageView);
-        final EditText description = findViewById(R.id.clickedImageDescription);
+        final EditText description = findViewById(R.id.clickedImageNotes);
         final CheckedTextView isDamageTextView = findViewById(R.id.isDamageTextView);
         final CheckedTextView isOverviewTextView = findViewById(R.id.isOverviewTextView);
         final CheckedTextView isPointOfOriginTextView = findViewById(R.id.isPointOfOrigin);
@@ -223,10 +223,8 @@ public class SingleImageDetailsActivity extends BaseActivity {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int position) {
                                     Object noteObj =notesList.get(position);
-                                    if (notesList != null && noteObj!= null) {
                                         if(!TextUtils.isEmpty(noteObj.toString())){
                                             description.setText(noteObj.toString());
-                                        }
                                     }
                                     dialogInterface.dismiss();
                                 }

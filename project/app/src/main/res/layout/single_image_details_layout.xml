@@ -98,7 +98,7 @@
             android:weightSum="4">
 
             <EditText
-                android:id="@+id/clickedImageDescription"
+                android:id="@+id/clickedImageNotes"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
