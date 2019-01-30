@@ -1,6 +1,6 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/relative_layout_image_fragment"
+    android:id="@+id/parentLayoutForMessages"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -82,7 +82,7 @@
                     android:textColor="@color/black"
                     android:textStyle="bold" />
                 <ImageButton
-                    android:id="@+id/camera"
+                    android:id="@+id/addImage"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
                     android:background="?attr/selectableItemBackgroundBorderless"
@@ -123,7 +123,7 @@
             android:weightSum="4">
 
             <EditText
-                android:id="@+id/clickedImageDescription"
+                android:id="@+id/clickedImageNotes"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
