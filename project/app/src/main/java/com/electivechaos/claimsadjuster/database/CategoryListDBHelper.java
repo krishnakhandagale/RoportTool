@@ -925,6 +925,63 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         stmt.executeUpdateDelete();
     }
 
+    public ArrayList<Label> getReportLabelList(String reportId){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cLabelList = db.rawQuery("SELECT * FROM category_label WHERE report_id_fk = '" + reportId + "'", null);
+        ArrayList<Label> labelList = new ArrayList<>();
+
+        if (cLabelList.moveToFirst()) {
+            do {
+                Label label = new Label();
+                label.setId(cLabelList.getString(0));
+                label.setName(cLabelList.getString(1));
+                label.setDescription(cLabelList.getString(2));
+                label.setReportId(cLabelList.getString(3));
+                label.setHouseNumber(cLabelList.getString(4));
+                label.setCoverageType(cLabelList.getString(5));
+                Cursor cElevationImages = db.rawQuery("SELECT * FROM report_elevation_image_details  WHERE  label_id_fk = '" + cLabelList.getString(0) + "'", null);
+                ArrayList<ImageDetailsPOJO> elevationImagesList = new ArrayList<>();
+
+                if (cElevationImages.moveToFirst()) {
+                    do {
+                        ImageDetailsPOJO eImageDetailsPOJO = new ImageDetailsPOJO();
+                        eImageDetailsPOJO.setTitle(cElevationImages.getString(1));
+                        eImageDetailsPOJO.setDescription(cElevationImages.getString(2));
+                        eImageDetailsPOJO.setImageUrl(cElevationImages.getString(3));
+                        elevationImagesList.add(eImageDetailsPOJO);
+                    } while (cElevationImages.moveToNext());
+                }
+                label.setSelectedElevationImages(elevationImagesList);
+
+                Cursor cSelectedImages = db.rawQuery("SELECT * FROM report_image_details  WHERE  label_id_fk = '" + cLabelList.getString(0) + "'", null);
+                ArrayList<ImageDetailsPOJO> selectedImagesList = new ArrayList<>();
+
+                if (cSelectedImages.moveToFirst()) {
+                    do {
+                        ImageDetailsPOJO sImageDetailsPOJO = new ImageDetailsPOJO();
+                        sImageDetailsPOJO.setImageId(cSelectedImages.getString(0));
+                        sImageDetailsPOJO.setTitle(cSelectedImages.getString(1));
+                        sImageDetailsPOJO.setDescription(cSelectedImages.getString(2));
+                        sImageDetailsPOJO.setImageUrl(cSelectedImages.getString(3));
+                        sImageDetailsPOJO.setIsDamage(cSelectedImages.getString(4).equals("1"));
+                        sImageDetailsPOJO.setOverview(cSelectedImages.getString(5).equals("1"));
+                        sImageDetailsPOJO.setPointOfOrigin(cSelectedImages.getString(7).equals("1"));
+                        sImageDetailsPOJO.setCoverageTye(cSelectedImages.getString(8));
+                        sImageDetailsPOJO.setImageName(cSelectedImages.getString(9));
+                        sImageDetailsPOJO.setImageDateTime(cSelectedImages.getString(10));
+                        sImageDetailsPOJO.setImageGeoTag(cSelectedImages.getString(11));
+                        selectedImagesList.add(sImageDetailsPOJO);
+                    } while (cSelectedImages.moveToNext());
+                }
+
+                label.setSelectedImages(selectedImagesList);
+                labelList.add(label);
+
+            } while (cLabelList.moveToNext());
+        }
+        return labelList;
+    }
+
     public ReportPOJO getReportItem(String id) {
         ReportPOJO reportPOJO = new ReportPOJO();
 
@@ -1000,6 +1057,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
                 if (cSelectedImages.moveToFirst()) {
                     do {
                         ImageDetailsPOJO sImageDetailsPOJO = new ImageDetailsPOJO();
+                        sImageDetailsPOJO.setImageId(cSelectedImages.getString(0));
                         sImageDetailsPOJO.setTitle(cSelectedImages.getString(1));
                         sImageDetailsPOJO.setDescription(cSelectedImages.getString(2));
                         sImageDetailsPOJO.setImageUrl(cSelectedImages.getString(3));
@@ -1227,6 +1285,8 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
 
     }
 
+
+
     public ArrayList<ImageDetailsPOJO> getLabelImages(String labelId) {
         ArrayList<ImageDetailsPOJO> selectedImagesList = new ArrayList();
         String query = "SELECT * FROM report_image_details WHERE label_id_fk = '" + labelId + "'";
@@ -1254,6 +1314,63 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         return selectedImagesList;
     }
 
+    public String addQuickLabel(ImageDetailsPOJO imageDetailsPOJO, String labelName, String reportId) {
+
+        String query = "SELECT * FROM category_label  WHERE report_id_fk = '" + reportId+ "'";
+        String imageId = null;
+
+        SQLiteDatabase dbRead = this.getReadableDatabase();
+        Cursor cursor = dbRead.rawQuery(query, null);
+        int count = 0;
+        if (cursor.moveToFirst()) {
+            do {
+                if(cursor.getString(1).trim().equalsIgnoreCase(labelName.trim())){
+                    imageId = addQuickCaptureDetails(imageDetailsPOJO, cursor.getString(0).trim());
+                    count ++;
+                }
+            } while (cursor.moveToNext());
+        }
+
+
+        if(count == 0){
+            Label label = new Label();
+            label.setName(labelName);
+            label.setReportId(reportId);
+            String id = addLabel(label);
+            imageId = addQuickCaptureDetails(imageDetailsPOJO, id);
+        }
+        return imageId;
+
+    }
+
+    public String addQuickCaptureDetails(ImageDetailsPOJO imageDetailsPOJO, String labelId){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues imageEntry = new ContentValues();
+
+        String imageId = CommonUtils.generateId();
+        imageEntry.put(KEY_IMAGE_ID, imageId );
+        imageEntry.put(KEY_IMAGE_TITLE, imageDetailsPOJO.getTitle());
+        imageEntry.put(KEY_IMAGE_URL, imageDetailsPOJO.getImageUrl());
+
+        if (!TextUtils.isEmpty(imageDetailsPOJO.getDescription())) {
+            imageEntry.put(KEY_IMAGE_DESCRIPTION, imageDetailsPOJO.getDescription().trim());
+        }
+        imageEntry.put(KEY_IMAGE_NAME, imageDetailsPOJO.getImageName());
+        imageEntry.put(KEY_IMAGE_GEO_TAG, imageDetailsPOJO.getImageGeoTag());
+        imageEntry.put(KEY_IMAGE_DATE_TIME, imageDetailsPOJO.getImageDateTime());
+        imageEntry.put(KEY_FK_LABEL_ID, labelId);
+        imageEntry.put(KEY_IS_DAMAGE, imageDetailsPOJO.isDamage());
+        imageEntry.put(KEY_IS_OVERVIEW, imageDetailsPOJO.isOverview());
+        imageEntry.put(KEY_IS_POINT_OF_ORIGIN, imageDetailsPOJO.isPointOfOrigin());
+        imageEntry.put(KEY_IMAGE_COVERAGE_TYPE, imageDetailsPOJO.getCoverageTye());
+
+        addNotes(imageDetailsPOJO);
+
+        db.insertOrThrow(TABLE_REPORTS_IMAGE_DETAILS, null, imageEntry);
+        return imageId;
+    }
+
+
     public int editImageDetails(ImageDetailsPOJO imageDetailsPOJO) {
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -1262,6 +1379,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         if (!TextUtils.isEmpty(imageDetailsPOJO.getDescription())) {
             cv.put(KEY_IMAGE_DESCRIPTION, imageDetailsPOJO.getDescription().trim());
         }
+
         cv.put(KEY_IS_DAMAGE, imageDetailsPOJO.isDamage());
         cv.put(KEY_IS_OVERVIEW, imageDetailsPOJO.isOverview());
         cv.put(KEY_IS_POINT_OF_ORIGIN, imageDetailsPOJO.isPointOfOrigin());
@@ -1345,11 +1463,13 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
 
         ArrayList<ImageDetailsPOJO> labelSelectedImages = imageList;
         ImageDetailsPOJO imageItem = null;
+
+        String imageId = null;
         if (labelSelectedImages != null && labelSelectedImages.size() > 0) {
             for (int index = 0; index < labelSelectedImages.size(); index++) {
                 imageItem = labelSelectedImages.get(index);
 
-                String imageId = CommonUtils.generateIdString();
+               imageId = CommonUtils.generateIdString();
 
                 ContentValues imageEntry = new ContentValues();
 
@@ -1374,6 +1494,9 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
             }
         }
 
+        if(imageItem!=null) {
+            imageItem.setImageId(imageId);
+        }
         return imageItem;
     }
 
