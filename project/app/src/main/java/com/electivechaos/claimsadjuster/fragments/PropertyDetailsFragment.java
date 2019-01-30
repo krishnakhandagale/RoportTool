@@ -33,6 +33,7 @@ import com.electivechaos.claimsadjuster.interfaces.NextButtonClickListener;
 import com.electivechaos.claimsadjuster.interfaces.OnGenerateReportClickListener;
 import com.electivechaos.claimsadjuster.interfaces.OnPropertyDetailsClickListener;
 import com.electivechaos.claimsadjuster.interfaces.OnSaveReportClickListener;
+import com.electivechaos.claimsadjuster.interfaces.QuickCaptureListener;
 import com.electivechaos.claimsadjuster.pojo.BuildingTypePOJO;
 import com.electivechaos.claimsadjuster.pojo.FoundationPOJO;
 import com.electivechaos.claimsadjuster.pojo.PropertyDetailsPOJO;
@@ -76,6 +77,9 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
     private View progressBarLayout;
     private CategoryListDBHelper categoryListDBHelper;
 
+    private FloatingActionButton selectPhoto;
+    private QuickCaptureListener quickCaptureListener;
+
 
     @Override
     public void onStart() {
@@ -110,6 +114,8 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
         menuFoundation = view.findViewById(R.id.menuThree);
         menuBuildingType = view.findViewById(R.id.menuFour);
         progressBarLayout = view.findViewById(R.id.progressBarLayout);
+
+        selectPhoto = view.findViewById(R.id.btnSelectPhoto);
 
         txtDate.setText(propertyDetailsPOJO.getPropertyDate());
         squareFootage.setText(propertyDetailsPOJO.getSquareFootage());
@@ -172,6 +178,13 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
             public void onClick(View v) {
                 onSaveReportClickListener.onReportSave(true);
                 animateFAB();
+            }
+        });
+
+        selectPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                quickCaptureListener.onClickCapture();
             }
         });
 
@@ -502,6 +515,8 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
             onSaveReportClickListener = (OnSaveReportClickListener) getActivity();
             onGenerateReportClickListener = (OnGenerateReportClickListener) getActivity();
             onPropertyDetailsClickListener = (OnPropertyDetailsClickListener) getActivity();
+            quickCaptureListener = (QuickCaptureListener) getActivity();
+
         } catch (ClassCastException ex) {
             ex.printStackTrace();
         }
