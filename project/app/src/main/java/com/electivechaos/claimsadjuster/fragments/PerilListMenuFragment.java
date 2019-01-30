@@ -25,6 +25,7 @@ import com.electivechaos.claimsadjuster.interfaces.NextButtonClickListener;
 import com.electivechaos.claimsadjuster.interfaces.OnGenerateReportClickListener;
 import com.electivechaos.claimsadjuster.interfaces.OnPerilSelectionListener;
 import com.electivechaos.claimsadjuster.interfaces.OnSaveReportClickListener;
+import com.electivechaos.claimsadjuster.interfaces.QuickCaptureListener;
 import com.electivechaos.claimsadjuster.pojo.PerilPOJO;
 
 import java.util.ArrayList;
@@ -47,6 +48,8 @@ public class PerilListMenuFragment extends Fragment {
     private PerilListMenuFragment.PerilListAdapter mAdapter;
 
     private PerilPOJO perilPOJODetails;
+    private QuickCaptureListener quickCaptureListener;
+    private FloatingActionButton selectPhoto;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,6 +68,7 @@ public class PerilListMenuFragment extends Fragment {
         fabAddLabelBtn = view.findViewById(R.id.fabAddLabel);
         fabGenerateReportBtn = view.findViewById(R.id.fabGenerateReport);
         fabSaveReportBtn = view.findViewById(R.id.fabSaveReport);
+        selectPhoto = view.findViewById(R.id.btnSelectPhoto);
 
         fab_open = AnimationUtils.loadAnimation(getActivity(), R.anim.fab_open);
         fab_close = AnimationUtils.loadAnimation(getActivity(), R.anim.fab_close);
@@ -113,6 +117,13 @@ public class PerilListMenuFragment extends Fragment {
             public void onClick(View v) {
                 onSaveReportClickListener.onReportSave(true);
                 animateFAB();
+            }
+        });
+
+        selectPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                quickCaptureListener.onClickCapture();
             }
         });
 
@@ -177,6 +188,7 @@ public class PerilListMenuFragment extends Fragment {
             onSaveReportClickListener = (OnSaveReportClickListener) getActivity();
             onGenerateReportClickListener = (OnGenerateReportClickListener) getActivity();
             onPerilSelectionListener = (OnPerilSelectionListener) getActivity();
+            quickCaptureListener = (QuickCaptureListener)getActivity();
         } catch (ClassCastException ex) {
             ex.printStackTrace();
         }
