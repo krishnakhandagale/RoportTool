@@ -18,6 +18,7 @@ import com.electivechaos.claimsadjuster.interfaces.BackButtonClickListener;
 import com.electivechaos.claimsadjuster.interfaces.NextButtonClickListener;
 import com.electivechaos.claimsadjuster.interfaces.OnGenerateReportClickListener;
 import com.electivechaos.claimsadjuster.interfaces.OnSaveReportClickListener;
+import com.electivechaos.claimsadjuster.interfaces.QuickCaptureListener;
 
 
 public class PointOfOriginFragment extends Fragment {
@@ -30,6 +31,9 @@ public class PointOfOriginFragment extends Fragment {
     private DrawerMenuListAdapter.OnLabelAddClickListener onLabelAddClickListener;
     private OnSaveReportClickListener onSaveReportClickListener;
     private OnGenerateReportClickListener onGenerateReportClickListener;
+    private QuickCaptureListener quickCaptureListener;
+
+    private FloatingActionButton selectPhoto;
 
     @Nullable
     @Override
@@ -44,6 +48,8 @@ public class PointOfOriginFragment extends Fragment {
 
         fab_open = AnimationUtils.loadAnimation(getActivity(), R.anim.fab_open);
         fab_close = AnimationUtils.loadAnimation(getActivity(), R.anim.fab_close);
+
+        selectPhoto = view.findViewById(R.id.btnSelectPhoto);
 
 
         fabGoNextBtn.setOnClickListener(new View.OnClickListener() {
@@ -91,6 +97,13 @@ public class PointOfOriginFragment extends Fragment {
                 animateFAB();
             }
         });
+
+        selectPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                quickCaptureListener.onClickCapture();
+            }
+        });
         return view;
     }
 
@@ -136,6 +149,7 @@ public class PointOfOriginFragment extends Fragment {
             onLabelAddClickListener = (DrawerMenuListAdapter.OnLabelAddClickListener) getActivity();
             onSaveReportClickListener = (OnSaveReportClickListener) getActivity();
             onGenerateReportClickListener = (OnGenerateReportClickListener) getActivity();
+            quickCaptureListener = (QuickCaptureListener) getActivity();
         } catch (ClassCastException ex) {
             ex.printStackTrace();
         }
