@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import com.electivechaos.claimsadjuster.database.CategoryListDBHelper;
 import com.electivechaos.claimsadjuster.interfaces.AsyncTaskStatusCallback;
 import com.electivechaos.claimsadjuster.interfaces.AsyncTaskStatusCallbackForNotes;
+import com.electivechaos.claimsadjuster.pojo.Label;
 import com.electivechaos.claimsadjuster.utils.CommonUtils;
 
 import java.lang.ref.WeakReference;
@@ -17,19 +18,19 @@ import java.util.ArrayList;
  */
 
 // Task for getting  cat list
-public class DBFrequentlyUsedNotes extends AsyncTask<String, Integer, ArrayList> {
+public class DBReportLabelList extends AsyncTask<String, Integer, ArrayList<Label>> {
 
     private WeakReference<Context> contextWeakReference;
     private CategoryListDBHelper categoryListDBHelper;
-    private AsyncTaskStatusCallbackForNotes taskCompleteCallback;
-    private String type;
+    private AsyncTaskStatusCallback taskCompleteCallback;
+    private String reportId;
 
 
-    public DBFrequentlyUsedNotes(Context context, CategoryListDBHelper categoryListDBHelper, String type, AsyncTaskStatusCallbackForNotes taskCompleteCallback) {
+    public DBReportLabelList(Context context, CategoryListDBHelper categoryListDBHelper, String reportId, AsyncTaskStatusCallback taskCompleteCallback) {
         this.contextWeakReference = new WeakReference<>(context);
         this.categoryListDBHelper = categoryListDBHelper;
         this.taskCompleteCallback = taskCompleteCallback;
-        this.type = type;
+        this.reportId = reportId;
     }
 
     @Override
@@ -49,19 +50,15 @@ public class DBFrequentlyUsedNotes extends AsyncTask<String, Integer, ArrayList>
 
 
     @Override
-    protected ArrayList<String> doInBackground(String... strings) {
-        ArrayList<String> notesList;
-        if(type.equals("lastnote")){
-            notesList = categoryListDBHelper.getLastNote();
-        }else {
-             notesList = categoryListDBHelper.getNotesList();
-        }
-        return notesList;
+    protected ArrayList<Label> doInBackground(String... strings) {
+        ArrayList<Label> labelList;
+            labelList = categoryListDBHelper.getReportLabelList(reportId);
+        return labelList;
     }
 
     @Override
     protected void onPostExecute(ArrayList result) {
-        taskCompleteCallback.onPostExecute(result,type);
+        taskCompleteCallback.onPostExecute(result,reportId);
     }
 }
 
