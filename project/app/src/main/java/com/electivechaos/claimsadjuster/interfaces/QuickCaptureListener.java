@@ -5,4 +5,5 @@ package com.electivechaos.claimsadjuster.interfaces;
  */
 
 public interface QuickCaptureListener {
+    void onClickCapture();
 }
