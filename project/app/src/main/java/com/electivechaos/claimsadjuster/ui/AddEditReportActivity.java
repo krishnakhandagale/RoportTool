@@ -1282,11 +1282,6 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                 }
                 break;
             case SET_QUICK_CLICKED_CAPTURED_DETAILS:
-//                ImageDetailsPOJO imageObj = (ImageDetailsPOJO) data.getExtras().get("selected_images");
-//                String labelName = (String) data.getExtras().get("labelName");
-//                String labelAndImageId[] = categoryListDBHelper.addQuickLabel(imageObj,labelName,reportPOJO.getId());
-//
-//                imageObj.setImageId(labelAndImageId[0]);
 
                 new DBReportLabelList(this,categoryListDBHelper, reportPOJO.getId(), new AsyncTaskStatusCallback() {
                     @Override

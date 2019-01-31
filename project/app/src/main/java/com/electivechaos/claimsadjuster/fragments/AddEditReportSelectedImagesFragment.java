@@ -51,6 +51,7 @@ import com.electivechaos.claimsadjuster.interfaces.NextButtonClickListener;
 import com.electivechaos.claimsadjuster.interfaces.OnGenerateReportClickListener;
 import com.electivechaos.claimsadjuster.interfaces.OnSaveReportClickListener;
 import com.electivechaos.claimsadjuster.interfaces.OnSetImageFileUriListener;
+import com.electivechaos.claimsadjuster.interfaces.QuickCaptureListener;
 import com.electivechaos.claimsadjuster.interfaces.SelectedImagesDataInterface;
 import com.electivechaos.claimsadjuster.listeners.OnMediaScannerListener;
 import com.electivechaos.claimsadjuster.pojo.Image;
@@ -81,6 +82,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
     private FloatingActionButton fabAddLabelBtn;
     private FloatingActionButton fabGenerateReportBtn;
     private FloatingActionButton fabSaveReportBtn;
+    private FloatingActionButton fabQuickCapture;
     private Animation fab_open, fab_close;
     private ImageView imageOnePreview;
     private ImageView imageTwoPreview;
@@ -110,6 +112,8 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
 
     private OnGenerateReportClickListener onGenerateReportClickListener;
     private OnSetImageFileUriListener onSetImageFileUriListener;
+
+    private QuickCaptureListener quickCaptureListener;
 
 
     public static AddEditReportSelectedImagesFragment initFragment(ArrayList<ImageDetailsPOJO> selectedImageList, ArrayList<ImageDetailsPOJO> selectedElevationImagesList, int position, Label label, String fileUri, String labelDefaultCoverageType) {
@@ -173,6 +177,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
         fabAddLabelBtn = selectImageView.findViewById(R.id.fabAddLabel);
         fabGenerateReportBtn = selectImageView.findViewById(R.id.fabGenerateReport);
         fabSaveReportBtn = selectImageView.findViewById(R.id.fabSaveReport);
+        fabQuickCapture = selectImageView.findViewById(R.id.btnQuickSelectPhoto);
         FloatingActionButton selectPhotoBtn = selectImageView.findViewById(R.id.btnSelectPhoto);
 
         fab_open = AnimationUtils.loadAnimation(getActivity(), R.anim.fab_open);
@@ -198,6 +203,16 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
             public void onClick(View v) {
                 onGenerateReportClickListener.onReportGenerateClicked();
                 animateFAB();
+            }
+        });
+
+        fabQuickCapture.startAnimation(fab_open);
+        fabQuickCapture.setClickable(true);
+
+        fabQuickCapture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                quickCaptureListener.onClickCapture();
             }
         });
 
@@ -506,8 +521,6 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                             getContext().getApplicationContext().getPackageName() + ".fileprovider",
                             photoFile);
                 }
-
-
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, mCurrentPhotoPath);
                 ImageHelper.grantAppPermission(getContext(), intent, fileUri);
@@ -991,6 +1004,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
             onSaveReportClickListener = (OnSaveReportClickListener) getActivity();
             onGenerateReportClickListener = (OnGenerateReportClickListener) getActivity();
             onSetImageFileUriListener = (OnSetImageFileUriListener) getActivity();
+            quickCaptureListener = (QuickCaptureListener) getActivity();
         } catch (ClassCastException exception) {
             exception.printStackTrace();
         }
@@ -1031,6 +1045,10 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
             fabAddLabelBtn.startAnimation(fab_close);
             fabGenerateReportBtn.startAnimation(fab_close);
             fabSaveReportBtn.startAnimation(fab_close);
+
+            fabQuickCapture.startAnimation(fab_open);
+            fabQuickCapture.setClickable(true);
+
             fabGoNextBtn.setClickable(false);
             fabGoBackBtn.setClickable(false);
             fabAddLabelBtn.setClickable(false);
@@ -1045,6 +1063,10 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
             fabAddLabelBtn.startAnimation(fab_open);
             fabGenerateReportBtn.startAnimation(fab_open);
             fabSaveReportBtn.startAnimation(fab_open);
+
+            fabQuickCapture.startAnimation(fab_close);
+            fabQuickCapture.setClickable(false);
+
             fabGoNextBtn.setClickable(true);
             fabGoBackBtn.setClickable(true);
             fabAddLabelBtn.setClickable(true);

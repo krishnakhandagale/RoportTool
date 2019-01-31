@@ -62,6 +62,7 @@ public class DBFrequentlyUsedNotes extends AsyncTask<String, Integer, ArrayList>
     @Override
     protected void onPostExecute(ArrayList result) {
         taskCompleteCallback.onPostExecute(result,type);
+        CommonUtils.unlockOrientation((Activity) contextWeakReference.get());
     }
 }
 

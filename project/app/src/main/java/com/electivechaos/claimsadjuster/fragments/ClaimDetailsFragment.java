@@ -128,13 +128,15 @@ public class ClaimDetailsFragment extends Fragment {
         selectPhoto = view.findViewById(R.id.btnSelectPhoto);
 
 
+        selectPhoto.startAnimation(fab_open);
+        selectPhoto.setClickable(true);
+
         selectPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 quickCaptureListener.onClickCapture();
             }
         });
-
 
         fabAddLabelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -204,12 +206,15 @@ public class ClaimDetailsFragment extends Fragment {
 
     public void animateFAB() {
         if (isFabOpen) {
-
             fabGoNextBtn.startAnimation(fab_close);
             fabGoBackBtn.startAnimation(fab_close);
             fabAddLabelBtn.startAnimation(fab_close);
             fabGenerateReportBtn.startAnimation(fab_close);
             fabSaveReportBtn.startAnimation(fab_close);
+
+            selectPhoto.startAnimation(fab_open);
+            selectPhoto.setClickable(true);
+
             fabGoNextBtn.setClickable(false);
             fabGoBackBtn.setClickable(false);
             fabAddLabelBtn.setClickable(false);
@@ -220,12 +225,15 @@ public class ClaimDetailsFragment extends Fragment {
 
         } else {
 
-
             fabGoNextBtn.startAnimation(fab_open);
             fabGoBackBtn.startAnimation(fab_open);
             fabAddLabelBtn.startAnimation(fab_open);
             fabGenerateReportBtn.startAnimation(fab_open);
             fabSaveReportBtn.startAnimation(fab_open);
+
+            selectPhoto.startAnimation(fab_close);
+            selectPhoto.setClickable(false);
+
             fabGoNextBtn.setClickable(true);
             fabGoBackBtn.setClickable(true);
             fabAddLabelBtn.setClickable(true);

@@ -1,11 +1,13 @@
 package com.electivechaos.claimsadjuster.asynctasks;
 
+import android.app.Activity;
 import android.os.AsyncTask;
 
 import com.electivechaos.claimsadjuster.database.CategoryListDBHelper;
 import com.electivechaos.claimsadjuster.interfaces.AsyncTaskStatusCallback;
 import com.electivechaos.claimsadjuster.pojo.ImageDetailsPOJO;
 import com.electivechaos.claimsadjuster.pojo.Label;
+import com.electivechaos.claimsadjuster.utils.CommonUtils;
 
 import java.util.ArrayList;
 

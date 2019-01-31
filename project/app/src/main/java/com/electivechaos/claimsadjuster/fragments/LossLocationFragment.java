@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -196,22 +197,10 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
         mPlaceArrayAdapter = new PlaceArrayAdapter(getActivity(), R.layout.places_autocomplete_item, BOUNDS_MOUNTAIN_VIEW, null);
         mAutocompleteTextView.setAdapter(mPlaceArrayAdapter);
 
-        mAutocompleteTextView.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        if(TextUtils.isEmpty(addressLine)){
+            txtSetLocation.setText("Pin Location");
+        }
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
 
         txtCurrentLocation.setOnClickListener(new View.OnClickListener() {
             @Override

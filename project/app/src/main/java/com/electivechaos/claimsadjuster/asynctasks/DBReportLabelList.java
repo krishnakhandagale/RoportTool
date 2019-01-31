@@ -39,7 +39,6 @@ public class DBReportLabelList extends AsyncTask<String, Integer, ArrayList<Labe
         Context context = contextWeakReference.get();
         if(context !=null)
         CommonUtils.lockOrientation((Activity) context);
-
     }
 
 
@@ -59,6 +58,7 @@ public class DBReportLabelList extends AsyncTask<String, Integer, ArrayList<Labe
     @Override
     protected void onPostExecute(ArrayList result) {
         taskCompleteCallback.onPostExecute(result,reportId);
+        CommonUtils.unlockOrientation((Activity) contextWeakReference.get());
     }
 }
 

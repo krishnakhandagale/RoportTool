@@ -638,6 +638,10 @@ public class QuickImageDetailsActivity extends BaseActivity {
                     capturedImage.add(imgObj);
                     ArrayList<ImageDetailsPOJO> returnedImageItem =  capturedImage;
                     Intent intent = new Intent(QuickImageDetailsActivity.this, QuickImageDetailsActivity.class);
+                    ////TODO::
+//                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    finish();
+
                     intent.putExtra("reportId",reportId);
 
                     if (returnedImageItem != null) {
@@ -697,6 +701,4 @@ public class QuickImageDetailsActivity extends BaseActivity {
         outState.putString("labelDefaultCoverageType", labelDefaultCoverageType);
 //        outState.putString("fileUri", fileUri.toString());
     }
-
-
 }

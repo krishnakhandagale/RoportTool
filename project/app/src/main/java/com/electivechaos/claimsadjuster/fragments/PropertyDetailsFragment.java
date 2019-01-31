@@ -181,6 +181,9 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
             }
         });
 
+        selectPhoto.startAnimation(fab_open);
+        selectPhoto.setClickable(true);
+
         selectPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -469,6 +472,10 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
             fabAddLabelBtn.startAnimation(fab_close);
             fabGenerateReportBtn.startAnimation(fab_close);
             fabSaveReportBtn.startAnimation(fab_close);
+
+            selectPhoto.startAnimation(fab_open);
+            selectPhoto.setClickable(true);
+
             fabGoNextBtn.setClickable(false);
             fabGoBackBtn.setClickable(false);
             fabAddLabelBtn.setClickable(false);
@@ -483,6 +490,10 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
             fabAddLabelBtn.startAnimation(fab_open);
             fabGenerateReportBtn.startAnimation(fab_open);
             fabSaveReportBtn.startAnimation(fab_open);
+
+            selectPhoto.startAnimation(fab_close);
+            selectPhoto.setClickable(false);
+
             fabGoNextBtn.setClickable(true);
             fabGoBackBtn.setClickable(true);
             fabAddLabelBtn.setClickable(true);
