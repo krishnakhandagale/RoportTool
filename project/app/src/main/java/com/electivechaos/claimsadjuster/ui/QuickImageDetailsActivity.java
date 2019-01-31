@@ -73,7 +73,7 @@ public class QuickImageDetailsActivity extends BaseActivity {
     private static final int QUICK_CAMERA_CAPTURE = 280;
     private boolean donePressed = false;
 
-    private String labelName,notesString,coverageType,selectedLabelName;
+    private String labelName,notesString,coverageType;
     private boolean isDamage, isOverview , isPointOfOrigin;
     private String reportId;
 
@@ -114,8 +114,12 @@ public class QuickImageDetailsActivity extends BaseActivity {
         coverageType = getIntent().getExtras().getString("coverageType");
         reportId = getIntent().getExtras().getString("reportId");
 
-        if(!TextUtils.isEmpty(labelName)) {
+
+        if(!TextUtils.isEmpty(labelName) && !labelName.equalsIgnoreCase("Select Label")) {
             selectLabel.setText(labelName);
+            selectLabel.setBackground(ContextCompat.getDrawable(this, R.drawable.shape_chip_drawable_active));
+        }else {
+            selectLabel.setBackground(ContextCompat.getDrawable(this, R.drawable.shape_chip_drawable_gray));
         }
         if(isDamage){
             isDamageTextView.setBackground(ContextCompat.getDrawable(this, R.drawable.shape_chip_drawable_active));
@@ -187,7 +191,16 @@ public class QuickImageDetailsActivity extends BaseActivity {
             labelName = savedInstanceState.getString("labelName");
             if(!TextUtils.isEmpty(labelName) && !labelName.equalsIgnoreCase("Select Label")){
                 selectLabel.setText(labelName);
+                selectLabel.setBackground(ContextCompat.getDrawable(this, R.drawable.shape_chip_drawable_active));
+            }else {
+                selectLabel.setBackground(ContextCompat.getDrawable(this, R.drawable.shape_chip_drawable_gray));
             }
+
+            if(!TextUtils.isEmpty(coverageType)){
+                imageCoverageType.setText(coverageType);
+            }
+
+//            fileUri = Uri.parse(savedInstanceState.getString("fileUri"));
         }
 
         addImage.setOnClickListener(new View.OnClickListener() {
@@ -221,6 +234,7 @@ public class QuickImageDetailsActivity extends BaseActivity {
                 ad.setSingleChoiceItems(adapter, -1, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(final DialogInterface dialogInterface, int pos) {
+                        selectLabel.setBackground(ContextCompat.getDrawable(QuickImageDetailsActivity.this, R.drawable.shape_chip_drawable_active));
                         selectLabel.setText(categories.get(pos).getCategoryName().toString());
                         labelName  = categories.get(pos).getCategoryName().toString();
                         dialogInterface.dismiss();
@@ -506,10 +520,6 @@ public class QuickImageDetailsActivity extends BaseActivity {
             String imageId = categoryListDBHelper.addQuickLabel(shareImageDetails,labelName,reportId);
             shareImageDetails.setImageId(imageId);
             Intent intent = new Intent();
-//            intent.putExtra("selected_images", shareImageDetails);
-//            intent.putExtra("isEdit", false);
-//            intent.putExtra("position", position);
-//            intent.putExtra("labelName", labelName);
             setResult(RESULT_OK, intent);
             if(donePressed){
                 finish();
@@ -553,8 +563,6 @@ public class QuickImageDetailsActivity extends BaseActivity {
                             getApplicationContext().getPackageName() + ".fileprovider",
                             photoFile);
                 }
-
-
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, mCurrentPhotoPath);
                 ImageHelper.grantAppPermission(this, intent, fileUri);
@@ -658,6 +666,7 @@ public class QuickImageDetailsActivity extends BaseActivity {
                 Bundle b = data.getExtras().getBundle("coverageDetails");
                 imageDetails.setCoverageTye(b.getString("name"));
                 imageCoverageType.setText(imageDetails.getCoverageTye());
+                coverageType = imageDetails.getCoverageTye();
                 break;
 
             case REQUEST_QUICK_CAMERA:
@@ -669,14 +678,12 @@ public class QuickImageDetailsActivity extends BaseActivity {
                 if (dataFromActivity != null) {
                     String categoryName = dataFromActivity.get("categoryName").toString();
                     selectLabel.setText(categoryName);
+                    selectLabel.setBackground(ContextCompat.getDrawable(this, R.drawable.shape_chip_drawable_active));
+
                 }
                 break;
 
             case QUICK_CAMERA_CAPTURE:
-//                ImageDetailsPOJO imageObj = (ImageDetailsPOJO) data.getExtras().get("selected_images");
-//                String labelName = (String) data.getExtras().get("labelName");
-//                String labelAndImageId[] = categoryListDBHelper.addQuickLabel(imageObj,labelName,reportId);
-//                imageObj.setImageId(labelAndImageId[0]);
                 finish();
                 break;
             default:
@@ -688,6 +695,7 @@ public class QuickImageDetailsActivity extends BaseActivity {
         outState.putParcelable("image_details", imageDetails);
         outState.putString("labelName",labelName);
         outState.putString("labelDefaultCoverageType", labelDefaultCoverageType);
+//        outState.putString("fileUri", fileUri.toString());
     }
 
 
