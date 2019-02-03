@@ -47,6 +47,7 @@
             android:name=".ui.SingleImageDetailsActivity"
             android:windowSoftInputMode="adjustPan" />
         <activity
+            android:launchMode="singleInstance"
             android:name=".ui.QuickImageDetailsActivity"
             android:windowSoftInputMode="adjustPan" />
         <activity

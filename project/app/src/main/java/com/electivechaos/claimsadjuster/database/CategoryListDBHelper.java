@@ -1338,6 +1338,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
             label.setReportId(reportId);
             String id = addLabel(label);
             imageId = addQuickCaptureDetails(imageDetailsPOJO, id);
+            Log.d("FUCK::: ","DB img:");
         }
         return imageId;
 

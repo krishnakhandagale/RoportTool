@@ -13,8 +13,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -53,14 +51,12 @@ import com.electivechaos.claimsadjuster.asynctasks.DatabaseSaveReportTask;
 import com.electivechaos.claimsadjuster.database.CategoryListDBHelper;
 import com.electivechaos.claimsadjuster.fragments.AddEditReportSelectedImagesFragment;
 import com.electivechaos.claimsadjuster.fragments.ClaimDetailsFragment;
-import com.electivechaos.claimsadjuster.fragments.ClaimDetailsTabsFragment;
 import com.electivechaos.claimsadjuster.fragments.PerilListMenuFragment;
 import com.electivechaos.claimsadjuster.fragments.PointOfOriginFragment;
 import com.electivechaos.claimsadjuster.fragments.PropertyDetailsFragment;
 import com.electivechaos.claimsadjuster.fragments.StarterPhotosFragment;
 import com.electivechaos.claimsadjuster.interfaces.AddEditLabelInterface;
 import com.electivechaos.claimsadjuster.interfaces.AsyncTaskStatusCallback;
-import com.electivechaos.claimsadjuster.interfaces.AsyncTaskStatusCallbackForNotes;
 import com.electivechaos.claimsadjuster.interfaces.BackButtonClickListener;
 import com.electivechaos.claimsadjuster.interfaces.ClaimDetailsDataInterface;
 import com.electivechaos.claimsadjuster.interfaces.LossLocationDataInterface;
@@ -157,6 +153,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     private int labelPosition;
     private String labelDefaultCoverageType;
     private Label label;
+    private ImageDetailsPOJO quickImgPojo;
 
 
     private ExpandableListView mExpandableListView;
@@ -189,6 +186,11 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         if (savedInstanceState != null && savedInstanceState.getParcelable("reportPojo") != null) {
             fileUri = savedInstanceState.getString("fileUri");
             reportPOJO = savedInstanceState.getParcelable("reportPojo");
+
+            imageFileUri = savedInstanceState.getParcelable("imageFileUri");
+            photoFile = (File) savedInstanceState.getSerializable("photoFile");
+            mCurrentPhotoPath = savedInstanceState.getString("mCurrentPhotoPath");
+
             reportPOJO.addObserver(this);
             setDataToExpandableList();
         } else {
@@ -566,6 +568,13 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         outState.putInt("selectedFragmentPosition", selectedFragmentPosition);
         outState.putParcelable("reportPojo", reportPOJO);
         outState.putString("fileUri", fileUri);
+
+//        outState.putParcelable("imageDetails", imageDetails);
+//        outState.putString("labelName", labelName);
+        outState.putParcelable("imageFileUri", imageFileUri);
+        outState.putSerializable("photoFile", photoFile);
+        outState.putSerializable("mCurrentPhotoPath", mCurrentPhotoPath);
+
         super.onSaveInstanceState(outState);
     }
 
@@ -1154,14 +1163,14 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
             }
 
             case PermissionUtilities.MY_APP_QUICK_PHOTO_CAPTURE:
-            if (requestCode == PermissionUtilities.MY_APP_QUICK_PHOTO_CAPTURE) {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    cameraIntent(REQUEST_QUICK_CAMERA);
-                } else {
-                    PermissionUtilities.checkPermissionImageUpload(this, AddEditReportActivity.this, PermissionUtilities.MY_APP_TAKE_PHOTO_PERMISSIONS);
+                if (requestCode == PermissionUtilities.MY_APP_QUICK_PHOTO_CAPTURE) {
+                    if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                        cameraIntent(REQUEST_QUICK_CAMERA);
+                    } else {
+                        PermissionUtilities.checkPermissionImageUpload(this, AddEditReportActivity.this, PermissionUtilities.MY_APP_TAKE_PHOTO_PERMISSIONS);
+                    }
                 }
-            }
-            break;
+                break;
             default:
                 break;
         }
@@ -1652,7 +1661,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     public void onClickCapture() {
         boolean result = PermissionUtilities.quickCapturePermission(AddEditReportActivity.this, AddEditReportActivity.this, PermissionUtilities.MY_APP_QUICK_PHOTO_CAPTURE);
         if (result)
-        cameraIntent(REQUEST_QUICK_CAMERA);
+            cameraIntent(REQUEST_QUICK_CAMERA);
     }
 
     private void cameraIntent(int requestId) {
@@ -1745,15 +1754,10 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                         imgObj.setImageDateTime(dateString + " at " + timeString);
                         imgObj.setImageGeoTag("");
                     }
-                    final ArrayList<ImageDetailsPOJO> capturedImage = new ArrayList<ImageDetailsPOJO>();
-                    capturedImage.add(imgObj);
 
-                    // selectedImagesDataInterface.setCapturedImage(capturedImage, 1);
-
-                    ArrayList<ImageDetailsPOJO> returnedImageItem = (ArrayList<ImageDetailsPOJO>) capturedImage;
                     Intent intent = new Intent(AddEditReportActivity.this, QuickImageDetailsActivity.class);
-                    if (returnedImageItem != null) {
-                        intent.putExtra("image_details", returnedImageItem.get(0));
+                    if (imgObj != null) {
+                        intent.putExtra("image_details", imgObj);
                         intent.putExtra("reportId", reportPOJO.getId());
                     }
                     intent.putExtra("labelDefaultCoverageType", labelDefaultCoverageType);

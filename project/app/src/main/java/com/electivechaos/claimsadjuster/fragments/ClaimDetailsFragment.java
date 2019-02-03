@@ -64,8 +64,8 @@ public class ClaimDetailsFragment extends Fragment {
     private BackButtonClickListener backButtonClickListener;
 
     private FloatingActionButton selectPhoto;
-//    private String mCurrentPhotoPath;
-//    private File photoFile;
+    private String mCurrentPhotoPath;
+    private File photoFile;
     private QuickCaptureListener quickCaptureListener;
 
 

@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -15,6 +16,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckedTextView;
 import android.widget.EditText;
@@ -24,6 +26,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.electivechaos.claimsadjuster.BaseActivity;
 import com.electivechaos.claimsadjuster.CameraActivity;
 import com.electivechaos.claimsadjuster.ImageHelper;
@@ -53,44 +57,49 @@ import java.util.concurrent.ExecutionException;
 import static com.electivechaos.claimsadjuster.ui.AddEditCategoryActivity.ADD_COVERAGE_REQUEST_CODE;
 
 public class QuickImageDetailsActivity extends BaseActivity {
+    RequestOptions options = null;
+    private static final int ADD_CATEGORY_REQUEST = 10;
+    private static final int REQUEST_QUICK_CAMERA = 255;
+    private static final int QUICK_CAMERA_CAPTURE = 280;
     private ImageDetailsPOJO imageDetails;
-    private int position, labelPosition;
-    private boolean isEdit = false;
-
     private TextView imageCoverageType;
     private CategoryListDBHelper categoryListDBHelper;
     private String labelDefaultCoverageType = "";
-    private ImageButton freqNotes, lastNote,addImage;
+    private ImageButton freqNotes, lastNote, addImage;
     private EditText notes;
-    private static final int ADD_CATEGORY_REQUEST = 10;
     private TextView selectLabel;
     private FrameLayout parentLayoutForMessages;
-
     private String mCurrentPhotoPath;
     private Uri fileUri;
     private File photoFile;
-    private static final int REQUEST_QUICK_CAMERA = 255;
-    private static final int QUICK_CAMERA_CAPTURE = 280;
     private boolean donePressed = false;
+    private String imgUrl = null;
 
-    private String labelName,notesString,coverageType;
-    private boolean isDamage, isOverview , isPointOfOrigin;
+    private String labelName, notesString, coverageType;
+    private boolean isDamage, isOverview, isPointOfOrigin;
     private String reportId;
+    private int count = 0;
 
+    private CheckedTextView isDamageTextView;
+    private CheckedTextView isOverviewTextView;
+    private CheckedTextView isPointOfOriginTextView;
+    private ImageButton imageInfoBtn;
+    private ImageView imgView;
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_capture_quick);
-
         categoryListDBHelper = CategoryListDBHelper.getInstance(this);
-        ImageView imgView = findViewById(R.id.imageView);
+
+
+        isDamageTextView = findViewById(R.id.isDamageTextView);
+        isOverviewTextView = findViewById(R.id.isOverviewTextView);
+        isPointOfOriginTextView = findViewById(R.id.isPointOfOrigin);
+        imageInfoBtn = findViewById(R.id.imageInfo);
+        imgView = findViewById(R.id.imageView);
         notes = findViewById(R.id.clickedImageNotes);
-        final CheckedTextView isDamageTextView = findViewById(R.id.isDamageTextView);
-        final CheckedTextView isOverviewTextView = findViewById(R.id.isOverviewTextView);
-        final CheckedTextView isPointOfOriginTextView = findViewById(R.id.isPointOfOrigin);
-        final ImageButton imageInfoBtn = findViewById(R.id.imageInfo);
 
         imageCoverageType = findViewById(R.id.imageCoverageType);
         freqNotes = findViewById(R.id.freqNotes);
@@ -98,115 +107,67 @@ public class QuickImageDetailsActivity extends BaseActivity {
         addImage = findViewById(R.id.addImage);
         selectLabel = findViewById(R.id.selectLabel);
         parentLayoutForMessages = findViewById(R.id.parentLayoutForMessages);
+        Log.d("FUCK::: ","ONCREATE");
 
 
         imageDetails = getIntent().getExtras().getParcelable("image_details");
-        labelDefaultCoverageType = getIntent().getExtras().getString("labelDefaultCoverageType");
-        isEdit = getIntent().getExtras().getBoolean("isEdit", false);
-        position = getIntent().getExtras().getInt("position", -1);
-        labelPosition = getIntent().getExtras().getInt("labelPosition", -1);
-
-        labelName = getIntent().getExtras().getString("labelName");
-        isDamage = getIntent().getExtras().getBoolean("isDamage");
-        isOverview = getIntent().getExtras().getBoolean("isOverview");
-        isPointOfOrigin = getIntent().getExtras().getBoolean("isPointOfOrigin");
-        notesString = getIntent().getExtras().getString("notes");
-        coverageType = getIntent().getExtras().getString("coverageType");
         reportId = getIntent().getExtras().getString("reportId");
 
 
-        if(!TextUtils.isEmpty(labelName) && !labelName.equalsIgnoreCase("Select Label")) {
-            selectLabel.setText(labelName);
-            selectLabel.setBackground(ContextCompat.getDrawable(this, R.drawable.shape_chip_drawable_active));
-        }else {
-            selectLabel.setBackground(ContextCompat.getDrawable(this, R.drawable.shape_chip_drawable_gray));
-        }
-        if(isDamage){
-            isDamageTextView.setBackground(ContextCompat.getDrawable(this, R.drawable.shape_chip_drawable_active));
-            isDamageTextView.setChecked(true);
-            imageDetails.setIsDamage(true);
-        }else {
-            isDamageTextView.setBackground(ContextCompat.getDrawable(this, R.drawable.shape_chip_drawable_gray));
-            isDamageTextView.setChecked(false);
-            imageDetails.setIsDamage(false);
-        }
-        if(isOverview){
-            isOverviewTextView.setBackground(ContextCompat.getDrawable(this, R.drawable.shape_chip_drawable_active));
-            isOverviewTextView.setChecked(true);
-            imageDetails.setOverview(true);
-        }else {
-            isOverviewTextView.setBackground(ContextCompat.getDrawable(this, R.drawable.shape_chip_drawable_gray));
-            isOverviewTextView.setChecked(false);
-            imageDetails.setOverview(false);
-        }
-        if(isPointOfOrigin){
-            isPointOfOriginTextView.setBackground(ContextCompat.getDrawable(this, R.drawable.shape_chip_drawable_active));
-            isPointOfOriginTextView.setChecked(true);
-            imageDetails.setPointOfOrigin(true);
-        }else {
-            isPointOfOriginTextView.setBackground(ContextCompat.getDrawable(this, R.drawable.shape_chip_drawable_gray));
-            isPointOfOriginTextView.setChecked(false);
-            imageDetails.setPointOfOrigin(false);
-        }
-        if(!TextUtils.isEmpty(notesString)){
-            imageDetails.setDescription(notesString);
-            notes.setText(notesString);
-        }
-        if(!TextUtils.isEmpty(coverageType)){
-            imageDetails.setCoverageTye(coverageType);
-            imageCoverageType.setText(coverageType);
-        }
-        if (savedInstanceState != null) {
-            imageDetails = savedInstanceState.getParcelable("image_details");
-            isDamageTextView.setChecked(imageDetails.isDamage());
-
-            if (imageDetails.getCoverageTye() == null || imageDetails.getCoverageTye().isEmpty()) {
-                imageCoverageType.setText(R.string.coverage_type);
-            } else {
-                imageCoverageType.setText(imageDetails.getCoverageTye());
-            }
-
-
-            if (imageDetails.isDamage()) {
-                isDamageTextView.setBackground(ContextCompat.getDrawable(this, R.drawable.shape_chip_drawable_active));
-            } else {
-                isDamageTextView.setBackground(ContextCompat.getDrawable(this, R.drawable.shape_chip_drawable_gray));
-            }
-
-
-            isOverviewTextView.setChecked(imageDetails.isOverview());
-            if (imageDetails.isOverview()) {
-                isOverviewTextView.setBackground(ContextCompat.getDrawable(this, R.drawable.shape_chip_drawable_active));
-            } else {
-                isOverviewTextView.setBackground(ContextCompat.getDrawable(this, R.drawable.shape_chip_drawable_gray));
-            }
-
-            isPointOfOriginTextView.setChecked(imageDetails.isPointOfOrigin());
-            if (imageDetails.isPointOfOrigin()) {
-                isPointOfOriginTextView.setBackground(ContextCompat.getDrawable(this, R.drawable.shape_chip_drawable_active));
-            } else {
-                isPointOfOriginTextView.setBackground(ContextCompat.getDrawable(this, R.drawable.shape_chip_drawable_gray));
-            }
-
+        Log.d("FUCK::: ","URL CREATE:::"+imageDetails.getImageUrl());
+        if(savedInstanceState!= null){
+            imageDetails = savedInstanceState.getParcelable("imageDetails");
+            fileUri = savedInstanceState.getParcelable("fileUri");
+            photoFile = (File) savedInstanceState.getSerializable("photoFile");
+            mCurrentPhotoPath =  savedInstanceState.getString("mCurrentPhotoPath");
+            notesString = savedInstanceState.getString("noteString");
             labelName = savedInstanceState.getString("labelName");
+            setImage();
+            
+            if(imageDetails.isDamage()){
+                isDamageTextView.setBackground(ContextCompat.getDrawable(QuickImageDetailsActivity.this, R.drawable.shape_chip_drawable_active));
+                imageDetails.setIsDamage(true);
+            }else {
+                isDamageTextView.setBackground(ContextCompat.getDrawable(QuickImageDetailsActivity.this, R.drawable.shape_chip_drawable_gray));
+                imageDetails.setIsDamage(false);
+            }
+
+
+            if(imageDetails.isOverview()){
+                isOverviewTextView.setBackground(ContextCompat.getDrawable(QuickImageDetailsActivity.this, R.drawable.shape_chip_drawable_active));
+                imageDetails.setOverview(true);
+            }else {
+                isOverviewTextView.setBackground(ContextCompat.getDrawable(QuickImageDetailsActivity.this, R.drawable.shape_chip_drawable_gray));
+                imageDetails.setOverview(false);
+            }
+
+
+            if(imageDetails.isPointOfOrigin()){
+                isPointOfOriginTextView.setBackground(ContextCompat.getDrawable(QuickImageDetailsActivity.this, R.drawable.shape_chip_drawable_active));
+                imageDetails.setPointOfOrigin(true);
+            }else {
+                isPointOfOriginTextView.setBackground(ContextCompat.getDrawable(QuickImageDetailsActivity.this, R.drawable.shape_chip_drawable_gray));
+                imageDetails.setPointOfOrigin(false);
+            }
+
             if(!TextUtils.isEmpty(labelName) && !labelName.equalsIgnoreCase("Select Label")){
                 selectLabel.setText(labelName);
-                selectLabel.setBackground(ContextCompat.getDrawable(this, R.drawable.shape_chip_drawable_active));
-            }else {
-                selectLabel.setBackground(ContextCompat.getDrawable(this, R.drawable.shape_chip_drawable_gray));
+                selectLabel.setBackground(ContextCompat.getDrawable(QuickImageDetailsActivity.this, R.drawable.shape_chip_drawable_active));
             }
 
-            if(!TextUtils.isEmpty(coverageType)){
-                imageCoverageType.setText(coverageType);
+            if(!TextUtils.isEmpty(notesString)){
+                notes.setText(notesString);
             }
 
-//            fileUri = Uri.parse(savedInstanceState.getString("fileUri"));
+            setImage();
+
+
         }
 
         addImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(saveImageDetails()) {
+                if (saveImageDetails()) {
                     cameraIntent(REQUEST_QUICK_CAMERA);
                 }
             }
@@ -236,7 +197,7 @@ public class QuickImageDetailsActivity extends BaseActivity {
                     public void onClick(final DialogInterface dialogInterface, int pos) {
                         selectLabel.setBackground(ContextCompat.getDrawable(QuickImageDetailsActivity.this, R.drawable.shape_chip_drawable_active));
                         selectLabel.setText(categories.get(pos).getCategoryName().toString());
-                        labelName  = categories.get(pos).getCategoryName().toString();
+                        labelName = categories.get(pos).getCategoryName().toString();
                         dialogInterface.dismiss();
 
                     }
@@ -268,7 +229,7 @@ public class QuickImageDetailsActivity extends BaseActivity {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int position) {
                                     if (notesList != null) {
-                                        if(!TextUtils.isEmpty(notesList.get(position).toString())){
+                                        if (!TextUtils.isEmpty(notesList.get(position).toString())) {
                                             notes.setText(notesList.get(position).toString());
                                         }
                                     }
@@ -323,9 +284,9 @@ public class QuickImageDetailsActivity extends BaseActivity {
 
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int position) {
-                                    Object noteObj =notesList.get(position);
-                                        if(!TextUtils.isEmpty(noteObj.toString())){
-                                            notes.setText(noteObj.toString());
+                                    Object noteObj = notesList.get(position);
+                                    if (!TextUtils.isEmpty(noteObj.toString())) {
+                                        notes.setText(noteObj.toString());
                                     }
                                     dialogInterface.dismiss();
                                 }
@@ -369,17 +330,17 @@ public class QuickImageDetailsActivity extends BaseActivity {
                     isOverviewTextView.setChecked(false);
                     isOverviewTextView.setBackground(ContextCompat.getDrawable(QuickImageDetailsActivity.this, R.drawable.shape_chip_drawable_gray));
                     imageDetails.setOverview(false);
-                    isOverview = false;
+                    //isOverview = false;
                 }
                 if (((CheckedTextView) v).isChecked()) {
                     ((CheckedTextView) v).setChecked(false);
                     imageDetails.setIsDamage(false);
-                    isDamage = false;
+                    //   isDamage = false;
                     v.setBackground(ContextCompat.getDrawable(QuickImageDetailsActivity.this, R.drawable.shape_chip_drawable_gray));
                 } else {
                     ((CheckedTextView) v).setChecked(true);
                     imageDetails.setIsDamage(true);
-                    isDamage = true;
+                    //isDamage = true;
                     v.setBackground(ContextCompat.getDrawable(QuickImageDetailsActivity.this, R.drawable.shape_chip_drawable_active));
                 }
             }
@@ -393,17 +354,17 @@ public class QuickImageDetailsActivity extends BaseActivity {
                     isDamageTextView.setChecked(false);
                     isDamageTextView.setBackground(ContextCompat.getDrawable(QuickImageDetailsActivity.this, R.drawable.shape_chip_drawable_gray));
                     imageDetails.setDamage(false);
-                    isDamage = false;
+                    // isDamage = false;
                 }
                 if (((CheckedTextView) v).isChecked()) {
                     ((CheckedTextView) v).setChecked(false);
                     imageDetails.setOverview(false);
-                    isOverview = false;
+                    //  isOverview = false;
                     v.setBackground(ContextCompat.getDrawable(QuickImageDetailsActivity.this, R.drawable.shape_chip_drawable_gray));
                 } else {
                     ((CheckedTextView) v).setChecked(true);
                     imageDetails.setOverview(true);
-                    isOverview = true;
+                    // isOverview = true;
                     v.setBackground(ContextCompat.getDrawable(QuickImageDetailsActivity.this, R.drawable.shape_chip_drawable_active));
                 }
             }
@@ -417,12 +378,12 @@ public class QuickImageDetailsActivity extends BaseActivity {
                     isPointOfOriginTextView.setChecked(false);
                     isPointOfOriginTextView.setBackground(ContextCompat.getDrawable(QuickImageDetailsActivity.this, R.drawable.shape_chip_drawable_gray));
                     imageDetails.setPointOfOrigin(false);
-                    isPointOfOrigin = false;
+                    //isPointOfOrigin = false;
                 } else {
                     isPointOfOriginTextView.setChecked(true);
                     isPointOfOriginTextView.setBackground(ContextCompat.getDrawable(QuickImageDetailsActivity.this, R.drawable.shape_chip_drawable_active));
                     imageDetails.setPointOfOrigin(true);
-                    isPointOfOrigin = true;
+                    // isPointOfOrigin = true;
                 }
 
             }
@@ -496,10 +457,16 @@ public class QuickImageDetailsActivity extends BaseActivity {
 
             }
         });
-        Glide.with(this).load("file://" + imageDetails.getImageUrl()).into(imgView);
+        Log.d("FUCK::: ","URL CREATEB SET:::"+imageDetails.getImageUrl());
+        setImage();
+    }
+    public void setImage(){
+        Glide.with(this). load("file://" + imageDetails.getImageUrl())
+                .into(imgView);
+        Log.d("FUCK::: ","URL SET:::"+imageDetails.getImageUrl());
     }
 
-    public boolean saveImageDetails(){
+    public boolean saveImageDetails() {
         ImageDetailsPOJO shareImageDetails = new ImageDetailsPOJO();
         shareImageDetails.setDescription(notes.getText().toString());
         shareImageDetails.setImageId(imageDetails.getImageId());
@@ -513,15 +480,15 @@ public class QuickImageDetailsActivity extends BaseActivity {
         shareImageDetails.setImageGeoTag(imageDetails.getImageGeoTag());
 
         String labelName = selectLabel.getText().toString();
-        if(TextUtils.isEmpty(labelName) || labelName.trim().equalsIgnoreCase("Select Label")){
+        if (TextUtils.isEmpty(labelName) || labelName.trim().equalsIgnoreCase("Select Label")) {
             CommonUtils.showSnackbarMessage(getString(R.string.please_select_label), true, true, parentLayoutForMessages, QuickImageDetailsActivity.this);
             return false;
-        }else {
-            String imageId = categoryListDBHelper.addQuickLabel(shareImageDetails,labelName,reportId);
+        } else {
+            String imageId = categoryListDBHelper.addQuickLabel(shareImageDetails, labelName, reportId);
             shareImageDetails.setImageId(imageId);
             Intent intent = new Intent();
             setResult(RESULT_OK, intent);
-            if(donePressed){
+            if (donePressed) {
                 finish();
             }
             donePressed = false;
@@ -545,7 +512,6 @@ public class QuickImageDetailsActivity extends BaseActivity {
         imageDetailsFragment.setArguments(imageDetailsData);
         imageDetailsFragment.show(ft, "dialog");
     }
-
 
 
     private void cameraIntent(int requestId) {
@@ -592,6 +558,8 @@ public class QuickImageDetailsActivity extends BaseActivity {
 
     public void onImageCapturedResult(Intent data) {
         if (fileUri != null) {
+            imageDetails.setImageUrl(String.valueOf(photoFile));
+//            setImage();
             onCaptureImageResult(data);
         } else {
             Snackbar snackbar = Snackbar
@@ -616,51 +584,23 @@ public class QuickImageDetailsActivity extends BaseActivity {
             public void onMediaScanComplete(String path, Uri uri) {
                 if (path != null) {
                     path = mCurrentPhotoPath;
-                    ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
-                    imgObj.setDescription("");
-                    imgObj.setTitle("");
-                    imgObj.setIsDamage(false);
-                    imgObj.setOverview(false);
-                    imgObj.setPointOfOrigin(false);
-                    imgObj.setImageUrl(path);
-                    imgObj.setCoverageTye(labelDefaultCoverageType);
-
+                    imageDetails.setImageUrl(path);
                     File file = new File(path);
                     if (file.exists()) {
-                        imgObj.setImageName(file.getName());
+                        imageDetails.setImageName(file.getName());
                         Date date = new Date(file.lastModified());
                         String dateString = new SimpleDateFormat("dd/MM/yyyy").format(date);
                         String timeString = new SimpleDateFormat("HH:mm:ss a").format(date);
-                        imgObj.setImageDateTime(dateString + " at " + timeString);
-                        imgObj.setImageGeoTag("");
+                        imageDetails.setImageDateTime(dateString + " at " + timeString);
+                        imageDetails.setImageGeoTag("");
                     }
-                    final ArrayList<ImageDetailsPOJO> capturedImage = new ArrayList<ImageDetailsPOJO>();
-                    capturedImage.add(imgObj);
-                    ArrayList<ImageDetailsPOJO> returnedImageItem =  capturedImage;
-                    Intent intent = new Intent(QuickImageDetailsActivity.this, QuickImageDetailsActivity.class);
-                    ////TODO::
-//                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    finish();
-
-                    intent.putExtra("reportId",reportId);
-
-                    if (returnedImageItem != null) {
-                        intent.putExtra("image_details", returnedImageItem.get(0));
-                    }
-                    intent.putExtra("labelDefaultCoverageType", labelDefaultCoverageType);
-                    intent.putExtra("labelName",labelName);
-                    intent.putExtra("isDamage",isDamage);
-                    intent.putExtra("isOverview",isOverview);
-                    intent.putExtra("isPointOfOrigin",isPointOfOrigin);
-                    intent.putExtra("notes",notes.getText().toString());
-                    intent.putExtra("coverageType",coverageType);
-                    startActivityForResult(intent, QUICK_CAMERA_CAPTURE);
-
+                    imageDetails.setImageUrl(path);
 
                 }
 
             }
         });
+        imageDetails.setImageUrl(mCurrentPhotoPath);
     }
 
     @Override
@@ -675,6 +615,7 @@ public class QuickImageDetailsActivity extends BaseActivity {
 
             case REQUEST_QUICK_CAMERA:
                 onImageCapturedResult(data);
+                Log.d("FUCK::: ","URL RESULT:::"+imgUrl);
                 break;
 
             case ADD_CATEGORY_REQUEST:
@@ -688,17 +629,31 @@ public class QuickImageDetailsActivity extends BaseActivity {
                 break;
 
             case QUICK_CAMERA_CAPTURE:
-                finish();
+//                finish();
                 break;
             default:
         }
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d("FUCK::: ","RESUME");
+        setImage();
+    }
+
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelable("image_details", imageDetails);
-        outState.putString("labelName",labelName);
+        outState.putParcelable("imageDetails", imageDetails);
+        outState.putString("labelName", labelName);
+        outState.putString("noteString", notesString);
+        outState.putParcelable("fileUri", fileUri);
+        outState.putSerializable("photoFile", photoFile);
+        outState.putSerializable("mCurrentPhotoPath", mCurrentPhotoPath);
         outState.putString("labelDefaultCoverageType", labelDefaultCoverageType);
-//        outState.putString("fileUri", fileUri.toString());
+
     }
+
 }

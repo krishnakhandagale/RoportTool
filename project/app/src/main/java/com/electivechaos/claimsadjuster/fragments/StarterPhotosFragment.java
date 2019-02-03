@@ -40,6 +40,7 @@ import com.electivechaos.claimsadjuster.interfaces.NextButtonClickListener;
 import com.electivechaos.claimsadjuster.interfaces.OnGenerateReportClickListener;
 import com.electivechaos.claimsadjuster.interfaces.OnSaveReportClickListener;
 import com.electivechaos.claimsadjuster.interfaces.OnSetImageFileUriListener;
+import com.electivechaos.claimsadjuster.interfaces.QuickCaptureListener;
 import com.electivechaos.claimsadjuster.interfaces.SelectedImagesDataInterface;
 import com.electivechaos.claimsadjuster.listeners.OnMediaScannerListener;
 import com.electivechaos.claimsadjuster.listeners.OnStarterFragmentDataChangeListener;
@@ -84,6 +85,8 @@ public class StarterPhotosFragment extends Fragment {
     private FloatingActionButton fabAddLabelBtn;
     private FloatingActionButton fabGenerateReportBtn;
     private FloatingActionButton fabSaveReportBtn;
+    private FloatingActionButton quickCapture;
+
     private Animation fab_open, fab_close;
     private ImageView imageOnePreview;
     private ImageView imageTwoPreview;
@@ -103,6 +106,7 @@ public class StarterPhotosFragment extends Fragment {
     private OnGenerateReportClickListener onGenerateReportClickListener;
     private OnSetImageFileUriListener onSetImageFileUriListener;
     private OnStarterFragmentDataChangeListener onStarterFragmentDataChangeListener;
+    private QuickCaptureListener quickCaptureListener;
     private String houseNumber = "";
 
     @Override
@@ -196,6 +200,18 @@ public class StarterPhotosFragment extends Fragment {
         imageThreePreview = selectImageView.findViewById(R.id.imageThreePreview);
         imageFourPreview = selectImageView.findViewById(R.id.imageFourPreview);
         imageHouseNumberPreview = selectImageView.findViewById(R.id.houseNumberPreview);
+
+        quickCapture = selectImageView.findViewById(R.id.btnSelectPhoto);
+
+        quickCapture.startAnimation(fab_open);
+        quickCapture.setClickable(true);
+
+        quickCapture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                quickCaptureListener.onClickCapture();
+            }
+        });
 
         imageViewHouseNumber.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -785,6 +801,7 @@ public class StarterPhotosFragment extends Fragment {
             onGenerateReportClickListener = (OnGenerateReportClickListener) getActivity();
             onSetImageFileUriListener = (OnSetImageFileUriListener) getActivity();
             onStarterFragmentDataChangeListener = (OnStarterFragmentDataChangeListener) getActivity();
+            quickCaptureListener = (QuickCaptureListener) getActivity();
 
         } catch (ClassCastException exception) {
             exception.printStackTrace();
@@ -810,6 +827,10 @@ public class StarterPhotosFragment extends Fragment {
             fabAddLabelBtn.startAnimation(fab_close);
             fabGenerateReportBtn.startAnimation(fab_close);
             fabSaveReportBtn.startAnimation(fab_close);
+
+            quickCapture.startAnimation(fab_open);
+            quickCapture.setClickable(true);
+
             fabGoNextBtn.setClickable(false);
             fabGoBackBtn.setClickable(false);
             fabAddLabelBtn.setClickable(false);
@@ -824,6 +845,11 @@ public class StarterPhotosFragment extends Fragment {
             fabAddLabelBtn.startAnimation(fab_open);
             fabGenerateReportBtn.startAnimation(fab_open);
             fabSaveReportBtn.startAnimation(fab_open);
+
+
+            quickCapture.startAnimation(fab_close);
+            quickCapture.setClickable(false);
+
             fabGoNextBtn.setClickable(true);
             fabGoBackBtn.setClickable(true);
             fabAddLabelBtn.setClickable(true);
