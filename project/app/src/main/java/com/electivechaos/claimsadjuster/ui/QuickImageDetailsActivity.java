@@ -122,8 +122,8 @@ public class QuickImageDetailsActivity extends BaseActivity {
             mCurrentPhotoPath =  savedInstanceState.getString("mCurrentPhotoPath");
             notesString = savedInstanceState.getString("noteString");
             labelName = savedInstanceState.getString("labelName");
+
             setImage();
-            
             if(imageDetails.isDamage()){
                 isDamageTextView.setBackground(ContextCompat.getDrawable(QuickImageDetailsActivity.this, R.drawable.shape_chip_drawable_active));
                 imageDetails.setIsDamage(true);
@@ -157,6 +157,10 @@ public class QuickImageDetailsActivity extends BaseActivity {
 
             if(!TextUtils.isEmpty(notesString)){
                 notes.setText(notesString);
+            }
+
+            if(!TextUtils.isEmpty(imageDetails.getCoverageTye())){
+                imageCoverageType.setText(imageDetails.getCoverageTye());
             }
 
             setImage();
@@ -422,7 +426,6 @@ public class QuickImageDetailsActivity extends BaseActivity {
                             public void onClick(DialogInterface dialogInterface, int position) {
                                 imageDetails.setCoverageTye(coveragePOJOS.get(position).getName());
                                 imageCoverageType.setText(imageDetails.getCoverageTye());
-                                coverageType = imageDetails.getCoverageTye();
                                 dialogInterface.dismiss();
 
                             }
@@ -457,13 +460,11 @@ public class QuickImageDetailsActivity extends BaseActivity {
 
             }
         });
-        Log.d("FUCK::: ","URL CREATEB SET:::"+imageDetails.getImageUrl());
         setImage();
     }
     public void setImage(){
         Glide.with(this). load("file://" + imageDetails.getImageUrl())
                 .into(imgView);
-        Log.d("FUCK::: ","URL SET:::"+imageDetails.getImageUrl());
     }
 
     public boolean saveImageDetails() {
