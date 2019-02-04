@@ -568,9 +568,6 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         outState.putInt("selectedFragmentPosition", selectedFragmentPosition);
         outState.putParcelable("reportPojo", reportPOJO);
         outState.putString("fileUri", fileUri);
-
-//        outState.putParcelable("imageDetails", imageDetails);
-//        outState.putString("labelName", labelName);
         outState.putParcelable("imageFileUri", imageFileUri);
         outState.putSerializable("photoFile", photoFile);
         outState.putSerializable("mCurrentPhotoPath", mCurrentPhotoPath);
