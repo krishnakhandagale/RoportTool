@@ -315,14 +315,30 @@ public class DBUpdateFilePath extends AsyncTask<Integer, Void, Void> {
                         document.newPage();
                     }
 
+
+                    ArrayList<ImageDetailsPOJO> overviewImagesList = new ArrayList<>();
+                    ArrayList<ImageDetailsPOJO> normalImagesList = new ArrayList<>();
+
                     for (int i = 0, m = 0; i < selectedImageList.size(); i++, m++) {
                         File file = new File(selectedImageList.get(i).getImageUrl());
+                        if (file.exists()) {
+                            if (selectedImageList.get(i).isOverview()) {
+                                overviewImagesList.add(selectedImageList.get(i));
+                            } else {
+                                normalImagesList.add(selectedImageList.get(i));
+                            }
+
+                        }
+                    }
+
+                    for (int i = 0, m = 0; i < overviewImagesList.size(); i++, m++) {
+                        File file = new File(overviewImagesList.get(i).getImageUrl());
                         if (file.exists()) {
                             try {
                                 PdfPTable table = new PdfPTable(3);
                                 byte[] imageBytesResized;
                                 table.setWidths(new float[]{1, 5, 4});
-                                imageBytesResized = resizeImage(selectedImageList.get(i).getImageUrl());
+                                imageBytesResized = resizeImage(overviewImagesList.get(i).getImageUrl());
                                 com.itextpdf.text.Image img = com.itextpdf.text.Image.getInstance(imageBytesResized);
 
                                 table.setHorizontalAlignment(Element.ALIGN_LEFT);
@@ -330,7 +346,39 @@ public class DBUpdateFilePath extends AsyncTask<Integer, Void, Void> {
 
                                 table.addCell(getImageNumberPdfPCell((m + 1) + ".", PdfPCell.ALIGN_LEFT));
                                 table.addCell(getCellImageCell(img, PdfPCell.ALIGN_LEFT, document, numberOfImagesPerPage));
-                                table.addCell(getCell(selectedImageList.get(i).getTitle(), selectedImageList.get(i).getDescription(), selectedImageList.get(i).isPointOfOrigin(), selectedImageList.get(i).isOverview(), selectedImageList.get(i).isDamage(), PdfPCell.LEFT, document, numberOfImagesPerPage));
+                                table.addCell(getCell(selectedImageList.get(i).getTitle(), overviewImagesList.get(i).getDescription(), overviewImagesList.get(i).isPointOfOrigin(), overviewImagesList.get(i).isOverview(), overviewImagesList.get(i).isDamage(), PdfPCell.LEFT, document, numberOfImagesPerPage));
+                                document.add(table);
+                                document.add(new Paragraph(" "));
+
+                                if ((m + 1) % numberOfImagesPerPage == 0) {
+                                    document.newPage();
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            m--;
+                        }
+
+                    }
+                    document.newPage();
+
+                    for (int i = 0, m = 0; i < normalImagesList.size(); i++, m++) {
+                        File file = new File(normalImagesList.get(i).getImageUrl());
+                        if (file.exists()) {
+                            try {
+                                PdfPTable table = new PdfPTable(3);
+                                byte[] imageBytesResized;
+                                table.setWidths(new float[]{1, 5, 4});
+                                imageBytesResized = resizeImage(normalImagesList.get(i).getImageUrl());
+                                com.itextpdf.text.Image img = com.itextpdf.text.Image.getInstance(imageBytesResized);
+
+                                table.setHorizontalAlignment(Element.ALIGN_LEFT);
+                                table.setWidthPercentage(100);
+
+                                table.addCell(getImageNumberPdfPCell((m + 1) + ".", PdfPCell.ALIGN_LEFT));
+                                table.addCell(getCellImageCell(img, PdfPCell.ALIGN_LEFT, document, numberOfImagesPerPage));
+                                table.addCell(getCell(normalImagesList.get(i).getTitle(), normalImagesList.get(i).getDescription(), normalImagesList.get(i).isPointOfOrigin(), normalImagesList.get(i).isOverview(), normalImagesList.get(i).isDamage(), PdfPCell.LEFT, document, numberOfImagesPerPage));
                                 document.add(table);
                                 document.add(new Paragraph(" "));
 
