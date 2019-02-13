@@ -15,156 +15,10 @@
         android:theme="@style/CircularProgress"
         android:visibility="gone" />
 
-    <LinearLayout
-        android:id="@+id/parentLinearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:weightSum="4">
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="0.7"
-            android:orientation="vertical"
-            android:scrollbars="vertical">
-
-            <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="140dp"
-                        android:layout_margin="5dp"
-                        android:background="@color/colorPrimary"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:id="@+id/imageOnePreview"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="30dp"
-                            android:layout_gravity="bottom"
-                            android:background="@color/cardview_dark_background"
-                            android:gravity="center"
-                            android:text="Overview 1"
-                            android:textColor="@color/white_color" />
-
-                        <ImageView
-                            android:id="@+id/imageViewOne"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/rounded_button"
-                            android:src="@drawable/ic_camera_16" />
-
-                    </FrameLayout>
-
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="140dp"
-                        android:layout_margin="5dp"
-                        android:background="@color/colorPrimary"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:id="@+id/imageTwoPreview"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="30dp"
-                            android:layout_gravity="bottom"
-                            android:background="@color/cardview_dark_background"
-                            android:gravity="center"
-                            android:text="Overview 2"
-                            android:textColor="@color/white_color" />
-
-                        <ImageView
-                            android:id="@+id/imageViewTwo"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/rounded_button"
-                            android:src="@drawable/ic_camera_16" />
-
-                    </FrameLayout>
-
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="140dp"
-                        android:layout_margin="5dp"
-                        android:background="@color/colorPrimary"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:id="@+id/imageThreePreview"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="30dp"
-                            android:layout_gravity="bottom"
-                            android:background="@color/cardview_dark_background"
-                            android:gravity="center"
-                            android:text="Overview 3"
-                            android:textColor="@color/white_color" />
-
-                        <ImageView
-                            android:id="@+id/imageViewThree"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/rounded_button"
-                            android:src="@drawable/ic_camera_16" />
-
-                    </FrameLayout>
-
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="140dp"
-                        android:layout_margin="5dp"
-                        android:background="@color/colorPrimary"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:id="@+id/imageFourPreview"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="30dp"
-                            android:layout_gravity="bottom"
-                            android:background="@color/cardview_dark_background"
-                            android:gravity="center"
-                            android:text="Overview 4"
-                            android:textColor="@color/white_color" />
-
-                        <ImageView
-                            android:id="@+id/imageViewFour"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/rounded_button"
-                            android:src="@drawable/ic_camera_16" />
-                    </FrameLayout>
-                </LinearLayout>
-            </ScrollView>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="3.3"
             android:orientation="vertical"
             android:weightSum="4">
 
@@ -177,9 +31,6 @@
 
             </android.support.v7.widget.RecyclerView>
         </LinearLayout>
-
-
-    </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabGenerateReport"
