@@ -412,7 +412,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         if (labelArrayList != null && labelArrayList.size() > selectedFragmentPosition - 4 && labelArrayList.get(selectedFragmentPosition - 4) != null) {
             FragmentManager transactionManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
-            AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment = AddEditReportSelectedImagesFragment.initFragment(labelArrayList.get(selectedFragmentPosition - 4).getSelectedImages(), labelArrayList.get(selectedFragmentPosition - 4).getSelectedElevationImages(), selectedFragmentPosition - 4, labelArrayList.get(selectedFragmentPosition - 4), fileUri, labelArrayList.get(selectedFragmentPosition - 4).getCoverageType());
+            AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment = AddEditReportSelectedImagesFragment.initFragment(labelArrayList.get(selectedFragmentPosition - 4).getSelectedImages(), selectedFragmentPosition - 4, labelArrayList.get(selectedFragmentPosition - 4), fileUri, labelArrayList.get(selectedFragmentPosition - 4).getCoverageType());
             fragmentTransaction.replace(R.id.content_frame, addEditReportSelectedImagesFragment, LABEL_FRAGMENT_TAG);
             fragmentTransaction.commit();
 
@@ -685,7 +685,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment = AddEditReportSelectedImagesFragment.initFragment(new ArrayList<ImageDetailsPOJO>(), new ArrayList<ImageDetailsPOJO>(), labelList.size() - 1, label, fileUri, labelList.get(selectedFragmentPosition - 4).getCoverageType());
+        AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment = AddEditReportSelectedImagesFragment.initFragment(new ArrayList<ImageDetailsPOJO>(), labelList.size() - 1, label, fileUri, labelList.get(selectedFragmentPosition - 4).getCoverageType());
         fragmentTransaction.replace(R.id.content_frame, addEditReportSelectedImagesFragment);
         fragmentTransaction.commit();
         activityActionBar.setTitle(label.getName());
@@ -715,7 +715,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                 } else {
                     FragmentManager transactionManager = getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = transactionManager.beginTransaction();
-                    AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment = AddEditReportSelectedImagesFragment.initFragment(labelArrayList.get(selectedFragmentPosition - 4).getSelectedImages(), labelArrayList.get(selectedFragmentPosition - 4).getSelectedElevationImages(), selectedFragmentPosition - 4, labelArrayList.get(selectedFragmentPosition - 4), fileUri, labelArrayList.get(selectedFragmentPosition - 4).getCoverageType());
+                    AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment = AddEditReportSelectedImagesFragment.initFragment(labelArrayList.get(selectedFragmentPosition - 4).getSelectedImages(), selectedFragmentPosition - 4, labelArrayList.get(selectedFragmentPosition - 4), fileUri, labelArrayList.get(selectedFragmentPosition - 4).getCoverageType());
                     fragmentTransaction.replace(R.id.content_frame, addEditReportSelectedImagesFragment);
                     fragmentTransaction.commit();
                 }
@@ -1410,101 +1410,6 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                 break;
             case REQUEST_QUICK_CAMERA:
                 onImageCapturedResult(data);
-
-//                try {
-//                    FragmentManager fm = getSupportFragmentManager();
-//                    if (fm.getFragments() != null && fm.getFragments().size() > 0) {
-//                        for (int i = 0; i < fm.getFragments().size(); i++) {
-//
-//                            if (fm.getFragments().get(i) instanceof ClaimDetailsFragment) {
-//                                ClaimDetailsFragment fragment = (ClaimDetailsFragment) fm.getFragments().get(i);
-//                                fragment.onImageCapturedResult(data);
-//                            }
-//                        }
-//                    }
-//
-//
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//
-                break;
-            case IMAGE_ONE_REQUEST:
-
-                try {
-                    FragmentManager fm = getSupportFragmentManager();
-                    if (fm.getFragments() != null && fm.getFragments().size() > 0) {
-                        for (int i = 0; i < fm.getFragments().size(); i++) {
-
-                            if (fm.getFragments().get(i) instanceof AddEditReportSelectedImagesFragment) {
-                                AddEditReportSelectedImagesFragment fragment = (AddEditReportSelectedImagesFragment) fm.getFragments().get(i);
-                                fragment.onElevationImageOneCapture(data, requestCode);
-                            }
-                        }
-                    }
-
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                break;
-            case IMAGE_TWO_REQUEST:
-
-                try {
-                    FragmentManager fm = getSupportFragmentManager();
-                    if (fm.getFragments() != null && fm.getFragments().size() > 0) {
-                        for (int i = 0; i < fm.getFragments().size(); i++) {
-
-                            if (fm.getFragments().get(i) instanceof AddEditReportSelectedImagesFragment) {
-                                AddEditReportSelectedImagesFragment fragment = (AddEditReportSelectedImagesFragment) fm.getFragments().get(i);
-                                fragment.onElevationImageTwoCapture(data, requestCode);
-                            }
-                        }
-                    }
-
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                break;
-            case IMAGE_THREE_REQUEST:
-
-                try {
-                    FragmentManager fm = getSupportFragmentManager();
-                    if (fm.getFragments() != null && fm.getFragments().size() > 0) {
-                        for (int i = 0; i < fm.getFragments().size(); i++) {
-
-                            if (fm.getFragments().get(i) instanceof AddEditReportSelectedImagesFragment) {
-                                AddEditReportSelectedImagesFragment fragment = (AddEditReportSelectedImagesFragment) fm.getFragments().get(i);
-                                fragment.onElevationImageThreeCapture(data, requestCode);
-                            }
-                        }
-                    }
-
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-
-                break;
-
-            case IMAGE_FOUR_REQUEST:
-
-                try {
-                    FragmentManager fm = getSupportFragmentManager();
-                    if (fm.getFragments() != null && fm.getFragments().size() > 0) {
-                        for (int i = 0; i < fm.getFragments().size(); i++) {
-
-                            if (fm.getFragments().get(i) instanceof AddEditReportSelectedImagesFragment) {
-                                AddEditReportSelectedImagesFragment fragment = (AddEditReportSelectedImagesFragment) fm.getFragments().get(i);
-                                fragment.onElevationImageFourCapture(data, requestCode);
-                            }
-                        }
-                    }
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
                 break;
 
             case IMAGE_ONE_REQUEST_STARTER:
@@ -1627,28 +1532,28 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                     e.printStackTrace();
                 }
                 break;
-            case SELECT_FILE_IMAGE_ONE_OVERVIEW:
-            case SELECT_FILE_IMAGE_TWO_OVERVIEW:
-            case SELECT_FILE_IMAGE_THREE_OVERVIEW:
-            case SELECT_FILE_IMAGE_FOUR_OVERVIEW:
-
-                try {
-                    FragmentManager fm = getSupportFragmentManager();
-                    if (fm.getFragments() != null && fm.getFragments().size() > 0) {
-                        for (int i = 0; i < fm.getFragments().size(); i++) {
-
-                            if (fm.getFragments().get(i) instanceof AddEditReportSelectedImagesFragment) {
-                                AddEditReportSelectedImagesFragment fragment = (AddEditReportSelectedImagesFragment) fm.getFragments().get(i);
-                                fragment.onSelectImagesFromGallery(data, requestCode);
-                            }
-                        }
-                    }
-
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                break;
+//            case SELECT_FILE_IMAGE_ONE_OVERVIEW:
+//            case SELECT_FILE_IMAGE_TWO_OVERVIEW:
+//            case SELECT_FILE_IMAGE_THREE_OVERVIEW:
+//            case SELECT_FILE_IMAGE_FOUR_OVERVIEW:
+//
+//                try {
+//                    FragmentManager fm = getSupportFragmentManager();
+//                    if (fm.getFragments() != null && fm.getFragments().size() > 0) {
+//                        for (int i = 0; i < fm.getFragments().size(); i++) {
+//
+//                            if (fm.getFragments().get(i) instanceof AddEditReportSelectedImagesFragment) {
+//                                AddEditReportSelectedImagesFragment fragment = (AddEditReportSelectedImagesFragment) fm.getFragments().get(i);
+//                                fragment.onSelectImagesFromGallery(data, requestCode);
+//                            }
+//                        }
+//                    }
+//
+//
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//                break;
 
             default:
         }
