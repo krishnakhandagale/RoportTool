@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -16,6 +17,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.CheckedTextView;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -62,7 +65,7 @@ public class QuickImageDetailsActivity extends BaseActivity {
     private TextView imageCoverageType;
     private CategoryListDBHelper categoryListDBHelper;
     private String labelDefaultCoverageType = "";
-    private ImageButton freqNotes, lastNote, addImage;
+    private ImageButton freqNotes, lastNote;
     private EditText notes;
     private TextView selectLabel;
     private FrameLayout parentLayoutForMessages;
@@ -77,8 +80,11 @@ public class QuickImageDetailsActivity extends BaseActivity {
     private CheckedTextView isDamageTextView;
     private CheckedTextView isOverviewTextView;
     private CheckedTextView isPointOfOriginTextView;
-    private ImageButton imageInfoBtn;
+    private FloatingActionButton imageInfoBtn, addImage;
     private ImageView imgView;
+
+
+    private Animation fabOpen;
 
 
     @Override
@@ -101,6 +107,10 @@ public class QuickImageDetailsActivity extends BaseActivity {
         addImage = findViewById(R.id.addImage);
         selectLabel = findViewById(R.id.selectLabel);
         parentLayoutForMessages = findViewById(R.id.parentLayoutForMessages);
+
+        fabOpen = AnimationUtils.loadAnimation(this, R.anim.fab_open);
+        imageInfoBtn.startAnimation(fabOpen);
+        addImage.startAnimation(fabOpen);
 
 
         imageDetails = getIntent().getExtras().getParcelable("image_details");
@@ -431,9 +441,10 @@ public class QuickImageDetailsActivity extends BaseActivity {
         });
 
 
-        ImageButton imageButton = findViewById(R.id.submitImageDetails);
+        FloatingActionButton doneImageDetails = findViewById(R.id.submitImageDetails);
+        doneImageDetails.startAnimation(fabOpen);
 
-        imageButton.setOnClickListener(new View.OnClickListener() {
+        doneImageDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 donePressed = true;
