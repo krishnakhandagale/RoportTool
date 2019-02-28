@@ -17,6 +17,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
+
 import com.electivechaos.claimsadjuster.R;
 import com.electivechaos.claimsadjuster.adapters.DrawerMenuListAdapter;
 import com.electivechaos.claimsadjuster.database.CategoryListDBHelper;
