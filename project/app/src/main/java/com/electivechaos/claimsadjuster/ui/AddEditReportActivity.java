@@ -157,6 +157,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
 
     private ExpandableListView mExpandableListView;
+    private byte[] capturedImage;
 
 
     @Override
@@ -1409,7 +1410,9 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
                 break;
             case REQUEST_QUICK_CAMERA:
+                capturedImage = data.getByteArrayExtra("capturedImage");
                 onImageCapturedResult(data);
+
                 break;
 
             case IMAGE_ONE_REQUEST_STARTER:
@@ -1584,7 +1587,6 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                             photoFile);
                 }
 
-
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, mCurrentPhotoPath);
                 ImageHelper.grantAppPermission(this, intent, imageFileUri);
@@ -1661,6 +1663,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                     if (imgObj != null) {
                         intent.putExtra("image_details", imgObj);
                         intent.putExtra("reportId", reportPOJO.getId());
+                        intent.putExtra("capturedImage",capturedImage);
                     }
                     intent.putExtra("labelDefaultCoverageType", labelDefaultCoverageType);
                     startActivityForResult(intent, ReportConstants.SET_QUICK_CLICKED_CAPTURED_DETAILS);

@@ -3,6 +3,9 @@ package com.electivechaos.claimsadjuster.ui;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -11,14 +14,17 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.media.ExifInterface;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.RotateAnimation;
 import android.widget.CheckedTextView;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -48,7 +54,14 @@ import com.electivechaos.claimsadjuster.pojo.CoveragePOJO;
 import com.electivechaos.claimsadjuster.pojo.ImageDetailsPOJO;
 import com.electivechaos.claimsadjuster.utils.CommonUtils;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -80,11 +93,12 @@ public class QuickImageDetailsActivity extends BaseActivity {
     private CheckedTextView isDamageTextView;
     private CheckedTextView isOverviewTextView;
     private CheckedTextView isPointOfOriginTextView;
-    private FloatingActionButton imageInfoBtn, addImage;
+    private FloatingActionButton imageInfoBtn, addImage, rotateImage;
     private ImageView imgView;
 
 
     private Animation fabOpen;
+    private byte[] capturedImage;
 
 
     @Override
@@ -99,6 +113,7 @@ public class QuickImageDetailsActivity extends BaseActivity {
         isPointOfOriginTextView = findViewById(R.id.isPointOfOrigin);
         imageInfoBtn = findViewById(R.id.imageInfo);
         imgView = findViewById(R.id.imageView);
+        rotateImage = findViewById(R.id.rotateImage);
         notes = findViewById(R.id.clickedImageNotes);
 
         imageCoverageType = findViewById(R.id.imageCoverageType);
@@ -111,10 +126,12 @@ public class QuickImageDetailsActivity extends BaseActivity {
         fabOpen = AnimationUtils.loadAnimation(this, R.anim.fab_open);
         imageInfoBtn.startAnimation(fabOpen);
         addImage.startAnimation(fabOpen);
+        rotateImage.startAnimation(fabOpen);
 
 
         imageDetails = getIntent().getExtras().getParcelable("image_details");
         reportId = getIntent().getExtras().getString("reportId");
+        capturedImage = getIntent().getExtras().getByteArray("capturedImage");
 
 
         if (savedInstanceState != null) {
@@ -335,7 +352,8 @@ public class QuickImageDetailsActivity extends BaseActivity {
                     imageDetails.setOverview(false);
                 }
                 if (((CheckedTextView) v).isChecked()) {
-                    ((CheckedTextView) v).setChecked(false);
+                    ((CheckedTextView)
+                            v).setChecked(false);
                     imageDetails.setIsDamage(false);
                     v.setBackground(ContextCompat.getDrawable(QuickImageDetailsActivity.this, R.drawable.shape_chip_drawable_gray));
                 } else {
@@ -441,6 +459,16 @@ public class QuickImageDetailsActivity extends BaseActivity {
         });
 
 
+
+        rotateImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rotateImage(imageDetails.getImageUrl());
+            }
+
+        });
+
+
         FloatingActionButton doneImageDetails = findViewById(R.id.submitImageDetails);
         doneImageDetails.startAnimation(fabOpen);
 
@@ -454,6 +482,59 @@ public class QuickImageDetailsActivity extends BaseActivity {
         });
         setImage();
     }
+
+
+    public void rotateImage(String path){
+        File file = new File(path);
+
+        Bitmap bitmap = BitmapFactory.decodeByteArray(capturedImage,0,capturedImage.length);
+
+        float angle = imgView.getRotation()+90;
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+
+        bitmap = Bitmap.createBitmap(bitmap,0,0,bitmap.getWidth(),bitmap.getHeight(),matrix,true);
+
+        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outStream);
+        byte[]  image = outStream.toByteArray();
+
+        if (file.getPath() == null) {
+            return;
+        }
+        File file1 = new File(file.getPath());
+
+        if (!file1.exists()) {
+            try {
+                file1.createNewFile();
+                Log.d("FUCK:","true");
+            } catch (IOException e) { 
+                e.printStackTrace();
+            }
+        }
+
+        FileOutputStream outputStream = null;
+        try {
+            outputStream = new FileOutputStream(path, false);
+            outputStream.write(image);
+            Log.d("FUCK:","FILE OUTPUT STREAM");
+
+        } catch (java.io.IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (outputStream != null) {
+                    outputStream.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        imgView.setRotation(imgView.getRotation() + 90);
+//        setImage();
+    }
+
 
     public void setImage() {
         Glide.with(this).load("file://" + imageDetails.getImageUrl())
@@ -606,6 +687,8 @@ public class QuickImageDetailsActivity extends BaseActivity {
                 break;
 
             case REQUEST_QUICK_CAMERA:
+                capturedImage =  data.getByteArrayExtra("capturedImage");
+                Log.d("FUCK: byte", capturedImage+"");
                 onImageCapturedResult(data);
                 break;
 
@@ -640,4 +723,5 @@ public class QuickImageDetailsActivity extends BaseActivity {
         outState.putSerializable("mCurrentPhotoPath", mCurrentPhotoPath);
         outState.putString("labelDefaultCoverageType", labelDefaultCoverageType);
     }
+
 }

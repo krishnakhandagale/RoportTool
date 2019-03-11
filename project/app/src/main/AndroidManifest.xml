@@ -18,6 +18,7 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".TestActivity"></activity>
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -41,16 +42,14 @@
         <activity
             android:name=".ui.AddEditReportActivity"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".ui.MainTabsActivity" >
-
-        </activity>
+        <activity android:name=".ui.MainTabsActivity"></activity>
         <activity android:name=".ui.ImagePickerActivity" />
         <activity
             android:name=".ui.SingleImageDetailsActivity"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:launchMode="singleInstance"
             android:name=".ui.QuickImageDetailsActivity"
+            android:launchMode="singleInstance"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui.AddEditCategoryActivity"
@@ -65,7 +64,7 @@
             android:name=".ui.PdfViewerActivity"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".ui.SplashScreenActivity"></activity>
+        <activity android:name=".ui.SplashScreenActivity" />
         <activity android:name=".ui.CustomisationActivity" />
         <activity android:name=".ui.RoofSystemActivity" />
         <activity android:name=".ui.SidingActivity" />
@@ -84,8 +83,9 @@
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
-        <activity android:name=".CameraActivity"
-            android:screenOrientation="sensor"></activity>
+        <activity
+            android:name=".CameraActivity"
+            android:screenOrientation="sensor" />
     </application>
 
 </manifest>

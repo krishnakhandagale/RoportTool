@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -75,7 +76,10 @@ public class CameraActivity extends AppCompatActivity {
                             }
                         }
 
+                        Log.d("FUCK:",fileUri);
                         Intent intent = new Intent();
+                        intent.putExtra("capturedImage",capturedImage);
+                        Log.d("FUCK: byte one",capturedImage+"");
                         setResult(RESULT_OK, intent);
                         finish();
                     }
@@ -168,4 +172,8 @@ public class CameraActivity extends AppCompatActivity {
         cameraKitView.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 }

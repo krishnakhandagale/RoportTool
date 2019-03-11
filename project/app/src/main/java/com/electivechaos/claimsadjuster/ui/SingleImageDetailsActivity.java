@@ -3,12 +3,17 @@ package com.electivechaos.claimsadjuster.ui;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.media.ExifInterface;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckedTextView;
 import android.widget.EditText;
@@ -17,6 +22,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.electivechaos.claimsadjuster.BaseActivity;
 import com.electivechaos.claimsadjuster.R;
 import com.electivechaos.claimsadjuster.adapters.CustomMenuAdapter;
@@ -31,6 +38,9 @@ import com.electivechaos.claimsadjuster.pojo.CoveragePOJO;
 import com.electivechaos.claimsadjuster.pojo.ImageDetailsPOJO;
 import com.electivechaos.claimsadjuster.utils.CommonUtils;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
@@ -49,6 +59,14 @@ public class SingleImageDetailsActivity extends BaseActivity {
     private CategoryListDBHelper categoryListDBHelper;
     private String labelDefaultCoverageType = "";
     private ImageButton freqNotes, lastNote;
+
+
+    static RequestOptions options = new RequestOptions()
+            .placeholder(R.drawable.imagepicker_image_placeholder)
+            .error(R.drawable.imagepicker_image_placeholder)
+            .centerCrop()
+            .skipMemoryCache(true)
+            .diskCacheStrategy(DiskCacheStrategy.NONE);
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,6 +91,9 @@ public class SingleImageDetailsActivity extends BaseActivity {
         isEdit = getIntent().getExtras().getBoolean("isEdit", false);
         position = getIntent().getExtras().getInt("position", -1);
         labelPosition = getIntent().getExtras().getInt("labelPosition", -1);
+
+        Log.d("FUCK:UrL",imageDetails.getImageUrl());
+
 
         if (imageDetails != null && isEdit) {
             if (imageDetails.getCoverageTye() == null || imageDetails.getCoverageTye().isEmpty()) {
@@ -385,6 +406,7 @@ public class SingleImageDetailsActivity extends BaseActivity {
                 shareImageDetails.setDescription(description.getText().toString());
                 shareImageDetails.setImageId(imageDetails.getImageId());
                 shareImageDetails.setImageUrl(imageDetails.getImageUrl());
+                Log.d("FUCK:",imageDetails.getImageUrl());
                 shareImageDetails.setIsDamage(imageDetails.isDamage());
                 shareImageDetails.setOverview(imageDetails.isOverview());
                 shareImageDetails.setPointOfOrigin(imageDetails.isPointOfOrigin());
@@ -403,8 +425,10 @@ public class SingleImageDetailsActivity extends BaseActivity {
                 finish();
             }
         });
-        Glide.with(this).load("file://" + imageDetails.getImageUrl()).into(imgView);
+
+        Glide.with(this).load("file://" + imageDetails.getImageUrl()). apply(options).into(imgView);
     }
+
 
     public void onShowPopup(ImageDetailsPOJO imageDetails) {
 

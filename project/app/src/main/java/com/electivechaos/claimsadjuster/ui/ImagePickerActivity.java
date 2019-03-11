@@ -47,11 +47,18 @@ import java.util.Map;
  */
 
 public class ImagePickerActivity extends BaseActivity {
-    static RequestOptions options = new RequestOptions()
+//    static RequestOptions options = new RequestOptions()
+//            .placeholder(R.drawable.imagepicker_image_placeholder)
+//            .error(R.drawable.imagepicker_image_placeholder)
+//            .centerCrop()
+//            .diskCacheStrategy(DiskCacheStrategy.RESOURCE);
+    static RequestOptions  options = new RequestOptions()
             .placeholder(R.drawable.imagepicker_image_placeholder)
             .error(R.drawable.imagepicker_image_placeholder)
             .centerCrop()
-            .diskCacheStrategy(DiskCacheStrategy.RESOURCE);
+            .skipMemoryCache(true)
+            .diskCacheStrategy(DiskCacheStrategy.NONE);
+
     private final String[] projection = new String[]{MediaStore.Images.Media._ID
             , MediaStore.Images.Media.DISPLAY_NAME
             , MediaStore.Images.Media.DATA
