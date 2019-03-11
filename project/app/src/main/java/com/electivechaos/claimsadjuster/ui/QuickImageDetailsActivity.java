@@ -189,6 +189,7 @@ public class QuickImageDetailsActivity extends BaseActivity {
             public void onClick(View v) {
                 if (saveImageDetails()) {
                     cameraIntent(REQUEST_QUICK_CAMERA);
+                    imgView.setRotation(0);
                 }
             }
         });
@@ -477,6 +478,7 @@ public class QuickImageDetailsActivity extends BaseActivity {
             public void onClick(View v) {
                 donePressed = true;
                 saveImageDetails();
+                imgView.setRotation(0);
 
             }
         });
@@ -508,7 +510,7 @@ public class QuickImageDetailsActivity extends BaseActivity {
             try {
                 file1.createNewFile();
                 Log.d("FUCK:","true");
-            } catch (IOException e) { 
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }

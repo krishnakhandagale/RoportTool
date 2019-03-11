@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -9,10 +10,15 @@
         android:layout_width="match_parent"
         android:layout_height="?android:attr/listPreferredItemHeightSmall"
         android:checkMark="?android:attr/listChoiceIndicatorSingle"
+        android:ellipsize="end"
         android:gravity="center_vertical"
-        android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
-        android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
-        android:paddingRight="?android:attr/listPreferredItemPaddingRight"
+        android:maxLines="1"
         android:paddingStart="?android:attr/listPreferredItemPaddingStart"
-        android:textAppearance="?android:attr/textAppearanceListItemSmall" />
+        android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
+        android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+        android:paddingRight="?android:attr/listPreferredItemPaddingRight"
+        android:textAppearance="?android:attr/textAppearanceListItemSmall"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>

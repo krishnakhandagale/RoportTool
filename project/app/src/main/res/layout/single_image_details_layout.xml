@@ -96,6 +96,17 @@
             android:background="@drawable/linear_layout_border"
             android:orientation="horizontal"
             android:weightSum="4">
+            <ImageButton
+                android:id="@+id/lastNote"
+                android:layout_width="0dip"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="0.3"
+                android:background="@null"
+                android:clickable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:src="@drawable/ic_last_note" />
+
 
             <EditText
                 android:id="@+id/clickedImageNotes"
@@ -110,16 +121,6 @@
                 android:padding="5dp"
                 android:textSize="16sp" />
 
-            <ImageButton
-                android:id="@+id/lastNote"
-                android:layout_width="0dip"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_weight="0.3"
-                android:background="@null"
-                android:clickable="true"
-                android:foreground="?attr/selectableItemBackground"
-                android:src="@drawable/ic_last_note" />
 
             <ImageButton
                 android:id="@+id/freqNotes"
