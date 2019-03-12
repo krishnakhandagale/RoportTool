@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class CategoryListDBHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 203;
+    private static final int DATABASE_VERSION = 204;
 
     // Database Name
     private static final String DATABASE_NAME = "master_categories_list";
