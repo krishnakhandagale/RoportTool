@@ -42,7 +42,9 @@
         <activity
             android:name=".ui.AddEditReportActivity"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".ui.MainTabsActivity"></activity>
+        <activity android:name=".ui.MainTabsActivity">
+
+        </activity>
         <activity android:name=".ui.ImagePickerActivity" />
         <activity
             android:name=".ui.SingleImageDetailsActivity"
