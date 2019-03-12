@@ -33,6 +33,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.electivechaos.claimsadjuster.BaseActivity;
 import com.electivechaos.claimsadjuster.CameraActivity;
@@ -73,7 +74,6 @@ public class QuickImageDetailsActivity extends BaseActivity {
     private static final int ADD_CATEGORY_REQUEST = 10;
     private static final int REQUEST_QUICK_CAMERA = 255;
     private static final int QUICK_CAMERA_CAPTURE = 280;
-    RequestOptions options = null;
     private ImageDetailsPOJO imageDetails;
     private TextView imageCoverageType;
     private CategoryListDBHelper categoryListDBHelper;
@@ -100,12 +100,22 @@ public class QuickImageDetailsActivity extends BaseActivity {
     private Animation fabOpen;
     private byte[] capturedImage;
 
+    private int angle = 0;
+
+    static RequestOptions options = new RequestOptions()
+            .placeholder(R.drawable.imagepicker_image_placeholder)
+            .error(R.drawable.imagepicker_image_placeholder)
+            .skipMemoryCache(true)
+            .diskCacheStrategy(DiskCacheStrategy.NONE);
+
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_capture_quick);
         categoryListDBHelper = CategoryListDBHelper.getInstance(this);
+
 
 
         isDamageTextView = findViewById(R.id.isDamageTextView);
@@ -189,7 +199,6 @@ public class QuickImageDetailsActivity extends BaseActivity {
             public void onClick(View v) {
                 if (saveImageDetails()) {
                     cameraIntent(REQUEST_QUICK_CAMERA);
-                    imgView.setRotation(0);
                 }
             }
         });
@@ -335,6 +344,26 @@ public class QuickImageDetailsActivity extends BaseActivity {
             }
         });
 
+        lastNote.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+
+                };
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(QuickImageDetailsActivity.this);
+                builder.setMessage(notes.getText()).show();
+                return true;
+            }
+
+
+        });
+
+
 
         imageInfoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -465,6 +494,7 @@ public class QuickImageDetailsActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 rotateImage(imageDetails.getImageUrl());
+
             }
 
         });
@@ -478,8 +508,6 @@ public class QuickImageDetailsActivity extends BaseActivity {
             public void onClick(View v) {
                 donePressed = true;
                 saveImageDetails();
-                imgView.setRotation(0);
-
             }
         });
         setImage();
@@ -491,9 +519,12 @@ public class QuickImageDetailsActivity extends BaseActivity {
 
         Bitmap bitmap = BitmapFactory.decodeByteArray(capturedImage,0,capturedImage.length);
 
-        float angle = imgView.getRotation()+90;
+        angle = angle +90;
         Matrix matrix = new Matrix();
         matrix.postRotate(angle);
+
+        imgView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+        imgView.setImageMatrix(matrix);
 
         bitmap = Bitmap.createBitmap(bitmap,0,0,bitmap.getWidth(),bitmap.getHeight(),matrix,true);
 
@@ -505,11 +536,9 @@ public class QuickImageDetailsActivity extends BaseActivity {
             return;
         }
         File file1 = new File(file.getPath());
-
         if (!file1.exists()) {
             try {
                 file1.createNewFile();
-                Log.d("FUCK:","true");
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -519,8 +548,6 @@ public class QuickImageDetailsActivity extends BaseActivity {
         try {
             outputStream = new FileOutputStream(path, false);
             outputStream.write(image);
-            Log.d("FUCK:","FILE OUTPUT STREAM");
-
         } catch (java.io.IOException e) {
             e.printStackTrace();
         } finally {
@@ -532,14 +559,13 @@ public class QuickImageDetailsActivity extends BaseActivity {
                 e.printStackTrace();
             }
         }
-
-        imgView.setRotation(imgView.getRotation() + 90);
-//        setImage();
+        setImage();
     }
 
 
     public void setImage() {
         Glide.with(this).load("file://" + imageDetails.getImageUrl())
+                .apply(options)
                 .into(imgView);
     }
 
@@ -634,6 +660,7 @@ public class QuickImageDetailsActivity extends BaseActivity {
 
 
     public void onImageCapturedResult(Intent data) {
+        angle = 0;
         if (fileUri != null) {
             imageDetails.setImageUrl(String.valueOf(photoFile));
             onCaptureImageResult(data);
@@ -690,7 +717,6 @@ public class QuickImageDetailsActivity extends BaseActivity {
 
             case REQUEST_QUICK_CAMERA:
                 capturedImage =  data.getByteArrayExtra("capturedImage");
-                Log.d("FUCK: byte", capturedImage+"");
                 onImageCapturedResult(data);
                 break;
 
@@ -711,6 +737,8 @@ public class QuickImageDetailsActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         setImage();
+
+
     }
 
 

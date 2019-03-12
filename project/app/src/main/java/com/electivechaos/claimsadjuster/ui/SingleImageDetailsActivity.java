@@ -64,7 +64,7 @@ public class SingleImageDetailsActivity extends BaseActivity {
     static RequestOptions options = new RequestOptions()
             .placeholder(R.drawable.imagepicker_image_placeholder)
             .error(R.drawable.imagepicker_image_placeholder)
-            .centerCrop()
+            .fitCenter()
             .skipMemoryCache(true)
             .diskCacheStrategy(DiskCacheStrategy.NONE);
 
@@ -249,6 +249,7 @@ public class SingleImageDetailsActivity extends BaseActivity {
                                     }
                                     dialogInterface.dismiss();
                                 }
+
                             });
 
                             ad.show();
@@ -271,6 +272,26 @@ public class SingleImageDetailsActivity extends BaseActivity {
                 }
 
             }
+        });
+
+
+        lastNote.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+
+                };
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(SingleImageDetailsActivity.this);
+                builder.setMessage(description.getText()).show();
+                return true;
+            }
+
+
         });
 
 
