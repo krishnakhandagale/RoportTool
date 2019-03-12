@@ -117,7 +117,7 @@
         android:layout_marginBottom="50dp"
         android:layout_marginLeft="40dp"
         android:layout_marginStart="40dp"
-        android:src="@drawable/image_picker_ic_camera"
+        android:src="@drawable/ic_gallery"
         app:backgroundTint="@color/colorPrimaryDark"
         app:elevation="6dp"
         app:pressedTranslationZ="12dp" />
