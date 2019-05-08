@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "732692190971",
+    "firebase_url": "https://checklistclaims-1055d.firebaseio.com",
+    "project_id": "checklistclaims-1055d",
+    "storage_bucket": "checklistclaims-1055d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:732692190971:android:c521802b5b867d00",
+        "android_client_info": {
+          "package_name": "com.electivechaos.claimsadjuster"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "732692190971-ojhj95cgirm6j0cttt7ltnpi6bde6g8r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.electivechaos.claimsadjuster",
+            "certificate_hash": "530141cc538ba0da7d5091363781df56f704e1f7"
+          }
+        },
+        {
+          "client_id": "732692190971-fkqht0aneql2nbv1s91bprvg25nvo88m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJfsEIW8K9fKY4oYHM-hk_HVI6GN6zMzo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "732692190971-fkqht0aneql2nbv1s91bprvg25nvo88m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
