@@ -256,7 +256,10 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
         selectPhotoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectImage(ReportConstants.REQUEST_CAMERA, ReportConstants.SELECT_FILE);
+               // selectImage(ReportConstants.REQUEST_CAMERA, ReportConstants.SELECT_FILE);
+                boolean result = PermissionUtilities.checkPermission(getActivity(), AddEditReportSelectedImagesFragment.this, PermissionUtilities.MY_APP_BROWSE_PHOTO_PERMISSIONS);
+                if (result)
+                    galleryIntent(ReportConstants.SELECT_FILE);
                 if (isFabOpen) {
                     showFabBtn.setImageResource(R.drawable.ic_more_vertical_white);
                     fabGoNextBtn.startAnimation(fab_close);
