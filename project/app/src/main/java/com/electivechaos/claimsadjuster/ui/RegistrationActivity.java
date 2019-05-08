@@ -49,6 +49,10 @@ public class RegistrationActivity extends AppCompatActivity {
             finish();
         }
 
+//        if(1 == 1){
+//            throw new NullPointerException("checklist crash");
+//        }
+
         parentLayoutForMessages = findViewById(R.id.parentLayoutForMessages);
 
         final EditText reportByEditText = findViewById(R.id.reportBy);
