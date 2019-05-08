@@ -75,19 +75,20 @@ public class QuickImageDetailsActivity extends BaseActivity {
     private static final int REQUEST_QUICK_CAMERA = 255;
     private static final int QUICK_CAMERA_CAPTURE = 280;
     private ImageDetailsPOJO imageDetails;
-    private TextView imageCoverageType;
+    private TextView imageCoverageType, selectCategory;
     private CategoryListDBHelper categoryListDBHelper;
     private String labelDefaultCoverageType = "";
     private ImageButton freqNotes, lastNote;
     private EditText notes;
-    private TextView selectLabel;
+//    private TextView selectLabel;
     private FrameLayout parentLayoutForMessages;
     private String mCurrentPhotoPath;
     private Uri fileUri;
     private File photoFile;
     private boolean donePressed = false;
 
-    private String labelName, notesString;
+    private String labelName;
+//    private  String notesString;
     private String reportId;
 
     private CheckedTextView isDamageTextView;
@@ -130,8 +131,10 @@ public class QuickImageDetailsActivity extends BaseActivity {
         freqNotes = findViewById(R.id.freqNotes);
         lastNote = findViewById(R.id.lastNote);
         addImage = findViewById(R.id.addImage);
-        selectLabel = findViewById(R.id.selectLabel);
+//        selectLabel = findViewById(R.id.selectLabel);
         parentLayoutForMessages = findViewById(R.id.parentLayoutForMessages);
+
+        selectCategory = findViewById(R.id.selectCategory);
 
         fabOpen = AnimationUtils.loadAnimation(this, R.anim.fab_open);
         imageInfoBtn.startAnimation(fabOpen);
@@ -149,10 +152,9 @@ public class QuickImageDetailsActivity extends BaseActivity {
             fileUri = savedInstanceState.getParcelable("fileUri");
             photoFile = (File) savedInstanceState.getSerializable("photoFile");
             mCurrentPhotoPath = savedInstanceState.getString("mCurrentPhotoPath");
-            notesString = savedInstanceState.getString("noteString");
+//            notesString = savedInstanceState.getString("noteString");
             labelName = savedInstanceState.getString("labelName");
 
-//            setImage();
             if (imageDetails.isDamage()) {
                 isDamageTextView.setBackground(ContextCompat.getDrawable(QuickImageDetailsActivity.this, R.drawable.shape_chip_drawable_active));
                 imageDetails.setIsDamage(true);
@@ -179,14 +181,14 @@ public class QuickImageDetailsActivity extends BaseActivity {
                 imageDetails.setPointOfOrigin(false);
             }
 
-            if (!TextUtils.isEmpty(labelName) && !labelName.equalsIgnoreCase("Select Label")) {
-                selectLabel.setText(labelName);
-                selectLabel.setBackground(ContextCompat.getDrawable(QuickImageDetailsActivity.this, R.drawable.shape_chip_drawable_active));
+            if (!TextUtils.isEmpty(labelName) && !labelName.equalsIgnoreCase("Select Category")) {
+                selectCategory.setText(labelName);
+//                selectLabel.setBackground(ContextCompat.getDrawable(QuickImageDetailsActivity.this, R.drawable.shape_chip_drawable_active));
             }
 
-            if (!TextUtils.isEmpty(notesString)) {
-                notes.setText(notesString);
-            }
+//            if (!TextUtils.isEmpty(notesString)) {
+//                notes.setText(notesString);
+//            }
 
             if (!TextUtils.isEmpty(imageDetails.getCoverageTye())) {
                 imageCoverageType.setText(imageDetails.getCoverageTye());
@@ -198,15 +200,50 @@ public class QuickImageDetailsActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 if (saveImageDetails()) {
+                    notes.setText("");
                     cameraIntent(REQUEST_QUICK_CAMERA);
                 }
             }
         });
 
 
-        selectLabel.setOnClickListener(new View.OnClickListener() {
+//        selectLabel.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(final View v) {
+//                final ArrayList<Category> categories = categoryListDBHelper.getCategoryList();
+//
+//                final CustomCategoryPopUpAdapter adapter = new CustomCategoryPopUpAdapter(QuickImageDetailsActivity.this, categories);
+//
+//                final android.app.AlertDialog.Builder ad = new android.app.AlertDialog.Builder(QuickImageDetailsActivity.this);
+//                ad.setCancelable(true);
+//                ad.setPositiveButton("Add New", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        Intent intent = new Intent(QuickImageDetailsActivity.this, AddEditCategoryActivity.class);
+//                        startActivityForResult(intent, ADD_CATEGORY_REQUEST);
+//                    }
+//                });
+//                ad.setTitle("Select Category");
+//
+//                ad.setSingleChoiceItems(adapter, -1, new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(final DialogInterface dialogInterface, int pos) {
+//                        selectLabel.setBackground(ContextCompat.getDrawable(QuickImageDetailsActivity.this, R.drawable.shape_chip_drawable_active));
+//                        selectLabel.setText(categories.get(pos).getCategoryName().toString());
+//                        labelName = categories.get(pos).getCategoryName().toString();
+//                        dialogInterface.dismiss();
+//
+//                    }
+//                });
+//
+//                ad.show();
+//            }
+//        });
+
+
+        selectCategory.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(final View v) {
+            public void onClick(View v) {
                 final ArrayList<Category> categories = categoryListDBHelper.getCategoryList();
 
                 final CustomCategoryPopUpAdapter adapter = new CustomCategoryPopUpAdapter(QuickImageDetailsActivity.this, categories);
@@ -225,8 +262,8 @@ public class QuickImageDetailsActivity extends BaseActivity {
                 ad.setSingleChoiceItems(adapter, -1, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(final DialogInterface dialogInterface, int pos) {
-                        selectLabel.setBackground(ContextCompat.getDrawable(QuickImageDetailsActivity.this, R.drawable.shape_chip_drawable_active));
-                        selectLabel.setText(categories.get(pos).getCategoryName().toString());
+//                        selectLabel.setBackground(ContextCompat.getDrawable(QuickImageDetailsActivity.this, R.drawable.shape_chip_drawable_active));
+                        selectCategory.setText(categories.get(pos).getCategoryName().toString());
                         labelName = categories.get(pos).getCategoryName().toString();
                         dialogInterface.dismiss();
 
@@ -234,6 +271,7 @@ public class QuickImageDetailsActivity extends BaseActivity {
                 });
 
                 ad.show();
+
             }
         });
         freqNotes.setOnClickListener(new View.OnClickListener() {
@@ -582,8 +620,8 @@ public class QuickImageDetailsActivity extends BaseActivity {
         shareImageDetails.setImageDateTime(imageDetails.getImageDateTime());
         shareImageDetails.setImageGeoTag(imageDetails.getImageGeoTag());
 
-        String labelName = selectLabel.getText().toString();
-        if (TextUtils.isEmpty(labelName) || labelName.trim().equalsIgnoreCase("Select Label")) {
+        String labelName = selectCategory.getText().toString();
+        if (TextUtils.isEmpty(labelName) || labelName.trim().equalsIgnoreCase("Select Category")) {
             CommonUtils.showSnackbarMessage(getString(R.string.please_select_label), true, true, parentLayoutForMessages, QuickImageDetailsActivity.this);
             return false;
         } else {
@@ -663,6 +701,8 @@ public class QuickImageDetailsActivity extends BaseActivity {
         angle = 0;
         if (fileUri != null) {
             imageDetails.setImageUrl(String.valueOf(photoFile));
+            imageDetails.setDescription("");
+            notes.setText("");
             onCaptureImageResult(data);
         } else {
             Snackbar snackbar = Snackbar
@@ -724,8 +764,8 @@ public class QuickImageDetailsActivity extends BaseActivity {
                 Bundle dataFromActivity = data.getExtras().getBundle("categoryDetails");
                 if (dataFromActivity != null) {
                     String categoryName = dataFromActivity.get("categoryName").toString();
-                    selectLabel.setText(categoryName);
-                    selectLabel.setBackground(ContextCompat.getDrawable(this, R.drawable.shape_chip_drawable_active));
+                    selectCategory.setText(categoryName);
+//                    selectCategory.setBackground(ContextCompat.getDrawable(this, R.drawable.shape_chip_drawable_active));
 
                 }
                 break;
@@ -747,7 +787,7 @@ public class QuickImageDetailsActivity extends BaseActivity {
         super.onSaveInstanceState(outState);
         outState.putParcelable("imageDetails", imageDetails);
         outState.putString("labelName", labelName);
-        outState.putString("noteString", notesString);
+//        outState.putString("noteString", notesString);
         outState.putParcelable("fileUri", fileUri);
         outState.putSerializable("photoFile", photoFile);
         outState.putSerializable("mCurrentPhotoPath", mCurrentPhotoPath);
