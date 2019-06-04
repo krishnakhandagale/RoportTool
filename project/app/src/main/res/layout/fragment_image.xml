@@ -1,4 +1,5 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/relative_layout_image_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -62,18 +63,44 @@
                 android:src="@drawable/ic_info_black_24dp" />
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/imageCoverageType"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="7dp"
-            android:background="@drawable/rounded_edit_text"
-            android:drawableRight="@drawable/ic_key_arrow_down"
-            android:imeOptions="actionNext"
-            android:nextFocusRight="@+id/imageTitle"
-            android:padding="7dp"
-            android:text="@string/coverage_type"
-            android:textSize="16sp" />
+            android:layout_marginTop="2dp"
+            android:orientation="horizontal"
+            android:weightSum="4">
+
+            <TextView
+                android:id="@+id/imageCoverageType"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:drawableEnd="@drawable/ic_key_arrow_down"
+                android:drawableRight="@drawable/ic_key_arrow_down"
+                android:imeOptions="actionNext"
+                android:layout_marginRight="1dp"
+                android:nextFocusRight="@+id/clickedImageTitle"
+                android:padding="7dp"
+                android:text="@string/coverage_type"
+                android:textSize="16sp"
+                android:background="@drawable/linear_layout_border"
+                tools:ignore="TextViewEdits" />
+            <TextView
+                android:background="@drawable/linear_layout_border"
+                android:layout_marginLeft="1dp"
+                android:id="@+id/selectCategory"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:drawableEnd="@drawable/ic_key_arrow_down"
+                android:drawableRight="@drawable/ic_key_arrow_down"
+                android:imeOptions="actionNext"
+                android:nextFocusRight="@+id/clickedImageTitle"
+                android:padding="7dp"
+                android:text="@string/select_category"
+                android:textSize="16sp"
+                tools:ignore="TextViewEdits" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
