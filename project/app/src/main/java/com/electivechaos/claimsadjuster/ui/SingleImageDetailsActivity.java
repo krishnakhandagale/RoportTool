@@ -92,7 +92,6 @@ public class SingleImageDetailsActivity extends BaseActivity {
         position = getIntent().getExtras().getInt("position", -1);
         labelPosition = getIntent().getExtras().getInt("labelPosition", -1);
 
-        Log.d("FUCK:UrL",imageDetails.getImageUrl());
 
 
         if (imageDetails != null && isEdit) {
