@@ -29,6 +29,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.electivechaos.claimsadjuster.adapters.CustomCategoryPopUpAdapter;
 import com.electivechaos.claimsadjuster.adapters.CustomMenuAdapter;
 import com.electivechaos.claimsadjuster.adapters.FrequentlyUsedNotesPopUpAdapter;
 import com.electivechaos.claimsadjuster.asynctasks.DBFrequentlyUsedNotes;
@@ -37,8 +38,11 @@ import com.electivechaos.claimsadjuster.database.CategoryListDBHelper;
 import com.electivechaos.claimsadjuster.dialog.ImageDetailsFragment;
 import com.electivechaos.claimsadjuster.interfaces.AsyncTaskStatusCallback;
 import com.electivechaos.claimsadjuster.interfaces.AsyncTaskStatusCallbackForNotes;
+import com.electivechaos.claimsadjuster.pojo.Category;
 import com.electivechaos.claimsadjuster.pojo.CoveragePOJO;
 import com.electivechaos.claimsadjuster.pojo.ImageDetailsPOJO;
+import com.electivechaos.claimsadjuster.pojo.Label;
+import com.electivechaos.claimsadjuster.ui.AddEditCategoryActivity;
 import com.electivechaos.claimsadjuster.ui.AddEditCoverageActivity;
 import com.electivechaos.claimsadjuster.utils.CommonUtils;
 
@@ -50,11 +54,11 @@ import static com.electivechaos.claimsadjuster.ui.AddEditCategoryActivity.ADD_CO
 public class ImageFragment extends Fragment {
     static ViewPager mPagerInstance;
     private static CategoryListDBHelper categoryListDBHelper;
-    TextView imageCoverageType;
+    TextView imageCoverageType,selectCategory;
     ImageButton imageInfo;
     private String imageUrl;
     private String imgDescription;
-    private String coverageType;
+    private String coverageType, categoryType;
     private String imgName, imgDateTime, imgGeoTag;
     private boolean imgIsDamage;
     private boolean imgIsOverview;
@@ -63,7 +67,12 @@ public class ImageFragment extends Fragment {
     private MonitorImageDetailsChange monitorImageDetailsChange;
     private ImageButton freqNotes, lastNote;
 
-    public static ImageFragment init(ImageDetailsPOJO imageDetails, int position, ViewPager mPager) {
+    private Label label;
+    private ImageDetailsPOJO imageDetailsPOJO;
+    private String reportId;
+
+
+    public static ImageFragment init(ImageDetailsPOJO imageDetails, int position, ViewPager mPager, Label label, String reportIdd ) {
         ImageFragment imageFragment = new ImageFragment();
         mPagerInstance = mPager;
         categoryListDBHelper = CategoryListDBHelper.getInstance(mPager.getContext());
@@ -79,6 +88,10 @@ public class ImageFragment extends Fragment {
         args.putString("imgDateTime", imageDetails.getImageDateTime());
         args.putString("imgGeoTag", imageDetails.getImageGeoTag());
         args.putInt("position", position);
+        args.putParcelable("label", label);
+
+        args.putParcelable("imageDetailsPojo",imageDetails);
+        args.putString("reportId",reportIdd);
 
         imageFragment.setArguments(args);
         return imageFragment;
@@ -98,6 +111,13 @@ public class ImageFragment extends Fragment {
         imgName = getArguments() != null ? getArguments().getString("imgName") : "";
         imgDateTime = getArguments() != null ? getArguments().getString("imgDateTime") : "";
         imgGeoTag = getArguments() != null ? getArguments().getString("imgGeoTag") : "";
+        label = getArguments() != null ? (Label) getArguments().getParcelable("label") : new Label();
+        reportId = getArguments() != null ? getArguments().getString("reportId") :null;
+
+        imageDetailsPOJO = getArguments() != null ? (ImageDetailsPOJO) getArguments().getParcelable("imageDetailsPojo") : new ImageDetailsPOJO();
+
+
+
 
         if (savedInstanceState != null) {
             imgIsDamage = savedInstanceState.getBoolean("imgIsDamage");
@@ -107,6 +127,7 @@ public class ImageFragment extends Fragment {
             imgName = savedInstanceState.getString("imgName");
             imgDateTime = savedInstanceState.getString("imgDateTime");
             imgGeoTag = savedInstanceState.getString("imgGeoTag");
+            label = savedInstanceState.getParcelable("label");
         }
     }
 
@@ -126,6 +147,8 @@ public class ImageFragment extends Fragment {
         freqNotes = layoutView.findViewById(R.id.freqNotes);
         lastNote = layoutView.findViewById(R.id.lastNote);
 
+        selectCategory = layoutView.findViewById(R.id.selectCategory);
+
 
         imageInfo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,6 +156,8 @@ public class ImageFragment extends Fragment {
                 onShowPopup();
             }
         });
+
+        selectCategory.setText(label.getName());
 
 
         if (coverageType == null || coverageType.isEmpty()) {
@@ -338,6 +363,42 @@ public class ImageFragment extends Fragment {
         });
 
 
+        selectCategory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final ArrayList<Category> categories = categoryListDBHelper.getCategoryList();
+
+                final CustomCategoryPopUpAdapter adapter = new CustomCategoryPopUpAdapter(getActivity(), categories);
+
+                final android.app.AlertDialog.Builder ad = new android.app.AlertDialog.Builder(getActivity());
+                ad.setCancelable(true);
+                ad.setPositiveButton("Add New", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(getActivity(), AddEditCategoryActivity.class);
+                        //startActivityForResult(intent, ADD_CATEGORY_REQUEST);
+                    }
+                });
+                ad.setTitle("Select Category");
+
+                ad.setSingleChoiceItems(adapter, -1, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(final DialogInterface dialogInterface, int pos) {
+//                        selectLabel.setBackground(ContextCompat.getDrawable(QuickImageDetailsActivity.this, R.drawable.shape_chip_drawable_active));
+                        selectCategory.setText(categories.get(pos).getCategoryName().toString());
+                       label = categoryListDBHelper.updateImageLabel(imageDetailsPOJO, categories.get(pos).getCategoryName(),reportId);
+           //             updateLabelList.updateMenuLabelList(label);
+                        dialogInterface.dismiss();
+
+                    }
+                });
+
+                ad.show();
+
+            }
+        });
+
+
         //Here image information
         monitorImageDetailsChange.setImageName(imgName, position);
         monitorImageDetailsChange.setImageDateTime(imgDateTime, position);
@@ -491,6 +552,7 @@ public class ImageFragment extends Fragment {
         outState.putString("imgName", imgName);
         outState.putString("imgDateTime", imgDateTime);
         outState.putString("imgGeoTag", imgGeoTag);
+        outState.putParcelable("label", label);
     }
 
     public interface MonitorImageDetailsChange {
@@ -511,7 +573,7 @@ public class ImageFragment extends Fragment {
 
         void setGeoTag(String geoTag, int position);
 
-    }
 
+    }
 
 }
