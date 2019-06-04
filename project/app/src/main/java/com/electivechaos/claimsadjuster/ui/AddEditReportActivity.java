@@ -94,7 +94,7 @@ import java.util.Observer;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Pattern;
 
-public class AddEditReportActivity extends AppCompatActivity implements DrawerMenuListAdapter.OnLabelAddClickListener, AddEditLabelInterface, ClaimDetailsDataInterface, LossLocationDataInterface, SelectedImagesDataInterface, NextButtonClickListener, BackButtonClickListener, OnSaveReportClickListener, OnGenerateReportClickListener, OnPropertyDetailsClickListener, OnPerilSelectionListener, OnSetImageFileUriListener, OnStarterFragmentDataChangeListener, Observer,QuickCaptureListener {
+public class AddEditReportActivity extends AppCompatActivity implements DrawerMenuListAdapter.OnLabelAddClickListener, AddEditLabelInterface, ClaimDetailsDataInterface, LossLocationDataInterface, SelectedImagesDataInterface, NextButtonClickListener, BackButtonClickListener, OnSaveReportClickListener, OnGenerateReportClickListener, OnPropertyDetailsClickListener, OnPerilSelectionListener, OnSetImageFileUriListener, OnStarterFragmentDataChangeListener, Observer, QuickCaptureListener {
 
     private static final int SHOWPREFERENCEACTIVITY = 486;
     private static final int ADD_CATEGORY_REQUEST = 10;
@@ -130,13 +130,13 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     private static final String POINT_OF_ORIGIN_FRAGMENT_TAG = "point_of_origin_fragment";
     private static final String LABEL_FRAGMENT_TAG = "label_fragment";
     static CategoryListDBHelper categoryListDBHelper;
+    public ReportPOJO reportPOJO;
     private DrawerLayout mDrawerLayout;
     private DrawerMenuListAdapter drawerMenuListAdapter;
     private HashMap<String, List<Label>> childMenuItems = new HashMap<>();
     private ArrayList<ParentMenuItem> parentMenuItems;
     private int selectedFragmentPosition = 0;
     private ArrayList<Category> categories = null;
-    public  ReportPOJO reportPOJO;
     private View progressBarLayout;
     private Toolbar toolbar;
     private MenuItem actionBarEditBtn;
@@ -678,25 +678,27 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     public void onLabelAdded(Label label) {
 
         List<Label> labelList = childMenuItems.get("Inspection");
-        labelList.add(label);
-        drawerMenuListAdapter.notifyDataSetChanged();
-        reportPOJO.getLabelArrayList().add(label);
+        if (label != null) {
+            labelList.add(label);
+            drawerMenuListAdapter.notifyDataSetChanged();
+            reportPOJO.getLabelArrayList().add(label);
 
-        selectedFragmentPosition = (labelList.size() - 1) + 4;
+            selectedFragmentPosition = (labelList.size() - 1) + 4;
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment = AddEditReportSelectedImagesFragment.initFragment(new ArrayList<ImageDetailsPOJO>(), labelList.size() - 1, label, fileUri, labelList.get(selectedFragmentPosition - 4).getCoverageType());
-        fragmentTransaction.replace(R.id.content_frame, addEditReportSelectedImagesFragment);
-        fragmentTransaction.commit();
-        activityActionBar.setTitle(label.getName());
-        if (actionBarEditBtn != null) {
-            actionBarEditBtn.setVisible(true);
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            AddEditReportSelectedImagesFragment addEditReportSelectedImagesFragment = AddEditReportSelectedImagesFragment.initFragment(new ArrayList<ImageDetailsPOJO>(), labelList.size() - 1, label, fileUri, labelList.get(selectedFragmentPosition - 4).getCoverageType());
+            fragmentTransaction.replace(R.id.content_frame, addEditReportSelectedImagesFragment);
+            fragmentTransaction.commit();
+            activityActionBar.setTitle(label.getName());
+            if (actionBarEditBtn != null) {
+                actionBarEditBtn.setVisible(true);
+            }
+            toolbar.setTag(label);
+            activityActionBar.setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP);
+            activityActionBar.setDisplayShowTitleEnabled(true);
+            activityActionBar.setDisplayShowCustomEnabled(false);
         }
-        toolbar.setTag(label);
-        activityActionBar.setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP);
-        activityActionBar.setDisplayShowTitleEnabled(true);
-        activityActionBar.setDisplayShowCustomEnabled(false);
 
     }
 
@@ -848,7 +850,6 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         imageDetailsList.addAll(imagesList);
         reportPOJO.getLabelArrayList().get(0).setSelectedImages(imageDetailsList);
     }
-
 
 
     @Override
@@ -1290,7 +1291,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                 break;
             case SET_QUICK_CLICKED_CAPTURED_DETAILS:
 
-                new DBReportLabelList(this,categoryListDBHelper, reportPOJO.getId(), new AsyncTaskStatusCallback() {
+                new DBReportLabelList(this, categoryListDBHelper, reportPOJO.getId(), new AsyncTaskStatusCallback() {
                     @Override
                     public void onPostExecute(Object object, String type) {
                         ArrayList<Label> returnedLabelList = (ArrayList<Label>) object;
@@ -1319,6 +1320,9 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
                 break;
 
+
+            //need to change here
+
             case ADD_IMAGE_DETAILS:
                 ArrayList<ImageDetailsPOJO> selectedImageList = (ArrayList<ImageDetailsPOJO>) data.getExtras().getSerializable("selected_images");
                 final int labelPos = data.getExtras().getInt("labelPosition");
@@ -1328,6 +1332,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                         categoryListDBHelper.editImageDetails(selectedImageList.get(i));
                     }
                 }
+                
 
                 new DBSelectedImagesListTsk(categoryListDBHelper, "get_images_for_label", reportPOJO.getLabelArrayList().get(labelPos), selectedImageList, new AsyncTaskStatusCallback() {
 
@@ -1367,6 +1372,32 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+
+                new DBReportLabelList(this, categoryListDBHelper, reportPOJO.getId(), new AsyncTaskStatusCallback() {
+                    @Override
+                    public void onPostExecute(Object object, String type) {
+                        ArrayList<Label> returnedLabelList = (ArrayList<Label>) object;
+                        reportPOJO.setLabelArrayList(returnedLabelList);
+                        List<Label> inspectionChildMenu = (List<Label>) reportPOJO.getLabelArrayList().clone();
+                        childMenuItems.put("Inspection", inspectionChildMenu);
+
+                        if (parentMenuItems != null && parentMenuItems.size() > 0) {
+                            drawerMenuListAdapter = new DrawerMenuListAdapter(AddEditReportActivity.this, parentMenuItems, childMenuItems);
+                            mExpandableListView.setAdapter(drawerMenuListAdapter);
+                            mExpandableListView.setIndicatorBounds(0, 20);
+                        }
+                    }
+
+                    @Override
+                    public void onPreExecute() {
+
+                    }
+
+                    @Override
+                    public void onProgress(int progress) {
+
+                    }
+                }).execute();
                 break;
 
             case SELECT_FILE:
@@ -1378,7 +1409,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
 
                             if (fm.getFragments().get(i) instanceof AddEditReportSelectedImagesFragment) {
                                 AddEditReportSelectedImagesFragment fragment = (AddEditReportSelectedImagesFragment) fm.getFragments().get(i);
-                                fragment.onSelectImagesFromGallery(data, SELECT_FILE);
+                                fragment.onSelectImagesFromGallery(data, SELECT_FILE, reportPOJO.getId());
                             }
                         }
                     }
@@ -1535,29 +1566,6 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                     e.printStackTrace();
                 }
                 break;
-//            case SELECT_FILE_IMAGE_ONE_OVERVIEW:
-//            case SELECT_FILE_IMAGE_TWO_OVERVIEW:
-//            case SELECT_FILE_IMAGE_THREE_OVERVIEW:
-//            case SELECT_FILE_IMAGE_FOUR_OVERVIEW:
-//
-//                try {
-//                    FragmentManager fm = getSupportFragmentManager();
-//                    if (fm.getFragments() != null && fm.getFragments().size() > 0) {
-//                        for (int i = 0; i < fm.getFragments().size(); i++) {
-//
-//                            if (fm.getFragments().get(i) instanceof AddEditReportSelectedImagesFragment) {
-//                                AddEditReportSelectedImagesFragment fragment = (AddEditReportSelectedImagesFragment) fm.getFragments().get(i);
-//                                fragment.onSelectImagesFromGallery(data, requestCode);
-//                            }
-//                        }
-//                    }
-//
-//
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//                break;
-
             default:
         }
     }
@@ -1572,7 +1580,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     private void cameraIntent(int requestId) {
 
         Intent intent = new Intent(AddEditReportActivity.this, CameraActivity.class);
-        intent.putExtra("reportId",reportPOJO.getId());
+        intent.putExtra("reportId", reportPOJO.getId());
 
         if (intent.resolveActivity(getPackageManager()) != null) {
 
@@ -1663,7 +1671,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                     if (imgObj != null) {
                         intent.putExtra("image_details", imgObj);
                         intent.putExtra("reportId", reportPOJO.getId());
-                        intent.putExtra("capturedImage",capturedImage);
+                        intent.putExtra("capturedImage", capturedImage);
                     }
                     intent.putExtra("labelDefaultCoverageType", labelDefaultCoverageType);
                     startActivityForResult(intent, ReportConstants.SET_QUICK_CLICKED_CAPTURED_DETAILS);
@@ -1674,6 +1682,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
             }
         });
     }
+
     // Task for label addition
     class DatabaseTaskHelper extends AsyncTask<String, Void, String> {
 
@@ -1749,5 +1758,5 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         }
     }
 
-
 }
+
