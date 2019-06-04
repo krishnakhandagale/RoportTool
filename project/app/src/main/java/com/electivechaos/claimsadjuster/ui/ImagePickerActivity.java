@@ -47,11 +47,6 @@ import java.util.Map;
  */
 
 public class ImagePickerActivity extends BaseActivity {
-//    static RequestOptions options = new RequestOptions()
-//            .placeholder(R.drawable.imagepicker_image_placeholder)
-//            .error(R.drawable.imagepicker_image_placeholder)
-//            .centerCrop()
-//            .diskCacheStrategy(DiskCacheStrategy.RESOURCE);
     static RequestOptions  options = new RequestOptions()
             .placeholder(R.drawable.imagepicker_image_placeholder)
             .error(R.drawable.imagepicker_image_placeholder)
