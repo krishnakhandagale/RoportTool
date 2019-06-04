@@ -109,6 +109,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
     private OnSetImageFileUriListener onSetImageFileUriListener;
 
     private QuickCaptureListener quickCaptureListener;
+    private String reportId;
 
 
     public static AddEditReportSelectedImagesFragment initFragment(ArrayList<ImageDetailsPOJO> selectedImageList, int position, Label label, String fileUri, String labelDefaultCoverageType) {
@@ -410,7 +411,9 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
         }
     }
 
-    public void onSelectImagesFromGallery(Intent data, final int requestCode) {
+    public void onSelectImagesFromGallery(Intent data, final int requestCode, String reportIdd) {
+
+        reportId = reportIdd;
         if (data != null) {
             onSelectFromGalleryResult(data, requestCode);
         } else {
@@ -560,6 +563,8 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
                     Intent intent = new Intent(getActivity(), ImageSliderActivity.class);
                     intent.putExtra("ImageList", returnedImagesList);
                     intent.putExtra("labelPosition", labelPosition);
+                    intent.putExtra("label",label);
+                    intent.putExtra("reportId",reportId);
                     intent.putExtra("labelDefaultCoverageType", labelDefaultCoverageType);
                     getActivity().startActivityForResult(intent, ReportConstants.ADD_IMAGE_DETAILS);
                 }
