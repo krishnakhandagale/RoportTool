@@ -207,9 +207,13 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
                 Bundle b = data.getExtras().getBundle("coverageDetails");
                 ((ImageFragment) mAdapter.getCurrentFragment()).setCoverageType(b.getString("name"));
             }
+
         }
 
     }
+
+
+
 
     @Override
     public void onBackPressed() {

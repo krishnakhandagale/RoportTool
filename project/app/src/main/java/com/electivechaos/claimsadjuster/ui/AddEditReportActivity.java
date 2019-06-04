@@ -1332,7 +1332,7 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
                         categoryListDBHelper.editImageDetails(selectedImageList.get(i));
                     }
                 }
-                
+
 
                 new DBSelectedImagesListTsk(categoryListDBHelper, "get_images_for_label", reportPOJO.getLabelArrayList().get(labelPos), selectedImageList, new AsyncTaskStatusCallback() {
 

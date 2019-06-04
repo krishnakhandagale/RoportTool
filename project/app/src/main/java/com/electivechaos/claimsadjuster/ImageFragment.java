@@ -52,9 +52,10 @@ import java.util.concurrent.ExecutionException;
 import static com.electivechaos.claimsadjuster.ui.AddEditCategoryActivity.ADD_COVERAGE_REQUEST_CODE;
 
 public class ImageFragment extends Fragment {
+    private static final int RESULT_OK = -1;
     static ViewPager mPagerInstance;
     private static CategoryListDBHelper categoryListDBHelper;
-    TextView imageCoverageType,selectCategory;
+    TextView imageCoverageType, selectCategory;
     ImageButton imageInfo;
     private String imageUrl;
     private String imgDescription;
@@ -71,8 +72,10 @@ public class ImageFragment extends Fragment {
     private ImageDetailsPOJO imageDetailsPOJO;
     private String reportId;
 
+    private static final int ADD_CATEGORY_REQUEST = 10;
 
-    public static ImageFragment init(ImageDetailsPOJO imageDetails, int position, ViewPager mPager, Label label, String reportIdd ) {
+
+    public static ImageFragment init(ImageDetailsPOJO imageDetails, int position, ViewPager mPager, Label label, String reportIdd) {
         ImageFragment imageFragment = new ImageFragment();
         mPagerInstance = mPager;
         categoryListDBHelper = CategoryListDBHelper.getInstance(mPager.getContext());
@@ -90,8 +93,8 @@ public class ImageFragment extends Fragment {
         args.putInt("position", position);
         args.putParcelable("label", label);
 
-        args.putParcelable("imageDetailsPojo",imageDetails);
-        args.putString("reportId",reportIdd);
+        args.putParcelable("imageDetailsPojo", imageDetails);
+        args.putString("reportId", reportIdd);
 
         imageFragment.setArguments(args);
         return imageFragment;
@@ -112,11 +115,9 @@ public class ImageFragment extends Fragment {
         imgDateTime = getArguments() != null ? getArguments().getString("imgDateTime") : "";
         imgGeoTag = getArguments() != null ? getArguments().getString("imgGeoTag") : "";
         label = getArguments() != null ? (Label) getArguments().getParcelable("label") : new Label();
-        reportId = getArguments() != null ? getArguments().getString("reportId") :null;
+        reportId = getArguments() != null ? getArguments().getString("reportId") : null;
 
         imageDetailsPOJO = getArguments() != null ? (ImageDetailsPOJO) getArguments().getParcelable("imageDetailsPojo") : new ImageDetailsPOJO();
-
-
 
 
         if (savedInstanceState != null) {
@@ -276,7 +277,7 @@ public class ImageFragment extends Fragment {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int position) {
                                     if (notesList != null) {
-                                        if(!TextUtils.isEmpty(notesList.get(position).toString())){
+                                        if (!TextUtils.isEmpty(notesList.get(position).toString())) {
                                             description.setText(notesList.get(position).toString());
                                         }
                                     }
@@ -332,7 +333,7 @@ public class ImageFragment extends Fragment {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int position) {
                                     if (notesList != null) {
-                                        if(!TextUtils.isEmpty(notesList.get(position).toString())){
+                                        if (!TextUtils.isEmpty(notesList.get(position).toString())) {
                                             description.setText(notesList.get(position).toString());
                                         }
                                     }
@@ -376,7 +377,9 @@ public class ImageFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Intent intent = new Intent(getActivity(), AddEditCategoryActivity.class);
-                        //startActivityForResult(intent, ADD_CATEGORY_REQUEST);
+//                        startActivity(intent);
+                        startActivityForResult(intent, ADD_CATEGORY_REQUEST);
+
                     }
                 });
                 ad.setTitle("Select Category");
@@ -384,10 +387,8 @@ public class ImageFragment extends Fragment {
                 ad.setSingleChoiceItems(adapter, -1, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(final DialogInterface dialogInterface, int pos) {
-//                        selectLabel.setBackground(ContextCompat.getDrawable(QuickImageDetailsActivity.this, R.drawable.shape_chip_drawable_active));
                         selectCategory.setText(categories.get(pos).getCategoryName().toString());
-                       label = categoryListDBHelper.updateImageLabel(imageDetailsPOJO, categories.get(pos).getCategoryName(),reportId);
-           //             updateLabelList.updateMenuLabelList(label);
+                        label = categoryListDBHelper.updateImageLabel(imageDetailsPOJO, categories.get(pos).getCategoryName(), reportId);
                         dialogInterface.dismiss();
 
                     }
@@ -576,4 +577,19 @@ public class ImageFragment extends Fragment {
 
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+       // super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == ADD_CATEGORY_REQUEST) {
+                Bundle dataFromActivity = data.getExtras().getBundle("categoryDetails");
+                if (dataFromActivity != null) {
+                    String categoryName = dataFromActivity.get("categoryName").toString();
+                    selectCategory.setText(categoryName);
+                    label = categoryListDBHelper.updateImageLabel(imageDetailsPOJO, categoryName, reportId);
+
+                }
+            }
+        }
+    }
 }
