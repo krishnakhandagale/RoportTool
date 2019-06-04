@@ -10,7 +10,7 @@
         android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="0px"
-        android:layout_weight="1"></android.support.v4.view.ViewPager>
+        android:layout_weight="1" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="4"
-            android:orientation="horizontal"></android.support.v7.widget.RecyclerView>
+            android:orientation="horizontal" />
 
         <ImageButton
             android:id="@+id/selectImages"
