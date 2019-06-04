@@ -1344,6 +1344,45 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
 
     }
 
+
+    public Label updateImageLabel(ImageDetailsPOJO imageDetailsPOJO, String labelName, String reportId) {
+
+
+        String query = "SELECT * FROM category_label  WHERE report_id_fk = '" + reportId+ "'";
+        String imageId = null;
+        Label label = null;
+
+        SQLiteDatabase dbRead = this.getReadableDatabase();
+        Cursor cursor = dbRead.rawQuery(query, null);
+        int count = 0;
+        if (cursor.moveToFirst()) {
+            do {
+                if(cursor.getString(1).trim().equalsIgnoreCase(labelName.trim())){
+                    SQLiteDatabase db = this.getWritableDatabase();
+                    ContentValues cv = new ContentValues();
+                    cv.put(KEY_FK_LABEL_ID,cursor.getString(0));
+                    db.update(TABLE_REPORTS_IMAGE_DETAILS, cv, KEY_IMAGE_ID + "=" + "'" + imageDetailsPOJO.getImageId() + "'", null);
+                    count ++;
+                }
+            } while (cursor.moveToNext());
+        }
+
+
+        if(count == 0){
+            label = new Label();
+            label.setName(labelName);
+            label.setReportId(reportId);
+            String id = addLabel(label);
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues cv = new ContentValues();
+            cv.put(KEY_FK_LABEL_ID,id);
+            db.update(TABLE_REPORTS_IMAGE_DETAILS, cv, KEY_IMAGE_ID + "=" + "'" + imageDetailsPOJO.getImageId() + "'", null);
+            Log.d("FUCK::: ","DB img:");
+        }
+        return label;
+
+    }
+
     public String addQuickCaptureDetails(ImageDetailsPOJO imageDetailsPOJO, String labelId){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues imageEntry = new ContentValues();
@@ -1535,6 +1574,7 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
         super.onOpen(db);
         db.execSQL("PRAGMA foreign_keys=ON");
     }
+
 
 
 }
