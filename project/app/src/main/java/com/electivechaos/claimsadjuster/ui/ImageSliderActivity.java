@@ -31,8 +31,10 @@ import com.electivechaos.claimsadjuster.BaseActivity;
 import com.electivechaos.claimsadjuster.DepthPageTransformer;
 import com.electivechaos.claimsadjuster.ImageFragment;
 import com.electivechaos.claimsadjuster.R;
+
 import com.electivechaos.claimsadjuster.listeners.OnLastSelectionChangeListener;
 import com.electivechaos.claimsadjuster.pojo.ImageDetailsPOJO;
+import com.electivechaos.claimsadjuster.pojo.Label;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -54,7 +56,12 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
     private int labelPosition = -1;
     private String labelDefaultCoverageType = "";
 
+    private Label label;
+
+
     private OnLastSelectionChangeListener onLastSelectionChangeListener;
+
+    private String reportId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,9 +69,13 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
         setContentView(R.layout.image_slider_layout);
 
 
+
         imageList = (ArrayList<ImageDetailsPOJO>) getIntent().getExtras().get("ImageList");
         labelPosition = getIntent().getExtras().getInt("labelPosition");
         labelDefaultCoverageType = getIntent().getExtras().getString("labelDefaultCoverageType");
+        label = getIntent().getExtras().getParcelable("label");
+        reportId = getIntent().getExtras().getString("reportId");
+
         imagesInformation = new ArrayList<>();
         for (int i = 0; i < imageList.size(); i++) {
             ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
@@ -88,8 +99,9 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
         if (savedInstanceState != null) {
             lastSelectedPosition = savedInstanceState.getInt("lastSelectedPosition", -1);
             imagesInformation = (ArrayList<ImageDetailsPOJO>) savedInstanceState.getSerializable("imagesInformation");
-            labelPosition = savedInstanceState.getInt("labelPosition");
+            labelPosition = savedInstanceState.getInt("labelgeoTagPosition");
             labelDefaultCoverageType = savedInstanceState.getString("labelDefaultCoverageType");
+            label = savedInstanceState.getParcelable("label");
         }
 
         selectImagesBtn = findViewById(R.id.selectImages);
@@ -120,6 +132,7 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
                 Intent intent = new Intent();
                 Bundle imagesObj = new Bundle();
                 imagesObj.putSerializable("selected_images", imagesInformation);
+               // imagesObj.putParcelable("label", label);
                 imagesObj.putInt("labelPosition", labelPosition);
                 intent.putExtras(imagesObj);
                 setResult(RESULT_OK, intent);
@@ -169,6 +182,7 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
         imagesInformation.get(position).setImageGeoTag(geoTag);
     }
 
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -176,6 +190,7 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
         outState.putSerializable("imagesInformation", imagesInformation);
         outState.putInt("labelPosition", labelPosition);
         outState.putString("labelDefaultCoverageType", labelDefaultCoverageType);
+        outState.putParcelable("label", label);
 
     }
 
@@ -221,6 +236,8 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
 
     }
 
+
+
     public class ImagePagerAdapter extends FragmentStatePagerAdapter {
         private Fragment mCurrentFragment;
 
@@ -235,7 +252,7 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
 
         @Override
         public Fragment getItem(int position) {
-            return ImageFragment.init(imagesInformation.get(position), position, mPager);
+            return ImageFragment.init(imagesInformation.get(position), position, mPager,label,reportId);
         }
 
         @Override
