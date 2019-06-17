@@ -10,20 +10,27 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -35,11 +42,13 @@ import com.electivechaos.claimsadjuster.R;
 import com.electivechaos.claimsadjuster.listeners.OnLastSelectionChangeListener;
 import com.electivechaos.claimsadjuster.pojo.ImageDetailsPOJO;
 import com.electivechaos.claimsadjuster.pojo.Label;
+import com.electivechaos.claimsadjuster.utils.CommonUtils;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 import static com.electivechaos.claimsadjuster.ui.AddEditCategoryActivity.ADD_COVERAGE_REQUEST_CODE;
 
@@ -49,6 +58,7 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
     ViewPager mPager;
     RecyclerView mImagePreviewList;
     ImageButton selectImagesBtn;
+    boolean flag = false;
 
     private ArrayList<ImageDetailsPOJO> imagesInformation;
     private ArrayList<ImageDetailsPOJO> imageList;
@@ -57,18 +67,18 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
     private String labelDefaultCoverageType = "";
 
     private Label label;
+    boolean setAdapter = true;
 
 
     private OnLastSelectionChangeListener onLastSelectionChangeListener;
 
     private String reportId;
+    private LinearLayout parentLayoutForMessages;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.image_slider_layout);
-
-
 
         imageList = (ArrayList<ImageDetailsPOJO>) getIntent().getExtras().get("ImageList");
         labelPosition = getIntent().getExtras().getInt("labelPosition");
@@ -92,6 +102,7 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
                 String timeString = new SimpleDateFormat("HH:mm:ss a").format(date);
                 imgObj.setImageDateTime(dateString + " at " + timeString);
             }
+            imgObj.setLabelName(imageList.get(i).getLabelName());
             imgObj.setImageGeoTag("");
             imagesInformation.add(imgObj);
         }
@@ -107,6 +118,8 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
         selectImagesBtn = findViewById(R.id.selectImages);
         mImagePreviewList = findViewById(R.id.imagePreviewList);
         mPager = findViewById(R.id.pager);
+        mPager.setOffscreenPageLimit(0);
+        parentLayoutForMessages = findViewById(R.id.parentLayoutForMessages);
 
         mAdapter = new ImagePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mAdapter);
@@ -129,6 +142,12 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
         selectImagesBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                for (int i = 0; i < imagesInformation.size(); i++) {
+                    if(TextUtils.isEmpty(imagesInformation.get(i).getLabelName()) )  {
+                        CommonUtils.showSnackbarMessage(getString(R.string.select_category_for_all_images), true, true, parentLayoutForMessages, ImageSliderActivity.this);
+                        return;
+                    }
+                }
                 Intent intent = new Intent();
                 Bundle imagesObj = new Bundle();
                 imagesObj.putSerializable("selected_images", imagesInformation);
@@ -180,6 +199,11 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
     @Override
     public void setGeoTag(String geoTag, int position) {
         imagesInformation.get(position).setImageGeoTag(geoTag);
+    }
+
+    @Override
+    public void  setLabelName(String labelName, int position){
+        imagesInformation.get(position).setLabelName(labelName);
     }
 
 
@@ -245,6 +269,8 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
     public class ImagePagerAdapter extends FragmentStatePagerAdapter {
         private Fragment mCurrentFragment;
 
+
+
         ImagePagerAdapter(FragmentManager fragmentManager) {
             super(fragmentManager);
         }
@@ -252,11 +278,13 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
         @Override
         public int getCount() {
             return imageList.size();
+
         }
 
         @Override
         public Fragment getItem(int position) {
-            return ImageFragment.init(imagesInformation.get(position), position, mPager,label,reportId);
+            Fragment fragment = ImageFragment.init(imagesInformation.get(position), position, mPager,label,reportId);
+            return fragment;
         }
 
         @Override
@@ -267,9 +295,25 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
             super.setPrimaryItem(container, position, object);
         }
 
+
+        //TODO
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            super.destroyItem(container, position, object);
+
+        }
+
+        @Override
+        public int getItemPosition(@NonNull Object object) {
+            return POSITION_NONE;
+
+        }
+
         Fragment getCurrentFragment() {
             return mCurrentFragment;
         }
+
+
     }
 
     public class ImagePreviewListAdapter extends RecyclerView.Adapter<ImagePreviewListAdapter.MyViewHolder> {
@@ -308,7 +352,7 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
             }
 
 
-            ImageDetailsPOJO imgDetails = imageList.get(position);
+            final ImageDetailsPOJO imgDetails = imageList.get(position);
             Glide.with(context).load("file://" + imgDetails.getImageUrl()).thumbnail(0.1f).into(holder.imageView);
             holder.imageView.setOnClickListener(new OnClickListener() {
                 @Override
@@ -325,28 +369,64 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
                 }
             });
 
+
+
+
+
             mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                 @Override
                 public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                    if(position == 0) {
+                        if(TextUtils.isEmpty(imagesInformation.get(position).getLabelName())) {
+                            mPager.setCurrentItem(0);
+                            CommonUtils.showSnackbarMessage(getString(R.string.select_category_for_all_images), true, true, parentLayoutForMessages, ImageSliderActivity.this);
+                        }
+                        else if (!TextUtils.isEmpty(imagesInformation.get(position).getLabelName()) && !flag) {
+                            for (int i = 1; i < imagesInformation.size(); i++) {
+                                imagesInformation.get(i).setLabelName(imagesInformation.get(position).getLabelName());
+                                imagesInformation.get(i).setCoverageTye(imagesInformation.get(position).getCoverageTye());
+                                imagesInformation.get(i).setIsDamage(imagesInformation.get(position).isDamage());
+                                imagesInformation.get(i).setOverview(imagesInformation.get(position).isOverview());
+                                imagesInformation.get(i).setPointOfOrigin(imagesInformation.get(position).isPointOfOrigin());
+                            }
+
+                            if(position == 0 && setAdapter){
+                                setAdapter = false;
+                                mAdapter = new ImagePagerAdapter(getSupportFragmentManager());
+                                mPager.setAdapter(mAdapter);
+                                mPager.setPageTransformer(true, new DepthPageTransformer());
+                            }
+                            flag = true;
+                        }
+
+                    }
 
                 }
 
                 @Override
                 public void onPageSelected(int position) {
+
                     if ((int) holder.hiddenText.getTag() == position) {
                         lastSelectedPos = position;
                         onLastSelectionChangeListener.onLastSelectionChanged(position);
                         holder.imageView.setBackgroundResource(R.drawable.image_selection_border);
                         notifyItemChanged(position);
+
                     }
+
                 }
 
                 @Override
                 public void onPageScrollStateChanged(int state) {
-
                 }
             });
+
+
+
+
         }
+
+
 
         @Override
         public int getItemCount() {
@@ -363,6 +443,8 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
                 hiddenText = view.findViewById(R.id.hiddenText);
             }
         }
+
+
     }
 
 

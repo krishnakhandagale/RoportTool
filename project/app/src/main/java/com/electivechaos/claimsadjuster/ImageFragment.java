@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
@@ -17,6 +18,7 @@ import android.support.v4.view.ViewPager;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -69,6 +71,7 @@ public class ImageFragment extends Fragment {
     private ImageButton freqNotes, lastNote;
 
     private Label label;
+    private String quickLabel;
     private ImageDetailsPOJO imageDetailsPOJO;
     private String reportId;
 
@@ -78,6 +81,7 @@ public class ImageFragment extends Fragment {
     public static ImageFragment init(ImageDetailsPOJO imageDetails, int position, ViewPager mPager, Label label, String reportIdd) {
         ImageFragment imageFragment = new ImageFragment();
         mPagerInstance = mPager;
+
         categoryListDBHelper = CategoryListDBHelper.getInstance(mPager.getContext());
         Bundle args = new Bundle();
 
@@ -91,7 +95,9 @@ public class ImageFragment extends Fragment {
         args.putString("imgDateTime", imageDetails.getImageDateTime());
         args.putString("imgGeoTag", imageDetails.getImageGeoTag());
         args.putInt("position", position);
-        args.putParcelable("label", label);
+
+            args.putParcelable("label", label);
+            args.putString("quickLabel", imageDetails.getLabelName());
 
         args.putParcelable("imageDetailsPojo", imageDetails);
         args.putString("reportId", reportIdd);
@@ -103,7 +109,6 @@ public class ImageFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         imageUrl = getArguments() != null ? getArguments().getString("imageUrl") : "";
         position = getArguments() != null ? getArguments().getInt("position") : 0;
         imgDescription = getArguments() != null ? getArguments().getString("description") : "";
@@ -115,6 +120,7 @@ public class ImageFragment extends Fragment {
         imgDateTime = getArguments() != null ? getArguments().getString("imgDateTime") : "";
         imgGeoTag = getArguments() != null ? getArguments().getString("imgGeoTag") : "";
         label = getArguments() != null ? (Label) getArguments().getParcelable("label") : new Label();
+        quickLabel = getArguments() != null ? getArguments().getString("quickLabel") : "";
         reportId = getArguments() != null ? getArguments().getString("reportId") : null;
 
         imageDetailsPOJO = getArguments() != null ? (ImageDetailsPOJO) getArguments().getParcelable("imageDetailsPojo") : new ImageDetailsPOJO();
@@ -129,8 +135,11 @@ public class ImageFragment extends Fragment {
             imgDateTime = savedInstanceState.getString("imgDateTime");
             imgGeoTag = savedInstanceState.getString("imgGeoTag");
             label = savedInstanceState.getParcelable("label");
+            quickLabel = savedInstanceState.getString("quickLabel");
         }
     }
+
+
 
 
     @Override
@@ -158,7 +167,14 @@ public class ImageFragment extends Fragment {
             }
         });
 
-        selectCategory.setText(label.getName());
+        Log.d("FUCK: CREATE VIEW", quickLabel+"-----"+position);
+
+
+        if(label != null && !TextUtils.isEmpty(label.getName())) {
+            selectCategory.setText(label.getName());
+        }else if(quickLabel != null && !TextUtils.isEmpty(quickLabel)){
+            selectCategory.setText(quickLabel);
+        }
 
 
         if (coverageType == null || coverageType.isEmpty()) {
@@ -388,7 +404,18 @@ public class ImageFragment extends Fragment {
                     @Override
                     public void onClick(final DialogInterface dialogInterface, int pos) {
                         selectCategory.setText(categories.get(pos).getCategoryName().toString());
-                        label = categoryListDBHelper.updateImageLabel(imageDetailsPOJO, categories.get(pos).getCategoryName(), reportId);
+                        if(label != null) {
+                            label = categoryListDBHelper.updateImageLabel(imageDetailsPOJO, categories.get(pos).getCategoryName(), reportId);
+                            if(label != null) {
+                                imageDetailsPOJO.setLabelName(label.getName());
+                                monitorImageDetailsChange.setLabelName(label.getName(), position);
+                            }
+
+                        } else if(quickLabel != null) {
+                            imageDetailsPOJO.setLabelName(categories.get(pos).getCategoryName().toString());
+                            monitorImageDetailsChange.setLabelName(categories.get(pos).getCategoryName().toString(), position);
+                            quickLabel = categories.get(pos).getCategoryName().toString();
+                        }
                         dialogInterface.dismiss();
 
                     }
@@ -505,6 +532,8 @@ public class ImageFragment extends Fragment {
 
         Glide.with(this).load("file://" + imageUrl).into(iv);
 
+
+
         return layoutView;
     }
 
@@ -554,6 +583,7 @@ public class ImageFragment extends Fragment {
         outState.putString("imgDateTime", imgDateTime);
         outState.putString("imgGeoTag", imgGeoTag);
         outState.putParcelable("label", label);
+        outState.putString("quickLabel", quickLabel);
     }
 
     public interface MonitorImageDetailsChange {
@@ -573,6 +603,8 @@ public class ImageFragment extends Fragment {
         void setImageDateTime(String dateTime, int position);
 
         void setGeoTag(String geoTag, int position);
+
+        void setLabelName(String labelName, int position);
 
 
     }
