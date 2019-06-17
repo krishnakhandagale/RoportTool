@@ -66,8 +66,8 @@ public class DBSelectedImagesListTsk extends AsyncTask<String, Integer, ArrayLis
             ImageDetailsPOJO imgObj = categoryListDBHelper.appendCapturedImages(label, imageList);
             ArrayList<ImageDetailsPOJO> imageList = new ArrayList<>();
             imageList.add(imgObj);
-            return imageList;        }
-
+            return imageList;
+        }
         return null;
     }
 
@@ -75,5 +75,7 @@ public class DBSelectedImagesListTsk extends AsyncTask<String, Integer, ArrayLis
     protected void onPostExecute(ArrayList result) {
         taskCompleteCallback.onPostExecute(result, type);
     }
+
+
 }
 
