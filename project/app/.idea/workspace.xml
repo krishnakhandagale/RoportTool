@@ -11,28 +11,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7bd36722-3fe5-480d-86c2-111aa8e058a5" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/caches/gradle_models.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/gradle_models.ser" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/local.properties" beforeDir="false" afterPath="$PROJECT_DIR$/local.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ImageFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ImageFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/asynctasks/DBSelectedImagesListTsk.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/asynctasks/DBSelectedImagesListTsk.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/database/CategoryListDBHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/database/CategoryListDBHelper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/fragments/AddEditReportSelectedImagesFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/fragments/AddEditReportSelectedImagesFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/fragments/ClaimDetailsFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/fragments/ClaimDetailsFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/fragments/PerilListMenuFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/fragments/PerilListMenuFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/fragments/PointOfOriginFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/fragments/PointOfOriginFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/fragments/PropertyDetailsFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/fragments/PropertyDetailsFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/pojo/ImageDetailsPOJO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/pojo/ImageDetailsPOJO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ui/AddEditReportActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ui/AddEditReportActivity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ui/ImageSliderActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ui/ImageSliderActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/res/layout-land/fragment_select_photo.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout-land/fragment_select_photo.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/res/layout/claim_details_layout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/claim_details_layout.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/res/layout/fragment_point_of_origin.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/fragment_point_of_origin.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/res/layout/fragment_property_details.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/fragment_property_details.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/res/layout/fragment_select_photo.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/fragment_select_photo.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/res/layout/image_slider_layout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/image_slider_layout.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/res/layout/peril_list_menu_fragment.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/peril_list_menu_fragment.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/values/strings.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -110,23 +92,19 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/fragments/PropertyDetailsFragment.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ImageFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="446">
-              <caret line="556" column="33" selection-start-line="556" selection-start-column="33" selection-end-line="556" selection-end-column="33" />
+            <state relative-caret-position="2570">
+              <caret line="402" column="46" lean-forward="true" selection-start-line="402" selection-start-column="46" selection-end-line="402" selection-end-column="46" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/fragments/PerilListMenuFragment.java">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ui/AddEditReportActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="285">
-              <caret line="68" column="59" selection-start-line="68" selection-start-column="59" selection-end-line="68" selection-end-column="59" />
-              <folding>
-                <element signature="e#4484#4689#0" expanded="true" />
-                <element signature="e#4688#4689#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="354">
+              <caret line="1463" column="106" selection-start-line="1463" selection-start-column="106" selection-end-line="1463" selection-end-column="106" />
             </state>
           </provider>
         </entry>
@@ -157,22 +135,12 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/res/layout-land/fragment_select_photo.xml">
           <provider editor-type-id="android-designer2" />
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="312">
+            <state relative-caret-position="1950">
               <caret line="130" column="42" lean-forward="true" selection-start-line="130" selection-start-column="42" selection-end-line="130" selection-end-column="42" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/res/layout/peril_list_menu_fragment.xml">
-          <provider editor-type-id="android-designer2" />
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="387">
-              <caret line="46" column="40" selection-start-line="46" selection-start-column="40" selection-end-line="46" selection-end-column="40" />
             </state>
           </provider>
         </entry>
@@ -195,6 +163,15 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="297">
               <caret line="117" column="20" selection-start-line="117" selection-start-column="20" selection-end-line="117" selection-end-column="20" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/database/CategoryListDBHelper.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="51">
+              <caret line="1354" column="17" selection-start-line="1354" selection-start-column="17" selection-end-line="1354" selection-end-column="17" />
             </state>
           </provider>
         </entry>
@@ -276,8 +253,6 @@
         <option value="$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/asynctasks/DBQuickSelectedImagesListTsk.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/pojo/ImageDetailsPOJO.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/database/CategoryListDBHelper.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ui/AddEditReportActivity.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ImageFragment.java" />
         <option value="$PROJECT_DIR$/src/main/res/layout/fragment_property_details.xml" />
         <option value="$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/fragments/PropertyDetailsFragment.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/fragments/PerilListMenuFragment.java" />
@@ -288,6 +263,8 @@
         <option value="$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ui/ImageSliderActivity.java" />
         <option value="$PROJECT_DIR$/src/main/res/layout/fragment_select_photo.xml" />
         <option value="$PROJECT_DIR$/src/main/res/layout-land/fragment_select_photo.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ImageFragment.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ui/AddEditReportActivity.java" />
       </list>
     </option>
   </component>
@@ -614,7 +591,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ui/AddEditReportActivity.java</url>
-          <line>1733</line>
+          <line>1687</line>
           <properties />
           <option name="timeStamp" value="10" />
         </line-breakpoint>
@@ -728,7 +705,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ui/AddEditReportActivity.java</url>
-          <line>1461</line>
+          <line>1460</line>
           <properties />
           <option name="timeStamp" value="45" />
         </line-breakpoint>
@@ -746,7 +723,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ui/AddEditReportActivity.java</url>
-          <line>1464</line>
+          <line>1463</line>
           <properties />
           <option name="timeStamp" value="51" />
         </line-breakpoint>
@@ -782,13 +759,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ImageFragment.java</url>
-          <line>426</line>
+          <line>410</line>
           <properties />
           <option name="timeStamp" value="79" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ImageFragment.java</url>
-          <line>430</line>
+          <line>414</line>
           <properties />
           <option name="timeStamp" value="80" />
         </line-breakpoint>
@@ -908,7 +885,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ImageFragment.java</url>
-          <line>191</line>
+          <line>175</line>
           <properties />
           <option name="timeStamp" value="115" />
         </line-breakpoint>
@@ -1010,7 +987,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ui/AddEditReportActivity.java</url>
-          <line>1463</line>
+          <line>1462</line>
           <properties method="onPostExecute" />
           <option name="timeStamp" value="50" />
         </line-breakpoint>
@@ -1296,13 +1273,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ui/AddEditReportActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="24900">
-          <caret line="1761" selection-start-line="1761" selection-end-line="1761" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/pojo/Label.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1605">
@@ -1331,24 +1301,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/database/CategoryListDBHelper.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="19845">
-          <caret line="1349" column="92" selection-start-line="1349" selection-start-column="92" selection-end-line="1349" selection-end-column="92" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/DepthPageTransformer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-375">
           <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ImageFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="185">
-          <caret line="106" selection-start-line="106" selection-end-line="106" />
         </state>
       </provider>
     </entry>
@@ -1462,8 +1418,29 @@
     <entry file="file://$PROJECT_DIR$/src/main/res/layout-land/fragment_select_photo.xml">
       <provider editor-type-id="android-designer2" />
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="312">
+        <state relative-caret-position="1950">
           <caret line="130" column="42" lean-forward="true" selection-start-line="130" selection-start-column="42" selection-end-line="130" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/database/CategoryListDBHelper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="1354" column="17" selection-start-line="1354" selection-start-column="17" selection-end-line="1354" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ImageFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2570">
+          <caret line="402" column="46" lean-forward="true" selection-start-line="402" selection-start-column="46" selection-end-line="402" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ui/AddEditReportActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="354">
+          <caret line="1463" column="106" selection-start-line="1463" selection-start-column="106" selection-end-line="1463" selection-end-column="106" />
         </state>
       </provider>
     </entry>
