@@ -34,6 +34,7 @@ import com.electivechaos.claimsadjuster.interfaces.OnGenerateReportClickListener
 import com.electivechaos.claimsadjuster.interfaces.OnPropertyDetailsClickListener;
 import com.electivechaos.claimsadjuster.interfaces.OnSaveReportClickListener;
 import com.electivechaos.claimsadjuster.interfaces.QuickCaptureListener;
+import com.electivechaos.claimsadjuster.interfaces.QuickGalleryListener;
 import com.electivechaos.claimsadjuster.pojo.BuildingTypePOJO;
 import com.electivechaos.claimsadjuster.pojo.FoundationPOJO;
 import com.electivechaos.claimsadjuster.pojo.PropertyDetailsPOJO;
@@ -64,7 +65,10 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
     private int month;
     private int year;
     private boolean isFabOpen = false;
-    private FloatingActionButton showFabBtn, fabGoNextBtn, fabGoBackBtn, fabAddLabelBtn, fabGenerateReportBtn, fabSaveReportBtn;
+    private FloatingActionButton showFabBtn, fabGoNextBtn, fabGoBackBtn, fabGalleryBtn, fabGenerateReportBtn, fabSaveReportBtn;
+
+//    private FloatingActionButton fabAddLabelBtn;
+
     private Animation fab_open, fab_close;
     private TextView txtDate, menuRoofSystem, menuSiding, menuFoundation, menuBuildingType;
     private NextButtonClickListener nextButtonClickListener;
@@ -80,6 +84,7 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
     private FloatingActionButton selectPhoto;
     private QuickCaptureListener quickCaptureListener;
 
+    private QuickGalleryListener quickGalleryListener;
 
     @Override
     public void onStart() {
@@ -100,7 +105,10 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
         showFabBtn = view.findViewById(R.id.showFab);
         fabGoNextBtn = view.findViewById(R.id.fabGoNext);
         fabGoBackBtn = view.findViewById(R.id.fabGoBack);
-        fabAddLabelBtn = view.findViewById(R.id.fabAddLabel);
+        fabGalleryBtn = view.findViewById(R.id.fabGallery);
+
+//        fabAddLabelBtn = view.findViewById(R.id.fabAddLabel);
+
         fabGenerateReportBtn = view.findViewById(R.id.fabGenerateReport);
         fabSaveReportBtn = view.findViewById(R.id.fabSaveReport);
 
@@ -157,13 +165,21 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
             }
         });
 
-        fabAddLabelBtn.setOnClickListener(new View.OnClickListener() {
+        fabGalleryBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onLabelAddClickListener.onLabelAddClick();
+                quickGalleryListener.onGalleryOpen();
                 animateFAB();
             }
         });
+
+//        fabAddLabelBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                onLabelAddClickListener.onLabelAddClick();
+//                animateFAB();
+//            }
+//        });
 
         fabGenerateReportBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -469,7 +485,9 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
             showFabBtn.setImageResource(R.drawable.ic_more_vertical_white);
             fabGoNextBtn.startAnimation(fab_close);
             fabGoBackBtn.startAnimation(fab_close);
-            fabAddLabelBtn.startAnimation(fab_close);
+            fabGalleryBtn.startAnimation(fab_close);
+
+//            fabAddLabelBtn.startAnimation(fab_close);
             fabGenerateReportBtn.startAnimation(fab_close);
             fabSaveReportBtn.startAnimation(fab_close);
 
@@ -478,7 +496,9 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
 
             fabGoNextBtn.setClickable(false);
             fabGoBackBtn.setClickable(false);
-            fabAddLabelBtn.setClickable(false);
+            fabGalleryBtn.setClickable(false);
+
+//            fabAddLabelBtn.setClickable(false);
             fabGenerateReportBtn.setClickable(false);
             fabSaveReportBtn.setClickable(false);
             isFabOpen = false;
@@ -487,7 +507,9 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
             showFabBtn.setImageResource(R.drawable.ic_close_white);
             fabGoNextBtn.startAnimation(fab_open);
             fabGoBackBtn.startAnimation(fab_open);
-            fabAddLabelBtn.startAnimation(fab_open);
+            fabGalleryBtn.startAnimation(fab_open);
+
+//            fabAddLabelBtn.startAnimation(fab_open);
             fabGenerateReportBtn.startAnimation(fab_open);
             fabSaveReportBtn.startAnimation(fab_open);
 
@@ -496,7 +518,9 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
 
             fabGoNextBtn.setClickable(true);
             fabGoBackBtn.setClickable(true);
-            fabAddLabelBtn.setClickable(true);
+            fabGalleryBtn.setClickable(true);
+
+//            fabAddLabelBtn.setClickable(true);
             fabGenerateReportBtn.setClickable(true);
             fabSaveReportBtn.setClickable(true);
             isFabOpen = true;
@@ -527,6 +551,7 @@ public class PropertyDetailsFragment extends Fragment implements DatePickerDialo
             onGenerateReportClickListener = (OnGenerateReportClickListener) getActivity();
             onPropertyDetailsClickListener = (OnPropertyDetailsClickListener) getActivity();
             quickCaptureListener = (QuickCaptureListener) getActivity();
+            quickGalleryListener = (QuickGalleryListener) getActivity();
 
         } catch (ClassCastException ex) {
             ex.printStackTrace();
