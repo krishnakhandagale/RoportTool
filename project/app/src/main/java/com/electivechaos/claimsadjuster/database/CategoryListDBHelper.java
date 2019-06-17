@@ -1345,6 +1345,13 @@ public class CategoryListDBHelper extends SQLiteOpenHelper {
     }
 
 
+    public void addQuickLabelAndImages(ArrayList<ImageDetailsPOJO> imageDetailsPOJOArrayList, String reportId){
+        for(int i = 0; i < imageDetailsPOJOArrayList.size(); i++){
+            addQuickLabel(imageDetailsPOJOArrayList.get(i), imageDetailsPOJOArrayList.get(i).getLabelName(), reportId);
+        }
+    }
+
+
     public Label updateImageLabel(ImageDetailsPOJO imageDetailsPOJO, String labelName, String reportId) {
 
 
