@@ -19,12 +19,14 @@ import com.electivechaos.claimsadjuster.interfaces.NextButtonClickListener;
 import com.electivechaos.claimsadjuster.interfaces.OnGenerateReportClickListener;
 import com.electivechaos.claimsadjuster.interfaces.OnSaveReportClickListener;
 import com.electivechaos.claimsadjuster.interfaces.QuickCaptureListener;
+import com.electivechaos.claimsadjuster.interfaces.QuickGalleryListener;
 
 
 public class PointOfOriginFragment extends Fragment {
 
     private Boolean isFabOpen = false;
-    private FloatingActionButton showFabBtn, fabGoNextBtn, fabGoBackBtn, fabAddLabelBtn, fabGenerateReportBtn, fabSaveReportBtn;
+    private FloatingActionButton showFabBtn, fabGoNextBtn, fabGoBackBtn, fabGalleryBtn, fabGenerateReportBtn, fabSaveReportBtn;
+//    private FloatingActionButton fabAddLabelBtn;
     private Animation fab_open, fab_close;
     private NextButtonClickListener nextButtonClickListener;
     private BackButtonClickListener backButtonClickListener;
@@ -32,6 +34,7 @@ public class PointOfOriginFragment extends Fragment {
     private OnSaveReportClickListener onSaveReportClickListener;
     private OnGenerateReportClickListener onGenerateReportClickListener;
     private QuickCaptureListener quickCaptureListener;
+    private QuickGalleryListener quickGalleryListener;
 
     private FloatingActionButton selectPhoto;
 
@@ -42,7 +45,9 @@ public class PointOfOriginFragment extends Fragment {
         showFabBtn = view.findViewById(R.id.showFab);
         fabGoNextBtn = view.findViewById(R.id.fabGoNext);
         fabGoBackBtn = view.findViewById(R.id.fabGoBack);
-        fabAddLabelBtn = view.findViewById(R.id.fabAddLabel);
+        fabGalleryBtn = view.findViewById(R.id.fabGallery);
+
+       // fabAddLabelBtn = view.findViewById(R.id.fabAddLabel);
         fabGenerateReportBtn = view.findViewById(R.id.fabGenerateReport);
         fabSaveReportBtn = view.findViewById(R.id.fabSaveReport);
 
@@ -74,13 +79,21 @@ public class PointOfOriginFragment extends Fragment {
             }
         });
 
-        fabAddLabelBtn.setOnClickListener(new View.OnClickListener() {
+        fabGalleryBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onLabelAddClickListener.onLabelAddClick();
+                quickGalleryListener.onGalleryOpen();
                 animateFAB();
             }
         });
+
+//        fabAddLabelBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                onLabelAddClickListener.onLabelAddClick();
+//                animateFAB();
+//            }
+//        });
 
         fabGenerateReportBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,7 +129,9 @@ public class PointOfOriginFragment extends Fragment {
             showFabBtn.setImageResource(R.drawable.ic_more_vertical_white);
             fabGoNextBtn.startAnimation(fab_close);
             fabGoBackBtn.startAnimation(fab_close);
-            fabAddLabelBtn.startAnimation(fab_close);
+            fabGalleryBtn.startAnimation(fab_close);
+
+//            fabAddLabelBtn.startAnimation(fab_close);
             fabGenerateReportBtn.startAnimation(fab_close);
             fabSaveReportBtn.startAnimation(fab_close);
 
@@ -125,7 +140,9 @@ public class PointOfOriginFragment extends Fragment {
 
             fabGoNextBtn.setClickable(false);
             fabGoBackBtn.setClickable(false);
-            fabAddLabelBtn.setClickable(false);
+            fabGalleryBtn.setClickable(false);
+
+//            fabAddLabelBtn.setClickable(false);
             fabGenerateReportBtn.setClickable(false);
             fabSaveReportBtn.setClickable(false);
             isFabOpen = false;
@@ -134,7 +151,9 @@ public class PointOfOriginFragment extends Fragment {
             showFabBtn.setImageResource(R.drawable.ic_close_white);
             fabGoNextBtn.startAnimation(fab_open);
             fabGoBackBtn.startAnimation(fab_open);
-            fabAddLabelBtn.startAnimation(fab_open);
+            fabGalleryBtn.startAnimation(fab_open);
+
+//            fabAddLabelBtn.startAnimation(fab_open);
             fabGenerateReportBtn.startAnimation(fab_open);
             fabSaveReportBtn.startAnimation(fab_open);
 
@@ -143,7 +162,9 @@ public class PointOfOriginFragment extends Fragment {
 
             fabGoNextBtn.setClickable(true);
             fabGoBackBtn.setClickable(true);
-            fabAddLabelBtn.setClickable(true);
+            fabGalleryBtn.setClickable(true);
+
+//            fabAddLabelBtn.setClickable(true);
             fabGenerateReportBtn.setClickable(true);
             fabSaveReportBtn.setClickable(true);
             isFabOpen = true;
@@ -161,6 +182,7 @@ public class PointOfOriginFragment extends Fragment {
             onSaveReportClickListener = (OnSaveReportClickListener) getActivity();
             onGenerateReportClickListener = (OnGenerateReportClickListener) getActivity();
             quickCaptureListener = (QuickCaptureListener) getActivity();
+            quickGalleryListener = (QuickGalleryListener) getActivity();
         } catch (ClassCastException ex) {
             ex.printStackTrace();
         }
