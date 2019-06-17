@@ -42,6 +42,7 @@ import com.electivechaos.claimsadjuster.R;
 import com.electivechaos.claimsadjuster.SingleMediaScanner;
 import com.electivechaos.claimsadjuster.adapters.CustomCategoryPopUpAdapter;
 import com.electivechaos.claimsadjuster.adapters.DrawerMenuListAdapter;
+import com.electivechaos.claimsadjuster.asynctasks.DBQuickSelectedImagesListTsk;
 import com.electivechaos.claimsadjuster.asynctasks.DBReportLabelList;
 import com.electivechaos.claimsadjuster.asynctasks.DBSelectedImagesListTsk;
 import com.electivechaos.claimsadjuster.asynctasks.DBSelectedImagesTask;
@@ -67,10 +68,12 @@ import com.electivechaos.claimsadjuster.interfaces.OnPropertyDetailsClickListene
 import com.electivechaos.claimsadjuster.interfaces.OnSaveReportClickListener;
 import com.electivechaos.claimsadjuster.interfaces.OnSetImageFileUriListener;
 import com.electivechaos.claimsadjuster.interfaces.QuickCaptureListener;
+import com.electivechaos.claimsadjuster.interfaces.QuickGalleryListener;
 import com.electivechaos.claimsadjuster.interfaces.SelectedImagesDataInterface;
 import com.electivechaos.claimsadjuster.listeners.OnMediaScannerListener;
 import com.electivechaos.claimsadjuster.listeners.OnStarterFragmentDataChangeListener;
 import com.electivechaos.claimsadjuster.pojo.Category;
+import com.electivechaos.claimsadjuster.pojo.Image;
 import com.electivechaos.claimsadjuster.pojo.ImageDetailsPOJO;
 import com.electivechaos.claimsadjuster.pojo.Label;
 import com.electivechaos.claimsadjuster.pojo.ParentMenuItem;
@@ -94,7 +97,7 @@ import java.util.Observer;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Pattern;
 
-public class AddEditReportActivity extends AppCompatActivity implements DrawerMenuListAdapter.OnLabelAddClickListener, AddEditLabelInterface, ClaimDetailsDataInterface, LossLocationDataInterface, SelectedImagesDataInterface, NextButtonClickListener, BackButtonClickListener, OnSaveReportClickListener, OnGenerateReportClickListener, OnPropertyDetailsClickListener, OnPerilSelectionListener, OnSetImageFileUriListener, OnStarterFragmentDataChangeListener, Observer, QuickCaptureListener {
+public class AddEditReportActivity extends AppCompatActivity implements DrawerMenuListAdapter.OnLabelAddClickListener, AddEditLabelInterface, ClaimDetailsDataInterface, LossLocationDataInterface, SelectedImagesDataInterface, NextButtonClickListener, BackButtonClickListener, OnSaveReportClickListener, OnGenerateReportClickListener, OnPropertyDetailsClickListener, OnPerilSelectionListener, OnSetImageFileUriListener, OnStarterFragmentDataChangeListener, Observer, QuickCaptureListener, QuickGalleryListener {
 
     private static final int SHOWPREFERENCEACTIVITY = 486;
     private static final int ADD_CATEGORY_REQUEST = 10;
@@ -105,6 +108,8 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
     private static final int SET_QUICK_CLICKED_CAPTURED_DETAILS = 5;
     private static final int REQUEST_CAMERA = 0;
     private static final int REQUEST_QUICK_CAMERA = 250;
+    private static final int REQUEST_QUICK_GALLERY = 260;
+    private static final int ADD_QUICK_IMAGE_DETAILS = 270;
 
     private static final int IMAGE_ONE_REQUEST = 100;
     private static final int IMAGE_TWO_REQUEST = 200;
@@ -1443,7 +1448,63 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
             case REQUEST_QUICK_CAMERA:
                 capturedImage = data.getByteArrayExtra("capturedImage");
                 onImageCapturedResult(data);
+                break;
 
+            case ADD_QUICK_IMAGE_DETAILS:
+                ArrayList<ImageDetailsPOJO> selectedQuickImageList = (ArrayList<ImageDetailsPOJO>) data.getExtras().getSerializable("selected_images");
+
+                if (selectedQuickImageList != null) {
+
+                    new DBQuickSelectedImagesListTsk(categoryListDBHelper, "insert_quick_selected_images", reportPOJO.getId(), selectedQuickImageList, new AsyncTaskStatusCallback() {
+                        @Override
+                        public void onPostExecute(Object object, String type) {
+                            ArrayList<ImageDetailsPOJO> returnedImagesList = (ArrayList<ImageDetailsPOJO>) object;
+                        }
+
+                        @Override
+                        public void onPreExecute() {
+
+                        }
+
+                        @Override
+                        public void onProgress(int progress) {
+
+                        }
+                    }).execute();
+
+
+                }
+
+
+                new DBReportLabelList(this, categoryListDBHelper, reportPOJO.getId(), new AsyncTaskStatusCallback() {
+                    @Override
+                    public void onPostExecute(Object object, String type) {
+                        ArrayList<Label> returnedLabelList = (ArrayList<Label>) object;
+                        reportPOJO.setLabelArrayList(returnedLabelList);
+                        List<Label> inspectionChildMenu = (List<Label>) reportPOJO.getLabelArrayList().clone();
+                        childMenuItems.put("Inspection", inspectionChildMenu);
+
+                        if (parentMenuItems != null && parentMenuItems.size() > 0) {
+                            drawerMenuListAdapter = new DrawerMenuListAdapter(AddEditReportActivity.this, parentMenuItems, childMenuItems);
+                            mExpandableListView.setAdapter(drawerMenuListAdapter);
+                            mExpandableListView.setIndicatorBounds(0, 20);
+                        }
+                    }
+
+                    @Override
+                    public void onPreExecute() {
+
+                    }
+
+                    @Override
+                    public void onProgress(int progress) {
+
+                    }
+                }).execute();
+                break;
+
+            case REQUEST_QUICK_GALLERY:
+                onSelectImagesFromGallery(data, REQUEST_QUICK_GALLERY);
                 break;
 
             case IMAGE_ONE_REQUEST_STARTER:
@@ -1576,6 +1637,87 @@ public class AddEditReportActivity extends AppCompatActivity implements DrawerMe
         if (result)
             cameraIntent(REQUEST_QUICK_CAMERA);
     }
+
+
+    @Override
+    public void onGalleryOpen() {
+        boolean result = PermissionUtilities.quickCapturePermission(AddEditReportActivity.this, AddEditReportActivity.this, PermissionUtilities.MY_APP_QUICK_PHOTO_CAPTURE);
+        if (result)
+            galleryIntent(REQUEST_QUICK_GALLERY);
+    }
+
+
+    private void galleryIntent(int galleryRequestCode) {
+        Intent intent = new Intent(AddEditReportActivity.this, ImagePickerActivity.class);
+        if (galleryRequestCode != 1) {
+            intent.putExtra("already_selected_images", 0);
+            intent.putExtra("number_of_images_allowed", 300);
+        }
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, galleryRequestCode);
+
+
+    }
+
+    public void onSelectImagesFromGallery(Intent data, final int requestCode) {
+        if (data != null) {
+            onSelectFromGalleryResult(data, requestCode);
+        } else {
+            Snackbar snackbar = Snackbar
+                    .make(parentLayoutForMessages, "Something went wrong.Please try again.", Snackbar.LENGTH_INDEFINITE);
+            snackbar.setAction("RETRY", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    galleryIntent(REQUEST_QUICK_GALLERY);
+                    v.setVisibility(View.GONE);
+                }
+            });
+            View snackBarView = snackbar.getView();
+            snackBarView.setBackgroundColor(ContextCompat.getColor(AddEditReportActivity.this, R.color.color_error));
+            snackbar.show();
+        }
+
+    }
+
+    private void onSelectFromGalleryResult(Intent data, int requestId) {
+        ArrayList<Image> selectedImages;
+        ArrayList<ImageDetailsPOJO> tmpSelectedImageList;
+
+        tmpSelectedImageList = new ArrayList<>();
+        selectedImages = data.getParcelableArrayListExtra("ImageUrls");
+        if (requestId == REQUEST_QUICK_GALLERY) {
+            ArrayList<ImageDetailsPOJO> imagesInformation = new ArrayList<>();
+            for (int i = 0; i < selectedImages.size(); i++) {
+                ImageDetailsPOJO imgObj = new ImageDetailsPOJO();
+                imgObj.setImageUrl(selectedImages.get(i).getPath());
+                imgObj.setTitle("");
+                imgObj.setDescription("");
+                imgObj.setCoverageTye(labelDefaultCoverageType);
+                File file = new File(selectedImages.get(i).getPath());
+                if (file.exists()) {
+                    imgObj.setImageName(file.getName());
+                    Date date = new Date(file.lastModified());
+                    String dateString = new SimpleDateFormat("dd/MM/yyyy").format(date);
+                    String timeString = new SimpleDateFormat("HH:mm:ss a").format(date);
+                    imgObj.setImageDateTime(dateString + " at " + timeString);
+                }
+                imgObj.setImageGeoTag("");
+                imagesInformation.add(imgObj);
+
+                tmpSelectedImageList.add(imgObj);
+
+            }
+
+            Intent intent = new Intent(AddEditReportActivity.this, ImageSliderActivity.class);
+            intent.putExtra("ImageList", tmpSelectedImageList);
+            intent.putExtra("labelPosition", labelPosition);
+            intent.putExtra("label", label);
+            intent.putExtra("reportId", reportPOJO.getId());
+            intent.putExtra("labelDefaultCoverageType", labelDefaultCoverageType);
+            startActivityForResult(intent, ADD_QUICK_IMAGE_DETAILS);
+        }
+    }
+
 
     private void cameraIntent(int requestId) {
 
