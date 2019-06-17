@@ -31,6 +31,7 @@ public class ImageDetailsPOJO implements Parcelable {
     private String imageName;
     private String imageDateTime;
     private String imageGeoTag;
+    private String labelName;
 
     protected ImageDetailsPOJO(Parcel in) {
         imageId = in.readString();
@@ -44,6 +45,7 @@ public class ImageDetailsPOJO implements Parcelable {
         imageName = in.readString();
         imageDateTime = in.readString();
         imageGeoTag = in.readString();
+        labelName = in.readString();
 
     }
 
@@ -56,6 +58,7 @@ public class ImageDetailsPOJO implements Parcelable {
         this.imageName = "";
         this.imageDateTime = "";
         this.imageGeoTag = "";
+        this.labelName = "";
     }
 
     public boolean isPointOfOrigin() {
@@ -150,6 +153,15 @@ public class ImageDetailsPOJO implements Parcelable {
         this.imageGeoTag = imageGeoTag;
     }
 
+    public String getLabelName() {
+        return labelName;
+    }
+
+    public void setLabelName(String labelName) {
+        this.labelName = labelName;
+    }
+
+
     @Override
     public int describeContents() {
         return 0;
@@ -169,5 +181,6 @@ public class ImageDetailsPOJO implements Parcelable {
         dest.writeString(imageName);
         dest.writeString(imageDateTime);
         dest.writeString(imageGeoTag);
+        dest.writeString(labelName);
     }
 }
