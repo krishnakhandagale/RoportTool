@@ -619,7 +619,9 @@ public class ImageFragment extends Fragment {
                     String categoryName = dataFromActivity.get("categoryName").toString();
                     selectCategory.setText(categoryName);
                     label = categoryListDBHelper.updateImageLabel(imageDetailsPOJO, categoryName, reportId);
-
+                    imageDetailsPOJO.setLabelName(label.getName());
+                    monitorImageDetailsChange.setLabelName(label.getName(), position);
+                 //   quickLabel = label.getName();
                 }
             }
         }
