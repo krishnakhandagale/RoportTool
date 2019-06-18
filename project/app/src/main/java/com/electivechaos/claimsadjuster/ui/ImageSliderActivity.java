@@ -68,6 +68,7 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
 
     private Label label;
     boolean setAdapter = true;
+    boolean isOrientation = true;
 
 
     private OnLastSelectionChangeListener onLastSelectionChangeListener;
@@ -113,6 +114,7 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
             labelPosition = savedInstanceState.getInt("labelgeoTagPosition");
             labelDefaultCoverageType = savedInstanceState.getString("labelDefaultCoverageType");
             label = savedInstanceState.getParcelable("label");
+            flag = savedInstanceState.getBoolean("flag");
         }
 
         selectImagesBtn = findViewById(R.id.selectImages);
@@ -215,6 +217,7 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
         outState.putInt("labelPosition", labelPosition);
         outState.putString("labelDefaultCoverageType", labelDefaultCoverageType);
         outState.putParcelable("label", label);
+        outState.putBoolean("flag", flag);
 
     }
 
@@ -376,32 +379,31 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
             mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                 @Override
                 public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                    if(position == 0) {
-                        if(TextUtils.isEmpty(imagesInformation.get(position).getLabelName())) {
-                            mPager.setCurrentItem(0);
-                            CommonUtils.showSnackbarMessage(getString(R.string.select_category_for_all_images), true, true, parentLayoutForMessages, ImageSliderActivity.this);
-                        }
-                        else if (!TextUtils.isEmpty(imagesInformation.get(position).getLabelName()) && !flag) {
-                            for (int i = 1; i < imagesInformation.size(); i++) {
-                                imagesInformation.get(i).setLabelName(imagesInformation.get(position).getLabelName());
-                                imagesInformation.get(i).setCoverageTye(imagesInformation.get(position).getCoverageTye());
-                                imagesInformation.get(i).setIsDamage(imagesInformation.get(position).isDamage());
-                                imagesInformation.get(i).setOverview(imagesInformation.get(position).isOverview());
-                                imagesInformation.get(i).setPointOfOrigin(imagesInformation.get(position).isPointOfOrigin());
+
+                        if (position == 0) {
+                            if (TextUtils.isEmpty(imagesInformation.get(position).getLabelName())) {
+                                mPager.setCurrentItem(0);
+                                CommonUtils.showSnackbarMessage(getString(R.string.select_category_for_all_images), true, true, parentLayoutForMessages, ImageSliderActivity.this);
+                            } else if (!TextUtils.isEmpty(imagesInformation.get(position).getLabelName()) && !flag ) {
+                                for (int i = 1; i < imagesInformation.size(); i++) {
+                                    imagesInformation.get(i).setLabelName(imagesInformation.get(position).getLabelName());
+                                    imagesInformation.get(i).setCoverageTye(imagesInformation.get(position).getCoverageTye());
+                                    imagesInformation.get(i).setIsDamage(imagesInformation.get(position).isDamage());
+                                    imagesInformation.get(i).setOverview(imagesInformation.get(position).isOverview());
+                                    imagesInformation.get(i).setPointOfOrigin(imagesInformation.get(position).isPointOfOrigin());
+                                }
+
+                                if (position == 0 && setAdapter) {
+                                    setAdapter = false;
+                                    mAdapter = new ImagePagerAdapter(getSupportFragmentManager());
+                                    mPager.setAdapter(mAdapter);
+                                    mPager.setPageTransformer(true, new DepthPageTransformer());
+                                }
+                                flag = true;
                             }
 
-                            if(position == 0 && setAdapter){
-                                setAdapter = false;
-                                mAdapter = new ImagePagerAdapter(getSupportFragmentManager());
-                                mPager.setAdapter(mAdapter);
-                                mPager.setPageTransformer(true, new DepthPageTransformer());
-                            }
-                            flag = true;
                         }
-
                     }
-
-                }
 
                 @Override
                 public void onPageSelected(int position) {

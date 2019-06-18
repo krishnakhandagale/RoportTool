@@ -12,9 +12,9 @@
   <component name="ChangeListManager">
     <list default="true" id="7bd36722-3fe5-480d-86c2-111aa8e058a5" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/fragments/StarterPhotosFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/fragments/StarterPhotosFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/res/layout-land/starter_fragment_layout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout-land/starter_fragment_layout.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/res/layout/starter_fragment_layout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/starter_fragment_layout.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ImageFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ImageFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ui/ImageSliderActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ui/ImageSliderActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout-land/fragment_select_photo.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout-land/fragment_select_photo.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -91,32 +91,52 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ui/AddEditReportActivity.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ImageFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="20520">
-              <caret line="1469" column="22" selection-start-line="1469" selection-start-column="22" selection-end-line="1469" selection-end-column="22" />
+            <state relative-caret-position="371">
+              <caret line="623" column="19" selection-start-line="623" selection-start-column="19" selection-end-line="623" selection-end-column="19" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ui/ImageSliderActivity.java">
+        <entry file="file://$PROJECT_DIR$/src/main/res/layout-land/fragment_select_photo.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="300">
-              <caret line="65" column="35" selection-start-line="65" selection-start-column="35" selection-end-line="65" selection-end-column="35" />
-              <folding>
-                <element signature="e#11872#11873#0" expanded="true" />
-                <element signature="e#11919#11920#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="-843">
+              <caret line="68" column="40" selection-start-line="68" selection-start-column="40" selection-end-line="68" selection-end-column="40" />
+            </state>
+          </provider>
+          <provider editor-type-id="android-designer2" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ui/AddEditReportActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="258">
+              <caret line="1203" column="54" selection-start-line="1203" selection-start-column="54" selection-end-line="1203" selection-end-column="54" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ui/ImageSliderActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-420">
+              <caret line="116" column="57" selection-start-line="116" selection-start-column="57" selection-end-line="116" selection-end-column="57" />
+              <folding>
+                <element signature="e#11872#11873#0" expanded="true" />
+                <element signature="e#11919#11920#0" expanded="true" />
+                <element signature="e#17219#17220#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/fragments/StarterPhotosFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2664">
-              <caret line="606" selection-start-line="606" selection-end-line="606" />
+            <state relative-caret-position="204">
+              <caret line="247" selection-start-line="247" selection-end-line="247" />
             </state>
           </provider>
         </entry>
@@ -144,30 +164,11 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/fragments/AddEditReportSelectedImagesFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2025">
+            <state relative-caret-position="-255">
               <caret line="204" column="58" selection-start-line="204" selection-start-column="58" selection-end-line="204" selection-end-column="58" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/res/layout/claim_details_layout.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1755">
-              <caret line="117" column="20" selection-start-line="117" selection-start-column="20" selection-end-line="117" selection-end-column="20" />
-            </state>
-          </provider>
-          <provider editor-type-id="android-designer2" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/database/CategoryListDBHelper.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="19920">
-              <caret line="1354" column="17" selection-start-line="1354" selection-start-column="17" selection-end-line="1354" selection-end-column="17" />
             </state>
           </provider>
         </entry>
@@ -195,7 +196,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>ImagePi</find>
       <find>SELECT</find>
       <find>SELECT_</find>
       <find>ImagePickerA</find>
@@ -225,6 +225,7 @@
       <find>selectPhotoBtn</find>
       <find>fabAddLabel</find>
       <find>onA</find>
+      <find>ADD_CATEGORY_REQUEST</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -256,14 +257,14 @@
         <option value="$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/fragments/PointOfOriginFragment.java" />
         <option value="$PROJECT_DIR$/src/main/res/layout/fragment_point_of_origin.xml" />
         <option value="$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/fragments/AddEditReportSelectedImagesFragment.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ui/ImageSliderActivity.java" />
         <option value="$PROJECT_DIR$/src/main/res/layout/fragment_select_photo.xml" />
-        <option value="$PROJECT_DIR$/src/main/res/layout-land/fragment_select_photo.xml" />
-        <option value="$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ImageFragment.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ui/AddEditReportActivity.java" />
         <option value="$PROJECT_DIR$/src/main/res/layout/starter_fragment_layout.xml" />
         <option value="$PROJECT_DIR$/src/main/res/layout-land/starter_fragment_layout.xml" />
         <option value="$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/fragments/StarterPhotosFragment.java" />
+        <option value="$PROJECT_DIR$/src/main/res/layout-land/fragment_select_photo.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ImageFragment.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ui/ImageSliderActivity.java" />
       </list>
     </option>
   </component>
@@ -516,7 +517,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="67" y="25" width="1299" height="743" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Captures" order="0" sideWeight="0.5016949" side_tool="true" weight="0.19233839" />
       <window_info active="true" content_ui="combo" id="Project" order="1" sideWeight="0.49830508" visible="true" weight="0.19233839" />
@@ -603,7 +603,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ui/ImageSliderActivity.java</url>
-          <line>360</line>
+          <line>363</line>
           <properties />
           <option name="timeStamp" value="21" />
         </line-breakpoint>
@@ -873,45 +873,69 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ImageFragment.java</url>
-          <line>111</line>
-          <properties />
-          <option name="timeStamp" value="123" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ImageFragment.java</url>
           <line>101</line>
           <properties />
           <option name="timeStamp" value="124" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ui/ImageSliderActivity.java</url>
-          <line>364</line>
+          <line>367</line>
           <properties />
           <option name="timeStamp" value="126" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ui/ImageSliderActivity.java</url>
-          <line>412</line>
+          <line>414</line>
           <properties />
           <option name="timeStamp" value="127" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ImageFragment.java</url>
-          <line>113</line>
-          <properties />
-          <option name="timeStamp" value="133" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ui/ImageSliderActivity.java</url>
-          <line>379</line>
-          <properties />
-          <option name="timeStamp" value="134" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ImageFragment.java</url>
           <line>82</line>
           <properties />
           <option name="timeStamp" value="135" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ImageFragment.java</url>
+          <line>617</line>
+          <properties />
+          <option name="timeStamp" value="136" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ImageFragment.java</url>
+          <line>620</line>
+          <properties />
+          <option name="timeStamp" value="137" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ImageFragment.java</url>
+          <line>614</line>
+          <properties />
+          <option name="timeStamp" value="139" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ImageFragment.java</url>
+          <line>396</line>
+          <properties />
+          <option name="timeStamp" value="140" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ImageFragment.java</url>
+          <line>625</line>
+          <properties />
+          <option name="timeStamp" value="143" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ImageFragment.java</url>
+          <line>624</line>
+          <properties />
+          <option name="timeStamp" value="144" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ImageFragment.java</url>
+          <line>623</line>
+          <properties />
+          <option name="timeStamp" value="146" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/fragments/AddEditReportSelectedImagesFragment.java</url>
@@ -1278,38 +1302,6 @@
       </provider>
       <provider editor-type-id="android-designer2" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/res/layout-land/fragment_select_photo.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1950">
-          <caret line="130" column="42" lean-forward="true" selection-start-line="130" selection-start-column="42" selection-end-line="130" selection-end-column="42" />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer2" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ImageFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5265">
-          <caret line="402" column="46" selection-start-line="402" selection-start-column="46" selection-end-line="402" selection-end-column="46" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ui/AddEditReportActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="20520">
-          <caret line="1469" column="22" selection-start-line="1469" selection-start-column="22" selection-end-line="1469" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/fragments/AddEditReportSelectedImagesFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2025">
-          <caret line="204" column="58" selection-start-line="204" selection-start-column="58" selection-end-line="204" selection-end-column="58" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/res/layout/claim_details_layout.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1755">
@@ -1340,17 +1332,6 @@
       </provider>
       <provider editor-type-id="android-designer2" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ui/ImageSliderActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="65" column="35" selection-start-line="65" selection-start-column="35" selection-end-line="65" selection-end-column="35" />
-          <folding>
-            <element signature="e#11872#11873#0" expanded="true" />
-            <element signature="e#11919#11920#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/res/layout-land/starter_fragment_layout.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="375">
@@ -1367,10 +1348,54 @@
       </provider>
       <provider editor-type-id="android-designer2" />
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/fragments/AddEditReportSelectedImagesFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-255">
+          <caret line="204" column="58" selection-start-line="204" selection-start-column="58" selection-end-line="204" selection-end-column="58" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/fragments/StarterPhotosFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2664">
-          <caret line="606" selection-start-line="606" selection-end-line="606" />
+        <state relative-caret-position="204">
+          <caret line="247" selection-start-line="247" selection-end-line="247" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ui/AddEditReportActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="258">
+          <caret line="1203" column="54" selection-start-line="1203" selection-start-column="54" selection-end-line="1203" selection-end-column="54" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/res/layout-land/fragment_select_photo.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-843">
+          <caret line="68" column="40" selection-start-line="68" selection-start-column="40" selection-end-line="68" selection-end-column="40" />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer2" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ImageFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="371">
+          <caret line="623" column="19" selection-start-line="623" selection-start-column="19" selection-end-line="623" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ui/ImageSliderActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-420">
+          <caret line="116" column="57" selection-start-line="116" selection-start-column="57" selection-end-line="116" selection-end-column="57" />
+          <folding>
+            <element signature="e#11872#11873#0" expanded="true" />
+            <element signature="e#11919#11920#0" expanded="true" />
+            <element signature="e#17219#17220#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
