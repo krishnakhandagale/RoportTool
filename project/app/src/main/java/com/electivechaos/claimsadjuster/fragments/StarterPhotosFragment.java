@@ -41,6 +41,7 @@ import com.electivechaos.claimsadjuster.interfaces.OnGenerateReportClickListener
 import com.electivechaos.claimsadjuster.interfaces.OnSaveReportClickListener;
 import com.electivechaos.claimsadjuster.interfaces.OnSetImageFileUriListener;
 import com.electivechaos.claimsadjuster.interfaces.QuickCaptureListener;
+import com.electivechaos.claimsadjuster.interfaces.QuickGalleryListener;
 import com.electivechaos.claimsadjuster.interfaces.SelectedImagesDataInterface;
 import com.electivechaos.claimsadjuster.listeners.OnMediaScannerListener;
 import com.electivechaos.claimsadjuster.listeners.OnStarterFragmentDataChangeListener;
@@ -82,7 +83,8 @@ public class StarterPhotosFragment extends Fragment {
     private FloatingActionButton showFabBtn;
     private FloatingActionButton fabGoNextBtn;
     private FloatingActionButton fabGoBackBtn;
-    private FloatingActionButton fabAddLabelBtn;
+//    private FloatingActionButton fabAddLabelBtn;
+    private FloatingActionButton fabGalleryBtn;
     private FloatingActionButton fabGenerateReportBtn;
     private FloatingActionButton fabSaveReportBtn;
     private FloatingActionButton quickCapture;
@@ -108,6 +110,8 @@ public class StarterPhotosFragment extends Fragment {
     private OnStarterFragmentDataChangeListener onStarterFragmentDataChangeListener;
     private QuickCaptureListener quickCaptureListener;
     private String houseNumber = "";
+
+    private QuickGalleryListener quickGalleryListener;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -148,7 +152,8 @@ public class StarterPhotosFragment extends Fragment {
         showFabBtn = selectImageView.findViewById(R.id.showFab);
         fabGoNextBtn = selectImageView.findViewById(R.id.fabGoNext);
         fabGoBackBtn = selectImageView.findViewById(R.id.fabGoBack);
-        fabAddLabelBtn = selectImageView.findViewById(R.id.fabAddLabel);
+        fabGalleryBtn = selectImageView.findViewById(R.id.fabGallery);
+//        fabAddLabelBtn = selectImageView.findViewById(R.id.fabAddLabel);
         fabGenerateReportBtn = selectImageView.findViewById(R.id.fabGenerateReport);
         fabSaveReportBtn = selectImageView.findViewById(R.id.fabSaveReport);
 
@@ -162,10 +167,18 @@ public class StarterPhotosFragment extends Fragment {
             }
         });
 
-        fabAddLabelBtn.setOnClickListener(new View.OnClickListener() {
+//        fabAddLabelBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                onLabelAddClickListener.onLabelAddClick();
+//                animateFAB();
+//            }
+//        });
+
+        fabGalleryBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onLabelAddClickListener.onLabelAddClick();
+               quickGalleryListener.onGalleryOpen();
                 animateFAB();
             }
         });
@@ -802,6 +815,7 @@ public class StarterPhotosFragment extends Fragment {
             onSetImageFileUriListener = (OnSetImageFileUriListener) getActivity();
             onStarterFragmentDataChangeListener = (OnStarterFragmentDataChangeListener) getActivity();
             quickCaptureListener = (QuickCaptureListener) getActivity();
+            quickGalleryListener = (QuickGalleryListener) getActivity();
 
         } catch (ClassCastException exception) {
             exception.printStackTrace();
@@ -824,7 +838,8 @@ public class StarterPhotosFragment extends Fragment {
             showFabBtn.setImageResource(R.drawable.ic_more_vertical_white);
             fabGoNextBtn.startAnimation(fab_close);
             fabGoBackBtn.startAnimation(fab_close);
-            fabAddLabelBtn.startAnimation(fab_close);
+            fabGalleryBtn.startAnimation(fab_close);
+//            fabAddLabelBtn.startAnimation(fab_close);
             fabGenerateReportBtn.startAnimation(fab_close);
             fabSaveReportBtn.startAnimation(fab_close);
 
@@ -833,7 +848,8 @@ public class StarterPhotosFragment extends Fragment {
 
             fabGoNextBtn.setClickable(false);
             fabGoBackBtn.setClickable(false);
-            fabAddLabelBtn.setClickable(false);
+            fabGalleryBtn.setClickable(false);
+//            fabAddLabelBtn.setClickable(false);
             fabGenerateReportBtn.setClickable(false);
             fabSaveReportBtn.setClickable(false);
             isFabOpen = false;
@@ -842,7 +858,8 @@ public class StarterPhotosFragment extends Fragment {
             showFabBtn.setImageResource(R.drawable.ic_close_white);
             fabGoNextBtn.startAnimation(fab_open);
             fabGoBackBtn.startAnimation(fab_open);
-            fabAddLabelBtn.startAnimation(fab_open);
+            fabGalleryBtn.startAnimation(fab_open);
+//            fabAddLabelBtn.startAnimation(fab_open);
             fabGenerateReportBtn.startAnimation(fab_open);
             fabSaveReportBtn.startAnimation(fab_open);
 
@@ -852,7 +869,8 @@ public class StarterPhotosFragment extends Fragment {
 
             fabGoNextBtn.setClickable(true);
             fabGoBackBtn.setClickable(true);
-            fabAddLabelBtn.setClickable(true);
+            fabGalleryBtn.setClickable(true);
+//            fabAddLabelBtn.setClickable(true);
             fabGenerateReportBtn.setClickable(true);
             fabSaveReportBtn.setClickable(true);
             isFabOpen = true;
