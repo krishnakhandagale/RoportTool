@@ -47,7 +47,6 @@ import com.electivechaos.claimsadjuster.adapters.CustomMenuAdapter;
 import com.electivechaos.claimsadjuster.adapters.FrequentlyUsedNotesPopUpAdapter;
 import com.electivechaos.claimsadjuster.asynctasks.DBFrequentlyUsedNotes;
 import com.electivechaos.claimsadjuster.asynctasks.DBPropertyDetailsListTsk;
-import com.electivechaos.claimsadjuster.asynctasks.ImageRotationTask;
 import com.electivechaos.claimsadjuster.database.CategoryListDBHelper;
 import com.electivechaos.claimsadjuster.dialog.ImageDetailsFragment;
 import com.electivechaos.claimsadjuster.interfaces.AsyncTaskStatusCallback;
@@ -96,7 +95,7 @@ public class ImageFragment extends Fragment {
 
     private static final int ADD_CATEGORY_REQUEST = 10;
     private FloatingActionButton rotateImage;
-    private int angle = 90;
+    private int angle = -90;
 
     private ImageView iv;
     private int mCurrRotation = 0; // takes the place of getRotation()
@@ -209,7 +208,7 @@ public class ImageFragment extends Fragment {
             }
         });
 
-        Log.d("FUCK: CREATE VIEW", quickLabel+"-----"+position);
+
 
 
         if(label != null && !TextUtils.isEmpty(label.getName())) {
@@ -258,8 +257,6 @@ public class ImageFragment extends Fragment {
         rotateImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-//                new ImageRotationTask(getActivity(),imageDetailsPOJO.getImageUrl(),iv).execute();
                 rotateImage(imageDetailsPOJO.getImageUrl());
             }
         });

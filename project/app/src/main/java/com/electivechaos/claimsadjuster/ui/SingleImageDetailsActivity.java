@@ -510,7 +510,7 @@ public class SingleImageDetailsActivity extends BaseActivity {
 
         Bitmap bitmap = BitmapFactory.decodeByteArray(inputData,0,inputData.length);
 
-        angle = 90;
+        angle = -90;
         Matrix matrix = new Matrix();
         matrix.postRotate(angle);
 
