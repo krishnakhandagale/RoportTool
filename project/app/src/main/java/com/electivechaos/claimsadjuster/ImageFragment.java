@@ -8,9 +8,14 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
@@ -23,6 +28,10 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
 import android.view.inputmethod.EditorInfo;
 import android.widget.CheckedTextView;
 import android.widget.EditText;
@@ -31,11 +40,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.electivechaos.claimsadjuster.adapters.CustomCategoryPopUpAdapter;
 import com.electivechaos.claimsadjuster.adapters.CustomMenuAdapter;
 import com.electivechaos.claimsadjuster.adapters.FrequentlyUsedNotesPopUpAdapter;
 import com.electivechaos.claimsadjuster.asynctasks.DBFrequentlyUsedNotes;
 import com.electivechaos.claimsadjuster.asynctasks.DBPropertyDetailsListTsk;
+import com.electivechaos.claimsadjuster.asynctasks.ImageRotationTask;
 import com.electivechaos.claimsadjuster.database.CategoryListDBHelper;
 import com.electivechaos.claimsadjuster.dialog.ImageDetailsFragment;
 import com.electivechaos.claimsadjuster.interfaces.AsyncTaskStatusCallback;
@@ -46,8 +58,15 @@ import com.electivechaos.claimsadjuster.pojo.ImageDetailsPOJO;
 import com.electivechaos.claimsadjuster.pojo.Label;
 import com.electivechaos.claimsadjuster.ui.AddEditCategoryActivity;
 import com.electivechaos.claimsadjuster.ui.AddEditCoverageActivity;
+import com.electivechaos.claimsadjuster.ui.ImageSliderActivity;
 import com.electivechaos.claimsadjuster.utils.CommonUtils;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
@@ -76,11 +95,28 @@ public class ImageFragment extends Fragment {
     private String reportId;
 
     private static final int ADD_CATEGORY_REQUEST = 10;
+    private FloatingActionButton rotateImage;
+    private int angle = 90;
+
+    private ImageView iv;
+    private int mCurrRotation = 0; // takes the place of getRotation()
+    private Animation fabOpen;
+
+    private static ImageSliderActivity.ImagePreviewListAdapter mImagePreviewListAdapter;
 
 
-    public static ImageFragment init(ImageDetailsPOJO imageDetails, int position, ViewPager mPager, Label label, String reportIdd) {
+    static RequestOptions options = new RequestOptions()
+            .placeholder(R.drawable.imagepicker_image_placeholder)
+            .error(R.drawable.imagepicker_image_placeholder)
+            .fitCenter()
+            .skipMemoryCache(true)
+            .diskCacheStrategy(DiskCacheStrategy.NONE);
+
+
+    public static ImageFragment init(ImageDetailsPOJO imageDetails, int position, ViewPager mPager, Label label, String reportIdd, ImageSliderActivity.ImagePreviewListAdapter imagePreviewListAdapter) {
         ImageFragment imageFragment = new ImageFragment();
         mPagerInstance = mPager;
+        mImagePreviewListAdapter =imagePreviewListAdapter;
 
         categoryListDBHelper = CategoryListDBHelper.getInstance(mPager.getContext());
         Bundle args = new Bundle();
@@ -145,7 +181,7 @@ public class ImageFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View layoutView = inflater.inflate(R.layout.fragment_image, container, false);
-        ImageView iv = layoutView.findViewById(R.id.imageView1);
+        iv = layoutView.findViewById(R.id.imageView1);
         final EditText description = layoutView.findViewById(R.id.image_description);
 
         final CheckedTextView damageTextView = layoutView.findViewById(R.id.damageTextView);
@@ -157,7 +193,13 @@ public class ImageFragment extends Fragment {
         freqNotes = layoutView.findViewById(R.id.freqNotes);
         lastNote = layoutView.findViewById(R.id.lastNote);
 
+
         selectCategory = layoutView.findViewById(R.id.selectCategory);
+
+        rotateImage = layoutView.findViewById(R.id.rotateImage);
+
+        fabOpen = AnimationUtils.loadAnimation(getActivity(), R.anim.fab_open);
+        rotateImage.startAnimation(fabOpen);
 
 
         imageInfo.setOnClickListener(new View.OnClickListener() {
@@ -212,6 +254,15 @@ public class ImageFragment extends Fragment {
 
 
         description.setText(imgDescription);
+
+        rotateImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+//                new ImageRotationTask(getActivity(),imageDetailsPOJO.getImageUrl(),iv).execute();
+                rotateImage(imageDetailsPOJO.getImageUrl());
+            }
+        });
 
         imageCoverageType.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -530,7 +581,7 @@ public class ImageFragment extends Fragment {
             }
         });
 
-        Glide.with(this).load("file://" + imageUrl).into(iv);
+        Glide.with(this).load("file://" + imageUrl).apply(options).into(iv);
 
 
 
@@ -606,8 +657,100 @@ public class ImageFragment extends Fragment {
 
         void setLabelName(String labelName, int position);
 
+        void setImageUrl(String imageUrl, int position);
+
 
     }
+
+    public byte[] getBytes(InputStream inputStream){
+        ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
+        int bufferSize = 1024;
+        byte[] buffer = new byte[bufferSize];
+
+        int len = 0;
+        while (true) {
+            try {
+                if (!((len = inputStream.read(buffer)) != -1)) break;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            byteBuffer.write(buffer, 0, len);
+        }
+        return byteBuffer.toByteArray();
+    }
+
+    public void rotateImage(String path){
+        File file = new File(path);
+
+        InputStream iStream = null;
+        try {
+            iStream  = getActivity().getContentResolver().openInputStream(Uri.fromFile(file));
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        byte[] inputData = getBytes(iStream);
+
+        Bitmap bitmap = BitmapFactory.decodeByteArray(inputData,0,inputData.length);
+
+
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+
+        iv.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+        iv.setImageMatrix(matrix);
+
+        bitmap = Bitmap.createBitmap(bitmap,0,0,bitmap.getWidth(),bitmap.getHeight(),matrix,true);
+
+        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outStream);
+        byte[]  image = outStream.toByteArray();
+
+        if (file.getPath() == null) {
+            return;
+        }
+        File file1 = new File(file.getPath());
+        if (!file1.exists()) {
+            try {
+                file1.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        FileOutputStream outputStream = null;
+        try {
+            outputStream = new FileOutputStream(path, false);
+            outputStream.write(image);
+        } catch (java.io.IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (outputStream != null) {
+                    outputStream.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+//
+//            final RotateAnimation rotateAnim = new RotateAnimation(0.0f, angle,
+//                    RotateAnimation.RELATIVE_TO_SELF, 0.5f,
+//                    RotateAnimation.RELATIVE_TO_SELF, 0.5f);
+//
+//            rotateAnim.setDuration(0);
+//            rotateAnim.setFillAfter(true);
+//            iv.startAnimation(rotateAnim);
+
+       // iv.setRotation(iv.getRotation() + 90);
+
+
+        monitorImageDetailsChange.setImageUrl(imageDetailsPOJO.getImageUrl(), position);
+        mImagePreviewListAdapter.notifyItemChanged(position);
+        Glide.with(this).load("file://" + imageDetailsPOJO.getImageUrl()).apply(options).into(iv);
+
+    }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -626,4 +769,6 @@ public class ImageFragment extends Fragment {
             }
         }
     }
+
+
 }

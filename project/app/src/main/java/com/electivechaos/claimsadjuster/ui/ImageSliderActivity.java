@@ -34,6 +34,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.electivechaos.claimsadjuster.BaseActivity;
 import com.electivechaos.claimsadjuster.DepthPageTransformer;
 import com.electivechaos.claimsadjuster.ImageFragment;
@@ -75,6 +77,14 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
 
     private String reportId;
     private LinearLayout parentLayoutForMessages;
+
+
+    static RequestOptions options = new RequestOptions()
+            .placeholder(R.drawable.imagepicker_image_placeholder)
+            .error(R.drawable.imagepicker_image_placeholder)
+            .fitCenter()
+            .skipMemoryCache(true)
+            .diskCacheStrategy(DiskCacheStrategy.NONE);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -208,6 +218,10 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
         imagesInformation.get(position).setLabelName(labelName);
     }
 
+    @Override
+    public void setImageUrl(String imageUrl, int position) {
+        imagesInformation.get(position).setImageUrl(imageUrl);
+    }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -286,7 +300,7 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
 
         @Override
         public Fragment getItem(int position) {
-            Fragment fragment = ImageFragment.init(imagesInformation.get(position), position, mPager,label,reportId);
+            Fragment fragment = ImageFragment.init(imagesInformation.get(position), position, mPager,label,reportId,mImagePreviewListAdapter);
             return fragment;
         }
 
@@ -356,7 +370,7 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
 
 
             final ImageDetailsPOJO imgDetails = imageList.get(position);
-            Glide.with(context).load("file://" + imgDetails.getImageUrl()).thumbnail(0.1f).into(holder.imageView);
+            Glide.with(context).load("file://" + imgDetails.getImageUrl()).apply(options).thumbnail(0.1f).into(holder.imageView);
             holder.imageView.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
