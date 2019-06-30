@@ -1,13 +1,16 @@
 package com.electivechaos.claimsadjuster.ui;
 
 import android.app.AlertDialog;
+import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.media.ExifInterface;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -15,6 +18,8 @@ import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.CheckedTextView;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -40,7 +45,11 @@ import com.electivechaos.claimsadjuster.utils.CommonUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
@@ -60,6 +69,12 @@ public class SingleImageDetailsActivity extends BaseActivity {
     private String labelDefaultCoverageType = "";
     private ImageButton freqNotes, lastNote;
 
+    private FloatingActionButton rotateImage;
+    private int angle = 0;
+
+    ImageView imgView;
+    private Animation fabOpen;
+
 
     static RequestOptions options = new RequestOptions()
             .placeholder(R.drawable.imagepicker_image_placeholder)
@@ -74,7 +89,7 @@ public class SingleImageDetailsActivity extends BaseActivity {
         setContentView(R.layout.single_image_details_layout);
 
         categoryListDBHelper = CategoryListDBHelper.getInstance(this);
-        ImageView imgView = findViewById(R.id.imageView);
+        imgView = findViewById(R.id.imageView);
         final EditText description = findViewById(R.id.clickedImageNotes);
         final CheckedTextView isDamageTextView = findViewById(R.id.isDamageTextView);
         final CheckedTextView isOverviewTextView = findViewById(R.id.isOverviewTextView);
@@ -84,6 +99,11 @@ public class SingleImageDetailsActivity extends BaseActivity {
         imageCoverageType = findViewById(R.id.imageCoverageType);
         freqNotes = findViewById(R.id.freqNotes);
         lastNote = findViewById(R.id.lastNote);
+        rotateImage = findViewById(R.id.rotateImage);
+
+
+        fabOpen = AnimationUtils.loadAnimation(this, R.anim.fab_open);
+        rotateImage.startAnimation(fabOpen);
 
 
         imageDetails = getIntent().getExtras().getParcelable("image_details");
@@ -123,6 +143,14 @@ public class SingleImageDetailsActivity extends BaseActivity {
             } else {
                 isPointOfOriginTextView.setBackground(ContextCompat.getDrawable(this, R.drawable.shape_chip_drawable_gray));
             }
+
+
+            rotateImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    rotateImage(imageDetails.getImageUrl());
+                }
+            });
 
 
         }
@@ -294,6 +322,7 @@ public class SingleImageDetailsActivity extends BaseActivity {
         });
 
 
+
         imageInfoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -447,6 +476,81 @@ public class SingleImageDetailsActivity extends BaseActivity {
         });
 
         Glide.with(this).load("file://" + imageDetails.getImageUrl()). apply(options).into(imgView);
+    }
+
+
+    public byte[] getBytes(InputStream inputStream){
+        ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
+        int bufferSize = 1024;
+        byte[] buffer = new byte[bufferSize];
+
+        int len = 0;
+        while (true) {
+            try {
+                if (!((len = inputStream.read(buffer)) != -1)) break;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            byteBuffer.write(buffer, 0, len);
+        }
+        return byteBuffer.toByteArray();
+    }
+
+    public void rotateImage(String path){
+        File file = new File(path);
+
+        InputStream iStream = null;
+        try {
+            iStream  = getContentResolver().openInputStream(Uri.fromFile(file));
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        byte[] inputData = getBytes(iStream);
+
+        Bitmap bitmap = BitmapFactory.decodeByteArray(inputData,0,inputData.length);
+
+        angle = 90;
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+
+        imgView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+        imgView.setImageMatrix(matrix);
+
+        bitmap = Bitmap.createBitmap(bitmap,0,0,bitmap.getWidth(),bitmap.getHeight(),matrix,true);
+
+        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outStream);
+        byte[]  image = outStream.toByteArray();
+
+        if (file.getPath() == null) {
+            return;
+        }
+        File file1 = new File(file.getPath());
+        if (!file1.exists()) {
+            try {
+                file1.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        FileOutputStream outputStream = null;
+        try {
+            outputStream = new FileOutputStream(path, false);
+            outputStream.write(image);
+        } catch (java.io.IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (outputStream != null) {
+                    outputStream.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        Glide.with(this).load("file://" + imageDetails.getImageUrl()).apply(options).into(imgView);
     }
 
 
