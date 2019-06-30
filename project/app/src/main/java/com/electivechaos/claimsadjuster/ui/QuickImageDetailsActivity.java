@@ -102,10 +102,13 @@ public class QuickImageDetailsActivity extends BaseActivity {
     private byte[] capturedImage;
 
     private int angle = 0;
+    private int mCurrRotation = 0;
+
 
     static RequestOptions options = new RequestOptions()
             .placeholder(R.drawable.imagepicker_image_placeholder)
             .error(R.drawable.imagepicker_image_placeholder)
+            .fitCenter()
             .skipMemoryCache(true)
             .diskCacheStrategy(DiskCacheStrategy.NONE);
 
@@ -557,9 +560,12 @@ public class QuickImageDetailsActivity extends BaseActivity {
 
         Bitmap bitmap = BitmapFactory.decodeByteArray(capturedImage,0,capturedImage.length);
 
+        mCurrRotation %= 360;
+        float fromRotation = mCurrRotation;
+        float toRotation = mCurrRotation -= 90;
         angle = angle +90;
         Matrix matrix = new Matrix();
-        matrix.postRotate(angle);
+        matrix.postRotate(toRotation);
 
         imgView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
         imgView.setImageMatrix(matrix);
