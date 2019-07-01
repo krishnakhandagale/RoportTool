@@ -1,7 +1,6 @@
 package com.electivechaos.claimsadjuster.ui;
 
 import android.app.AlertDialog;
-import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -11,13 +10,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.media.ExifInterface;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.CheckedTextView;
@@ -25,6 +23,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -35,6 +34,7 @@ import com.electivechaos.claimsadjuster.adapters.CustomMenuAdapter;
 import com.electivechaos.claimsadjuster.adapters.FrequentlyUsedNotesPopUpAdapter;
 import com.electivechaos.claimsadjuster.asynctasks.DBFrequentlyUsedNotes;
 import com.electivechaos.claimsadjuster.asynctasks.DBPropertyDetailsListTsk;
+import com.electivechaos.claimsadjuster.asynctasks.ImageRotationTsk;
 import com.electivechaos.claimsadjuster.database.CategoryListDBHelper;
 import com.electivechaos.claimsadjuster.dialog.ImageDetailsFragment;
 import com.electivechaos.claimsadjuster.interfaces.AsyncTaskStatusCallback;
@@ -46,10 +46,8 @@ import com.electivechaos.claimsadjuster.utils.CommonUtils;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
@@ -60,28 +58,24 @@ import static com.electivechaos.claimsadjuster.ui.AddEditCategoryActivity.ADD_CO
  */
 
 public class SingleImageDetailsActivity extends BaseActivity {
-    private ImageDetailsPOJO imageDetails;
-    private int position, labelPosition;
-    private boolean isEdit = false;
-
-    private TextView imageCoverageType;
-    private CategoryListDBHelper categoryListDBHelper;
-    private String labelDefaultCoverageType = "";
-    private ImageButton freqNotes, lastNote;
-
-    private FloatingActionButton rotateImage;
-    private int angle = 0;
-
-    ImageView imgView;
-    private Animation fabOpen;
-
-
     static RequestOptions options = new RequestOptions()
             .placeholder(R.drawable.imagepicker_image_placeholder)
             .error(R.drawable.imagepicker_image_placeholder)
             .fitCenter()
             .skipMemoryCache(true)
             .diskCacheStrategy(DiskCacheStrategy.NONE);
+    ImageView imgView;
+    private ImageDetailsPOJO imageDetails;
+    private int position, labelPosition;
+    private boolean isEdit = false;
+    private TextView imageCoverageType;
+    private CategoryListDBHelper categoryListDBHelper;
+    private String labelDefaultCoverageType = "";
+    private ImageButton freqNotes, lastNote;
+    private FloatingActionButton rotateImage;
+    private int rotateDegree = 0;
+    private Animation fabOpen;
+    private View progressBarLayout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -101,6 +95,8 @@ public class SingleImageDetailsActivity extends BaseActivity {
         lastNote = findViewById(R.id.lastNote);
         rotateImage = findViewById(R.id.rotateImage);
 
+        progressBarLayout = findViewById(R.id.progressBarLayout);
+
 
         fabOpen = AnimationUtils.loadAnimation(this, R.anim.fab_open);
         rotateImage.startAnimation(fabOpen);
@@ -111,7 +107,6 @@ public class SingleImageDetailsActivity extends BaseActivity {
         isEdit = getIntent().getExtras().getBoolean("isEdit", false);
         position = getIntent().getExtras().getInt("position", -1);
         labelPosition = getIntent().getExtras().getInt("labelPosition", -1);
-
 
 
         if (imageDetails != null && isEdit) {
@@ -156,6 +151,11 @@ public class SingleImageDetailsActivity extends BaseActivity {
         }
         if (savedInstanceState != null) {
             imageDetails = savedInstanceState.getParcelable("image_details");
+            rotateDegree = savedInstanceState.getInt("rotateDegree");
+
+            if(rotateDegree != 0){
+                imgView.setRotation(rotateDegree);
+            }
 
             isDamageTextView.setChecked(imageDetails.isDamage());
 
@@ -215,7 +215,7 @@ public class SingleImageDetailsActivity extends BaseActivity {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int position) {
                                     if (notesList != null) {
-                                        if(!TextUtils.isEmpty(notesList.get(position).toString())){
+                                        if (!TextUtils.isEmpty(notesList.get(position).toString())) {
                                             description.setText(notesList.get(position).toString());
                                         }
                                     }
@@ -270,9 +270,9 @@ public class SingleImageDetailsActivity extends BaseActivity {
 
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int position) {
-                                    Object noteObj =notesList.get(position);
-                                        if(!TextUtils.isEmpty(noteObj.toString())){
-                                            description.setText(noteObj.toString());
+                                    Object noteObj = notesList.get(position);
+                                    if (!TextUtils.isEmpty(noteObj.toString())) {
+                                        description.setText(noteObj.toString());
                                     }
                                     dialogInterface.dismiss();
                                 }
@@ -320,7 +320,6 @@ public class SingleImageDetailsActivity extends BaseActivity {
 
 
         });
-
 
 
         imageInfoBtn.setOnClickListener(new View.OnClickListener() {
@@ -451,11 +450,10 @@ public class SingleImageDetailsActivity extends BaseActivity {
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ImageDetailsPOJO shareImageDetails = new ImageDetailsPOJO();
+                final ImageDetailsPOJO shareImageDetails = new ImageDetailsPOJO();
                 shareImageDetails.setDescription(description.getText().toString());
                 shareImageDetails.setImageId(imageDetails.getImageId());
                 shareImageDetails.setImageUrl(imageDetails.getImageUrl());
-                Log.d("FUCK:",imageDetails.getImageUrl());
                 shareImageDetails.setIsDamage(imageDetails.isDamage());
                 shareImageDetails.setOverview(imageDetails.isOverview());
                 shareImageDetails.setPointOfOrigin(imageDetails.isPointOfOrigin());
@@ -464,14 +462,63 @@ public class SingleImageDetailsActivity extends BaseActivity {
                 shareImageDetails.setImageDateTime(imageDetails.getImageDateTime());
                 shareImageDetails.setImageGeoTag(imageDetails.getImageGeoTag());
 
+                if (rotateDegree != 0) {
+                    File file = new File(shareImageDetails.getImageUrl());
 
-                Intent intent = new Intent();
-                intent.putExtra("selected_images", shareImageDetails);
-                intent.putExtra("isEdit", isEdit);
-                intent.putExtra("position", position);
-                intent.putExtra("labelPosition", labelPosition);
-                setResult(RESULT_OK, intent);
-                finish();
+                    InputStream iStream = null;
+                    try {
+                        iStream = getContentResolver().openInputStream(Uri.fromFile(file));
+
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    byte[] inputData = getBytes(iStream);
+
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(inputData, 0, inputData.length);
+
+                    Matrix matrix = new Matrix();
+                    matrix.postRotate(rotateDegree);
+                    progressBarLayout.setVisibility(View.VISIBLE);
+                    getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
+
+                    new ImageRotationTsk(SingleImageDetailsActivity.this, shareImageDetails.getImageUrl(), file, bitmap, matrix, progressBarLayout, false, new AsyncTaskStatusCallback() {
+                        @Override
+                        public void onPostExecute(Object object, String type) {
+                            Toast.makeText(SingleImageDetailsActivity.this, "Image edited sucessfully...", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent();
+                            intent.putExtra("selected_images", shareImageDetails);
+                            intent.putExtra("isEdit", isEdit);
+                            intent.putExtra("position", position);
+                            intent.putExtra("labelPosition", labelPosition);
+                            setResult(RESULT_OK, intent);
+                            finish();
+                        }
+
+                        @Override
+                        public void onPreExecute() {
+
+                        }
+
+                        @Override
+                        public void onProgress(int progress) {
+
+                        }
+                    }).execute();
+
+
+                }else {
+                    Intent intent = new Intent();
+                    intent.putExtra("selected_images", shareImageDetails);
+                    intent.putExtra("isEdit", isEdit);
+                    intent.putExtra("position", position);
+                    intent.putExtra("labelPosition", labelPosition);
+                    setResult(RESULT_OK, intent);
+                    finish();
+                }
+
+
             }
         });
 
@@ -496,61 +543,9 @@ public class SingleImageDetailsActivity extends BaseActivity {
         return byteBuffer.toByteArray();
     }
 
-    public void rotateImage(String path){
-        File file = new File(path);
-
-        InputStream iStream = null;
-        try {
-            iStream  = getContentResolver().openInputStream(Uri.fromFile(file));
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        byte[] inputData = getBytes(iStream);
-
-        Bitmap bitmap = BitmapFactory.decodeByteArray(inputData,0,inputData.length);
-
-        angle = -90;
-        Matrix matrix = new Matrix();
-        matrix.postRotate(angle);
-
-        imgView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-        imgView.setImageMatrix(matrix);
-
-        bitmap = Bitmap.createBitmap(bitmap,0,0,bitmap.getWidth(),bitmap.getHeight(),matrix,true);
-
-        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outStream);
-        byte[]  image = outStream.toByteArray();
-
-        if (file.getPath() == null) {
-            return;
-        }
-        File file1 = new File(file.getPath());
-        if (!file1.exists()) {
-            try {
-                file1.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        FileOutputStream outputStream = null;
-        try {
-            outputStream = new FileOutputStream(path, false);
-            outputStream.write(image);
-        } catch (java.io.IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (outputStream != null) {
-                    outputStream.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        Glide.with(this).load("file://" + imageDetails.getImageUrl()).apply(options).into(imgView);
+    public void rotateImage(String path) {
+        rotateDegree = (int) (imgView.getRotation() - 90);
+        imgView.setRotation(imgView.getRotation() - 90);
     }
 
 
@@ -576,6 +571,7 @@ public class SingleImageDetailsActivity extends BaseActivity {
         super.onSaveInstanceState(outState);
         outState.putParcelable("image_details", imageDetails);
         outState.putString("labelDefaultCoverageType", labelDefaultCoverageType);
+        outState.putInt("rotateDegree", rotateDegree);
     }
 
     @Override
