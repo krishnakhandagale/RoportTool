@@ -37,6 +37,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private static final Object REGISTRATION_REQUEST_TAG = "REGISTRATION_REQUEST_TAG";
     private View parentLayoutForMessages;
     private RequestQueue requestQueue;
+    private View progressBarLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,15 +50,13 @@ public class RegistrationActivity extends AppCompatActivity {
             finish();
         }
 
-//        if(1 == 1){
-//            throw new NullPointerException("checklist crash");
-//        }
-
         parentLayoutForMessages = findViewById(R.id.parentLayoutForMessages);
 
         final EditText reportByEditText = findViewById(R.id.reportBy);
         final EditText emailIdEditText = findViewById(R.id.emailId);
         final EditText tokenEditText = findViewById(R.id.token);
+
+        progressBarLayout = findViewById(R.id.progressBarLayout);
 
 
         Button registerBtn = findViewById(R.id.btnRegister);
@@ -74,14 +73,11 @@ public class RegistrationActivity extends AppCompatActivity {
                     CommonUtils.setReportByField(reportByString, RegistrationActivity.this);
 
                     try {
+                        progressBarLayout.setVisibility(View.VISIBLE);
                         sendTokenEmailId(tokenString, emailIdString);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
-//                    Intent i = new Intent(RegistrationActivity.this,MainTabsActivity.class);
-//                    startActivity(i);
-//                    finish();
                 }
             }
         });
@@ -152,6 +148,7 @@ public class RegistrationActivity extends AppCompatActivity {
                                     finish();
                                 }
                             }
+                            progressBarLayout.setVisibility(View.GONE);
                         } else {
                             Toast.makeText(RegistrationActivity.this, registrationResponse.getError(), Toast.LENGTH_SHORT).show();
                         }
