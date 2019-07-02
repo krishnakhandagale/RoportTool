@@ -78,10 +78,8 @@ public class CameraActivity extends AppCompatActivity {
                             }
                         }
 
-                        Log.d("FUCK:",fileUri);
                         Intent intent = new Intent();
                         intent.putExtra("capturedImage",capturedImage);
-                        Log.d("FUCK: byte one",capturedImage+"");
                         setResult(RESULT_OK, intent);
                         finish();
                     }
