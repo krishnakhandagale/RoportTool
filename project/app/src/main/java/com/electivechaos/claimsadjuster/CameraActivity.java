@@ -176,6 +176,8 @@ public class CameraActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         finish();
-        quickActivityObj.finish();
+        if(quickActivityObj != null) {
+            quickActivityObj.finish();
+        }
     }
 }

@@ -255,7 +255,7 @@ public class ImageFragment extends Fragment {
         rotateImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                rotateImage(imageDetailsPOJO.getImageUrl());
+                rotateImage();
             }
         });
 
@@ -578,8 +578,6 @@ public class ImageFragment extends Fragment {
 
         Glide.with(this).load("file://" + imageUrl).apply(options).into(iv);
 
-
-
         return layoutView;
     }
 
@@ -660,33 +658,15 @@ public class ImageFragment extends Fragment {
 
     }
 
-    public byte[] getBytes(InputStream inputStream){
-        ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
-        int bufferSize = 1024;
-        byte[] buffer = new byte[bufferSize];
 
-        int len = 0;
-        while (true) {
-            try {
-                if (!((len = inputStream.read(buffer)) != -1)) break;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            byteBuffer.write(buffer, 0, len);
-        }
-        return byteBuffer.toByteArray();
-    }
-
-    public void rotateImage(String path){
-
+    public void rotateImage(){
         rotateDegree = (int) (iv.getRotation()-90);
         iv.setRotation(iv.getRotation()-90);
         imageDetailsPOJO.setRotateDegree(rotateDegree);
         monitorImageDetailsChange.setRotateDegree(rotateDegree, position);
         monitorImageDetailsChange.setImageUrl(imageDetailsPOJO.getImageUrl(), position);
         mImagePreviewListAdapter.notifyItemChanged(position);
-        Glide.with(this).load("file://" + imageDetailsPOJO.getImageUrl()).apply(options).into(iv);
-
+     //   Glide.with(this).load("file://" + imageDetailsPOJO.getImageUrl()).apply(options).into(iv);
     }
 
 
@@ -707,6 +687,8 @@ public class ImageFragment extends Fragment {
             }
         }
     }
+
+
 
 
 }
