@@ -1,5 +1,6 @@
 package com.electivechaos.claimsadjuster.ui;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -111,6 +112,8 @@ public class QuickImageDetailsActivity extends BaseActivity {
 
     private View progressBarLayout;
 
+    public static Activity quickActivityObj;
+
 
     static RequestOptions options = new RequestOptions()
             .placeholder(R.drawable.imagepicker_image_placeholder)
@@ -127,7 +130,7 @@ public class QuickImageDetailsActivity extends BaseActivity {
         setContentView(R.layout.activity_image_capture_quick);
         categoryListDBHelper = CategoryListDBHelper.getInstance(this);
 
-
+        quickActivityObj = this;
 
         isDamageTextView = findViewById(R.id.isDamageTextView);
         isOverviewTextView = findViewById(R.id.isOverviewTextView);
@@ -766,9 +769,4 @@ public class QuickImageDetailsActivity extends BaseActivity {
         outState.putInt("rotateDegree", rotateDegree);
     }
 
-
-    @Override
-    public void onBackPressed() {
-        finish();
-    }
 }

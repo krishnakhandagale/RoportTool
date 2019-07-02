@@ -17,6 +17,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import static com.electivechaos.claimsadjuster.ui.QuickImageDetailsActivity.quickActivityObj;
+
 
 public class CameraActivity extends AppCompatActivity {
 
@@ -175,5 +177,7 @@ public class CameraActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        finish();
+        quickActivityObj.finish();
     }
 }
