@@ -586,6 +586,8 @@ public class QuickImageDetailsActivity extends BaseActivity {
                             cameraIntent(REQUEST_QUICK_CAMERA);
                             rotateDegree = 0;
                             imgView.setRotation(rotateDegree);
+                        }else {
+                            finish();
                         }
                     }
 
@@ -600,7 +602,9 @@ public class QuickImageDetailsActivity extends BaseActivity {
                     }
                 }).execute();
             }else {
-                cameraIntent(REQUEST_QUICK_CAMERA);
+                if(!donePressed) {
+                    cameraIntent(REQUEST_QUICK_CAMERA);
+                }
                 Intent intent = new Intent();
                 setResult(RESULT_OK, intent);
             }

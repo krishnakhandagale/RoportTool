@@ -16,8 +16,7 @@
   <component name="ChangeListManager">
     <list default="true" id="7bd36722-3fe5-480d-86c2-111aa8e058a5" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ui/RegistrationActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ui/RegistrationActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/res/layout/activity_registration.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/activity_registration.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ui/QuickImageDetailsActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ui/QuickImageDetailsActivity.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -140,11 +139,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ui/QuickImageDetailsActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="153" column="70" selection-start-line="153" selection-start-column="70" selection-end-line="153" selection-end-column="70" />
+            <state relative-caret-position="63">
+              <caret line="582" column="53" lean-forward="true" selection-start-line="581" selection-start-column="23" selection-end-line="582" selection-end-column="53" />
               <folding>
                 <element signature="e#23898#24047#0" expanded="true" />
                 <element signature="e#24046#24047#0" expanded="true" />
@@ -154,11 +153,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ui/RegistrationActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="330">
-              <caret line="145" column="61" lean-forward="true" selection-start-line="145" selection-start-column="61" selection-end-line="145" selection-end-column="61" />
+            <state relative-caret-position="-1290">
+              <caret line="37" column="40" selection-start-line="37" selection-start-column="17" selection-end-line="37" selection-end-column="40" />
             </state>
           </provider>
         </entry>
@@ -216,7 +215,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>capturedImage</find>
       <find>bitmap</find>
       <find>imageV</find>
       <find>iv</find>
@@ -246,6 +244,7 @@
       <find>setImage</find>
       <find>setImage()</find>
       <find>QUICK_CAMERA_CAPTURE</find>
+      <find>donePressed</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -294,11 +293,11 @@
         <option value="$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ImageFragment.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ui/ImageSliderActivity.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ui/AddEditReportActivity.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ui/QuickImageDetailsActivity.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/CameraActivity.java" />
         <option value="$PROJECT_DIR$/src/main/res/drawable/button_ripple_effect.xml" />
         <option value="$PROJECT_DIR$/src/main/res/layout/activity_registration.xml" />
         <option value="$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ui/RegistrationActivity.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ui/QuickImageDetailsActivity.java" />
       </list>
     </option>
   </component>
@@ -551,7 +550,7 @@
     <editor active="true" />
     <layout>
       <window_info id="Captures" order="0" sideWeight="0.5016949" side_tool="true" weight="0.19233839" />
-      <window_info active="true" content_ui="combo" id="Project" order="1" sideWeight="0.49830508" visible="true" weight="0.19233839" />
+      <window_info content_ui="combo" id="Project" order="1" sideWeight="0.49830508" visible="true" weight="0.19233839" />
       <window_info id="Structure" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" side_tool="true" />
       <window_info id="Build Variants" order="4" side_tool="true" />
@@ -1055,7 +1054,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ui/QuickImageDetailsActivity.java</url>
-          <line>768</line>
+          <line>772</line>
           <properties />
           <option name="timeStamp" value="201" />
         </line-breakpoint>
@@ -1476,18 +1475,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ui/QuickImageDetailsActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="153" column="70" selection-start-line="153" selection-start-column="70" selection-end-line="153" selection-end-column="70" />
-          <folding>
-            <element signature="e#23898#24047#0" expanded="true" />
-            <element signature="e#24046#24047#0" expanded="true" />
-            <element signature="e#27088#27127#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/res/drawable/button_ripple_effect.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -1513,8 +1500,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ui/RegistrationActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="145" column="61" lean-forward="true" selection-start-line="145" selection-start-column="61" selection-end-line="145" selection-end-column="61" />
+        <state relative-caret-position="-1290">
+          <caret line="37" column="40" selection-start-line="37" selection-start-column="17" selection-end-line="37" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/electivechaos/claimsadjuster/ui/QuickImageDetailsActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="63">
+          <caret line="582" column="53" lean-forward="true" selection-start-line="581" selection-start-column="23" selection-end-line="582" selection-end-column="53" />
+          <folding>
+            <element signature="e#23898#24047#0" expanded="true" />
+            <element signature="e#24046#24047#0" expanded="true" />
+            <element signature="e#27088#27127#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
