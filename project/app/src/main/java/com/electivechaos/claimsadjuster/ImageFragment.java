@@ -8,13 +8,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -23,15 +18,12 @@ import android.support.v4.view.ViewPager;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.animation.LinearInterpolator;
-import android.view.animation.RotateAnimation;
 import android.view.inputmethod.EditorInfo;
 import android.widget.CheckedTextView;
 import android.widget.EditText;
@@ -61,9 +53,6 @@ import com.electivechaos.claimsadjuster.ui.ImageSliderActivity;
 import com.electivechaos.claimsadjuster.utils.CommonUtils;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -101,6 +90,8 @@ public class ImageFragment extends Fragment {
     private int mCurrRotation = 0; // takes the place of getRotation()
     private Animation fabOpen;
 
+    private int rotateDegree = 0;
+
     private static ImageSliderActivity.ImagePreviewListAdapter mImagePreviewListAdapter;
 
 
@@ -130,6 +121,7 @@ public class ImageFragment extends Fragment {
         args.putString("imgDateTime", imageDetails.getImageDateTime());
         args.putString("imgGeoTag", imageDetails.getImageGeoTag());
         args.putInt("position", position);
+        args.putInt("rotateDegree",imageDetails.getRotateDegree());
 
             args.putParcelable("label", label);
             args.putString("quickLabel", imageDetails.getLabelName());
@@ -157,6 +149,8 @@ public class ImageFragment extends Fragment {
         label = getArguments() != null ? (Label) getArguments().getParcelable("label") : new Label();
         quickLabel = getArguments() != null ? getArguments().getString("quickLabel") : "";
         reportId = getArguments() != null ? getArguments().getString("reportId") : null;
+        rotateDegree = getArguments() != null ? getArguments().getInt("rotateDegree") : 0;
+
 
         imageDetailsPOJO = getArguments() != null ? (ImageDetailsPOJO) getArguments().getParcelable("imageDetailsPojo") : new ImageDetailsPOJO();
 
@@ -171,6 +165,7 @@ public class ImageFragment extends Fragment {
             imgGeoTag = savedInstanceState.getString("imgGeoTag");
             label = savedInstanceState.getParcelable("label");
             quickLabel = savedInstanceState.getString("quickLabel");
+            rotateDegree = savedInstanceState.getInt("rotateDegree");
         }
     }
 
@@ -209,6 +204,9 @@ public class ImageFragment extends Fragment {
         });
 
 
+        if(rotateDegree!=0){
+            iv.setRotation(rotateDegree);
+        }
 
 
         if(label != null && !TextUtils.isEmpty(label.getName())) {
@@ -632,6 +630,7 @@ public class ImageFragment extends Fragment {
         outState.putString("imgGeoTag", imgGeoTag);
         outState.putParcelable("label", label);
         outState.putString("quickLabel", quickLabel);
+        outState.putInt("rotateDegree", rotateDegree);
     }
 
     public interface MonitorImageDetailsChange {
@@ -656,6 +655,8 @@ public class ImageFragment extends Fragment {
 
         void setImageUrl(String imageUrl, int position);
 
+        void setRotateDegree(int rotateDegree, int position);
+
 
     }
 
@@ -677,71 +678,11 @@ public class ImageFragment extends Fragment {
     }
 
     public void rotateImage(String path){
-        File file = new File(path);
 
-        InputStream iStream = null;
-        try {
-            iStream  = getActivity().getContentResolver().openInputStream(Uri.fromFile(file));
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        byte[] inputData = getBytes(iStream);
-
-        Bitmap bitmap = BitmapFactory.decodeByteArray(inputData,0,inputData.length);
-
-
-        Matrix matrix = new Matrix();
-        matrix.postRotate(angle);
-
-        iv.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-        iv.setImageMatrix(matrix);
-
-        bitmap = Bitmap.createBitmap(bitmap,0,0,bitmap.getWidth(),bitmap.getHeight(),matrix,true);
-
-        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outStream);
-        byte[]  image = outStream.toByteArray();
-
-        if (file.getPath() == null) {
-            return;
-        }
-        File file1 = new File(file.getPath());
-        if (!file1.exists()) {
-            try {
-                file1.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        FileOutputStream outputStream = null;
-        try {
-            outputStream = new FileOutputStream(path, false);
-            outputStream.write(image);
-        } catch (java.io.IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (outputStream != null) {
-                    outputStream.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-//
-//            final RotateAnimation rotateAnim = new RotateAnimation(0.0f, angle,
-//                    RotateAnimation.RELATIVE_TO_SELF, 0.5f,
-//                    RotateAnimation.RELATIVE_TO_SELF, 0.5f);
-//
-//            rotateAnim.setDuration(0);
-//            rotateAnim.setFillAfter(true);
-//            iv.startAnimation(rotateAnim);
-
-       // iv.setRotation(iv.getRotation() + 90);
-
-
+        rotateDegree = (int) (iv.getRotation()-90);
+        iv.setRotation(iv.getRotation()-90);
+        imageDetailsPOJO.setRotateDegree(rotateDegree);
+        monitorImageDetailsChange.setRotateDegree(rotateDegree, position);
         monitorImageDetailsChange.setImageUrl(imageDetailsPOJO.getImageUrl(), position);
         mImagePreviewListAdapter.notifyItemChanged(position);
         Glide.with(this).load("file://" + imageDetailsPOJO.getImageUrl()).apply(options).into(iv);
