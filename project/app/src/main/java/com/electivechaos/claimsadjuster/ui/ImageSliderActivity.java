@@ -13,25 +13,24 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -40,7 +39,8 @@ import com.electivechaos.claimsadjuster.BaseActivity;
 import com.electivechaos.claimsadjuster.DepthPageTransformer;
 import com.electivechaos.claimsadjuster.ImageFragment;
 import com.electivechaos.claimsadjuster.R;
-
+import com.electivechaos.claimsadjuster.asynctasks.ImagesRotationTsk;
+import com.electivechaos.claimsadjuster.interfaces.AsyncTaskStatusCallback;
 import com.electivechaos.claimsadjuster.listeners.OnLastSelectionChangeListener;
 import com.electivechaos.claimsadjuster.pojo.ImageDetailsPOJO;
 import com.electivechaos.claimsadjuster.pojo.Label;
@@ -50,41 +50,34 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 
 import static com.electivechaos.claimsadjuster.ui.AddEditCategoryActivity.ADD_COVERAGE_REQUEST_CODE;
 
 public class ImageSliderActivity extends BaseActivity implements ImageFragment.MonitorImageDetailsChange {
-    ImagePagerAdapter mAdapter;
-    ImagePreviewListAdapter mImagePreviewListAdapter;
-    ViewPager mPager;
-    RecyclerView mImagePreviewList;
-    ImageButton selectImagesBtn;
-    boolean flag = false;
-
-    private ArrayList<ImageDetailsPOJO> imagesInformation;
-    private ArrayList<ImageDetailsPOJO> imageList;
-    private int lastSelectedPosition = -1;
-    private int labelPosition = -1;
-    private String labelDefaultCoverageType = "";
-
-    private Label label;
-    boolean setAdapter = true;
-    boolean isOrientation = true;
-
-
-    private OnLastSelectionChangeListener onLastSelectionChangeListener;
-
-    private String reportId;
-    private LinearLayout parentLayoutForMessages;
-
-
     static RequestOptions options = new RequestOptions()
             .placeholder(R.drawable.imagepicker_image_placeholder)
             .error(R.drawable.imagepicker_image_placeholder)
             .fitCenter()
             .skipMemoryCache(true)
             .diskCacheStrategy(DiskCacheStrategy.NONE);
+    ImagePagerAdapter mAdapter;
+    ImagePreviewListAdapter mImagePreviewListAdapter;
+    ViewPager mPager;
+    RecyclerView mImagePreviewList;
+    ImageButton selectImagesBtn;
+    boolean flag = false;
+    boolean setAdapter = true;
+    boolean isOrientation = true;
+    private ArrayList<ImageDetailsPOJO> imagesInformation;
+    private ArrayList<ImageDetailsPOJO> imageList;
+    private int lastSelectedPosition = -1;
+    private int labelPosition = -1;
+    private String labelDefaultCoverageType = "";
+    private Label label;
+    private View progressBarLayout;
+    private OnLastSelectionChangeListener onLastSelectionChangeListener;
+    private String reportId;
+    private FrameLayout parentLayoutForMessages;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,6 +126,8 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
         mPager.setOffscreenPageLimit(0);
         parentLayoutForMessages = findViewById(R.id.parentLayoutForMessages);
 
+        progressBarLayout = findViewById(R.id.progressBarLayout);
+
         mAdapter = new ImagePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mAdapter);
         mPager.setPageTransformer(true, new DepthPageTransformer());
@@ -154,24 +149,51 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
         selectImagesBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 for (int i = 0; i < imagesInformation.size(); i++) {
-                    if(TextUtils.isEmpty(imagesInformation.get(i).getLabelName()) )  {
+                    if (TextUtils.isEmpty(imagesInformation.get(i).getLabelName())) {
                         CommonUtils.showSnackbarMessage(getString(R.string.select_category_for_all_images), true, true, parentLayoutForMessages, ImageSliderActivity.this);
                         return;
                     }
                 }
-                Intent intent = new Intent();
-                Bundle imagesObj = new Bundle();
-                imagesObj.putSerializable("selected_images", imagesInformation);
-               // imagesObj.putParcelable("label", label);
-                imagesObj.putInt("labelPosition", labelPosition);
-                intent.putExtras(imagesObj);
-                setResult(RESULT_OK, intent);
-                finish();
+
+                progressBarLayout.setVisibility(View.VISIBLE);
+                getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                        WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
+                new ImagesRotationTsk(ImageSliderActivity.this, imagesInformation, progressBarLayout, false, new AsyncTaskStatusCallback() {
+
+                    @Override
+                    public void onPostExecute(Object object, String type) {
+
+                        Toast.makeText(ImageSliderActivity.this, "Images saved.", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent();
+                        Bundle imagesObj = new Bundle();
+                        imagesObj.putSerializable("selected_images", imagesInformation);
+                        // imagesObj.putParcelable("label", label);
+                        imagesObj.putInt("labelPosition", labelPosition);
+                        intent.putExtras(imagesObj);
+                        setResult(RESULT_OK, intent);
+                        finish();
+                    }
+
+                    @Override
+                    public void onPreExecute() {
+
+                    }
+
+                    @Override
+                    public void onProgress(int progress) {
+
+                    }
+                }).execute();
+
             }
+
         });
 
     }
+
 
     @Override
     public void updateImageDescription(String description, int position) {
@@ -214,7 +236,7 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
     }
 
     @Override
-    public void  setLabelName(String labelName, int position){
+    public void setLabelName(String labelName, int position) {
         imagesInformation.get(position).setLabelName(labelName);
     }
 
@@ -222,6 +244,12 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
     public void setImageUrl(String imageUrl, int position) {
         imagesInformation.get(position).setImageUrl(imageUrl);
     }
+
+    @Override
+    public void setRotateDegree(int rotateDegree, int position) {
+        imagesInformation.get(position).setRotateDegree(rotateDegree);
+    }
+
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -254,8 +282,6 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
     }
 
 
-
-
     @Override
     public void onBackPressed() {
         AlertDialog.Builder builder = new AlertDialog.Builder(ImageSliderActivity.this);
@@ -282,10 +308,8 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
     }
 
 
-
     public class ImagePagerAdapter extends FragmentStatePagerAdapter {
         private Fragment mCurrentFragment;
-
 
 
         ImagePagerAdapter(FragmentManager fragmentManager) {
@@ -300,7 +324,7 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
 
         @Override
         public Fragment getItem(int position) {
-            Fragment fragment = ImageFragment.init(imagesInformation.get(position), position, mPager,label,reportId,mImagePreviewListAdapter);
+            Fragment fragment = ImageFragment.init(imagesInformation.get(position), position, mPager, label, reportId, mImagePreviewListAdapter);
             return fragment;
         }
 
@@ -371,6 +395,7 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
 
             final ImageDetailsPOJO imgDetails = imageList.get(position);
             Glide.with(context).load("file://" + imgDetails.getImageUrl()).apply(options).thumbnail(0.1f).into(holder.imageView);
+            holder.imageView.setRotation(imageList.get(position).getRotateDegree());
             holder.imageView.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -387,37 +412,34 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
             });
 
 
-
-
-
             mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                 @Override
                 public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-                        if (position == 0) {
-                            if (TextUtils.isEmpty(imagesInformation.get(position).getLabelName())) {
-                                mPager.setCurrentItem(0);
-                                CommonUtils.showSnackbarMessage(getString(R.string.select_category_for_all_images), true, true, parentLayoutForMessages, ImageSliderActivity.this);
-                            } else if (!TextUtils.isEmpty(imagesInformation.get(position).getLabelName()) && !flag ) {
-                                for (int i = 1; i < imagesInformation.size(); i++) {
-                                    imagesInformation.get(i).setLabelName(imagesInformation.get(position).getLabelName());
-                                    imagesInformation.get(i).setCoverageTye(imagesInformation.get(position).getCoverageTye());
-                                    imagesInformation.get(i).setIsDamage(imagesInformation.get(position).isDamage());
-                                    imagesInformation.get(i).setOverview(imagesInformation.get(position).isOverview());
-                                    imagesInformation.get(i).setPointOfOrigin(imagesInformation.get(position).isPointOfOrigin());
-                                }
-
-                                if (position == 0 && setAdapter) {
-                                    setAdapter = false;
-                                    mAdapter = new ImagePagerAdapter(getSupportFragmentManager());
-                                    mPager.setAdapter(mAdapter);
-                                    mPager.setPageTransformer(true, new DepthPageTransformer());
-                                }
-                                flag = true;
+                    if (position == 0) {
+                        if (TextUtils.isEmpty(imagesInformation.get(position).getLabelName())) {
+                            mPager.setCurrentItem(0);
+                            CommonUtils.showSnackbarMessage(getString(R.string.select_category_for_all_images), true, true, parentLayoutForMessages, ImageSliderActivity.this);
+                        } else if (!TextUtils.isEmpty(imagesInformation.get(position).getLabelName()) && !flag) {
+                            for (int i = 1; i < imagesInformation.size(); i++) {
+                                imagesInformation.get(i).setLabelName(imagesInformation.get(position).getLabelName());
+                                imagesInformation.get(i).setCoverageTye(imagesInformation.get(position).getCoverageTye());
+                                imagesInformation.get(i).setIsDamage(imagesInformation.get(position).isDamage());
+                                imagesInformation.get(i).setOverview(imagesInformation.get(position).isOverview());
+                                imagesInformation.get(i).setPointOfOrigin(imagesInformation.get(position).isPointOfOrigin());
                             }
 
+                            if (position == 0 && setAdapter) {
+                                setAdapter = false;
+                                mAdapter = new ImagePagerAdapter(getSupportFragmentManager());
+                                mPager.setAdapter(mAdapter);
+                                mPager.setPageTransformer(true, new DepthPageTransformer());
+                            }
+                            flag = true;
                         }
+
                     }
+                }
 
                 @Override
                 public void onPageSelected(int position) {
@@ -438,10 +460,7 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
             });
 
 
-
-
         }
-
 
 
         @Override
