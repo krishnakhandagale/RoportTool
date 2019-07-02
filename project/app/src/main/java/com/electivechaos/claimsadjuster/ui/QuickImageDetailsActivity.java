@@ -22,6 +22,7 @@ import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.RotateAnimation;
@@ -31,6 +32,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -45,6 +47,7 @@ import com.electivechaos.claimsadjuster.adapters.CustomMenuAdapter;
 import com.electivechaos.claimsadjuster.adapters.FrequentlyUsedNotesPopUpAdapter;
 import com.electivechaos.claimsadjuster.asynctasks.DBFrequentlyUsedNotes;
 import com.electivechaos.claimsadjuster.asynctasks.DBPropertyDetailsListTsk;
+import com.electivechaos.claimsadjuster.asynctasks.ImageRotationTsk;
 import com.electivechaos.claimsadjuster.database.CategoryListDBHelper;
 import com.electivechaos.claimsadjuster.dialog.ImageDetailsFragment;
 import com.electivechaos.claimsadjuster.interfaces.AsyncTaskStatusCallback;
@@ -103,6 +106,10 @@ public class QuickImageDetailsActivity extends BaseActivity {
 
     private int angle = 0;
     private int mCurrRotation = 0;
+    private int toRotation =0;
+    private int rotateDegree =0;
+
+    private View progressBarLayout;
 
 
     static RequestOptions options = new RequestOptions()
@@ -139,6 +146,8 @@ public class QuickImageDetailsActivity extends BaseActivity {
 
         selectCategory = findViewById(R.id.selectCategory);
 
+        progressBarLayout =findViewById(R.id.progressBarLayout);
+
         fabOpen = AnimationUtils.loadAnimation(this, R.anim.fab_open);
         imageInfoBtn.startAnimation(fabOpen);
         addImage.startAnimation(fabOpen);
@@ -155,8 +164,10 @@ public class QuickImageDetailsActivity extends BaseActivity {
             fileUri = savedInstanceState.getParcelable("fileUri");
             photoFile = (File) savedInstanceState.getSerializable("photoFile");
             mCurrentPhotoPath = savedInstanceState.getString("mCurrentPhotoPath");
-//            notesString = savedInstanceState.getString("noteString");
+
             labelName = savedInstanceState.getString("labelName");
+            rotateDegree = savedInstanceState.getInt("rotateDegree");
+            imgView.setRotation(rotateDegree);
 
             if (imageDetails.isDamage()) {
                 isDamageTextView.setBackground(ContextCompat.getDrawable(QuickImageDetailsActivity.this, R.drawable.shape_chip_drawable_active));
@@ -186,12 +197,7 @@ public class QuickImageDetailsActivity extends BaseActivity {
 
             if (!TextUtils.isEmpty(labelName) && !labelName.equalsIgnoreCase("Select Category")) {
                 selectCategory.setText(labelName);
-//                selectLabel.setBackground(ContextCompat.getDrawable(QuickImageDetailsActivity.this, R.drawable.shape_chip_drawable_active));
             }
-
-//            if (!TextUtils.isEmpty(notesString)) {
-//                notes.setText(notesString);
-//            }
 
             if (!TextUtils.isEmpty(imageDetails.getCoverageTye())) {
                 imageCoverageType.setText(imageDetails.getCoverageTye());
@@ -202,46 +208,12 @@ public class QuickImageDetailsActivity extends BaseActivity {
         addImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (saveImageDetails()) {
+                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                if (saveImageDetails("yes")) {
                     notes.setText("");
-                    cameraIntent(REQUEST_QUICK_CAMERA);
                 }
             }
         });
-
-
-//        selectLabel.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(final View v) {
-//                final ArrayList<Category> categories = categoryListDBHelper.getCategoryList();
-//
-//                final CustomCategoryPopUpAdapter adapter = new CustomCategoryPopUpAdapter(QuickImageDetailsActivity.this, categories);
-//
-//                final android.app.AlertDialog.Builder ad = new android.app.AlertDialog.Builder(QuickImageDetailsActivity.this);
-//                ad.setCancelable(true);
-//                ad.setPositiveButton("Add New", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        Intent intent = new Intent(QuickImageDetailsActivity.this, AddEditCategoryActivity.class);
-//                        startActivityForResult(intent, ADD_CATEGORY_REQUEST);
-//                    }
-//                });
-//                ad.setTitle("Select Category");
-//
-//                ad.setSingleChoiceItems(adapter, -1, new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(final DialogInterface dialogInterface, int pos) {
-//                        selectLabel.setBackground(ContextCompat.getDrawable(QuickImageDetailsActivity.this, R.drawable.shape_chip_drawable_active));
-//                        selectLabel.setText(categories.get(pos).getCategoryName().toString());
-//                        labelName = categories.get(pos).getCategoryName().toString();
-//                        dialogInterface.dismiss();
-//
-//                    }
-//                });
-//
-//                ad.show();
-//            }
-//        });
 
 
         selectCategory.setOnClickListener(new View.OnClickListener() {
@@ -265,7 +237,6 @@ public class QuickImageDetailsActivity extends BaseActivity {
                 ad.setSingleChoiceItems(adapter, -1, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(final DialogInterface dialogInterface, int pos) {
-//                        selectLabel.setBackground(ContextCompat.getDrawable(QuickImageDetailsActivity.this, R.drawable.shape_chip_drawable_active));
                         selectCategory.setText(categories.get(pos).getCategoryName().toString());
                         labelName = categories.get(pos).getCategoryName().toString();
                         dialogInterface.dismiss();
@@ -534,7 +505,7 @@ public class QuickImageDetailsActivity extends BaseActivity {
         rotateImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                rotateImage(imageDetails.getImageUrl());
+                rotateImage();
 
             }
 
@@ -548,61 +519,16 @@ public class QuickImageDetailsActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 donePressed = true;
-                saveImageDetails();
+                saveImageDetails("no");
             }
         });
         setImage();
     }
 
 
-    public void rotateImage(String path){
-        File file = new File(path);
-
-        Bitmap bitmap = BitmapFactory.decodeByteArray(capturedImage,0,capturedImage.length);
-
-        mCurrRotation %= 360;
-        float fromRotation = mCurrRotation;
-        float toRotation = mCurrRotation -= 90;
-        angle = angle +90;
-        Matrix matrix = new Matrix();
-        matrix.postRotate(toRotation);
-
-        imgView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-        imgView.setImageMatrix(matrix);
-
-        bitmap = Bitmap.createBitmap(bitmap,0,0,bitmap.getWidth(),bitmap.getHeight(),matrix,true);
-
-        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outStream);
-        byte[]  image = outStream.toByteArray();
-
-        if (file.getPath() == null) {
-            return;
-        }
-        File file1 = new File(file.getPath());
-        if (!file1.exists()) {
-            try {
-                file1.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        FileOutputStream outputStream = null;
-        try {
-            outputStream = new FileOutputStream(path, false);
-            outputStream.write(image);
-        } catch (java.io.IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (outputStream != null) {
-                    outputStream.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+    public void rotateImage(){
+        rotateDegree = (int) (imgView.getRotation()-90);
+        imgView.setRotation(imgView.getRotation()-90);
         setImage();
     }
 
@@ -613,7 +539,7 @@ public class QuickImageDetailsActivity extends BaseActivity {
                 .into(imgView);
     }
 
-    public boolean saveImageDetails() {
+    public boolean saveImageDetails(final String addImage) {
         ImageDetailsPOJO shareImageDetails = new ImageDetailsPOJO();
         shareImageDetails.setDescription(notes.getText().toString());
         shareImageDetails.setImageId(imageDetails.getImageId());
@@ -633,8 +559,50 @@ public class QuickImageDetailsActivity extends BaseActivity {
         } else {
             String imageId = categoryListDBHelper.addQuickLabel(shareImageDetails, labelName, reportId);
             shareImageDetails.setImageId(imageId);
-            Intent intent = new Intent();
-            setResult(RESULT_OK, intent);
+            if(rotateDegree != 0) {
+                File file = new File(imageDetails.getImageUrl());
+                Bitmap bitmap = BitmapFactory.decodeByteArray(capturedImage, 0, capturedImage.length);
+
+                progressBarLayout.setVisibility(View.VISIBLE);
+                getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                        WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                Matrix matrix = new Matrix();
+                matrix.postRotate(rotateDegree);
+
+                new ImageRotationTsk(QuickImageDetailsActivity.this, imageDetails.getImageUrl(), file, bitmap, matrix, progressBarLayout, false, new AsyncTaskStatusCallback() {
+
+                    @Override
+                    public void onPostExecute(Object object, String type) {
+
+                        Toast.makeText(QuickImageDetailsActivity.this, "Image saved.", Toast.LENGTH_SHORT).show();
+                        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                        Intent intent = new Intent();
+                        setResult(RESULT_OK, intent);
+
+                        if(addImage.equalsIgnoreCase("yes")){
+                            cameraIntent(REQUEST_QUICK_CAMERA);
+                            rotateDegree = 0;
+                            imgView.setRotation(rotateDegree);
+                        }
+                    }
+
+                    @Override
+                    public void onPreExecute() {
+
+                    }
+
+                    @Override
+                    public void onProgress(int progress) {
+
+                    }
+                }).execute();
+            }else {
+                cameraIntent(REQUEST_QUICK_CAMERA);
+                Intent intent = new Intent();
+                setResult(RESULT_OK, intent);
+            }
+
+
             if (donePressed) {
                 finish();
             }
@@ -783,8 +751,6 @@ public class QuickImageDetailsActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         setImage();
-
-
     }
 
 
@@ -793,11 +759,16 @@ public class QuickImageDetailsActivity extends BaseActivity {
         super.onSaveInstanceState(outState);
         outState.putParcelable("imageDetails", imageDetails);
         outState.putString("labelName", labelName);
-//        outState.putString("noteString", notesString);
         outState.putParcelable("fileUri", fileUri);
         outState.putSerializable("photoFile", photoFile);
         outState.putSerializable("mCurrentPhotoPath", mCurrentPhotoPath);
         outState.putString("labelDefaultCoverageType", labelDefaultCoverageType);
+        outState.putInt("rotateDegree", rotateDegree);
     }
 
+
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
 }
