@@ -486,7 +486,7 @@ public class SingleImageDetailsActivity extends BaseActivity {
                     new ImageRotationTsk(SingleImageDetailsActivity.this, shareImageDetails.getImageUrl(), file, bitmap, matrix, progressBarLayout, false, new AsyncTaskStatusCallback() {
                         @Override
                         public void onPostExecute(Object object, String type) {
-                            Toast.makeText(SingleImageDetailsActivity.this, "Image edited sucessfully...", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SingleImageDetailsActivity.this, "Image edited.", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent();
                             intent.putExtra("selected_images", shareImageDetails);
                             intent.putExtra("isEdit", isEdit);
