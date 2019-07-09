@@ -18,6 +18,7 @@ import android.support.v4.view.ViewPager;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,9 +53,6 @@ import com.electivechaos.claimsadjuster.ui.AddEditCoverageActivity;
 import com.electivechaos.claimsadjuster.ui.ImageSliderActivity;
 import com.electivechaos.claimsadjuster.utils.CommonUtils;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
@@ -84,13 +82,12 @@ public class ImageFragment extends Fragment {
 
     private static final int ADD_CATEGORY_REQUEST = 10;
     private FloatingActionButton rotateImage;
-    private int angle = -90;
 
     private ImageView iv;
-    private int mCurrRotation = 0; // takes the place of getRotation()
     private Animation fabOpen;
 
     private int rotateDegree = 0;
+    private View layoutView1;
 
     private static ImageSliderActivity.ImagePreviewListAdapter mImagePreviewListAdapter;
 
@@ -123,8 +120,8 @@ public class ImageFragment extends Fragment {
         args.putInt("position", position);
         args.putInt("rotateDegree",imageDetails.getRotateDegree());
 
-            args.putParcelable("label", label);
-            args.putString("quickLabel", imageDetails.getLabelName());
+        args.putParcelable("label", label);
+        args.putString("quickLabel", imageDetails.getLabelName());
 
         args.putParcelable("imageDetailsPojo", imageDetails);
         args.putString("reportId", reportIdd);
@@ -167,6 +164,8 @@ public class ImageFragment extends Fragment {
             quickLabel = savedInstanceState.getString("quickLabel");
             rotateDegree = savedInstanceState.getInt("rotateDegree");
         }
+
+
     }
 
 
@@ -204,6 +203,8 @@ public class ImageFragment extends Fragment {
         });
 
 
+        Log.d("FUCK","ON CREATEVIEW"+position);
+        Log.d("FUCK", "IMAGEURL"+ imageUrl);
         if(rotateDegree!=0){
             iv.setRotation(rotateDegree);
         }
@@ -576,10 +577,13 @@ public class ImageFragment extends Fragment {
             }
         });
 
+
         Glide.with(this).load("file://" + imageUrl).apply(options).into(iv);
 
+        layoutView1 = layoutView;
         return layoutView;
     }
+
 
     public void setCoverageType(String name) {
         coverageType = name;
@@ -691,4 +695,35 @@ public class ImageFragment extends Fragment {
 
 
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d("FUCK", "onStart   of HomeFragment");
+        Glide.with(this).load("file://" + imageUrl).apply(options).into(iv);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (!getUserVisibleHint()) {
+            return;
+        }
+        Glide.with(this).load("file://" + imageUrl).apply(options).into(iv);
+        Log.d("FUCK", "onResume   of HomeFragment");
+
+        //do your stuff here
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isUserVisible)
+    {
+        super.setUserVisibleHint(isUserVisible);
+        // when fragment visible to user and view is not null then enter here.
+        if (isUserVisible && layoutView1 != null)
+        {
+            onResume();
+            Log.d("FUCK", "onVisible  of HomeFragment");
+        }
+
+    }
 }

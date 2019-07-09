@@ -19,6 +19,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -78,7 +79,7 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
     private OnLastSelectionChangeListener onLastSelectionChangeListener;
     private String reportId;
     private FrameLayout parentLayoutForMessages;
-
+    private  boolean recreatePager = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,6 +119,7 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
             labelDefaultCoverageType = savedInstanceState.getString("labelDefaultCoverageType");
             label = savedInstanceState.getParcelable("label");
             flag = savedInstanceState.getBoolean("flag");
+            recreatePager = savedInstanceState.getBoolean("recreatePager");
         }
 
         selectImagesBtn = findViewById(R.id.selectImages);
@@ -192,6 +194,9 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
 
         });
 
+
+
+
     }
 
 
@@ -260,6 +265,7 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
         outState.putString("labelDefaultCoverageType", labelDefaultCoverageType);
         outState.putParcelable("label", label);
         outState.putBoolean("flag", flag);
+        outState.putBoolean("recreatePager", recreatePager);
 
     }
 
@@ -334,6 +340,7 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
                 mCurrentFragment = ((Fragment) object);
             }
             super.setPrimaryItem(container, position, object);
+
         }
 
 
@@ -353,6 +360,8 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
         Fragment getCurrentFragment() {
             return mCurrentFragment;
         }
+
+
 
 
     }
@@ -412,6 +421,20 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
             });
 
 
+                mPager.post(new Runnable() {
+                    public void run() {
+                        if (recreatePager && (position == (imagesInformation.size()-1))){
+                        // guarded viewPager.setCurrentItem
+                        if (mPager.getCurrentItem() != position)
+                            mPager.setCurrentItem(0);
+                        Log.d("FUCK", "PAGER");
+                        recreatePager = false;
+                    }
+                    }
+                });
+
+
+
             mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                 @Override
                 public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -451,6 +474,7 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
                         notifyItemChanged(position);
 
                     }
+
 
                 }
 
