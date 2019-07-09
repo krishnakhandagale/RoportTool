@@ -78,7 +78,7 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
     private View progressBarLayout;
     private OnLastSelectionChangeListener onLastSelectionChangeListener;
     private String reportId;
-    private FrameLayout parentLayoutForMessages;
+    private View parentLayoutForMessages;
     private  boolean recreatePager = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -425,7 +425,7 @@ public class ImageSliderActivity extends BaseActivity implements ImageFragment.M
                     public void run() {
                         if (recreatePager && (position == (imagesInformation.size()-1))){
                         // guarded viewPager.setCurrentItem
-                        if (mPager.getCurrentItem() != position)
+                        if (mPager.getCurrentItem() != position || mPager.getCurrentItem()==0)
                             mPager.setCurrentItem(0);
                         Log.d("FUCK", "PAGER");
                         recreatePager = false;

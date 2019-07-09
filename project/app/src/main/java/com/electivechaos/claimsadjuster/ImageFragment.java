@@ -692,38 +692,4 @@ public class ImageFragment extends Fragment {
         }
     }
 
-
-
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        Log.d("FUCK", "onStart   of HomeFragment");
-        Glide.with(this).load("file://" + imageUrl).apply(options).into(iv);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (!getUserVisibleHint()) {
-            return;
-        }
-        Glide.with(this).load("file://" + imageUrl).apply(options).into(iv);
-        Log.d("FUCK", "onResume   of HomeFragment");
-
-        //do your stuff here
-    }
-
-    @Override
-    public void setUserVisibleHint(boolean isUserVisible)
-    {
-        super.setUserVisibleHint(isUserVisible);
-        // when fragment visible to user and view is not null then enter here.
-        if (isUserVisible && layoutView1 != null)
-        {
-            onResume();
-            Log.d("FUCK", "onVisible  of HomeFragment");
-        }
-
-    }
 }
