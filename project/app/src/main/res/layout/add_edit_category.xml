@@ -94,7 +94,7 @@
             android:background="@color/colorPrimaryDark"
             android:text="@string/add_category"
             android:textAlignment="center"
-            android:textColor="@color/white_color" />
+            android:textColor="@color/white" />
     </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -42,7 +42,7 @@ public class RegistrationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_registration);
+        setContentView(R.layout.activity_registration_old);
 
         if (!TextUtils.isEmpty(CommonUtils.getSession(getApplicationContext()))) {
             Intent intent = new Intent(RegistrationActivity.this, MainTabsActivity.class);

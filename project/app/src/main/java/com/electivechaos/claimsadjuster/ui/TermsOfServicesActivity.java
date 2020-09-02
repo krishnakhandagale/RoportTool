@@ -34,7 +34,6 @@ public class TermsOfServicesActivity extends AppCompatActivity {
             startActivity(intentSplash);
         }
 
-
         termsOfServices = findViewById(R.id.termsAndCondition);
         acceptBtn = findViewById(R.id.acceptBtn);
         dontAcceptBtn = findViewById(R.id.dontAcceptBtn);

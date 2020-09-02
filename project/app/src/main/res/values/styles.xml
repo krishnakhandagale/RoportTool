@@ -6,8 +6,12 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorPrimaryDark</item>
-        <item name="android:textColorHint">@color/grayDark</item>
+        <item name="android:textColorHint">@color/colorGrayDark</item>
     </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="imagepicker_TextSmall" parent="TextAppearance.AppCompat.Small">
         <item name="android:layout_width">wrap_content</item>
@@ -26,6 +30,19 @@
 
     <style name="CustomTabFontSize" parent="@android:style/TextAppearance.Widget.TabWidget">
         <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="RegistrationEditTextBlack" parent="AppTheme">
+        <item name="colorControlNormal">#F77E7676</item>
+        <item name="colorControlActivated">#696363</item>
+        <item name="colorControlHighlight">#575252</item>
+    </style>
+
+    <style name="TextAppearance.App.TextInputLayout.Black" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/colorGrayDark</item>
+        <item name="android:textColorHint">@color/white</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColorHighlight">@color/white</item>
     </style>
 
 

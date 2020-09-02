@@ -21,6 +21,27 @@
         android:theme="@style/AppTheme">
         <activity android:name=".TestActivity"></activity>
 
+        <activity
+            android:name=".modules.registration.RegistrationActivity"
+            android:hardwareAccelerated="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:windowSoftInputMode="adjustPan"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".modules.login.OTPVerificationActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".modules.login.LoginActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            <intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
@@ -49,11 +70,7 @@
 
         </activity>
         <activity android:name=".ui.MainTabsActivity">
-            <intent-filter>
-                <category android:name="android.intent.category.LAUNCHER" />
 
-                <action android:name="android.intent.action.MAIN" />
-            </intent-filter>
         </activity>
         <activity android:name=".ui.ImagePickerActivity" />
         <activity
@@ -76,7 +93,9 @@
             android:name=".ui.PdfViewerActivity"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".ui.SplashScreenActivity" />
+        <activity android:name=".ui.SplashScreenActivity" >
+
+        </activity>
         <activity android:name=".ui.CustomisationActivity" />
         <activity android:name=".ui.RoofSystemActivity" />
         <activity android:name=".ui.SidingActivity" />

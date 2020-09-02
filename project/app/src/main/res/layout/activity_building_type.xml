@@ -65,7 +65,7 @@
             android:background="@color/colorPrimaryDark"
             android:text="@string/add_building_type"
             android:textAlignment="center"
-            android:textColor="@color/white_color" />
+            android:textColor="@color/white" />
     </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

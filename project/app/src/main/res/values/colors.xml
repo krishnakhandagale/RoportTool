@@ -5,10 +5,10 @@
 
     <color name="grayMenu">#7D7D7D</color>
     <color name="grayLight">#eae8e8</color>
-    <color name="grayDark">#8e8686</color>
+    <color name="colorGrayDark">#8e8686</color>
     <color name="black">#d2000000</color>
 
-    <color name="white_color">#ffffff</color>
+    <color name="white">#ffffff</color>
     <color name="color_error">#ff4444</color>
     <color name="colorSuccess">#0b6c2a</color>
     <color name="color_primary">#F5AB35</color>

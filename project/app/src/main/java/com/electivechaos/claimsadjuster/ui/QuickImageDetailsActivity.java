@@ -679,7 +679,7 @@ public class QuickImageDetailsActivity extends BaseActivity {
         } else {
             Snackbar snackbar = Snackbar
                     .make(parentLayoutForMessages, "Something went wrong.Please retry with system camera app.", Snackbar.LENGTH_INDEFINITE);
-            snackbar.setActionTextColor(ContextCompat.getColor(this, R.color.white_color));
+            snackbar.setActionTextColor(ContextCompat.getColor(this, R.color.white));
             snackbar.setAction("RETRY", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

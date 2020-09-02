@@ -72,7 +72,7 @@
                             android:background="@color/cardview_dark_background"
                             android:gravity="center"
                             android:text="Front"
-                            android:textColor="@color/white_color" />
+                            android:textColor="@color/white" />
 
                         <ImageView
                             android:id="@+id/imageViewOne"
@@ -109,7 +109,7 @@
                             android:background="@color/cardview_dark_background"
                             android:gravity="center"
                             android:text="Back"
-                            android:textColor="@color/white_color" />
+                            android:textColor="@color/white" />
 
                         <ImageView
                             android:id="@+id/imageViewTwo"
@@ -144,7 +144,7 @@
                             android:background="@color/cardview_dark_background"
                             android:gravity="center"
                             android:text="Left"
-                            android:textColor="@color/white_color" />
+                            android:textColor="@color/white" />
 
                         <ImageView
                             android:id="@+id/imageViewThree"
@@ -179,7 +179,7 @@
                             android:background="@color/cardview_dark_background"
                             android:gravity="center"
                             android:text="Right"
-                            android:textColor="@color/white_color" />
+                            android:textColor="@color/white" />
 
                         <ImageView
                             android:id="@+id/imageViewFour"
@@ -222,7 +222,7 @@
                     android:background="@color/cardview_dark_background"
                     android:gravity="center"
                     android:text="House Number"
-                    android:textColor="@color/white_color" />
+                    android:textColor="@color/white" />
 
                 <ImageView
                     android:id="@+id/houseNumberImage"

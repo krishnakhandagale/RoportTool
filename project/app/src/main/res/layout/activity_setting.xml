@@ -37,7 +37,7 @@
                 android:layout_marginTop="20dp"
                 android:fontFamily="sans-serif-condensed"
                 android:text="@string/image_quality_setting"
-                android:textColor="@color/grayDark"
+                android:textColor="@color/colorGrayDark"
                 android:textSize="15sp" />
 
             <View
@@ -97,7 +97,7 @@
                 android:layout_marginTop="20dp"
                 android:fontFamily="sans-serif-condensed"
                 android:text="@string/map_setting"
-                android:textColor="@color/grayDark"
+                android:textColor="@color/colorGrayDark"
                 android:textSize="15sp" />
 
             <View
@@ -397,7 +397,7 @@
                         android:id="@+id/companyNameLogo"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
-                        android:background="@color/grayDark" />
+                        android:background="@color/colorGrayDark" />
 
                     <ImageButton
                         android:id="@+id/companyNameLogoRemove"

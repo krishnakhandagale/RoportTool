@@ -15,7 +15,7 @@
             android:background="?attr/colorPrimaryDark"
             app:layout_scrollFlags=""
             app:popupTheme="@style/ThemeOverlay.AppCompat.ActionBar"
-            app:titleTextColor="@color/white_color"></androidx.appcompat.widget.Toolbar>
+            app:titleTextColor="@color/white"></androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"

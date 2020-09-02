@@ -28,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Location Long"
-            android:textColor="@color/grayDark"
+            android:textColor="@color/colorGrayDark"
             android:textSize="12sp" />
     </LinearLayout>
 

@@ -551,7 +551,7 @@ public class StarterPhotosFragment extends Fragment {
             onElevationImageCaptureResult(data, requestCode);
         } else {
             Snackbar snackbar = Snackbar.make(parentLayout, R.string.camera_error_msg, Snackbar.LENGTH_INDEFINITE);
-            snackbar.setActionTextColor(ContextCompat.getColor(getActivity(), R.color.white_color));
+            snackbar.setActionTextColor(ContextCompat.getColor(getActivity(), R.color.white));
             snackbar.setAction(R.string.retry, new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -570,7 +570,7 @@ public class StarterPhotosFragment extends Fragment {
             onElevationImageCaptureResult(data, requestCode);
         } else {
             Snackbar snackbar = Snackbar.make(parentLayout, R.string.camera_error_msg, Snackbar.LENGTH_INDEFINITE);
-            snackbar.setActionTextColor(ContextCompat.getColor(getActivity(), R.color.white_color));
+            snackbar.setActionTextColor(ContextCompat.getColor(getActivity(), R.color.white));
             snackbar.setAction(R.string.retry, new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -590,7 +590,7 @@ public class StarterPhotosFragment extends Fragment {
             onElevationImageCaptureResult(data, requestCode);
         } else {
             Snackbar snackbar = Snackbar.make(parentLayout, R.string.camera_error_msg, Snackbar.LENGTH_INDEFINITE);
-            snackbar.setActionTextColor(ContextCompat.getColor(getActivity(), R.color.white_color));
+            snackbar.setActionTextColor(ContextCompat.getColor(getActivity(), R.color.white));
             snackbar.setAction(R.string.retry, new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -609,7 +609,7 @@ public class StarterPhotosFragment extends Fragment {
             onElevationImageCaptureResult(data, requestCode);
         } else {
             Snackbar snackbar = Snackbar.make(parentLayout, R.string.camera_error_msg, Snackbar.LENGTH_INDEFINITE);
-            snackbar.setActionTextColor(ContextCompat.getColor(getActivity(), R.color.white_color));
+            snackbar.setActionTextColor(ContextCompat.getColor(getActivity(), R.color.white));
             snackbar.setAction(R.string.retry, new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -628,7 +628,7 @@ public class StarterPhotosFragment extends Fragment {
             onElevationImageCaptureResult(data, requestCode);
         } else {
             Snackbar snackbar = Snackbar.make(parentLayout, R.string.camera_error_msg, Snackbar.LENGTH_INDEFINITE);
-            snackbar.setActionTextColor(ContextCompat.getColor(getActivity(), R.color.white_color));
+            snackbar.setActionTextColor(ContextCompat.getColor(getActivity(), R.color.white));
             snackbar.setAction(R.string.retry, new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

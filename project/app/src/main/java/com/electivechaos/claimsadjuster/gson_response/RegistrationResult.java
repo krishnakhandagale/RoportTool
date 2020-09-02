@@ -1,5 +1,6 @@
 package com.electivechaos.claimsadjuster.gson_response;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class RegistrationResult {
@@ -12,5 +13,17 @@ public class RegistrationResult {
 
     public void setAppID(String appID) {
         this.appID = appID;
+    }
+
+    @SerializedName("UserID")
+    @Expose
+    private String userID;
+
+    public String getUserID() {
+        return userID;
+    }
+
+    public void setUserID(String userID) {
+        this.userID = userID;
     }
 }

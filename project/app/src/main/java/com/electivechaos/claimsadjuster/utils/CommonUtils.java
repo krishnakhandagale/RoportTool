@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
+
+import com.electivechaos.claimsadjuster.models.LogInResult;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.core.content.ContextCompat;
 import android.util.DisplayMetrics;
@@ -27,6 +29,8 @@ import com.electivechaos.claimsadjuster.R;
 
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -583,5 +587,75 @@ public class CommonUtils {
         }
         return message;
     }
+
+    public static void setBuisnessAccountID(String BuisnessAccountID, Context context) {
+        SharedPreferences sharedPref = context.getSharedPreferences("BusinessAccountID", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("BusinessAccountID", BuisnessAccountID);
+        editor.apply();
+    }
+
+    public static String getBuisnessAccountID(Context context) {
+        SharedPreferences sharedPref = context.getSharedPreferences("BusinessAccountID", Context.MODE_PRIVATE);
+        String channelId = sharedPref.getString("BusinessAccountID", "");
+        return channelId;
+    }
+
+    public static void clearBuisnessAccountID(Context context) {
+        SharedPreferences sharedPref = context.getSharedPreferences("BusinessAccountID", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.clear();
+        editor.apply();
+    }
+
+    public static void setUserDefaultValues(LogInResult loggedInUser, Context context) {
+        SharedPreferences sharedPref = context.getSharedPreferences("loggedInUser", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("profileUrl", (loggedInUser.getUserInfo() != null && loggedInUser.getUserInfo().getThumbnails() != null) ? loggedInUser.getUserInfo().getThumbnails().getMedium() : "");
+        editor.putString("defBusinessAccountId", loggedInUser.getDefaultBusinessAccountID());
+        editor.putString("defChannelId", loggedInUser.getDefaultChannelID());
+        editor.putString("defProjectId", loggedInUser.getDefaultProjectID());
+        editor.putString("defLibraryId", loggedInUser.getDefaultLibraryID());
+        editor.putString("firstName", (loggedInUser.getUserInfo() != null ? loggedInUser.getUserInfo().getFirstName() : ""));
+        editor.putString("lastName", (loggedInUser.getUserInfo() != null ? loggedInUser.getUserInfo().getLastName() : ""));
+        editor.putString("deviceId", loggedInUser.getDeviceID());
+        editor.putString("emailId", loggedInUser.getUserInfo() != null ? loggedInUser.getUserInfo().getEmailId() : "");
+        editor.putString("userId", loggedInUser.getUserID());
+        editor.apply();
+    }
+
+    public static Map<String, String> getUserDefaultValues(Context context) {
+        SharedPreferences sharedPref = context.getSharedPreferences("loggedInUser", Context.MODE_PRIVATE);
+        String defBusinessAccountId = sharedPref.getString("defBusinessAccountId", "");
+        String defChannelId = sharedPref.getString("defChannelId", "");
+        String defProjectId = sharedPref.getString("defProjectId", "");
+        String defLibraryId = sharedPref.getString("defLibraryId", "");
+        String userId = sharedPref.getString("userId", "");
+        String emailId = sharedPref.getString("emailId", "");
+        String profileUrl = sharedPref.getString("profileUrl", "");
+        String firstName = sharedPref.getString("firstName", "");
+        String lastName = sharedPref.getString("lastName", "");
+
+        Map<String, String> map = new HashMap();
+        map.put("defBusinessAccountId", defBusinessAccountId);
+        map.put("defChannelId", defChannelId);
+        map.put("defProjectId", defProjectId);
+        map.put("defLibraryId", defLibraryId);
+        map.put("userId", userId);
+        map.put("emailId", emailId);
+        map.put("profileUrl", profileUrl);
+        map.put("firstName", firstName);
+        map.put("lastName", lastName);
+        return map;
+    }
+
+    public static void clearUserDefaultValues(Context context) {
+        SharedPreferences sharedPref = context.getSharedPreferences("loggedInUser", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.clear();
+        editor.apply();
+    }
+
+
 
 }

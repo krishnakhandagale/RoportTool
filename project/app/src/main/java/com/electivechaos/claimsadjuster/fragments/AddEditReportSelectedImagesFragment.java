@@ -416,7 +416,7 @@ public class AddEditReportSelectedImagesFragment extends Fragment {
         } else {
             Snackbar snackbar = Snackbar
                     .make(parentLayout, "Something went wrong.Please retry with system camera app.", Snackbar.LENGTH_INDEFINITE);
-            snackbar.setActionTextColor(ContextCompat.getColor(getActivity(), R.color.white_color));
+            snackbar.setActionTextColor(ContextCompat.getColor(getActivity(), R.color.white));
             snackbar.setAction("RETRY", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

@@ -10,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.widget.ImageView;
 
 import com.electivechaos.claimsadjuster.R;
+import com.electivechaos.claimsadjuster.modules.login.LoginActivity;
+import com.electivechaos.claimsadjuster.modules.registration.RegistrationActivity;
 import com.electivechaos.claimsadjuster.utils.CommonUtils;
 
 /**
@@ -39,7 +41,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                     startActivity(i);
                     finish();
                 } else {
-                    Intent i = new Intent(SplashScreenActivity.this, RegistrationActivity.class);
+                    Intent i = new Intent(SplashScreenActivity.this, LoginActivity.class);
                     startActivity(i);
                     finish();
                 }

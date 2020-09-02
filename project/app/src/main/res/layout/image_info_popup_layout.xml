@@ -20,7 +20,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.8"
                 android:text="@string/name"
-                android:textColor="@color/grayDark"
+                android:textColor="@color/colorGrayDark"
                 android:textSize="16sp"
                 android:textStyle="normal" />
 
@@ -31,7 +31,7 @@
                 android:layout_weight="2.2"
                 android:ellipsize="end"
                 android:text="@string/image_name"
-                android:textColor="@color/grayDark"
+                android:textColor="@color/colorGrayDark"
                 android:textSize="14sp"
                 android:textStyle="normal" />
         </LinearLayout>
@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.8"
                 android:text="@string/date"
-                android:textColor="@color/grayDark"
+                android:textColor="@color/colorGrayDark"
                 android:textSize="16sp"
                 android:textStyle="normal" />
 
@@ -61,7 +61,7 @@
                 android:layout_weight="2.2"
                 android:ellipsize="end"
                 android:text="@string/date"
-                android:textColor="@color/grayDark"
+                android:textColor="@color/colorGrayDark"
                 android:textSize="14sp"
                 android:textStyle="normal" />
         </LinearLayout>
@@ -79,7 +79,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.8"
                 android:text="@string/geo_tag"
-                android:textColor="@color/grayDark"
+                android:textColor="@color/colorGrayDark"
                 android:textSize="16sp"
                 android:textStyle="normal" />
 
@@ -90,7 +90,7 @@
                 android:layout_weight="2.2"
                 android:ellipsize="end"
                 android:text="No Geo tag found. "
-                android:textColor="@color/grayDark"
+                android:textColor="@color/colorGrayDark"
                 android:textSize="14sp"
                 android:textStyle="normal" />
         </LinearLayout>

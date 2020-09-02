@@ -14,10 +14,13 @@ public interface Constants {
     String REPORT_QUALITY_LOW = "low";
     String REPORT_QUALITY_MEDIUM = "medium";
     String REPORT_QUALITY_HIGH = "high";
+    public static final String DOMAIN_ID = "videomine";
 
-    String SERVICE_URL = "http://e2eb05e4.ngrok.io/api/";
+
+    public static final String SERVICE_URL = "https://vmwapi.nightly.videomine.io/api/";
     String SERVICE_URL_STAGING = "https://staging.electivechaos.com/api/";
     String SERVICE_URL_PRODUCTION = "https://www.electivechaos.com/api/";
     String USER_ID = "UserID";
 
+    public static final String DEVICE_NAME = "Android";
 }
