@@ -58,7 +58,6 @@
       <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_vectordrawable_vectordrawable_animated_1_1_0_aar.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_versionedparcelable_versionedparcelable_1_1_0_aar.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_viewpager2_viewpager2_1_0_0_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_camerakit_camerakit_1_0_0_beta3_11_aar.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_github_bumptech_glide_annotations_4_11_0_jar.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_github_bumptech_glide_disklrucache_4_11_0_jar.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_github_bumptech_glide_gifdecoder_4_11_0_aar.xml" afterDir="false" />
@@ -156,7 +155,7 @@
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_android_support_transition_27_1_1_aar.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_android_volley_volley_1_1_0_aar.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_android_volley_volley_1_1_1_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_android_volley_volley_1_1_1_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_camerakit_camerakit_1_0_0_beta3_10_aar.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_camerakit_camerakit_1_0_0_beta3_10_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_camerakit_camerakit_1_0_0_beta3_10_aar.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_camerakit_jpegkit_0_1_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_camerakit_jpegkit_0_1_0_aar.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_crashlytics_sdk_android_answers_1_4_7_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_crashlytics_sdk_android_answers_1_4_7_aar.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_crashlytics_sdk_android_beta_1_2_10_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_crashlytics_sdk_android_beta_1_2_10_aar.xml" afterDir="false" />
@@ -732,22 +731,22 @@
       <screen x="67" y="27" width="1299" height="741" />
     </state>
     <state x="485" y="125" width="452" height="543" key="FileChooserDialogImpl/67.27.1299.741@67.27.1299.741" timestamp="1599027556520" />
-    <state width="1253" height="414" key="GridCell.Tab.0.bottom" timestamp="1599050477033">
+    <state width="1253" height="414" key="GridCell.Tab.0.bottom" timestamp="1599050650697">
       <screen x="67" y="27" width="1299" height="741" />
     </state>
-    <state width="1253" height="414" key="GridCell.Tab.0.bottom/67.27.1299.741@67.27.1299.741" timestamp="1599050477033" />
-    <state width="1253" height="414" key="GridCell.Tab.0.center" timestamp="1599050477032">
+    <state width="1253" height="414" key="GridCell.Tab.0.bottom/67.27.1299.741@67.27.1299.741" timestamp="1599050650697" />
+    <state width="1253" height="414" key="GridCell.Tab.0.center" timestamp="1599050650695">
       <screen x="67" y="27" width="1299" height="741" />
     </state>
-    <state width="1253" height="414" key="GridCell.Tab.0.center/67.27.1299.741@67.27.1299.741" timestamp="1599050477032" />
-    <state width="1253" height="414" key="GridCell.Tab.0.left" timestamp="1599050477031">
+    <state width="1253" height="414" key="GridCell.Tab.0.center/67.27.1299.741@67.27.1299.741" timestamp="1599050650695" />
+    <state width="1253" height="414" key="GridCell.Tab.0.left" timestamp="1599050650695">
       <screen x="67" y="27" width="1299" height="741" />
     </state>
-    <state width="1253" height="414" key="GridCell.Tab.0.left/67.27.1299.741@67.27.1299.741" timestamp="1599050477031" />
-    <state width="1253" height="414" key="GridCell.Tab.0.right" timestamp="1599050477032">
+    <state width="1253" height="414" key="GridCell.Tab.0.left/67.27.1299.741@67.27.1299.741" timestamp="1599050650695" />
+    <state width="1253" height="414" key="GridCell.Tab.0.right" timestamp="1599050650696">
       <screen x="67" y="27" width="1299" height="741" />
     </state>
-    <state width="1253" height="414" key="GridCell.Tab.0.right/67.27.1299.741@67.27.1299.741" timestamp="1599050477032" />
+    <state width="1253" height="414" key="GridCell.Tab.0.right/67.27.1299.741@67.27.1299.741" timestamp="1599050650696" />
     <state width="1253" height="209" key="GridCell.Tab.1.bottom" timestamp="1599050133264">
       <screen x="67" y="27" width="1299" height="741" />
     </state>
