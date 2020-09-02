@@ -1,8 +1,8 @@
 package com.electivechaos.claimsadjuster.adapters;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
-import android.text.TextUtils;
+import androidx.core.content.ContextCompat;
+
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,10 +11,8 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.electivechaos.claimsadjuster.R;
-import com.electivechaos.claimsadjuster.pojo.Category;
 
 import java.util.ArrayList;
-import java.util.ResourceBundle;
 
 /**
  * Created by nafeesa on 4/17/18.

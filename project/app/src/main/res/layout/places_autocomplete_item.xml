@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:text="Location Short"
             android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/location_long"
@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:text="Location Long"
             android:textColor="@color/grayDark"
-            android:textSize="14sp" />
+            android:textSize="12sp" />
     </LinearLayout>
 
 </LinearLayout>

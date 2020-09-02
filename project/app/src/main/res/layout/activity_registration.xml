@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -38,9 +38,9 @@
                 android:hint="@string/enter_report_by"
                 android:inputType="text"
                 android:textSize="16sp" />
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -51,9 +51,9 @@
                 android:hint="@string/enter_email_id"
                 android:inputType="textEmailAddress"
                 android:textSize="16sp" />
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -64,10 +64,10 @@
                 android:hint="@string/enter_token"
                 android:inputType="textEmailAddress"
                 android:textSize="16sp" />
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
 
-        <android.support.v7.widget.AppCompatButton
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnRegister"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

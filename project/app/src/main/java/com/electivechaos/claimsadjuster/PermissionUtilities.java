@@ -7,10 +7,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AlertDialog;
 
 /**
  * Created by nafeea on 4/24/18.
@@ -180,8 +180,7 @@ public class PermissionUtilities {
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    public static boolean checkPermissionImageUpload(final Context context, final Activity
-            activity, final int type) {
+    public static boolean checkPermissionImageUpload(final Context context, final Activity activity, final int type) {
         int currentAPIVersion = Build.VERSION.SDK_INT;
         if (type == MY_APP_BROWSE_PHOTO_PERMISSIONS_IMAGE_LOGO) {
             if (currentAPIVersion >= android.os.Build.VERSION_CODES.M) {

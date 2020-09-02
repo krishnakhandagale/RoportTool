@@ -6,18 +6,18 @@
     android:layout_height="fill_parent"
     android:orientation="vertical">
 
-    <android.support.design.widget.AppBarLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <android.support.v7.widget.Toolbar
+        <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimaryDark"
             app:layout_scrollFlags=""
-            app:popupTheme="@style/ThemeOverlay.AppCompat.ActionBar"></android.support.v7.widget.Toolbar>
-    </android.support.design.widget.AppBarLayout>
+            app:popupTheme="@style/ThemeOverlay.AppCompat.ActionBar"></androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -160,7 +160,7 @@
                 android:orientation="horizontal"
                 android:weightSum="4">
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="0dip"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="30dp"
@@ -173,7 +173,7 @@
                         android:fontFamily="sans-serif-condensed"
                         android:hint="@string/enter_report_by"
                         android:textSize="16sp" />
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <ImageButton
                     android:id="@+id/editBtn"
@@ -204,7 +204,7 @@
                 android:orientation="horizontal"
                 android:weightSum="4">
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="0dip"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="30dp"
@@ -218,7 +218,7 @@
                         android:fontFamily="sans-serif-condensed"
                         android:hint="@string/enter_report_title_setting"
                         android:textSize="14sp" />
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <ImageButton
                     android:id="@+id/editReportTitle"
@@ -249,7 +249,7 @@
                 android:orientation="horizontal"
                 android:weightSum="4">
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="0dip"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="30dp"
@@ -265,7 +265,7 @@
                         android:maxLines="3"
                         android:minLines="3"
                         android:textSize="14sp" />
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <ImageButton
                     android:id="@+id/editReportDescription"
@@ -295,7 +295,7 @@
                 android:orientation="horizontal"
                 android:weightSum="4">
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="0dip"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="30dp"
@@ -309,7 +309,7 @@
                         android:fontFamily="sans-serif-condensed"
                         android:hint="@string/enter_company_name_setting"
                         android:textSize="14sp" />
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <ImageButton
                     android:id="@+id/editCompanyName"
@@ -339,7 +339,7 @@
                 android:orientation="horizontal"
                 android:weightSum="4">
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="0dip"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="30dp"
@@ -353,7 +353,7 @@
                         android:fontFamily="sans-serif-condensed"
                         android:hint="@string/enter_address_setting"
                         android:textSize="14sp" />
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <ImageButton
                     android:id="@+id/editAddress"

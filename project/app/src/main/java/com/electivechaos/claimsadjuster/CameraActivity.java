@@ -3,9 +3,9 @@ package com.electivechaos.claimsadjuster;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;

@@ -13,7 +13,7 @@
         android:layout_height="match_parent"
         android:src="@drawable/ic_launcher_background" />
 
-    <android.support.design.widget.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/rotateImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -47,7 +47,7 @@
         android:orientation="vertical"
         android:padding="0dp">
 
-        <android.support.design.widget.FloatingActionButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/submitImageDetails"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -58,7 +58,7 @@
             app:pressedTranslationZ="12dp"
             app:rippleColor="@color/colorPrimary" />
 
-        <android.support.design.widget.FloatingActionButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/addImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -69,7 +69,7 @@
             app:pressedTranslationZ="12dp"
             app:rippleColor="@color/colorPrimary" />
 
-        <android.support.design.widget.FloatingActionButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/imageInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

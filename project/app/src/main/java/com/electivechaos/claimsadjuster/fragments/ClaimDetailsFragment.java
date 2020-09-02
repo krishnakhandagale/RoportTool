@@ -1,19 +1,17 @@
 package com.electivechaos.claimsadjuster.fragments;
 
 import android.content.Context;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.content.FileProvider;
-import android.support.v4.view.ViewPager;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.tabs.TabLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.core.content.FileProvider;
+import androidx.viewpager.widget.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +27,6 @@ import com.electivechaos.claimsadjuster.interfaces.OnSaveReportClickListener;
 import com.electivechaos.claimsadjuster.interfaces.QuickCaptureListener;
 
 import com.electivechaos.claimsadjuster.interfaces.QuickGalleryListener;
-import com.electivechaos.claimsadjuster.pojo.Label;
 
 import java.io.File;
 

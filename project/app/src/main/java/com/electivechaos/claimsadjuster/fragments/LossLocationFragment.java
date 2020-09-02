@@ -1,191 +1,166 @@
 package com.electivechaos.claimsadjuster.fragments;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.location.Address;
+import android.location.Geocoder;
+import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
+import android.widget.EditText;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.electivechaos.claimsadjuster.Constants;
 import com.electivechaos.claimsadjuster.R;
 import com.electivechaos.claimsadjuster.adapters.PlaceArrayAdapter;
+import com.electivechaos.claimsadjuster.application.App;
 import com.electivechaos.claimsadjuster.interfaces.LossLocationDataInterface;
 import com.electivechaos.claimsadjuster.utils.CommonUtils;
 import com.electivechaos.claimsadjuster.utils.PermissionUtilities;
-import com.google.android.gms.common.ConnectionResult;
+import com.electivechaos.claimsadjuster.utils.SingleShotLocationProvider;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.location.places.PlaceBuffer;
-import com.google.android.gms.location.places.PlaceDetectionClient;
-import com.google.android.gms.location.places.PlaceLikelihoodBufferResponse;
-import com.google.android.gms.location.places.Places;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.net.FetchPlaceRequest;
+import com.google.android.libraries.places.api.net.FetchPlaceResponse;
+import com.google.android.material.snackbar.Snackbar;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 /**
  * Created by krishna on 2/26/18.
  */
 
-public class LossLocationFragment extends Fragment implements GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks {
+public class LossLocationFragment extends Fragment implements OnMapReadyCallback {
 
     private static final LatLngBounds BOUNDS_MOUNTAIN_VIEW = new LatLngBounds(new LatLng(37.398160, -122.180831), new LatLng(37.430620, -121.972090));
-    private MapView mMapView;
     private GoogleMap googleMap;
     private View lossLocationParentLayout;
-    private PlaceDetectionClient mPlaceDetectionClient;
-    private GoogleApiClient mGoogleApiClient;
     private PlaceArrayAdapter mPlaceArrayAdapter;
     private AutoCompleteTextView mAutocompleteTextView;
     private LossLocationDataInterface lossLocationDataInterface;
-
     private String locationLat = "";
     private String locationLong = "";
     private String addressLine = "";
-
     private MarkerOptions a = new MarkerOptions().position(new LatLng(50, 6));
     private Marker mGoogleMapMarker = null;
-
     private CheckBox txtCurrentLocation, txtSetLocation;
-    private ResultCallback<PlaceBuffer> mUpdatePlaceDetailsCallback
-            = new ResultCallback<PlaceBuffer>() {
-        @Override
-        public void onResult(PlaceBuffer places) {
-            if (!places.getStatus().isSuccess()) {
-                return;
-            }
-
-            LatLng currentLocation = places.get(0).getLatLng();
-
-            locationLat = String.valueOf(currentLocation.latitude);
-            locationLong = String.valueOf(currentLocation.longitude);
-            addressLine = places.get(0).getAddress().toString();
-
-            mGoogleMapMarker.setPosition(currentLocation);
-            mGoogleMapMarker.setTitle("Location");
-            mGoogleMapMarker.setSnippet(places.get(0).getAddress().toString());
-
-            CameraPosition cameraPosition = new CameraPosition.Builder().target(currentLocation).zoom(15).build();
-            googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-
-            googleMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
-                @Override
-                public void onMapLoaded() {
-                    googleMap.snapshot(new GoogleMap.SnapshotReadyCallback() {
-                        @Override
-                        public void onSnapshotReady(Bitmap bitmap) {
-                            lossLocationDataInterface.setMapSnapshot(bitmap);
-                            googleMap.setOnMapLoadedCallback(null);
-                        }
-                    });
-                }
-            });
-            googleMap.getUiSettings().setMyLocationButtonEnabled(false);
-
-
-        }
-    };
+    private float zoom = 15f;
+    private SupportMapFragment mMapFragment;
     private AdapterView.OnItemClickListener mAutocompleteClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             final PlaceArrayAdapter.PlaceAutocomplete item = mPlaceArrayAdapter.getItem(position);
             final String placeId = String.valueOf(item.placeId);
-            PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi
-                    .getPlaceById(mGoogleApiClient, placeId);
-            placeResult.setResultCallback(mUpdatePlaceDetailsCallback);
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    setAddress(placeId);
+                }
+            }).start();
+
         }
     };
+
+    private void setAddress(String placeId) {
+        // Specify the fields to return (in this example all fields are returned).
+        List<Place.Field> placeFields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.LAT_LNG);
+        FetchPlaceRequest request = FetchPlaceRequest.newInstance(placeId, placeFields);
+        Task<FetchPlaceResponse> placeTask = Places.createClient(getActivity()).fetchPlace(request);
+
+        try {
+            Tasks.await(placeTask, 60, TimeUnit.SECONDS);
+        } catch (ExecutionException | InterruptedException | TimeoutException e) {
+            e.printStackTrace();
+        }
+
+
+        placeTask.addOnSuccessListener(
+                (response) -> {
+                    String addressEntered = response.getPlace().getAddress();
+                    LatLng latLng = response.getPlace().getLatLng();
+                    getCurrentAddress(latLng);
+                    mAutocompleteTextView.setText(addressEntered);
+                    mAutocompleteTextView.dismissDropDown();
+                });
+
+        placeTask.addOnFailureListener(
+                (exception) -> {
+                    exception.printStackTrace();
+                    Snackbar.make(lossLocationParentLayout, "Something went wrong", Snackbar.LENGTH_LONG).show();
+                });
+
+
+    }
+
 
     @Override
     public void onStart() {
         super.onStart();
-
-        if (mGoogleApiClient != null && !mGoogleApiClient.isConnected()) {
-            mGoogleApiClient.connect();
-        }
     }
 
-    private synchronized void buildGoogleAPIClient() {
-        mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(Places.GEO_DATA_API)
-                .build();
-        mGoogleApiClient.connect();
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         Bundle bundle = getArguments();
-
         if (bundle != null) {
             locationLat = bundle.get("locationLat").toString();
             locationLong = bundle.get("locationLong").toString();
             addressLine = bundle.get("addressLine").toString();
         }
+
+
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.loss_location_fragment, container, false);
-        mMapView = rootView.findViewById(R.id.mapView);
-        mMapView.onCreate(savedInstanceState);
         lossLocationParentLayout = rootView.findViewById(R.id.lossLocationParentLayout);
-        mMapView.onResume();
 
-        mMapView.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(GoogleMap mMap) {
-                googleMap = mMap;
+        mMapFragment= (SupportMapFragment) getChildFragmentManager()
+                .findFragmentById(R.id.map);
+        if(mMapFragment != null)
+        mMapFragment.getMapAsync(this);
 
-                if (CommonUtils.getGoogleMap(getActivity()).equalsIgnoreCase(Constants.MAP_TYPE_ID_ROADMAP)) {
-                    googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-                } else if (CommonUtils.getGoogleMap(getActivity()).equalsIgnoreCase(Constants.MAP_TYPE_ID_SATELLITE)) {
-                    googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-                }
-
-                googleMap.clear();
-                mGoogleMapMarker = googleMap.addMarker(a);
-
-                boolean result = PermissionUtilities.checkPermission(getActivity(), LossLocationFragment.this, PermissionUtilities.MY_APP_LOCATION_PERMISSIONS);
-                if (result) {
-                    buildGoogleAPIClient();
-
-                    mPlaceDetectionClient = Places.getPlaceDetectionClient(getActivity());
-
-                    showCurrentPlace();
-
-                } else {
-                    PermissionUtilities.checkPermission(getActivity(), LossLocationFragment.this, PermissionUtilities.MY_APP_LOCATION_PERMISSIONS);
-                }
-
-            }
-        });
+        //Initialize places
+        if (!Places.isInitialized()) {
+            Places.initialize(App.getContext(), getString(R.string.api_key));
+        }
+        mMapFragment.onResume();
+        mMapFragment.onCreate(savedInstanceState);
 
         txtCurrentLocation = rootView.findViewById(R.id.txtCurrentLocation);
         txtSetLocation = rootView.findViewById(R.id.txtSetLocation);
@@ -194,18 +169,17 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
         mAutocompleteTextView.setText(addressLine);
         mAutocompleteTextView.setThreshold(2);
         mAutocompleteTextView.setOnItemClickListener(mAutocompleteClickListener);
-        mPlaceArrayAdapter = new PlaceArrayAdapter(getActivity(), R.layout.places_autocomplete_item, BOUNDS_MOUNTAIN_VIEW, null);
+        mPlaceArrayAdapter = new PlaceArrayAdapter(getActivity(), R.layout.places_autocomplete_item, BOUNDS_MOUNTAIN_VIEW);
         mAutocompleteTextView.setAdapter(mPlaceArrayAdapter);
 
-        if(TextUtils.isEmpty(addressLine)){
+        if (TextUtils.isEmpty(addressLine)) {
             txtSetLocation.setText("Pin Location");
         }
-
 
         txtCurrentLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mMapView.getMapAsync(new OnMapReadyCallback() {
+                mMapFragment.getMapAsync(new OnMapReadyCallback() {
                     @Override
                     public void onMapReady(GoogleMap mMap) {
                         googleMap = mMap;
@@ -220,11 +194,6 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
 
                         boolean result = PermissionUtilities.checkPermission(getActivity(), LossLocationFragment.this, PermissionUtilities.MY_APP_LOCATION_PERMISSIONS);
                         if (result) {
-                            buildGoogleAPIClient();
-
-
-                            mPlaceDetectionClient = Places.getPlaceDetectionClient(getActivity());
-
                             setCurrentLocation();
                         } else {
                             PermissionUtilities.checkPermission(getActivity(), LossLocationFragment.this, PermissionUtilities.MY_APP_LOCATION_PERMISSIONS);
@@ -258,6 +227,86 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
         return rootView;
     }
 
+    private void getGPSLOcation() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            SingleShotLocationProvider.requestSingleUpdate(App.getContext(), LossLocationFragment.this,
+                    location -> {
+                        LatLng currentLocation = new LatLng(location.latitude, location.longitude);
+                        Log.d("Location", "my location is " + location.toString());
+                        if (googleMap != null) {
+                            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(currentLocation, zoom);
+                            googleMap.animateCamera(cameraUpdate);
+
+                            locationLat = String.valueOf(currentLocation.latitude);
+                            locationLong = String.valueOf(currentLocation.longitude);
+
+                            getCurrentAddress(currentLocation);
+
+                            CameraPosition cameraPosition = new CameraPosition.Builder().target(currentLocation).zoom(15).build();
+                            if (cameraPosition != null) {
+                                googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                            }
+
+                            googleMap.getUiSettings().setMyLocationButtonEnabled(false);
+
+                            googleMap.setOnMapLoadedCallback(() -> googleMap.snapshot(bitmap -> {
+                                lossLocationDataInterface.setMapSnapshot(bitmap);
+                                googleMap.setOnMapLoadedCallback(null);
+                            }));
+                        }
+
+                        lossLocationDataInterface.setLocationLat(locationLat);
+                        lossLocationDataInterface.setLocationLong(locationLong);
+                        lossLocationDataInterface.setAddressLine(addressLine);
+
+                        txtSetLocation.setChecked(false);
+                        txtSetLocation.setText("Pin Location");
+                    });
+        }
+    }
+
+    public void getCurrentAddress(LatLng currentLatLng) {
+        if (currentLatLng != null) {
+            Geocoder geocoder;
+            List<Address> addresses = null;
+            geocoder = new Geocoder(App.getContext(), Locale.getDefault());
+            try {
+                addresses = geocoder.getFromLocation(currentLatLng.latitude, currentLatLng.longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+                if (addresses != null && addresses.size() > 0) {
+                    String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+                    mAutocompleteTextView.setText(address);
+                    addressLine = address;
+                    mGoogleMapMarker.setPosition(currentLatLng);
+                    mGoogleMapMarker.setTitle("Location");
+                    mGoogleMapMarker.setSnippet(address);
+                    locationLat = String.valueOf(currentLatLng.latitude);
+                    locationLong = String.valueOf(currentLatLng.longitude);
+                    if (googleMap != null) {
+                        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, zoom));
+                        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, zoom));
+                        googleMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+                            @Override
+                            public void onMapLoaded() {
+                                googleMap.snapshot(new GoogleMap.SnapshotReadyCallback() {
+                                    @Override
+                                    public void onSnapshotReady(Bitmap bitmap) {
+                                        lossLocationDataInterface.setMapSnapshot(bitmap);
+                                        googleMap.setOnMapLoadedCallback(null);
+                                    }
+                                });
+                            }
+                        });
+                    }
+                    lossLocationDataInterface.setLocationLat(locationLat);
+                    lossLocationDataInterface.setLocationLong(locationLong);
+                    lossLocationDataInterface.setAddressLine(addressLine);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     /**
      * Prompts the user for permission to use the device location.
      */
@@ -267,8 +316,6 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
         switch (requestCode) {
             case PermissionUtilities.MY_APP_LOCATION_PERMISSIONS: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    buildGoogleAPIClient();
-                    mPlaceDetectionClient = Places.getPlaceDetectionClient(getActivity());
                     showCurrentPlace();
                 }
                 break;
@@ -279,132 +326,26 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
     }
 
     private void setCurrentLocation() {
-
         if (googleMap == null) {
             return;
         }
-
-        @SuppressLint("MissingPermission") final Task<PlaceLikelihoodBufferResponse> placeResult =
-                mPlaceDetectionClient.getCurrentPlace(null);
-        placeResult.addOnCompleteListener
-                (new OnCompleteListener<PlaceLikelihoodBufferResponse>() {
-                    @Override
-                    public void onComplete(@NonNull Task<PlaceLikelihoodBufferResponse> task) {
-                        if (task.isSuccessful() && task.getResult() != null) {
-                            PlaceLikelihoodBufferResponse likelyPlaces = task.getResult();
-
-                            LatLng currentLocation = likelyPlaces.get(0).getPlace().getLatLng();
-
-                            locationLat = String.valueOf(currentLocation.latitude);
-                            locationLong = String.valueOf(currentLocation.longitude);
-                            addressLine = likelyPlaces.get(0).getPlace().getAddress().toString();
-
-                            mAutocompleteTextView.setText(likelyPlaces.get(0).getPlace().getAddress().toString());
-                            mGoogleMapMarker.setPosition(currentLocation);
-                            mGoogleMapMarker.setTitle("Location");
-                            mGoogleMapMarker.setSnippet(likelyPlaces.get(0).getPlace().getAddress().toString());
-
-                            CameraPosition cameraPosition = new CameraPosition.Builder().target(currentLocation).zoom(15).build();
-                            if (cameraPosition != null) {
-                                googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-                            }
-
-                            googleMap.getUiSettings().setMyLocationButtonEnabled(false);
-                            likelyPlaces.release();
-
-                            googleMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
-                                @Override
-                                public void onMapLoaded() {
-                                    googleMap.snapshot(new GoogleMap.SnapshotReadyCallback() {
-                                        @Override
-                                        public void onSnapshotReady(Bitmap bitmap) {
-                                            lossLocationDataInterface.setMapSnapshot(bitmap);
-                                            googleMap.setOnMapLoadedCallback(null);
-                                        }
-                                    });
-                                }
-                            });
-
-
-                        }
-
-                        txtSetLocation.setChecked(false);
-                        txtSetLocation.setText("Pin Location");
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                e.printStackTrace();
-            }
-        });
-
+        getGPSLOcation();
     }
 
     private void showCurrentPlace() {
-
         if (googleMap == null) {
             return;
         }
 
         if (locationLat.isEmpty()) {
-            @SuppressLint("MissingPermission") final Task<PlaceLikelihoodBufferResponse> placeResult =
-                    mPlaceDetectionClient.getCurrentPlace(null);
-            placeResult.addOnCompleteListener
-                    (new OnCompleteListener<PlaceLikelihoodBufferResponse>() {
-                        @Override
-                        public void onComplete(@NonNull Task<PlaceLikelihoodBufferResponse> task) {
-                            if (task.isSuccessful() && task.getResult() != null) {
-                                PlaceLikelihoodBufferResponse likelyPlaces = task.getResult();
-
-                                LatLng currentLocation = likelyPlaces.get(0).getPlace().getLatLng();
-
-                                locationLat = String.valueOf(currentLocation.latitude);
-                                locationLong = String.valueOf(currentLocation.longitude);
-                                addressLine = likelyPlaces.get(0).getPlace().getAddress().toString();
-
-                                mAutocompleteTextView.setText(likelyPlaces.get(0).getPlace().getAddress().toString());
-                                mGoogleMapMarker.setPosition(currentLocation);
-                                mGoogleMapMarker.setTitle("Location");
-                                mGoogleMapMarker.setSnippet(likelyPlaces.get(0).getPlace().getAddress().toString());
-
-                                CameraPosition cameraPosition = new CameraPosition.Builder().target(currentLocation).zoom(15).build();
-                                if (cameraPosition != null) {
-                                    googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-                                }
-
-                                googleMap.getUiSettings().setMyLocationButtonEnabled(false);
-                                likelyPlaces.release();
-
-                                googleMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
-                                    @Override
-                                    public void onMapLoaded() {
-                                        googleMap.snapshot(new GoogleMap.SnapshotReadyCallback() {
-                                            @Override
-                                            public void onSnapshotReady(Bitmap bitmap) {
-                                                lossLocationDataInterface.setMapSnapshot(bitmap);
-                                                googleMap.setOnMapLoadedCallback(null);
-                                            }
-                                        });
-                                    }
-                                });
-
-                                txtSetLocation.setChecked(false);
-                                txtSetLocation.setText("Pin Location");
-                            }
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    e.printStackTrace();
-                }
-            });
+            getGPSLOcation();
         } else {
-            LatLng currentLocation = new LatLng(Double.parseDouble(locationLat), Double.parseDouble(locationLong));
-            mGoogleMapMarker.setPosition(currentLocation);
+            LatLng latLng = new LatLng(Double.parseDouble(locationLat), Double.parseDouble(locationLong));
+            mGoogleMapMarker.setPosition(latLng);
             mGoogleMapMarker.setTitle("Location");
             mGoogleMapMarker.setSnippet(addressLine);
 
-            CameraPosition cameraPosition = new CameraPosition.Builder().target(currentLocation).zoom(15).build();
+            CameraPosition cameraPosition = new CameraPosition.Builder().target(latLng).zoom(15).build();
             googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
             googleMap.getUiSettings().setMyLocationButtonEnabled(false);
             googleMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
@@ -433,68 +374,39 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
     }
 
     @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-        CommonUtils.showSnackbarMessage("Failed to connect to google api.", true, true, lossLocationParentLayout, getActivity());
-    }
-
-    @Override
     public void onDetach() {
         super.onDetach();
-        if (mGoogleApiClient != null) {
-            mGoogleApiClient.disconnect();
-        }
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        if (mGoogleApiClient != null) {
-            mGoogleApiClient.disconnect();
-        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        mMapView.onResume();
+        mMapFragment.onResume();
 
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        mMapView.onPause();
-        if (mGoogleApiClient != null) {
-            mGoogleApiClient.disconnect();
-        }
-
+        mMapFragment.onPause();
 
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mMapView.onDestroy();
-        if (mGoogleApiClient != null) {
-            mGoogleApiClient.disconnect();
-        }
+        mMapFragment.onDestroy();
     }
 
     @Override
     public void onLowMemory() {
         super.onLowMemory();
-        mMapView.onLowMemory();
-    }
-
-
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
-        mPlaceArrayAdapter.setGoogleApiClient(mGoogleApiClient);
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-        mPlaceArrayAdapter.setGoogleApiClient(null);
+        mMapFragment.onLowMemory();
     }
 
     @Override
@@ -507,4 +419,34 @@ public class LossLocationFragment extends Fragment implements GoogleApiClient.On
         }
 
     }
+
+    @Override
+    public void onMapReady(GoogleMap map) {
+        googleMap = map;
+
+        // Add a marker in Sydney and move the camera
+        LatLng sydney = new LatLng(-34, 151);
+        googleMap.addMarker(new MarkerOptions()
+                .position(sydney)
+                .title("Marker in Sydney"));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+
+        if (CommonUtils.getGoogleMap(getActivity()).equalsIgnoreCase(Constants.MAP_TYPE_ID_ROADMAP)) {
+            googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        } else if (CommonUtils.getGoogleMap(getActivity()).equalsIgnoreCase(Constants.MAP_TYPE_ID_SATELLITE)) {
+            googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+        }
+
+        googleMap.clear();
+        mGoogleMapMarker = googleMap.addMarker(a);
+
+        boolean result = PermissionUtilities.checkPermission(getActivity(), LossLocationFragment.this, PermissionUtilities.MY_APP_LOCATION_PERMISSIONS);
+        if (result) {
+            showCurrentPlace();
+
+        } else {
+            PermissionUtilities.checkPermission(getActivity(), LossLocationFragment.this, PermissionUtilities.MY_APP_LOCATION_PERMISSIONS);
+        }
+    }
+
 }

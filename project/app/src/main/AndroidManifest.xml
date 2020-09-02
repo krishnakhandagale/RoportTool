@@ -11,6 +11,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
 
     <application
+        android:name="com.electivechaos.claimsadjuster.application.App"
         android:allowBackup="true"
         android:fullBackupContent="false"
         android:icon="@mipmap/ic_launcher"
@@ -23,12 +24,15 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+<!--        <meta-data-->
+<!--            android:name="com.google.android.geo.API_KEY"-->
+<!--            android:value="AIzaSyC3rml-xbs9AJaa5nitYVRpC8dZc1KoAMI" />-->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyC3rml-xbs9AJaa5nitYVRpC8dZc1KoAMI" />
+            android:value="@string/api_key" />
 
         <provider
-            android:name="android.support.v4.content.FileProvider"
+            android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true"
@@ -41,9 +45,15 @@
 
         <activity
             android:name=".ui.AddEditReportActivity"
-            android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".ui.MainTabsActivity">
+            android:windowSoftInputMode="adjustPan" >
 
+        </activity>
+        <activity android:name=".ui.MainTabsActivity">
+            <intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
         </activity>
         <activity android:name=".ui.ImagePickerActivity" />
         <activity
@@ -79,11 +89,7 @@
         <activity android:name=".ui.SettingsActivity" />
         <activity android:name=".ui.RegistrationActivity" />
         <activity android:name=".ui.TermsOfServicesActivity">
-            <intent-filter>
-                <category android:name="android.intent.category.LAUNCHER" />
 
-                <action android:name="android.intent.action.MAIN" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".CameraActivity"

@@ -1,8 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: com.crashlytics.sdk.android:answers:1.4.7@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/b6537584f88e77b23a55232359946e1a/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/b6537584f88e77b23a55232359946e1a/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ef8d14e1111d182ab45a1806adf3308e/jetified-answers-1.4.7/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ef8d14e1111d182ab45a1806adf3308e/jetified-answers-1.4.7/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ef8d14e1111d182ab45a1806adf3308e/jetified-answers-1.4.7/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

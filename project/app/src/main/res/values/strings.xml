@@ -132,4 +132,8 @@
     <string name="please_select_label">Please select label.</string>
     <string name="select_category">Select Category</string>
     <string name="select_category_for_all_images">Select category for all images.</string>
+
+    <string name="api_key">AIzaSyDIoB_HBDZE5yVNzAyd9NkpRr7yahfLa84</string>
+<!--    <string name="api_key">AIzaSyD6C3ooJF5ZeJ-2oCUOQqsKpsXAwCNYMlE</string>-->
+
 </resources>
