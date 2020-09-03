@@ -23,4 +23,8 @@
     <color name="parentMenuDivider">#EEEEEE</color>
     <color name="colorCurrentLocation">#4376e6</color>
 
+    <color name="colorRedMoreDark">#EC3A3A</color>
+    <color name="dimWhite">#E0E0E0</color>
+
+
 </resources>

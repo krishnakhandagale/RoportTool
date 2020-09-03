@@ -4,7 +4,7 @@
     android:id="@+id/parentLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary">
+    android:background="@color/white">
 
     <ImageView
         android:id="@+id/imgBack"
@@ -13,7 +13,7 @@
         android:layout_marginStart="15dp"
         android:layout_marginTop="20dp"
         android:layout_gravity="top|left"
-        android:src="@drawable/ic_arrow_back_white"
+        android:src="@drawable/ic_arrow_back"
         android:visibility="visible"
         android:layout_marginLeft="15dp" />
 
@@ -60,7 +60,7 @@
             android:gravity="center"
             android:text="@string/enter_the_otp_sent_to_your_email_to_complete_the_registration_process"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="16sp"
             android:textStyle="normal" />
 
@@ -79,7 +79,7 @@
                 android:gravity="center"
                 android:inputType="number"
                 android:maxLength="1"
-                android:textColor="@color/white"
+                android:textColor="@color/colorGrayDark"
                 android:textSize="20sp" />
 
             <com.electivechaos.claimsadjuster.modules.login.OTPEditText
@@ -91,7 +91,7 @@
                 android:gravity="center"
                 android:inputType="number"
                 android:maxLength="1"
-                android:textColor="@color/white"
+                android:textColor="@color/colorGrayDark"
                 android:textSize="20sp"
                 android:layout_marginLeft="5dp" />
 
@@ -104,7 +104,7 @@
                 android:gravity="center"
                 android:inputType="number"
                 android:maxLength="1"
-                android:textColor="@color/white"
+                android:textColor="@color/colorGrayDark"
                 android:textSize="20sp"
                 android:layout_marginLeft="5dp" />
 
@@ -117,7 +117,7 @@
                 android:gravity="center"
                 android:inputType="number"
                 android:maxLength="1"
-                android:textColor="@color/white"
+                android:textColor="@color/colorGrayDark"
                 android:textSize="20sp"
                 android:layout_marginLeft="5dp" />
 
@@ -130,7 +130,7 @@
                 android:gravity="center"
                 android:inputType="number"
                 android:maxLength="1"
-                android:textColor="@color/white"
+                android:textColor="@color/colorGrayDark"
                 android:textSize="20sp"
                 android:layout_marginLeft="5dp" />
 
@@ -143,7 +143,7 @@
                 android:gravity="center"
                 android:inputType="number"
                 android:maxLength="1"
-                android:textColor="@color/white"
+                android:textColor="@color/colorGrayDark"
                 android:textSize="20sp"
                 android:layout_marginLeft="5dp" />
         </LinearLayout>
@@ -178,7 +178,7 @@
                 android:fontFamily="@font/roboto"
                 android:text="@string/didn_t_recieve_an_email"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:textSize="14sp"
                 android:textStyle="normal" />
 
@@ -191,7 +191,7 @@
                 android:gravity="center"
                 android:text="@string/resend_otp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="@color/colorPrimary"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="16sp"
                 android:textStyle="normal"
                 android:layout_marginRight="10dp" />

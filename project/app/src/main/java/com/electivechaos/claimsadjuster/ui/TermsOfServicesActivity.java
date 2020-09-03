@@ -32,6 +32,7 @@ public class TermsOfServicesActivity extends AppCompatActivity {
         if (CommonUtils.getTermsAndConditions(this).equals("agree")) {
             Intent intentSplash = new Intent(TermsOfServicesActivity.this, SplashScreenActivity.class);
             startActivity(intentSplash);
+            finish();
         }
 
         termsOfServices = findViewById(R.id.termsAndCondition);
@@ -91,11 +92,10 @@ public class TermsOfServicesActivity extends AppCompatActivity {
                 .setMessage(R.string.disagreement_msg)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent i = new Intent(Intent.ACTION_MAIN);
-                        i.addCategory(Intent.CATEGORY_HOME);
-                        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        ;
-                        startActivity(i);
+//                        Intent i = new Intent(Intent.ACTION_MAIN);
+//                        i.addCategory(Intent.CATEGORY_HOME);
+//                        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                        startActivity(i);
                         finish();
                     }
                 }).setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -112,4 +112,9 @@ public class TermsOfServicesActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+//        super.onBackPressed();
+        finish();
+    }
 }

@@ -1,29 +1,20 @@
 package com.electivechaos.claimsadjuster.modules.login;
 
-import android.app.AlertDialog;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStore;
 
 import com.electivechaos.claimsadjuster.R;
 import com.electivechaos.claimsadjuster.application.App;
 import com.electivechaos.claimsadjuster.router.Routable;
 import com.electivechaos.claimsadjuster.utils.CommonUtils;
 import com.electivechaos.claimsadjuster.utils.KeyboardUtils;
-
-import static com.google.gson.reflect.TypeToken.get;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText mTextEmail, mTextPassword;
@@ -39,8 +30,11 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         mLoginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
 
-        if (CommonUtils.getUserDefaultValues(App.getContext()) != null && !TextUtils.isEmpty(CommonUtils.getUserDefaultValues(App.getContext()).get("userId"))) {
+        if (CommonUtils.getUserDefaultValues(App.getContext()) != null && !TextUtils.isEmpty(CommonUtils.getUserDefaultValues(App.getContext()).get("userId")) && CommonUtils.getTermsAndConditions(this).equals("agree")) {
             Routable.mainTabActivity(LoginActivity.this);
+            finish();
+        } else if ((TextUtils.isEmpty(CommonUtils.getTermsAndConditions(this)) || CommonUtils.getTermsAndConditions(this).equals("disagree")) && (CommonUtils.getUserDefaultValues(App.getContext()) != null && !TextUtils.isEmpty(CommonUtils.getUserDefaultValues(App.getContext()).get("userId")))) {
+            Routable.tosScreen(LoginActivity.this);
             finish();
         }
         initiateViews();

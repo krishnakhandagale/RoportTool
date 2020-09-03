@@ -8,13 +8,11 @@ import com.electivechaos.claimsadjuster.Constants;
 import com.electivechaos.claimsadjuster.interfaces.APICallbackInterface;
 import com.electivechaos.claimsadjuster.models.LogInResponse;
 import com.electivechaos.claimsadjuster.router.Routable;
-import com.electivechaos.claimsadjuster.ui.RegistrationActivity;
 import com.electivechaos.claimsadjuster.utils.APIEndPoint;
 import com.electivechaos.claimsadjuster.utils.CommonUtils;
 import com.electivechaos.claimsadjuster.utils.ProgressDialogUtil;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -70,6 +68,12 @@ public class LoginViewModel extends ViewModel {
                                 mProgressDialogUtil.hide();
                                 return;
                             }
+
+                            if (loginResponse.getResult() != null && loginResponse.getResult().getUserInfo() != null) {
+                                String fullName = loginResponse.getResult().getUserInfo().getFirstName() + " " + loginResponse.getResult().getUserInfo().getLastName();
+                                CommonUtils.setReportByField(fullName, loginActivity);
+                            }
+
                             Routable.tosScreen(loginActivity);
                             loginActivity.finish();
                         }

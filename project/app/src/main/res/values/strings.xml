@@ -147,6 +147,7 @@
     <string name="verify_otp">Verify OTP</string>
     <string name="verify_email">Verify Email</string>
     <string name="enter_the_otp_sent_to_your_email_to_complete_the_registration_process">Enter the OTP sent to your email to complete the registration process</string>
+    <string name="logout">Logout</string>
 
 
 </resources>
