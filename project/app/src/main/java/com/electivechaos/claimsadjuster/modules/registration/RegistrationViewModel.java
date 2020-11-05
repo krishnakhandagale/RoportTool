@@ -46,6 +46,7 @@ public class RegistrationViewModel extends ViewModel {
         try {
             JSONArray jsonArray = new JSONArray();
             JSONObject obj = new JSONObject();
+
             obj.put("DomainID", Constants.DOMAIN_ID);
             obj.put("ContactNumber", "");
             obj.put("IsRegister", true);
@@ -55,13 +56,14 @@ public class RegistrationViewModel extends ViewModel {
             obj.put("Password", userPojo.getPassword());
             obj.put("PrimaryEmail", userPojo.getPrimaryEmail());
             obj.put("PermittedTo", "Publisher");
+            obj.put("BundleID", "com.electivechaos.claimsadjuster");
             String emailParts[] = userPojo.getPrimaryEmail().split("@");
             obj.put("Username", emailParts[0]);
             obj.put("IsOTPFLow", true);
             jsonArray.put(obj);
 
             mProgressDialogUtil.show("Loading...");
-            mApiEndPoint.setApiRequestParameters("UserService.Add", jsonArray);
+            mApiEndPoint.setApiRequestParameters("UserService.AddUserForChecklistClaims", jsonArray);
             mApiEndPoint.fetchData(new APICallbackInterface() {
                 @Override
                 public void apiCallCompletion(JSONObject jsonObject) {

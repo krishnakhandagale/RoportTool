@@ -18,6 +18,7 @@ public interface Constants {
 
 
     public static final String SERVICE_URL = "https://vmwapi.nightly.videomine.io/api/";
+//    public static final String SERVICE_URL = "https://vmwapi.app.videomine.io/api/";
     String SERVICE_URL_STAGING = "https://staging.electivechaos.com/api/";
     String SERVICE_URL_PRODUCTION = "https://www.electivechaos.com/api/";
     String USER_ID = "UserID";
