@@ -47,6 +47,7 @@ public class LoginViewModel extends ViewModel {
             obj.put("Device", objDevice);
             obj.put("EmailID", emailID);
             obj.put("Password", password);
+            obj.put("BundleID", Constants.BUNDLE_ID);
 
             jsonArray.put(obj);
 

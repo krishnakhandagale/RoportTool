@@ -15,6 +15,7 @@ public interface Constants {
     String REPORT_QUALITY_MEDIUM = "medium";
     String REPORT_QUALITY_HIGH = "high";
     public static final String DOMAIN_ID = "videomine";
+    public static final String BUNDLE_ID = "com.electivechaos.claimsadjuster";
 
 
     public static final String SERVICE_URL = "https://vmwapi.nightly.videomine.io/api/";

@@ -56,7 +56,7 @@ public class RegistrationViewModel extends ViewModel {
             obj.put("Password", userPojo.getPassword());
             obj.put("PrimaryEmail", userPojo.getPrimaryEmail());
             obj.put("PermittedTo", "Publisher");
-            obj.put("BundleID", "com.electivechaos.claimsadjuster");
+            obj.put("BundleID", Constants.BUNDLE_ID);
             String emailParts[] = userPojo.getPrimaryEmail().split("@");
             obj.put("Username", emailParts[0]);
             obj.put("IsOTPFLow", true);
